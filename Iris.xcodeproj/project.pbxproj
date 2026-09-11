@@ -43,6 +43,7 @@
 		24385E12016E14C53C04D618 /* AudioCue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63669236D77A269D0C392E57 /* AudioCue.swift */; };
 		26AFB81A350DAE8EA509AAFF /* ChaptersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F579BD2430AB6DD15CFA21C3 /* ChaptersView.swift */; };
 		2F8BFDF34D09FF4FAE7BDAAB /* Campaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503F9C3502EF31E0B3FDA77B /* Campaign.swift */; };
+		30F847E0F6B356F5BDC56A9C /* HapticCuePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA82F71251B83A114D5CDAE /* HapticCuePolicy.swift */; };
 		31A6DF6E53579DB40C9A503B /* LevelResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFA3D76542AACCBAEB916C6 /* LevelResultView.swift */; };
 		344026FFF7A1B09C0D52BF9E /* GoldenTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A25EFDAA9DFA88FA91452E /* GoldenTrace.swift */; };
 		3873CF7CFFEBBC15679C7AEC /* Campaign+Voiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42738B44E0ABA6B64F11E28B /* Campaign+Voiles.swift */; };
@@ -64,6 +65,8 @@
 		4C1B977D6BCA345E6FFB0E90 /* VeilleuseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755489124F79C400F5875902 /* VeilleuseState.swift */; };
 		4D46D81B0727948928D6458C /* SineSynth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3154B26F5DFDA67F52A1 /* SineSynth.swift */; };
 		4E79F474EF5E220C5C80D1E6 /* MockGameNavigating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEF58786CACDB18BD42EC22 /* MockGameNavigating.swift */; };
+		4EC19EAFF118D83CF5631B5B /* SilentHapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2EDD0C2AD97799B72C698 /* SilentHapticFeedbackService.swift */; };
+		504638E2CE5D0A9B9CDCFB94 /* FeedbackTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = A149778CB2D807A315CFB89E /* FeedbackTiming.swift */; };
 		5072C5644BD9BE6A24369D88 /* GazeSetupNavigating.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BC02F89C47E8DB96F852E1 /* GazeSetupNavigating.swift */; };
 		50C1BB4EF45180B21955972D /* TargetPhysicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158F8C196F79391A2DDA0DCA /* TargetPhysicsTests.swift */; };
 		524FD07945F4260D79663313 /* TargetPhysics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139C1641A7411F9D4F9F590F /* TargetPhysics.swift */; };
@@ -76,11 +79,13 @@
 		59C38057369509754C61D100 /* RobustAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B963C8273B51A3EAAB22EA /* RobustAggregator.swift */; };
 		5B1D9EB2D5BC00B4AF31FE47 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800B8B9FB162F4AE038B1DFA /* Level.swift */; };
 		5CB5203E5C6220A0968F129B /* LevelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC2E203D820A3187F1D4E3 /* LevelResult.swift */; };
+		5CD0A2D6D3C629DB951AE847 /* MockHapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD55078A574DA50FE6E06EF3 /* MockHapticFeedbackService.swift */; };
 		5CE800E12BBF79A340FFCBBC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52589D35D1DE8732E3C4656 /* SettingsView.swift */; };
 		5DF6C98C80CA871137E21684 /* SequenceOrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DD878F68BACC05790E72D6 /* SequenceOrderTests.swift */; };
 		5E3C440A6476D739BA6ED10A /* GameElement+Glyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5CE94358B60B35459BF218 /* GameElement+Glyph.swift */; };
 		5E969E6997F88532306726F7 /* ARKitGazeTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA812F6559EBBAE7486C88 /* ARKitGazeTrackingService.swift */; };
 		602E889CF81084C1FC83B6E7 /* CameraAccessNavigating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49CC73B85FA7FC7C172463C /* CameraAccessNavigating.swift */; };
+		614DEA9141C58B9BD4D38395 /* HapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE54E8D7790C5496D64A180 /* HapticFeedbackService.swift */; };
 		61C97E1EB62CA5D90E388225 /* FixationSequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18756B7B93381F8C60E98CDA /* FixationSequenceTests.swift */; };
 		61E0A53D39EE75BCB37A1F04 /* LevelEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */; };
 		6266836DB1BC1C40FC2AAEA4 /* ManualGameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D242A860A1DDC94DA38992 /* ManualGameClock.swift */; };
@@ -90,6 +95,7 @@
 		6E1B86D42D6A513E5C2BE925 /* DSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173CFEFE85CFD6276C224FC1 /* DSBadge.swift */; };
 		6E581A04DAA346B1C4485098 /* DSGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7AD342653D374AF694FE25 /* DSGlyph.swift */; };
 		6ED4DC8FCA4B793538100D6A /* golden_level9_far.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C0F05712C722B378D7AC23C /* golden_level9_far.json */; };
+		6F7959463CC8E2A8389A2144 /* HapticCuePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6B0F5AA24E05DAD132B85A /* HapticCuePolicyTests.swift */; };
 		714FD01623218CE1A3E44245 /* GazeSetupPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165178E76D82113C70DA7B6 /* GazeSetupPhase.swift */; };
 		721E014151D3D8EDF55C1709 /* GazeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7185D56A5AC8E9F4C724AB /* GazeMapper.swift */; };
 		72720E8F7628B8B367C2FA5C /* BlinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED940B9B133D591181E8F99 /* BlinkDetector.swift */; };
@@ -126,6 +132,7 @@
 		9894CF51C532682A5A6E2156 /* GazeCalibrationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */; };
 		9A711B9C7A79821B956497A5 /* DeviceAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */; };
 		9AC4C195616DC896137DF12F /* LinearCongruentialGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272C51EEF33C3FE08A938E8E /* LinearCongruentialGenerator.swift */; };
+		9C2F2EDE1CEFD43AC4A4DFA7 /* UIKitHapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */; };
 		9CB34104705E561CEA9F5F2B /* DSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9E4FD0BD7CE4E6BB7BBF79 /* DSColor.swift */; };
 		9D6AF35F8C4B870D0BF39D0E /* AffineTransform2DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3EA6296DB64CBC82A728AD /* AffineTransform2DTests.swift */; };
 		9D914AE3CFD470F2D6C2642F /* CameraAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0051F77DFB87391146F0FBD3 /* CameraAccessView.swift */; };
@@ -159,6 +166,7 @@
 		C08E69FB668DB35B80C89AEF /* NormalizedCoordinatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250F3A8E08643A58456E9E21 /* NormalizedCoordinatesTests.swift */; };
 		C2F19F8ED6C85829DE9AEAC1 /* ValueNoise1DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13148145B6DC04089A15C179 /* ValueNoise1DTests.swift */; };
 		C305DD983671F9B578093C05 /* DSMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D2FA928060E55713CF584 /* DSMotion.swift */; };
+		C4E27A7CFDC2AE847293DA28 /* GameSettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */; };
 		C5F5C72A1FEE200D113A81AD /* TargetID.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FAD02B8EF1F88A61052749 /* TargetID.swift */; };
 		C793E86F10A10E74167323C2 /* LevelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642E2FC20AE137F5F1C7C8BB /* LevelNode.swift */; };
 		C8A832C53AAEC21507F58C4D /* JourneyCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F708CAA576C3EE37C2E1A181 /* JourneyCompleteView.swift */; };
@@ -198,6 +206,7 @@
 		F7769BC619E43F735B8D5ABA /* CascadeRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FCD26CB51345086425106F /* CascadeRuleTests.swift */; };
 		FAF2CB7CEE4D891C0D67700A /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540E7510A811BA40E685702 /* AppEnvironment.swift */; };
 		FB20295A845C17008AA284E3 /* FixationTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D75921DD31A81ED12A8093 /* FixationTargetView.swift */; };
+		FBA819E319FE018819EE3761 /* HapticCue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC6889539833A43AA3C24D /* HapticCue.swift */; };
 		FBE37584D34F247D8C8A6F80 /* CampaignValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4691736CD5299B0A55EC1 /* CampaignValidationTests.swift */; };
 		FC6E3ADB3DEF70CD71417E88 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C429251189588D65388F4B2 /* GameViewModelTests.swift */; };
 		FEA5A9DF7EC291352D07505F /* DSProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCDFCCDF659A96E9B0EFA3F /* DSProgressRing.swift */; };
@@ -227,6 +236,8 @@
 		08B9A8A9490F67F3E264AEDE /* CalibrationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationProfile.swift; sourceTree = "<group>"; };
 		0B7AD342653D374AF694FE25 /* DSGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlyph.swift; sourceTree = "<group>"; };
 		0D3408C688DE466CF6BA50D8 /* CalibrationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationResult.swift; sourceTree = "<group>"; };
+		0F6B0F5AA24E05DAD132B85A /* HapticCuePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticCuePolicyTests.swift; sourceTree = "<group>"; };
+		0FE54E8D7790C5496D64A180 /* HapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackService.swift; sourceTree = "<group>"; };
 		10AEF31E8BBC05B9466DF100 /* IrisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrisApp.swift; sourceTree = "<group>"; };
 		13148145B6DC04089A15C179 /* ValueNoise1DTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueNoise1DTests.swift; sourceTree = "<group>"; };
 		139C1641A7411F9D4F9F590F /* TargetPhysics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetPhysics.swift; sourceTree = "<group>"; };
@@ -257,6 +268,7 @@
 		2A19970A39C36C9149697807 /* IrisPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrisPath.swift; sourceTree = "<group>"; };
 		2C3831048F60D51B2C372E34 /* ValidationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTransition.swift; sourceTree = "<group>"; };
 		2C9E4FD0BD7CE4E6BB7BBF79 /* DSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSColor.swift; sourceTree = "<group>"; };
+		2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHapticFeedbackService.swift; sourceTree = "<group>"; };
 		308F25679A5A110E8EE8B174 /* GameCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCanvasView.swift; sourceTree = "<group>"; };
 		369344EED837F50F922FA21E /* Campaign+Partage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Partage.swift"; sourceTree = "<group>"; };
 		385308503D02B747A893A04F /* MockAudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioService.swift; sourceTree = "<group>"; };
@@ -291,6 +303,7 @@
 		6B9177E8AB3CDA6C63662C56 /* HomeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSummary.swift; sourceTree = "<group>"; };
 		6E8B1378882AC71D9A1FE390 /* GazeVerdictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeVerdictView.swift; sourceTree = "<group>"; };
 		70372433F8E409BEE34D3F85 /* VeilSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilSegment.swift; sourceTree = "<group>"; };
+		72E2EDD0C2AD97799B72C698 /* SilentHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilentHapticFeedbackService.swift; sourceTree = "<group>"; };
 		743A4BFA7EE12B6DAE1B1C2D /* PrototypeLevelCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeLevelCatalogTests.swift; sourceTree = "<group>"; };
 		7540E7510A811BA40E685702 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		755489124F79C400F5875902 /* VeilleuseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilleuseState.swift; sourceTree = "<group>"; };
@@ -306,6 +319,7 @@
 		798C1EA5367F6ADFC58CA4D5 /* PrototypeLevelCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeLevelCatalog.swift; sourceTree = "<group>"; };
 		7A0CDB4B7032EB09FFB2F199 /* DSIrisMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSIrisMark.swift; sourceTree = "<group>"; };
 		7A9DAD6F4BB5E7D64B01B9C2 /* DSRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSRadius.swift; sourceTree = "<group>"; };
+		7AA82F71251B83A114D5CDAE /* HapticCuePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticCuePolicy.swift; sourceTree = "<group>"; };
 		7B6A0DB27AD062812B546090 /* ValidationRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRules.swift; sourceTree = "<group>"; };
 		7C0F05712C722B378D7AC23C /* golden_level9_far.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = golden_level9_far.json; sourceTree = "<group>"; };
 		7CCCEB7594AB8217F6255129 /* GazeTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeTrackingService.swift; sourceTree = "<group>"; };
@@ -325,6 +339,7 @@
 		8A3966B0FEFA78E7847455C3 /* GameSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
 		9321BE95580A63B791802BD7 /* DSFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSFont.swift; sourceTree = "<group>"; };
 		9362D94447166741649F5784 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsStoreTests.swift; sourceTree = "<group>"; };
 		94A6CB0A4975EB1DCC535F9A /* CampaignProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignProgress.swift; sourceTree = "<group>"; };
 		965E9BB6395098E00B714007 /* SessionMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMetrics.swift; sourceTree = "<group>"; };
 		96E1DEFDE85E15D98ECD1A87 /* VeilleuseDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilleuseDefinition.swift; sourceTree = "<group>"; };
@@ -338,9 +353,11 @@
 		9D5BF25D73E9B570A57FD3BF /* LevelResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelResolver.swift; sourceTree = "<group>"; };
 		9F337E175FB7D36A09AC4FE2 /* golden_generator.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = golden_generator.js; sourceTree = "<group>"; };
 		9FC6C35F2B3670EF05BC8871 /* DSScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSScreen.swift; sourceTree = "<group>"; };
+		A149778CB2D807A315CFB89E /* FeedbackTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackTiming.swift; sourceTree = "<group>"; };
 		A4048210861D4E9A13EAACA7 /* GameNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNavigating.swift; sourceTree = "<group>"; };
 		A4A25EFDAA9DFA88FA91452E /* GoldenTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldenTrace.swift; sourceTree = "<group>"; };
 		A7334D66F403CCED5EEFC84E /* Campaign+Veilleuses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Veilleuses.swift"; sourceTree = "<group>"; };
+		A9EC6889539833A43AA3C24D /* HapticCue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticCue.swift; sourceTree = "<group>"; };
 		AA83F5A055F5EAF728EA344F /* DeviceCapabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCapabilities.swift; sourceTree = "<group>"; };
 		AAA8A3EBFC406F28A58A915A /* GameSceneSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSnapshot.swift; sourceTree = "<group>"; };
 		AB1B81D2F724067717A73CFE /* DSCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCard.swift; sourceTree = "<group>"; };
@@ -409,6 +426,7 @@
 		F8D3544C9CEA112B675A5477 /* GazeSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupViewModel.swift; sourceTree = "<group>"; };
 		FA8FAC594F2F2A9AB6AE1B6B /* GazeSetupIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupIntent.swift; sourceTree = "<group>"; };
 		FBF18F3F2BCB068A2D84B1BA /* AudioCuePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCuePolicy.swift; sourceTree = "<group>"; };
+		FD55078A574DA50FE6E06EF3 /* MockHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHapticFeedbackService.swift; sourceTree = "<group>"; };
 		FE13F17112C85D17E1AA1186 /* CarnetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarnetView.swift; sourceTree = "<group>"; };
 		FED686B31A28E49F4E7D21B7 /* NormalizedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedRect.swift; sourceTree = "<group>"; };
 		FF953CB6D44416DA9BE1C841 /* CurrentDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDefinition.swift; sourceTree = "<group>"; };
@@ -485,6 +503,7 @@
 				50329524445B418DB642E11C /* Domain */,
 				01325808AC00496994FBBD06 /* Fixtures */,
 				CEB07F5ABBA7DAC09FAED44E /* GameEngine */,
+				710D48E1F37B38103FB5CB04 /* Haptics */,
 				C8ADD65788EA9888D2DCB87A /* Mocks */,
 				7D2218CE96E67BD184193D87 /* Presentation */,
 			);
@@ -519,11 +538,22 @@
 				CDAACDE7CD0A40A4CECD2BE5 /* Domain */,
 				62E732AE596A06201C5CA946 /* Features */,
 				D698886EA2F752A7FAB64B8A /* GameEngine */,
+				66D9E50C9B1DF66C6AA01CE7 /* Haptics */,
 				426D7471484A3C702BF42D13 /* Navigation */,
 				910A68193F345E7FBE95DC1E /* Resources */,
 				D56088AD17DFF59C7E4E7516 /* Tests */,
 				D2070894243A80683C258643 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		260F0E54DA7C8E0884B5E57A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0FE54E8D7790C5496D64A180 /* HapticFeedbackService.swift */,
+				72E2EDD0C2AD97799B72C698 /* SilentHapticFeedbackService.swift */,
+				2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		2A9F72297845CA11102B4C0B /* Platform */ = {
@@ -571,6 +601,14 @@
 				D5768A9C8DB006EE16A20C9A /* RootView.swift */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		46F4435127E2CAFABA5CF640 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				A149778CB2D807A315CFB89E /* FeedbackTiming.swift */,
+			);
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		4CE272ECB78AA6E301DAC489 /* ViewModels */ = {
@@ -676,6 +714,15 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
+		66D9E50C9B1DF66C6AA01CE7 /* Haptics */ = {
+			isa = PBXGroup;
+			children = (
+				F54E1A145BF4DD0DB0F6733B /* Policy */,
+				260F0E54DA7C8E0884B5E57A /* Services */,
+			);
+			path = Haptics;
+			sourceTree = "<group>";
+		};
 		69FDBE2555750D8071C6E6F3 /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -694,6 +741,14 @@
 			path = JourneyComplete;
 			sourceTree = "<group>";
 		};
+		710D48E1F37B38103FB5CB04 /* Haptics */ = {
+			isa = PBXGroup;
+			children = (
+				0F6B0F5AA24E05DAD132B85A /* HapticCuePolicyTests.swift */,
+			);
+			path = Haptics;
+			sourceTree = "<group>";
+		};
 		7299D3FCCE911F330B1D8BC8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -710,6 +765,7 @@
 			children = (
 				232DBD9A17913E3A0BE306C1 /* AppCoordinatorTests.swift */,
 				CFFC654539094E8EF0DEF30A /* CameraAccessViewModelTests.swift */,
+				93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */,
 				5C429251189588D65388F4B2 /* GameViewModelTests.swift */,
 				D0782523A70B6E6C8B3B861F /* GazeSetupViewModelTests.swift */,
 				E7BEC32F454392D52CD02E7A /* LaunchOptionsTests.swift */,
@@ -855,6 +911,7 @@
 			children = (
 				385308503D02B747A893A04F /* MockAudioService.swift */,
 				9BEF58786CACDB18BD42EC22 /* MockGameNavigating.swift */,
+				FD55078A574DA50FE6E06EF3 /* MockHapticFeedbackService.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -876,6 +933,7 @@
 			children = (
 				E40DF66A63A1DBCC7E983069 /* Campaign */,
 				ECD96AE8C3F54A7EE75887F9 /* Entities */,
+				46F4435127E2CAFABA5CF640 /* Feedback */,
 				ACA09A30C220863263966AF2 /* Levels */,
 				AE309351E706B1452156F82C /* Physics */,
 				822056589A6A3B76B0877690 /* Progress */,
@@ -1071,6 +1129,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F54E1A145BF4DD0DB0F6733B /* Policy */ = {
+			isa = PBXGroup;
+			children = (
+				A9EC6889539833A43AA3C24D /* HapticCue.swift */,
+				7AA82F71251B83A114D5CDAE /* HapticCuePolicy.swift */,
+			);
+			path = Policy;
+			sourceTree = "<group>";
+		};
 		F577B582BB17F1BAF7D9BA63 /* Campaign */ = {
 			isa = PBXGroup;
 			children = (
@@ -1234,12 +1301,14 @@
 				61C97E1EB62CA5D90E388225 /* FixationSequenceTests.swift in Sources */,
 				0356557DEF48AB58EE5661CE /* GameSessionGoldenTests.swift in Sources */,
 				A40C75B67EF1D24460337C5B /* GameSessionTests.swift in Sources */,
+				C4E27A7CFDC2AE847293DA28 /* GameSettingsStoreTests.swift in Sources */,
 				FC6E3ADB3DEF70CD71417E88 /* GameViewModelTests.swift in Sources */,
 				10C47A1C18C9F221188FF5CF /* GazeFilterTests.swift in Sources */,
 				E69E0FC6D75097FC7302A789 /* GazeMapperTests.swift in Sources */,
 				A2E4A71C45D05FA0B0515E49 /* GazeReadinessEvaluatorTests.swift in Sources */,
 				08C06F6328901159489B17A5 /* GazeSetupViewModelTests.swift in Sources */,
 				344026FFF7A1B09C0D52BF9E /* GoldenTrace.swift in Sources */,
+				6F7959463CC8E2A8389A2144 /* HapticCuePolicyTests.swift in Sources */,
 				B034077B0DEE687597DAD6D2 /* HintTrackerTests.swift in Sources */,
 				74FDE5E76895E79161AEE104 /* LaunchOptionsTests.swift in Sources */,
 				A8D209598845BD95D120A68A /* LevelAnalysis.swift in Sources */,
@@ -1248,6 +1317,7 @@
 				1ADDE1EF4068C4B63093FEEE /* LinearCongruentialGeneratorTests.swift in Sources */,
 				DC0332194D3AEF7B0211AD04 /* MockAudioService.swift in Sources */,
 				4E79F474EF5E220C5C80D1E6 /* MockGameNavigating.swift in Sources */,
+				5CD0A2D6D3C629DB951AE847 /* MockHapticFeedbackService.swift in Sources */,
 				C08E69FB668DB35B80C89AEF /* NormalizedCoordinatesTests.swift in Sources */,
 				86F5CB215B1118F23A4FBC3A /* PrototypeLevelCatalogTests.swift in Sources */,
 				F67BA6FF0AA1824B95510070 /* RobustAggregatorTests.swift in Sources */,
@@ -1323,6 +1393,7 @@
 				029DB412F436B6F67071A66E /* DeviceIdiom.swift in Sources */,
 				E39B3226EBF79333423FEBB0 /* DisplayLinkGameClock.swift in Sources */,
 				B963F8712E899E5534C0A067 /* Eclat.swift in Sources */,
+				504638E2CE5D0A9B9CDCFB94 /* FeedbackTiming.swift in Sources */,
 				12577C77F80A564784FC9815 /* FixationSequence.swift in Sources */,
 				FB20295A845C17008AA284E3 /* FixationTargetView.swift in Sources */,
 				4088BD75F9E7FC83F9875A4A /* GameCanvasView.swift in Sources */,
@@ -1354,6 +1425,9 @@
 				54F3AF75ABE2439CB078F310 /* GazeSetupViewModel.swift in Sources */,
 				932A363070348BD86ED50526 /* GazeTrackingService.swift in Sources */,
 				1A230293B64B2CA2CBA407C6 /* GazeVerdictView.swift in Sources */,
+				FBA819E319FE018819EE3761 /* HapticCue.swift in Sources */,
+				30F847E0F6B356F5BDC56A9C /* HapticCuePolicy.swift in Sources */,
+				614DEA9141C58B9BD4D38395 /* HapticFeedbackService.swift in Sources */,
 				4BC9DDCA7627B2CD60477C0B /* HintTracker.swift in Sources */,
 				566B2B70E88E200B089E97E3 /* HomeSummary.swift in Sources */,
 				DEF2518947A2BDA3CFBF853F /* HomeView.swift in Sources */,
@@ -1397,6 +1471,7 @@
 				DD28B218B016B39C0FA61AAA /* SessionMetrics.swift in Sources */,
 				5CE800E12BBF79A340FFCBBC /* SettingsView.swift in Sources */,
 				40DC8F4F3641ADB4ADA3C2B1 /* SilentAudioService.swift in Sources */,
+				4EC19EAFF118D83CF5631B5B /* SilentHapticFeedbackService.swift in Sources */,
 				D2A6A169B9D8C424EE94716B /* SilentNoise.swift in Sources */,
 				23791663624A85BBF7772F00 /* SimulatedGazeTrackingService.swift in Sources */,
 				4D46D81B0727948928D6458C /* SineSynth.swift in Sources */,
@@ -1407,6 +1482,7 @@
 				524FD07945F4260D79663313 /* TargetPhysics.swift in Sources */,
 				0812248C8FF141F0E32DE62D /* Temperament.swift in Sources */,
 				446EF360194AD6FB733B1F31 /* TurnRule.swift in Sources */,
+				9C2F2EDE1CEFD43AC4A4DFA7 /* UIKitHapticFeedbackService.swift in Sources */,
 				88B4B2BADA714678FFE97523 /* UnavailableView.swift in Sources */,
 				0B4A1495726212C955AD778F /* UserDefaultsProgressStore.swift in Sources */,
 				D43BE8F07861543B836411BB /* ValidationRule.swift in Sources */,

@@ -83,6 +83,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Entities/Target.swift | struct | Domain | Runtime state of one sphere: position, velocity, destination, hold progress and validation | Claude (mission Iris) |
 | Domain/Entities/TargetBlueprint.swift | struct | Domain | Static description of one target of a level (the reference engine's level target config) | Claude (mission Iris) |
 | Domain/Entities/TargetID.swift | struct | Domain | Typed identity of a target inside a level; the sequence number is unique per level | Claude (mission Iris) |
+| Domain/Feedback/FeedbackTiming.swift | enum | Domain | Spacing shared by every loss feedback (tone and pulse): one perceptible loss event, never a burst (R-15) | Claude (mission Iris) |
 | Domain/Levels/LevelDifficulty.swift | struct | Domain | Difficulty band parameters exactly as defined by the reference engine's `buildLevel` | Claude (mission Iris) |
 | Domain/Levels/PrototypeLevelCatalog.swift | enum | Domain | The prototype's fourteen levels (historical reference for golden traces), generated exactly like the reference engine (same seeds, same order of draws) | Claude (mission Iris) |
 | Domain/Physics/PhysicsConstants.swift | struct | Domain | Physical constants of the reference engine, expressed per 60 Hz reference frame | Claude (mission Iris) |
@@ -113,7 +114,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/ViewModels/GameNavigating.swift | protocol | Presentation | Intents and progress reports emitted by the game screen | Claude (mission Iris) |
 | Features/Game/ViewModels/GamePhase.swift | enum | Presentation | Single state of the game screen; every overlay derives from it | Claude (mission Iris) |
 | Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
-| Features/Game/ViewModels/GameViewModel.swift | class | Presentation | Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, results and phases | Claude (mission Iris) |
+| Features/Game/ViewModels/GameViewModel.swift | class | Presentation | Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, haptics, results and phases | Claude (mission Iris) |
 | Features/Game/ViewModels/GazeCalibrationStatus.swift | enum | Presentation | What the game knows about the calibration in use (pause panel readout) | Claude (mission Iris) |
 | Features/Game/ViewModels/LevelResult.swift | struct | Presentation | What the result screen shows after a level: measurements, éclats and what comes next | Claude (mission Iris) |
 | Features/Game/Views/GameCanvasView.swift | struct | Presentation | Draws one scene snapshot; re-evaluated only when the snapshot changes | Claude (mission Iris) |
@@ -153,6 +154,11 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Session/GameEvent.swift | enum | GameEngine | Facts produced by one engine tick, consumed by audio, haptics, hints and presentation | Claude (mission Iris) |
 | GameEngine/Session/GameSession.swift | struct | GameEngine | Deterministic per-level simulation: physics, environment, validation, cascade, metrics and events | Claude (mission Iris) |
 | GameEngine/Session/SessionMetrics.swift | struct | GameEngine | What the session measured for the mastery éclats (counts only, no gaze trace) | Claude (mission Iris) |
+| Haptics/Policy/HapticCue.swift | enum | Haptics | Touch intents derived from game events, independent from UIKit | Claude (mission Iris) |
+| Haptics/Policy/HapticCuePolicy.swift | struct | Haptics | Touch policy: at most one pulse per tick (completion over loss over validation), one loss per cascade, | Claude (mission Iris) |
+| Haptics/Services/HapticFeedbackService.swift | protocol | Haptics | Touch output abstraction: cues in, nothing out | Claude (mission Iris) |
+| Haptics/Services/SilentHapticFeedbackService.swift | class | Haptics | No-op touch feedback used by previews | Claude (mission Iris) |
+| Haptics/Services/UIKitHapticFeedbackService.swift | class | Haptics | UIKit feedback generators kept alive for the session: medium impact for a validation, soft impact for a loss, | Claude (mission Iris) |
 | Navigation/AppCoordinator.swift | class | Presentation | Deterministic route state machine and owner of the campaign progress | Claude (mission Iris) |
 | Navigation/AppRoute.swift | struct | Presentation | Every top-level screen of Iris as one explicit state | Claude (mission Iris) |
 | Navigation/AppSheet.swift | enum | Presentation | Modal sheets presented above the current route | Claude (mission Iris) |
@@ -188,10 +194,13 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/GameEngine/LevelEnvironmentTests.swift | struct | Tests | R-23 to R-28: attention on field, currents, veils, veilleuses, gliding irises, temperaments, metrics | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/TargetPhysicsTests.swift | struct | Tests | R-01...R-07 and R-14: attraction, repulsion, friction, cap, bounce and frame-rate independence | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/ValueNoise1DTests.swift | struct | Tests | R-03 organic noise port: table values, smoothstep interpolation, wrap-around, subtle range | Claude (mission Iris) |
+| Tests/IrisTests/Haptics/HapticCuePolicyTests.swift | struct | Tests | Touch policy: one pulse per logical event, one loss per cascade, shared retrigger guard, prepare hint | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockAudioService.swift | class | Tests | Recording mock for AudioService | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |
+| Tests/IrisTests/Mocks/MockHapticFeedbackService.swift | class | Tests | Recording mock for HapticFeedbackService | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
-| Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze and audio | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences default to on and persist across store instances | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |

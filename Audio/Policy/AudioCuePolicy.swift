@@ -7,13 +7,14 @@ import Foundation
 
 struct AudioCuePolicy: Hashable, Sendable {
     /// Minimum spacing between two loss tones, so cascades spread over consecutive ticks do not stutter.
+    /// Shared with the haptic policy through `FeedbackTiming` (R-15).
     var lossRetriggerInterval: TimeInterval
     /// Minimum spacing between two veilleuse pulses.
     var pulseInterval: TimeInterval
     private var lastLossTime: TimeInterval
     private var lastPulseTime: TimeInterval
 
-    init(lossRetriggerInterval: TimeInterval = 0.15, pulseInterval: TimeInterval = 1.0) {
+    init(lossRetriggerInterval: TimeInterval = FeedbackTiming.lossRetriggerInterval, pulseInterval: TimeInterval = 1.0) {
         self.lossRetriggerInterval = lossRetriggerInterval
         self.pulseInterval = pulseInterval
         self.lastLossTime = -.infinity

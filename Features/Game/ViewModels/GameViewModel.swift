@@ -1,6 +1,6 @@
 // GameViewModel.swift
 // Layer: Presentation
-// Purpose: Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, results and phases
+// Purpose: Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, haptics, results and phases
 
 import Foundation
 import Observation
@@ -29,7 +29,6 @@ final class GameViewModel {
         }
     }
 
-    var hapticsEnabled: Bool { settings.hapticsEnabled }
     var isSimulatedGaze: Bool { gaze is SimulatedGazeTrackingService }
 
     /// Face absence tolerated while playing before the game pauses itself (the reference engine's FACE_LOST_TIMEOUT).
@@ -47,6 +46,7 @@ final class GameViewModel {
     @ObservationIgnored private var mapper: GazeMapper?
     @ObservationIgnored private var diagnostics = GazeDiagnostics()
     @ObservationIgnored private var cuePolicy = AudioCuePolicy()
+    @ObservationIgnored private var hapticPolicy = HapticCuePolicy()
     @ObservationIgnored private var levelInProgress = false
     @ObservationIgnored private var phaseBeforeSuspension: GamePhase?
     @ObservationIgnored private var isPrepared = false
@@ -58,6 +58,7 @@ final class GameViewModel {
 
     @ObservationIgnored private let gaze: any GazeTrackingService
     @ObservationIgnored private let audio: any AudioService
+    @ObservationIgnored private let haptics: any HapticFeedbackService
     @ObservationIgnored private let clock: any GameClock
     @ObservationIgnored private let settings: GameSettingsStore
     @ObservationIgnored private let calibrationStore: any CalibrationStore
@@ -70,6 +71,7 @@ final class GameViewModel {
     init(level: LevelDefinition,
          gaze: any GazeTrackingService,
          audio: any AudioService,
+         haptics: any HapticFeedbackService,
          clock: any GameClock,
          settings: GameSettingsStore,
          calibrationStore: any CalibrationStore,
@@ -88,6 +90,7 @@ final class GameViewModel {
                                           showsGaze: settings.showsGazeIndicator, diagnostics: nil)
         self.gaze = gaze
         self.audio = audio
+        self.haptics = haptics
         self.clock = clock
         self.settings = settings
         self.calibrationStore = calibrationStore
@@ -294,6 +297,11 @@ final class GameViewModel {
                 audio.apply(cue)
             }
         }
+        if settings.hapticsEnabled {
+            for cue in hapticPolicy.cues(for: events, at: session.elapsed) {
+                haptics.play(cue)
+            }
+        }
         if hints.observe(events: events, elapsed: session.elapsed) {
             hint = hints.current
         }
@@ -340,6 +348,7 @@ final class GameViewModel {
         hint = nil
         showsRoute = false
         cuePolicy.reset()
+        hapticPolicy.reset()
         faceLostDuration = 0
         levelInProgress = false
         refreshSnapshot()

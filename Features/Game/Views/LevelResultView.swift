@@ -8,7 +8,6 @@ struct LevelResultView: View {
     let result: LevelResult
     let level: LevelDefinition
     let chapter: ChapterDefinition
-    let hapticsEnabled: Bool
     let onPrimary: () -> Void
     let onReplay: () -> Void
     let onChapters: () -> Void
@@ -43,7 +42,6 @@ struct LevelResultView: View {
             DSButton("Rejouer", variant: .secondary, action: onReplay)
             DSButton("Chapitres", variant: .ghost, action: onChapters)
         }
-        .sensoryFeedback(.success, trigger: revealed) { _, new in hapticsEnabled && new == 3 }
         .task {
             if reduceMotion {
                 revealed = 3

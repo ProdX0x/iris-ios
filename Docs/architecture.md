@@ -1,7 +1,7 @@
 # Architecture
 
 ## Overview
-MVVM in the Presentation layer over a pure deterministic core (Domain and GameEngine) that knows nothing about ARKit, AVFoundation or SwiftUI. Platform capabilities (gaze, audio, frame clock) are protocols implemented in the AR, Audio and App layers and injected by a single composition root. Single app target, layers enforced by folders, imports and the layer audit.
+MVVM in the Presentation layer over a pure deterministic core (Domain and GameEngine) that knows nothing about ARKit, AVFoundation or SwiftUI. Platform capabilities (gaze, audio, haptics, frame clock) are protocols implemented in the AR, Audio, Haptics and App layers and injected by a single composition root. Single app target, layers enforced by folders, imports and the layer audit.
 
 ## Layer diagram
 ```
@@ -26,10 +26,15 @@ MVVM in the Presentation layer over a pure deterministic core (Domain and GameEn
 │  Audio          │   ┌──────────────▼───────────────────────┐
 │  AudioService   │   │  Domain (pure Swift)                 │
 │  impls, Synth,  │   │  Target · Level · Vector2 · Rules    │
-│  AudioCuePolicy │   │  PhysicsConstants · LevelCatalog     │
-└─────────────────┘   └──────────────────────────────────────┘
+│  AudioCuePolicy │   │  PhysicsConstants · FeedbackTiming   │
+├─────────────────┤   └──────────────────────────────────────┘
+│  Haptics        │
+│  HapticFeedback-│
+│  Service impls, │
+│  HapticCuePolicy│
+└─────────────────┘
 ```
-Allowed arrows: Presentation -> GameEngine, Domain, AR protocols, Audio protocols. AR and Audio -> Domain value types only. GameEngine -> Domain. Domain -> Foundation only.
+Allowed arrows: Presentation -> GameEngine, Domain, AR protocols, Audio protocols, Haptics protocols. AR, Audio and Haptics -> Domain value types and GameEngine events only. GameEngine -> Domain. Domain -> Foundation only. Haptics may import UIKit (feedback generators); it never imports SwiftUI or ARKit.
 
 ## Feature map
 ```
@@ -45,8 +50,8 @@ Feature: Game
   Screens:        GameView (GameCanvasView, GameHUDView, GameOverlayView)
   ViewModels:     GameViewModel (GamePhase)
   Navigation:     GameNavigating -> AppCoordinator
-  Engine:         GameSession, GameProgression, AudioCuePolicy
-  Services:       GazeTrackingService, AudioService, GameClock, GameSettingsStore
+  Engine:         GameSession, AudioCuePolicy, HapticCuePolicy
+  Services:       GazeTrackingService, AudioService, HapticFeedbackService, GameClock, GameSettingsStore
 Feature: CameraAccess
   Screens:        CameraAccessView
   ViewModels:     CameraAccessViewModel
@@ -223,7 +228,14 @@ Context: the bundle identifier and the team had been fixed by hand in Xcode whil
 Decision: `project.yml` carries `net.steve-s.iris` / `net.steve-s.iris.tests`, `DEVELOPMENT_TEAM = G4U9RG5GL7`, `CODE_SIGN_STYLE = Automatic` with no pinned profile or certificate; `Iris.xcodeproj` is a generated artefact; `Tools/audit.py` check C12 fails on any divergence between the spec, the generated project and the sources.
 Consequences: a signing fix made only in Xcode is a bug, not a fix; the identity is stable before StoreKit; no personal Apple credential is ever versioned.
 
+### ADR-18: One feedback guard, one haptic pulse per logical event
+Status: accepted
+Context: the haptics preference existed but only the éclats reveal vibrated, through a SwiftUI modifier outside any policy; gameplay events never reached the Taptic Engine, and nothing prevented a cascade from becoming a burst of pulses.
+Decision: a `Haptics` layer mirrors `Audio`: `HapticCuePolicy` (Foundation only, deterministic) turns tick events into at most one pulse, completion over loss over validation, with the loss guard shared with the audio policy through `Domain/Feedback/FeedbackTiming`; `HapticFeedbackService` is a protocol implemented by UIKit generators (kept alive, prepared when a hold starts) and a silent variant; the ViewModel plays cues only when the persisted preference is on. The reveal-time vibration is removed so that one source of truth remains.
+Consequences: audio and touch agree on validation, loss, cascade and completion; the loop "loss, pulse, phone jitter, loss" is bounded by the guard and by the 0.75 s hold; the game is fully playable with haptics off; the physical sensation still needs a human on device.
+
 ## Forbidden
+- A haptic call outside `HapticFeedbackService`, or a second loss-spacing constant next to `FeedbackTiming.lossRetriggerInterval`.
 - Changing the bundle identifier, the development team or the signing style anywhere but in `project.yml` (README, « Apple Signing »).
 - Views deciding destinations; navigation only through AppCoordinator or a Navigating protocol.
 - Domain or GameEngine importing SwiftUI, UIKit, ARKit, AVFoundation, Combine.

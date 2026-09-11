@@ -1,6 +1,6 @@
 // GameViewModelTests.swift
 // Layer: Tests
-// Purpose: Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze and audio
+// Purpose: Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics
 
 import Foundation
 import Testing
@@ -11,6 +11,7 @@ import Testing
 struct GameViewModelTests {
     private let gaze = SimulatedGazeTrackingService()
     private let audio = MockAudioService()
+    private let haptics = MockHapticFeedbackService()
     private let clock = ManualGameClock()
     private let navigator = MockNavigator()
     private let store = InMemoryCalibrationStore()
@@ -25,7 +26,7 @@ struct GameViewModelTests {
     }
 
     private func makeSUT(level: LevelDefinition, autoplay: Bool = false) -> GameViewModel {
-        GameViewModel(level: level, gaze: gaze, audio: audio, clock: clock, settings: settings, calibrationStore: store,
+        GameViewModel(level: level, gaze: gaze, audio: audio, haptics: haptics, clock: clock, settings: settings, calibrationStore: store,
                       orientation: FixedOrientationProvider(), isPad: false, autoplay: autoplay, navigator: navigator)
     }
 
@@ -72,6 +73,36 @@ struct GameViewModelTests {
 
         #expect(audio.activateCount == 0)
         #expect(audio.cues.allSatisfy { if case .stopProgress = $0 { return true } else { return false } })
+    }
+
+    @Test("haptics on: the hold prepares the engine, the completing validation is one success pulse alongside the arpeggio")
+    func hapticsEnabled() {
+        let sut = makeSUT(level: restingLevel())
+        startPlaying(sut)
+
+        clock.tick(frames: 50)
+
+        #expect(haptics.cues.first == .prepare)
+        #expect(haptics.pulses == [.levelComplete])
+        #expect(audio.cues.contains(.levelComplete))
+        #expect(!audio.cues.contains(.validation))
+    }
+
+    @Test("haptics off: no cue reaches the service, and the toggle acts on the next tick")
+    func hapticsDisabled() {
+        settings.hapticsEnabled = false
+        let sut = makeSUT(level: restingLevel())
+        startPlaying(sut)
+
+        clock.tick(frames: 50)
+        #expect(haptics.cues.isEmpty)
+
+        settings.hapticsEnabled = true
+        sut.replay()
+        gaze.inject(point: farGaze, timestamp: 2)
+        sut.primaryAction()
+        clock.tick(frames: 50)
+        #expect(haptics.pulses == [.levelComplete])
     }
 
     @Test("the start hint shows when play begins and follows the player's first actions")

@@ -44,6 +44,7 @@ targets:
       - path: GameEngine
       - path: AR
       - path: Audio
+      - path: Haptics
       - path: Navigation
       - path: Features
       - path: DesignSystem

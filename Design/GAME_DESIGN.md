@@ -167,9 +167,9 @@ Relevés après implémentation et vérification par simulation. Chaque écart e
 
 - Le trait corail qui relie une lueur perdue en cascade à la lueur qui a causé la perte.
 - L'assombrissement du champ pendant 0,5 s avant l'écran de résultat : le résultat apparaît directement.
-- La vibration légère à chaque validation : seule la réussite du niveau vibre.
+- ~~La vibration légère à chaque validation : seule la réussite du niveau vibre.~~ Implémentée le 12 septembre 2026 après la validation humaine : une impulsion moyenne par validation, une impulsion douce par perte (une cascade = une perte), une notification de réussite à la fin du niveau, avec la même garde de 150 ms que l'audio (`Docs/Features/Haptics.md`).
 
-Aucun de ces retours ne change une règle. Ils restent au programme d'une itération de finition, après les tests humains.
+Aucun de ces retours ne change une règle. Les deux premiers restent au programme d'une itération de finition.
 
 ### Non vérifiable dans cet environnement
 

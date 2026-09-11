@@ -7,7 +7,7 @@ import os, re, sys, subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LAYERS = {
-    "App": "App", "Domain": "Domain", "GameEngine": "GameEngine", "AR": "AR", "Audio": "Audio",
+    "App": "App", "Domain": "Domain", "GameEngine": "GameEngine", "AR": "AR", "Audio": "Audio", "Haptics": "Haptics",
     "Navigation": "Presentation", "Features": "Presentation", "DesignSystem": "DesignSystem", "Tests": "Tests",
 }
 FORBIDDEN = {
@@ -16,6 +16,7 @@ FORBIDDEN = {
     "DesignSystem": set(),
     "AR": {"SwiftUI"},
     "Audio": {"SwiftUI", "UIKit", "ARKit"},
+    "Haptics": {"SwiftUI", "ARKit", "AVFoundation", "AVFAudio"},
 }
 TYPE_DECL = re.compile(r"^(?:@\w+(?:\([^)]*\))?\s+)*(?:public |internal |private |fileprivate )?(?:final )?(struct|class|enum|protocol|actor)\s+(\w+)", re.M)
 

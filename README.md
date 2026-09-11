@@ -85,6 +85,7 @@ Domain/       entités, constantes physiques, règles de validation, Campaign/ (
 GameEngine/   bruit, intégrateur, session, Environment/ (courants, voiles, veilleuses, iris mouvants), Campaign/ (résolution, consignes)
 AR/           GazeTrackingService (ARKit / simulé), Calibration/ (Gaze Engine v2), capacités, permission caméra
 Audio/        AudioService (AVAudioEngine / silencieux), synthétiseur sinus, politique sonore
+Haptics/      HapticFeedbackService (UIKit / silencieux), politique haptique (une impulsion par événement logique)
 Navigation/   AppRoute, AppSheet, HomeSummary, AppCoordinator, RootView
 Features/     Home, CameraAccess, GazeSetup, Chapters, Carnet, Settings, Game (ViewModels, Views, Rendering), JourneyComplete, Unavailable
 DesignSystem/ Tokens, Components (dont DSIrisMark, DSEclats, DSGlyph), Modifiers
@@ -152,7 +153,8 @@ App (composition root, adaptateurs plateforme)
   └─ Presentation : Navigation, Features, DesignSystem
        ├─ GameEngine ─ Domain   (Foundation seulement, testables sans ARKit / caméra / SwiftUI / AVAudioEngine)
        ├─ AR (protocole GazeTrackingService, implémentations ARKit et simulée)
-       └─ Audio (protocole AudioService, implémentations AVAudioEngine et silencieuse)
+       ├─ Audio (protocole AudioService, implémentations AVAudioEngine et silencieuse)
+       └─ Haptics (protocole HapticFeedbackService, implémentations UIKit et silencieuse)
 ```
 
 - **Injection** : `AppContainer` unique, construit par `IrisApp`, fabrique les services (`AudioService`, `GameClock`), possède le `GazeTrackingService` **partagé** (une seule `ARSession` par processus, utilisée tour à tour par le setup du regard et par le jeu, avec un drapeau de propriété des callbacks), le `CalibrationStore` et l'`InterfaceOrientationProvider`, et fabrique les ViewModels par injection de constructeur. Environnements `live`, `simulator` (regard piloté au doigt, faute de TrueDepth), `preview` (services simulés, horloge manuelle). Aucun singleton global.
@@ -220,7 +222,7 @@ Fenêtre glissante de 1,2 s, dix contrôles : caméra TrueDepth, accès caméra,
 
 - Géométrie du rayon, résolution des axes, modèle affine, agrégation, protocole, critères, persistance, machines d'états : `[vérifié automatiquement]` (63 tests dédiés).
 - Intégration `ARSession`, `viewMatrix(for:)`, blend shapes, orientation de scène : `[vérifié par compilation]`.
-- Direction réelle du regard, précision obtenue après calibration, confort du protocole : `[nécessite validation sur iPhone TrueDepth]`.
+- Direction réelle du regard, précision obtenue après calibration, confort du protocole : validés par un humain sur iPhone 14 Pro le 12 septembre 2026 (§ 14) ; la précision mesurée dépend de la calibration (10 % / 17 % lors de la bonne, 17 % / 39 % lors de la moins bonne).
 
 ---
 
@@ -276,7 +278,7 @@ Les 14 niveaux du prototype existent toujours (`PrototypeLevelCatalog`) comme r�
 - `AVAudioEngine` → `AVAudioSourceNode` mono (Float32, fréquence du matériel) → mixeur → sortie. Session `.ambient` + `mixWithOthers` (respecte le commutateur silence).
 - `SineSynth` (thread audio) : 3 voix de crescendo (sinus, fréquence 220 + p·340 Hz, gain 0,02 + p·0,025, constante de temps 0,05 s ; relâchement 0,08 s), carillon 3 notes (660/880/1100 Hz, 0,12 s chacune, enveloppe 30 % montée / 70 % descente, gain 0,05), perte (220 → 120 Hz linéaire sur 0,25 s, gain 0,05 → 0). Commandes de taille fixe protégées par `OSAllocatedUnfairLock`, lecture non bloquante côté rendu, aucune allocation dans la boucle.
 - **Sons de campagne** : arpège de fin de niveau (440, 554, 659, 880 Hz, 0,16 s par note) qui remplace le carillon de la dernière validation ; battement de veilleuse faible (990 Hz, 60 ms) ; nappe d'ambiance par chapitre (deux sinus en quinte, gain 0,012, fondu de 0,8 s), fondamentale propre à chaque chapitre.
-- **Politique sonore** (`AudioCuePolicy`, R-15) : crescendo par cible (voix = séquence − 1) tant que la présence progresse ; un carillon par validation, ou l'arpège si elle termine le niveau ; **un seul son de perte par tick**, même en cascade, extinction de veilleuse comprise, jamais deux à moins de 150 ms ; battement de veilleuse au plus une fois par seconde. Pause, interruption, arrière-plan et sortie coupent les voix de progression. Le réglage « Son » désactive le moteur audio.
+- **Politique sonore** (`AudioCuePolicy`, R-15) : crescendo par cible (voix = séquence − 1) tant que la présence progresse ; un carillon par validation, ou l'arpège si elle termine le niveau ; **un seul son de perte par tick**, même en cascade, extinction de veilleuse comprise, jamais deux à moins de `FeedbackTiming.lossRetriggerInterval` (150 ms, garde partagée avec l'haptique, § 15) ; battement de veilleuse au plus une fois par seconde. Pause, interruption, arrière-plan et sortie coupent les voix de progression. Le réglage « Son » désactive le moteur audio.
 - Cycle de vie : interruption `AVAudioSession` (began → pause, ended + shouldResume → redémarrage), `AVAudioEngineConfigurationChange` et `mediaServicesWereReset` → reconstruction du graphe. Échec de démarrage → `AudioStatus.unavailable` affiché dans le HUD, le jeu continue sans son.
 - Statuts : synthèse et politique `[vérifié automatiquement]` (rendu hors ligne à 44,1 kHz : hauteurs, enveloppes, silences) ; démarrage moteur exercé sur simulateur `[vérifié par compilation]` ; sortie réelle sur appareil `[nécessite validation sur appareil TrueDepth]`.
 
@@ -293,10 +295,10 @@ Référence : `Design/UX_VISION.md` et `Design/ART_DIRECTION.md`. Implémentatio
   - **chapitres** : six cartes, nœuds de niveau avec arcs d'éclats, prochain niveau cerclé d'ambre, chapitres verrouillés ;
   - **carnet** : éléments rencontrés, glyphe et une phrase, les autres « à découvrir » ;
   - **réglages** (feuille) : son, vibrations, points de regard, recalibrer, carnet, réinitialiser la progression avec confirmation, confidentialité ;
-  - **jeu** : champ plein écran, repère « III · 2 » et pause en périphérie, consignes en bas, carte d'intro compacte et translucide, pause avec recalibration, **résultat** avec trois éclats qui s'allument l'un après l'autre et vibration de réussite, interruption, visage perdu, reprise, erreurs ;
+  - **jeu** : champ plein écran, repère « III · 2 » et pause en périphérie, consignes en bas, carte d'intro compacte et translucide, pause avec recalibration, **résultat** avec trois éclats qui s'allument l'un après l'autre, interruption, visage perdu, reprise, erreurs ;
   - **fin de parcours** « clairvoyance » avec niveaux, éclats et temps de jeu ;
   - **appareil sans suivi facial**.
-- **Retours** : onde corail proportionnelle à la force de répulsion, lames qui se ferment, iris grisés quand le regard quitte l'écran ou qu'une veilleuse s'éteint, flamme qui vacille et anneau de charge corail sous 30 %, voie en pointillés après 45 s.
+- **Retours** : onde corail proportionnelle à la force de répulsion, lames qui se ferment, iris grisés quand le regard quitte l'écran ou qu'une veilleuse s'éteint, flamme qui vacille et anneau de charge corail sous 30 %, voie en pointillés après 45 s ; au toucher, une impulsion par validation, par perte et à la fin du niveau (§ 15).
 - **Rendu** : un fond statique et un seul `Canvas` alimenté par un snapshot immuable par frame ; halos en dégradés radiaux additifs, sans filtre de flou ; HUD et overlays observent des propriétés grossières.
 - **Accessibilité** : Dynamic Type, cibles ≥ 44 pt, libellés VoiceOver (chapitres, nœuds, éclats, HUD), consignes publiées comme annonces d'accessibilité, rang jamais porté par la seule couleur, Reduce Motion (pas de respiration, filaments figés, pas de scintillement ni d'onde animée), texte tertiaire ≥ 4,5:1.
 - **Captures simulateur** (iPhone 17) réalisées après implémentation : seuil (premier lancement et reprise), chapitres, carnet, intro 3-1, jeu 4-6, 5-6 et 6-5, résultat 1-2, fin de parcours, calibration. Deux défauts visuels relevés ainsi ont été corrigés : les lames se reliaient en anneau continu, et la carte d'intro masquait le niveau.
@@ -332,11 +334,12 @@ Suite Swift Testing (`Tests/IrisTests`, 37 fichiers) exécutée sur simulateur i
 | Progression et consignes | `CampaignProgressTests`, `ProgressStoreTests`, `HintTrackerTests`, `LaunchOptionsTests` | éclats, records, déblocage et prochain niveau, éléments rencontrés ; stockage UserDefaults et mémoire ; consignes par déclencheur, disparition après 4,5 s, aide générique ; options de lancement et progression amorcée |
 | Fidélité | `GameSessionGoldenTests` | deux traces frame par frame générées par le moteur JavaScript extrait (`Fixtures/golden_generator.js`) : niveau 1 (393 frames, répulsion, rebonds, attraction, validation) et niveau 9 (241 frames, validations 1, 2, 3 aux frames 151, 196, 241), tolérance 1e-6 |
 | Session | `GameSessionTests`, `GazeFilterTests`, `ValueNoise1DTests`, `LinearCongruentialGeneratorTests` | chargement, complétion, bornage 0,1 s, 30 Hz = 2 × 60 Hz exact, 120 Hz, deltas nuls, lissage, sauts, bruit, LCG |
+| Haptique | `HapticCuePolicyTests`, `GameSettingsStoreTests` | validation, perte quelle que soit la cause, cascade = une impulsion, une impulsion par tick (perte avant validation), garde partagée avec l'audio et non empilement, fin de niveau jamais filtrée, préparation une fois par maintien, événements muets, remise à zéro ; préférences par défaut et persistance |
 | Audio | `AudioCuePolicyTests`, `SineSynthTests` | cascade → un seul son, garde 150 ms, arpège de fin qui remplace le carillon, veilleuse (perte, battement limité), hauteurs 560 / 305 Hz, gains, extinction, carillon, balayage descendant, arpège, battement, nappe (fondu entrant et sortant) |
 | Regard v2 | `AxisMappingTests`, `AffineTransform2DTests`, `RobustAggregatorTests`, `FixationSequenceTests`, `NormalizedCoordinatesTests`, `CalibrationProfileTests`, `GazeMapperTests`, `GazeReadinessEvaluatorTests`, `GazeSetupViewModelTests` | repère standard, retourné 180°, miroir, pivoté 90°, gravité / repli, dégénérescences, votes ; identité, offsets, échelles, combinaison, miroir corrigé, bruit, refus (< 3 points, non fini, colinéaire) ; médiane / MAD ; stabilisation, collecte, clignements, reprise puis échec, prolongation ; conversions et grilles ; sauvegarde / chargement (mémoire et UserDefaults), compatibilité (version, validité, orientation, viewport, âge) ; rayon / plan des deux côtés, mapping appliqué avant le nominal, calibration appliquée une fois, bornage, détecteur de clignements ; readiness (prêt, en attente, bloqué, yeux, direction, stabilité, blend shapes) ; parcours complet avec biais appris, regard miroir corrigé, verdict insuffisant / continuer quand même, recalibration, revalidation, signal insuffisant, matériel / caméra, clignements ignorés, cycle de vie, propriété du tracker partagé |
-| Présentation | `GameViewModelTests`, `AppCoordinatorTests`, `CameraAccessViewModelTests` | intro, nappe du chapitre, son désactivé, consignes jouées, résultat et éclats nouveaux, niveau suivant, fin de chapitre et de campagne, rejouer, recommencer, chapitres, voie après 45 s, curseur, profil appliqué, visage perdu, interruptions et erreurs, arrière-plan, recalibration, autoplay, propriété du tracker partagé ; seuil, appareil incompatible, premier lancement, revalidation, caméra, annulation, niveaux verrouillés et progression, carnet, parcours depuis les chapitres, réglages et recalibration, finale, réinitialisation, options de lancement ; permission |
+| Présentation | `GameViewModelTests`, `AppCoordinatorTests`, `CameraAccessViewModelTests` | intro, nappe du chapitre, son désactivé, haptique activée (préparation puis impulsion de fin avec l'arpège) et désactivée (rien, prise en compte au tick suivant), consignes jouées, résultat et éclats nouveaux, niveau suivant, fin de chapitre et de campagne, rejouer, recommencer, chapitres, voie après 45 s, curseur, profil appliqué, visage perdu, interruptions et erreurs, arrière-plan, recalibration, autoplay, propriété du tracker partagé ; seuil, appareil incompatible, premier lancement, revalidation, caméra, annulation, niveaux verrouillés et progression, carnet, parcours depuis les chapitres, réglages et recalibration, finale, réinitialisation, options de lancement ; permission |
 
-### 10.1 Résultats réels de la dernière exécution (11 septembre 2026, après le verrouillage de l'identité Apple)
+### 10.1 Résultats réels de la dernière exécution (12 septembre 2026, après la correction haptique)
 
 Commande :
 
@@ -345,13 +348,13 @@ xcodebuild -project Iris.xcodeproj -scheme Iris \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug test
 ```
 
-Résultat : `Test run with 220 tests in 33 suites passed after 9.971 seconds` puis `** TEST SUCCEEDED **`. Le bundle de tests construit porte l'identifiant `net.steve-s.iris.tests`, l'hôte `net.steve-s.iris`.
+Résultat : `Test run with 232 tests in 35 suites passed after 6.320 seconds` puis `** TEST SUCCEEDED **`. Le bundle de tests construit porte l'identifiant `net.steve-s.iris.tests`, l'hôte `net.steve-s.iris`.
 
 | Exécutés | Réussis | Échoués | Ignorés |
 |---|---|---|---|
-| 220 | 220 | 0 | 0 |
+| 232 | 232 | 0 | 0 |
 
-**220/220 PASS**. Aucun test n'est désactivé. Les traces golden du moteur JavaScript restent vertes : le noyau historique n'a pas changé.
+**232/232 PASS** (220 tests de la refonte, 12 tests haptiques et de préférences ajoutés). Aucun test n'est désactivé. Au premier passage, un nouveau test de garde haptique échouait parce qu'il plaçait la seconde perte exactement à la frontière de 150 ms, où l'arithmétique flottante donne 0,1499… : le test place désormais ses pertes nettement en deçà et au-delà de la garde ; la politique n'a pas changé. Les traces golden du moteur JavaScript restent vertes : le noyau historique n'a pas changé.
 
 Deux tests de présentation ont été réécrits parce que leur objet a disparu : le parcours à 14 niveaux (`GameProgression`) et le tutoriel. Deux tests audio ont été adaptés : la dernière validation joue désormais l'arpège de fin au lieu du carillon. Au premier passage de la suite complète, un test échouait : il supposait qu'une caméra encore refusée menait au setup du regard. Le code est correct, car le coordinateur revérifie l'autorisation réelle. Le test a été corrigé et couvre maintenant les deux cas.
 
@@ -359,18 +362,18 @@ Deux tests de présentation ont été réécrits parce que leur objet a disparu 
 
 ## 10 bis. Builds
 
-Toutes les commandes ont été réellement exécutées depuis la racine du projet, sur macOS 26.3 (Darwin 25.3.0), Xcode 26.3 (17C529), SDK iOS 26.2, simulateur iPhone 17 Pro (iOS 26.3.1), le 11 septembre 2026 après le verrouillage de l'identité Apple (§ 13). Les builds appareil sont désormais **signés** (signature automatique, équipe `G4U9RG5GL7`), plus `CODE_SIGNING_ALLOWED=NO`.
+Toutes les commandes ont été réellement exécutées depuis la racine du projet, sur macOS 26.3 (Darwin 25.3.0), Xcode 26.3 (17C529), SDK iOS 26.2, simulateur iPhone 17 Pro (iOS 26.3.1), le 12 septembre 2026 après la correction haptique (§ 15) ; les résultats du 11 septembre (identité Apple, § 13) étaient identiques hors nombre de tests. Les builds appareil sont désormais **signés** (signature automatique, équipe `G4U9RG5GL7`), plus `CODE_SIGNING_ALLOWED=NO`.
 
 | # | Commande | Résultat réel |
 |---|---|---|
 | 1 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug build` | `** BUILD SUCCEEDED **`, 0 erreur, 0 warning issu de notre code |
-| 2 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug test` | `** TEST SUCCEEDED **`, 220 tests, 220 réussis, 0 échec, 0 ignoré |
+| 2 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug test` | `** TEST SUCCEEDED **`, 232 tests, 232 réussis, 0 échec, 0 ignoré |
 | 3 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Release build` | `** BUILD SUCCEEDED **`, 0 erreur, 0 warning |
 | 4 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Debug build` (signé) | `** BUILD SUCCEEDED **` ; `codesign` : `Identifier=net.steve-s.iris`, `TeamIdentifier=G4U9RG5GL7`, identité « Apple Development », profil « iOS Team Provisioning Profile: * » choisi automatiquement (rien d'épinglé), entitlements `application-identifier`, `com.apple.developer.team-identifier`, `get-task-allow` |
 | 5 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Release build` (signé) | `** BUILD SUCCEEDED **` ; `Identifier=net.steve-s.iris`, `TeamIdentifier=G4U9RG5GL7` |
-| 6 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Debug build-for-testing` (signé) | `** TEST BUILD SUCCEEDED **` ; `IrisTests.xctest` signé `net.steve-s.iris.tests`, équipe `G4U9RG5GL7` |
-| 7 | `xcrun devicectl device install app --device <iPhone 14 Pro> Iris.app` puis `xcrun devicectl device process launch --device <iPhone 14 Pro> net.steve-s.iris` | `App installed: bundleID: net.steve-s.iris` ; `Launched application` ; processus `Iris` toujours présent 8 s après le lancement |
-| 8 | `python3 Tools/audit.py` | C1, C2, C8, C9, C10, C12 et scan TODO : pass, 191 fichiers |
+| 6 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Debug build-for-testing` (signé) | `** TEST BUILD SUCCEEDED **` ; `IrisTests.xctest` signé `net.steve-s.iris.tests`, équipe `G4U9RG5GL7` (11 septembre, non relancé le 12) |
+| 7 | `xcrun devicectl device install app --device <iPhone 14 Pro> Iris.app` puis `xcrun devicectl device process launch --device <iPhone 14 Pro> net.steve-s.iris` | `App installed: bundleID: net.steve-s.iris` ; `Launched application` (build haptique du 12 septembre installé par-dessus la précédente) |
+| 8 | `python3 Tools/audit.py` | C1, C2, C8, C9, C10, C12 et scan TODO : pass, 200 fichiers |
 
 Diagnostics restants :
 
@@ -380,8 +383,8 @@ Diagnostics restants :
 Appareil physique : `xcrun devicectl list devices` montre l'iPhone 14 Pro « iPhone Steve. » (iOS 26.5.2, mode développeur activé, jumelé, connecté) ; son UDID figure dans le profil de développement automatique de l'équipe. Statuts réels :
 
 - `[build appareil réussi]` : Debug et Release signés pour arm64 (lignes 4 à 6).
-- `[installation appareil réussie]` : le build Debug a été installé par `devicectl` (mise à jour de l'installation `net.steve-s.iris` déjà présente, données conservées), lancé, et le processus était vivant 8 s plus tard. Aucune interaction n'a eu lieu sur l'écran.
-- `[nécessite validation humaine]` : tout ce qui suit le lancement : permission caméra, diagnostic, calibration et vérification TrueDepth, jouabilité au regard.
+- `[installation appareil réussie]` : le build Debug du 11 septembre, puis celui du 12 (haptique), ont été installés par `devicectl` (mise à jour de l'installation `net.steve-s.iris`, données conservées) et lancés. Aucune interaction n'a eu lieu sur l'écran lors de ces lancements automatisés.
+- Validation humaine du regard : faite le 12 septembre (§ 14). `[sensation physique nécessite validation humaine]` pour les impulsions haptiques (§ 15).
 
 L'iPhone conserve aussi une installation `com.prodx0x.iris` faite depuis Xcode avant la migration ; rien ne la met plus à jour, elle peut être supprimée à la main.
 
@@ -396,20 +399,22 @@ Vérifications sur simulateur (iPhone 17, options DEBUG `--iris-route`, `--iris-
 | Noyau historique (générateur prototype, bruit, physique, validation, ordre, cascade, filtre de regard), règles de campagne R-23 à R-30, faisabilité et nécessité de chaque niveau par simulation, références d'éclats, progression et stockage, consignes, politique et synthèse audio, Gaze Engine v2 (rayon, axes, affine, agrégation, fixation, critères, profil, readiness), machines d'états du jeu, du setup et du coordinateur, permission | `[vérifié automatiquement]` |
 | Intégration ARKit (`ARSession`, délégué, interruptions), `AVAudioEngine` sur appareil, `CADisplayLink`, rendu Canvas de la chambre noire, écrans SwiftUI (seuil, chapitres, carnet, réglages, intro, résultat, fin de parcours), vibration de réussite, Info.plist / permission caméra | `[vérifié par compilation]` (Debug et Release simulateur, Debug et Release appareil arm64 signés) ; écrans et rendu également observés sur simulateur avec un regard simulé ; lancement sur iPhone 14 Pro sans plantage à 8 s |
 | Identité Apple : Bundle ID `net.steve-s.iris`, équipe `G4U9RG5GL7`, signature automatique, cohérence `project.yml` / projet généré / sources | `[vérifié automatiquement]` (audit C12) et `[build appareil réussi]` (signature réelle, profil automatique) |
-| Direction réelle du regard, précision obtenue après calibration, jouabilité réelle des niveaux de poussée (III, IV, VI) et de vigilance (V) avec la précision d'ARKit, pertinence des références d'éclats pour un humain, durée et courbe de difficulté ressenties, lisibilité en lumière réelle, sons et vibrations sur appareil | `[nécessite validation sur iPhone TrueDepth]` |
+| Direction du regard, calibration et jouabilité de base sur iPhone 14 Pro | validés par un humain le 12 septembre 2026 (§ 14) |
+| Logique haptique (événements, cascade, garde, réglage) | `[logique haptique vérifiée automatiquement]` |
+| Sensation des impulsions, jouabilité fine des niveaux de poussée (III, IV, VI) et de vigilance (V), pertinence des références d'éclats, durée et courbe de difficulté ressenties, lisibilité en lumière réelle, sons sur appareil | `[sensation physique nécessite validation humaine]` / `[nécessite validation sur iPhone TrueDepth]` |
 
 ---
 
 ## 12. Limites honnêtes
 
-- Le suivi du regard n'a **pas** été testé physiquement par un humain. L'app a été installée et lancée sur l'iPhone 14 Pro le 11 septembre 2026 (§ 10 bis), mais personne n'a accordé la caméra, passé la calibration ni joué : la validation TrueDepth reste entièrement à faire. Procédure de test humain : voir `GAZE_ENGINE_V2_REPORT.md`.
+- Le suivi du regard a été validé par un humain sur iPhone 14 Pro le 12 septembre 2026 (§ 14) : calibration fonctionnelle, gameplay fluide. Deux contraintes observées, non « réparées » : sensibilité aux micro-mouvements du téléphone tenu en main, et point de diagnostic qui sort de l'écran aux extrêmes. Le confort sur une longue session et le ressenti des vibrations restent à mesurer.
 - Les conventions d'axes du repère caméra ARKit pour la caméra frontale ne sont pas documentées de façon exploitable ; le Gaze Engine v2 ne les présume plus (résolution par les yeux et la gravité), mais la première confirmation viendra du diagnostic sur appareil (ligne « Orientation du regard » et logs `gaze`).
 - Le simulateur n'a pas de TrueDepth : la build simulateur remplace le regard par le doigt (glisser sur l'écran) ou, avec `--iris-oracle-gaze`, par un regard scripté qui fixe chaque cible ; le HUD l'indique (« mode : simulateur (toucher) »). Ces modes n'existent pas sur appareil.
 - L'échelle physique de l'écran et la position de la caméra sont des estimations par famille d'appareil (erreur attendue de quelques pour cent). Les iPad dont la caméra est sur le bord long (iPad Pro M4, iPad 10) sont approximés avec une caméra en haut.
 - La suite de tests s'exécute avec l'app comme hôte sur simulateur ; elle ne dépend d'aucun matériel.
 - Les gains sonores absolus ont été validés hors ligne, pas à l'oreille sur appareil.
 - Le robot de campagne est plus précis et plus rapide qu'un humain. Il prouve qu'un niveau est faisable et qu'un élément est nécessaire, pas qu'il est agréable. La courbe de difficulté ressentie, la frustration et la durée réelle d'un parcours (estimée entre 1 h 30 et 2 h 30) restent à mesurer avec des joueurs.
-- Trois retours conçus ne sont pas implémentés : le trait corail qui relie une perte en cascade à sa cause, l'assombrissement avant le résultat, et la vibration à chaque validation (`Design/GAME_DESIGN.md` § 11).
+- Deux retours conçus ne sont pas implémentés : le trait corail qui relie une perte en cascade à sa cause et l'assombrissement avant le résultat (`Design/GAME_DESIGN.md` § 11). La vibration par validation l'est depuis le 12 septembre 2026 (§ 15).
 - La carte d'intro, même translucide, recouvre le bas de l'écran. Sur les niveaux dont la lueur part en bas, le joueur la découvre pleinement en touchant *Commencer*, avant tout mouvement.
 - Les niveaux sont réglés et vérifiés sur un écran de 393 × 852 pt. Ils se résolvent sur toutes les tailles testées (375 × 812, 430 × 932, 834 × 1194), mais la simulation de faisabilité n'est exécutée que sur l'écran de référence ; l'iPad, au rapport d'aspect différent, n'est pas vérifié par simulation.
 
@@ -475,3 +480,41 @@ iPhone 14 Pro « iPhone Steve. » détecté, connecté, mode développeur activ�
 ### 13.7 StoreKit readiness
 
 Le Bundle ID principal `net.steve-s.iris` est stabilisé : défini dans la source génératrice, régénéré à l'identique, vérifié par l'audit, signé et installé sous l'équipe `G4U9RG5GL7`. La configuration StoreKit (App ID explicite sur le portail, produits, `.storekit` de test) peut être entreprise sur cette base. Prérequis restant côté portail, non fait ici : enregistrer l'App ID explicite `net.steve-s.iris` (le profil actuel est un profil de développement générique `G4U9RG5GL7.*`, suffisant pour le développement, pas pour les achats intégrés ni pour la distribution).
+
+---
+
+## 14. Validation humaine — iPhone 14 Pro (12 septembre 2026)
+
+Session réelle sur l'iPhone 14 Pro, téléphone tenu dans son orientation normale, regard du joueur, calibration réelle.
+
+| Observation | Constat |
+|---|---|
+| Calibration physique | réalisée : diagnostic, neuf cibles, vérification, « Regard prêt » |
+| Calibration réussie | erreur moyenne 10 %, maximale 17 % : acceptée |
+| Calibration moins bonne | erreur moyenne 17 %, maximale 39 % pour des seuils de 18 % / 30 % : refusée, recalibration proposée, comme prévu par R-20 |
+| Gameplay | fluide, expérience satisfaisante ; aucune nécessité de retourner l'iPhone |
+| Téléphone tenu en main | les micro-mouvements de la main influencent le regard apparent, donc les lueurs ; nettement moins sur un support |
+| Extrêmes de l'écran | en regardant très loin vers un bord ou une diagonale, le point de diagnostic peut sortir de l'écran et disparaître |
+| Corrections du Gaze Engine | aucune : ces deux observations sont conservées comme contraintes de conception |
+
+Conséquences pour la suite : les futurs niveaux ne doivent exiger ni une immobilité irréaliste du téléphone, ni une précision extrême prolongée, ni une stabilité incompatible avec un usage tenu en main. Les coordonnées de jeu ne sont pas bornées artificiellement pour rendre le point visible ; une éventuelle amélioration ne concernera que la visualisation de diagnostic (indicateur collé au bord ou flèche), non faite ici.
+
+Statut : **Gaze Engine v2 suffisamment validé humainement pour démarrer le game design.** Restent à mesurer sur la durée : confort, fatigue, courbe de difficulté ressentie.
+
+---
+
+## 15. Haptique (12 septembre 2026)
+
+**Cause du défaut.** Le réglage « Vibrations » existait, était persisté et lu, mais un seul retour haptique existait dans toute l'app : un modificateur SwiftUI `sensoryFeedback(.success)` sur l'écran de résultat, déclenché quand le troisième éclat s'allume, soit près d'une seconde après la fin du niveau. Aucun événement de jeu (validation, perte, cascade, fin de niveau au tick) n'appelait de générateur haptique : c'était une décision de conception de la refonte (« seule la réussite du niveau vibre »), pas un bogue de thread, de `prepare()` ni de générateur non conservé. Le joueur ne pouvait donc rien sentir pendant la partie. À vérifier aussi sur l'appareil : le réglage iOS « Vibrations système » (Réglages › Sons et vibrations) coupe tous les générateurs UIKit, Iris ne le contourne pas.
+
+**Architecture.** Une couche `Haptics/` calquée sur `Audio/` : `HapticCue` (intentions : `prepare`, `validation`, `loss`, `levelComplete`), `HapticCuePolicy` (Foundation seul, déterministe), protocole `HapticFeedbackService` avec `UIKitHapticFeedbackService` (générateurs conservés pour la session : impact moyen à 0,7 pour une validation, impact doux à 0,45 pour une perte, notification de réussite pour la fin de niveau) et `SilentHapticFeedbackService` (aperçus). `AppContainer` choisit l'implémentation ; `GameViewModel` consomme la politique à chaque tick, uniquement si la préférence est activée. Le modificateur SwiftUI de l'écran de résultat est supprimé : une seule source de vérité. Le moteur de jeu ne connaît pas UIKit.
+
+**Événements couverts.** Validation d'une lueur ; perte d'une validation, quelle qu'en soit la cause (dérive, cascade, veilleuse éteinte) ; fin de niveau, en remplacement de l'impulsion de la dernière validation et synchronisée avec l'arpège audio. Aucune vibration de navigation ni de sélection : l'interface n'en avait pas.
+
+**Cascade.** Une cascade est une perte logique : tous les événements de perte d'un même tick donnent au plus une impulsion. Un tick ne produit jamais plus d'une impulsion, la fin de niveau primant sur la perte, qui prime sur la validation. La règle est appliquée dans la politique, avant tout appel au service, pas masquée après coup.
+
+**Anti-empilement.** Deux impulsions ne sont jamais espacées de moins de `FeedbackTiming.lossRetriggerInterval` (150 ms), constante du domaine désormais partagée avec `AudioCuePolicy` : c'était déjà la garde audio de R-15, un seul concept métier, une seule valeur. La fin de niveau n'est jamais filtrée. La boucle « perte → vibration → micro-mouvement → nouvelle perte » est bornée par cette garde, par l'intensité douce de la perte et par le maintien de 0,75 s nécessaire à toute revalidation. `prepare()` est appelé une fois au début d'un maintien, pour que l'impulsion de validation n'ait pas de latence ; ce n'est pas la cause du défaut initial.
+
+**Réglage.** « Vibrations » commande tous les retours haptiques volontaires d'Iris, prend effet au tick suivant, et persiste dans `UserDefaults` avec les autres préférences.
+
+**Tests.** `HapticCuePolicyTests` (8), `GameSettingsStoreTests` (2), `GameViewModelTests` (2 nouveaux) : `[logique haptique vérifiée automatiquement]`. La sensation réelle des impulsions, leur intensité et leur discrétion : `[sensation physique nécessite validation humaine]`.

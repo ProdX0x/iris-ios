@@ -52,7 +52,7 @@ No thrown domain errors: the engine is total. Failure states are values (GazeTra
 | R-12 | A level completes when every sphere is validated; fourteen levels; 1, 2, 3 targets per band | targets, progression | levelCompleted, next level | GameSession, GameProgression, LevelCatalog | GameSessionTests, LevelCatalogTests, GameProgressionTests |
 | R-13 | Gaze is smoothed with alpha 0.1; isolated jumps over 300 pt are ignored until three consecutive ones | raw samples | cursor | GazeFilter | GazeFilterTests |
 | R-14 | deltaTime is clamped to 0.1 s and sub-stepped to at most one reference frame; fractional steps use the exact power of the reference map | deltaTime | events | GameSession.advance, FractionalStep | GameSessionTests, TargetPhysicsTests |
-| R-15 | Cascade losses in one tick produce a single loss tone, spaced at least 150 ms | events | cues | AudioCuePolicy | AudioCuePolicyTests |
+| R-15 | Cascade losses in one tick produce a single loss feedback (tone and pulse), consecutive losses spaced by `FeedbackTiming.lossRetriggerInterval` (150 ms) | events | cues | FeedbackTiming, AudioCuePolicy, HapticCuePolicy | AudioCuePolicyTests, HapticCuePolicyTests |
 | R-16 | The gaze ray (eye midpoint to lookAtPoint) hits the device plane only when travelling toward it; no side of the plane is assumed | eye origin, lookAt | plane hit (metres) | GazeRay | GazeMapperTests |
 | R-17 | Screen right and up are the dominant in-plane camera axes along the eye line and gravity; majority vote, confidence 0.8 | userRight, deviceUp, faceUp | AxisMapping | AxisResolver, AxisVote | AxisMappingTests, GazeReadinessEvaluatorTests |
 | R-18 | Calibration maps nominal normalized gaze to screen by a six-coefficient affine fit (least squares), needing three non-collinear finite points | 9 fixations | AffineTransform2D | AffineTransform2D.fit | AffineTransform2DTests |
@@ -68,6 +68,7 @@ No thrown domain errors: the engine is total. Failure states are values (GazeTra
 | R-28 | Temperaments scale repulsion, attraction and radius (lourde 0.6/0.6/1.2, vive 1.45/1.2/0.8) | temperament | target parameters | Temperament, LevelResolver | LevelEnvironmentTests |
 | R-29 | Éclats: atteint always, fluide under par time, serein with no loss and intrusions within par; records keep the union and bests | outcome, par | Set<Eclat> | LevelOutcome, LevelRecord | CampaignProgressTests |
 | R-30 | A level unlocks when the previous one in campaign order is completed; the next level is the first unlocked, uncompleted one | records | unlocked, next | CampaignProgress | CampaignProgressTests, AppCoordinatorTests |
+| R-31 | Touch feedback: at most one pulse per tick, completion over loss over validation, pulses spaced by R-15's guard (completion exempt), a prepare hint when a hold starts; nothing when the haptics preference is off | events, preference | haptic cues | HapticCuePolicy, GameViewModel | HapticCuePolicyTests, GameViewModelTests, GameSettingsStoreTests |
 
 ## Glossary
 - Sphere / target: the moving object the player must let arrive.

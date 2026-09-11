@@ -22,7 +22,7 @@ struct GameOverlayView: View {
         case .paused:
             pausePanel
         case let .levelComplete(result):
-            LevelResultView(result: result, level: viewModel.level, chapter: viewModel.chapter, hapticsEnabled: viewModel.hapticsEnabled,
+            LevelResultView(result: result, level: viewModel.level, chapter: viewModel.chapter,
                             onPrimary: { viewModel.primaryAction() }, onReplay: { viewModel.replay() }, onChapters: { viewModel.openChapters() })
         case .interrupted:
             DSOverlayPanel(title: "interrompu",

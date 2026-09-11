@@ -2,7 +2,7 @@
 
 Status: implemented
 Priority: P0
-Depends on: Gaze, Audio
+Depends on: Gaze, Audio, Haptics
 
 ## Job
 When I have five minutes, I want to guide spheres home by not looking at them, so I can train my attention calmly.
@@ -18,12 +18,13 @@ GameView. Full-screen scene (canvas), HUD (level, spheres, pause, gaze and sound
 - AC-5 Given several spheres, when a higher-ranked sphere reaches its arrival first, then it never validates before the lower ranks (R-09).
 - AC-6 Given all spheres validated, when the tick ends, then the level end overlay appears and the next level loads on tap; after level 14 the journey screen appears (R-12).
 - AC-7 Given an AR interruption, background trip or failure, when it happens, then the loop stops and a dedicated overlay explains the state; no crash, no blank screen.
+- AC-8 Given the haptics preference is on, when a lueur validates, a validation is lost or the level completes, then one pulse plays per logical event (a cascade counts once, see Docs/Features/Haptics.md); with the preference off nothing vibrates.
 
 ## Entities
-Target, Level, GameSession, GameProgression, GazeSample, AudioCue.
+Target, Level, GameSession, GazeSample, AudioCue, HapticCue.
 
 ## Notes
 Portrait only. The reference engine's cursor starts at the screen centre; Iris seeds it on the latest gaze sample at the first tap.
 
 ## Test coverage
-R-01 to R-15, AC-1 to AC-7: TargetPhysicsTests, ValidationRuleTests, SequenceOrderTests, CascadeRuleTests, GameSessionTests, GameSessionGoldenTests, GameProgressionTests, AudioCuePolicyTests, GameViewModelTests.
+R-01 to R-15, R-31, AC-1 to AC-8: TargetPhysicsTests, ValidationRuleTests, SequenceOrderTests, CascadeRuleTests, GameSessionTests, GameSessionGoldenTests, AudioCuePolicyTests, HapticCuePolicyTests, GameViewModelTests, GameSettingsStoreTests.

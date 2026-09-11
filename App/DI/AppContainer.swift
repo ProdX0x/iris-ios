@@ -107,6 +107,13 @@ final class AppContainer {
         }
     }
 
+    func makeHapticFeedbackService() -> any HapticFeedbackService {
+        switch environment {
+        case .live, .simulator: UIKitHapticFeedbackService()
+        case .preview: SilentHapticFeedbackService()
+        }
+    }
+
     func makeGameClock() -> any GameClock {
         switch environment {
         case .live, .simulator: DisplayLinkGameClock()
@@ -124,6 +131,7 @@ final class AppContainer {
         GameViewModel(level: level,
                       gaze: gazeTracking,
                       audio: makeAudioService(),
+                      haptics: makeHapticFeedbackService(),
                       clock: makeGameClock(),
                       settings: settings,
                       calibrationStore: calibrationStore,
