@@ -10,4 +10,10 @@ enum AudioCue: Hashable, Sendable {
     case stopProgress(voice: Int)
     case validation
     case loss
+    /// Ascending arpeggio closing a level (replaces the validation chime of the last iris).
+    case levelComplete
+    /// Soft pulse of a weakening veilleuse.
+    case veilleuseLow
+    /// Chapter drone (two sines a fifth apart); nil frequency fades it out.
+    case ambient(frequency: Double?)
 }

@@ -33,6 +33,14 @@ Allowed arrows: Presentation -> GameEngine, Domain, AR protocols, Audio protocol
 
 ## Feature map
 ```
+Campaign (Domain/Campaign, Domain/Progress, GameEngine/Campaign, GameEngine/Environment)
+  Data:           Campaign (6 chapters, 34 LevelDefinition), GameElement, CampaignProgress, LevelRecord, LevelOutcome, Eclat
+  Engine:         LevelResolver -> ResolvedLevel -> GameSession(environment), HintTracker
+  Persistence:    ProgressStore (UserDefaultsProgressStore, InMemoryProgressStore)
+Feature: Home        HomeView (HomeSummary from AppCoordinator)
+Feature: Chapters    ChaptersView, ChapterCard, LevelNode
+Feature: Carnet      CarnetView
+Feature: Settings    SettingsView (sheet)
 Feature: Game
   Screens:        GameView (GameCanvasView, GameHUDView, GameOverlayView)
   ViewModels:     GameViewModel (GamePhase)
@@ -66,10 +74,12 @@ AppCoordinator.route
 ├── .cameraAccess              CameraAccessView (explain, requesting, denied, restricted)
 ├── .gazeSetup(intent)         GazeSetupView: starting, readiness, calibrating, validating, insufficient, ready, failed
 │                                intent firstRun (no valid profile), revalidate (stored profile), recalibrate (from pause)
-├── .tutorial                  TutorialView
+├── .chapters                  ChaptersView (map, play a level)
+├── .carnet                    CarnetView
 ├── .game                      GameView, overlays by GamePhase:
-│                                initializing, ready, playing, paused, levelComplete,
-│                                interrupted, resuming, suspended, failed
+│                                initializing, ready (level intro), playing, paused, levelComplete(result),
+│                                interrupted, faceLost, resuming, suspended, failed
+├── sheet .settings            SettingsView
 ├── .journeyComplete(summary)  JourneyCompleteView
 └── .unavailable(reason)       UnavailableView
 ```
@@ -183,7 +193,38 @@ Context: recalibrating at every launch would be tedious; using a stale profile b
 Decision: the profile (coefficients, axes, orientation, viewport, nominal frame, date, errors, validity) is stored as JSON in UserDefaults; it is reused only for the same model version, orientation, viewport (1 percent) and age under 30 days, after a five-point revalidation at launch; recalibration is available from the pause menu.
 Consequences: no gaze data is ever stored; a mediocre profile kept on purpose is marked invalid and triggers a full calibration next time.
 
+### ADR-13: Levels are authored data resolved per screen
+Status: accepted
+Context: the prototype generated 14 levels from seeds; their difficulty was random (see Design/PRODUCT_AUDIT.md).
+Decision: `LevelDefinition` values in normalized coordinates, with the zone as a fraction of the short side and forces at scale 1; `LevelResolver` scales everything by short side / 393 pt and builds the engine environment; the prototype catalog survives only for the golden traces.
+Consequences: identical play on every Face ID iPhone; levels are reviewable data; every level is proven feasible and every element necessary by simulated players (CampaignSimulationTests).
+
+### ADR-14: The environment extends the session without touching the historical step
+Status: accepted
+Context: currents, veils, veilleuses, moving irises and the on-screen rule must not alter the validated engine.
+Decision: `LevelEnvironment` (empty for prototype levels) adds an external impulse inside the same fractional step, a collision pass after the edge bounce, a presence freeze in `ValidationRule`, and veilleuse and attention updates before the targets.
+Consequences: golden traces unchanged; campaign rules R-23 to R-28 testable in isolation.
+
+### ADR-15: Progress, éclats and the Carnet belong to the coordinator
+Status: accepted
+Context: the game screen should not own persistence.
+Decision: `GameNavigating.gameDidComplete` hands the outcome to `AppCoordinator`, which updates `CampaignProgress` through `ProgressStore` and returns the previous record so the result can show what is new.
+Consequences: one source of truth for unlocks; the game ViewModel stays testable with a mock navigator.
+
+### ADR-16: A world without perspective, drawn in one Canvas
+Status: accepted
+Context: the prototype's horizon suggested depth that the 2D physics did not have.
+Decision: front view "chambre noire" (Design/ART_DIRECTION.md); a static background view and one per-frame Canvas fed by an immutable snapshot; additive glows as radial gradients, no blur filters.
+Consequences: readable physics, cheap rendering next to ARKit.
+
+### ADR-17: project.yml is the single source of truth for the Xcode project and the Apple identity
+Status: accepted
+Context: the bundle identifier and the team had been fixed by hand in Xcode while `project.yml` still carried `com.prodx0x.iris` and `NKN63DTRM4`, a value read from a certificate's common name instead of its OU (the team); every `xcodegen generate` silently restored the wrong identity and Xcode lost the team.
+Decision: `project.yml` carries `net.steve-s.iris` / `net.steve-s.iris.tests`, `DEVELOPMENT_TEAM = G4U9RG5GL7`, `CODE_SIGN_STYLE = Automatic` with no pinned profile or certificate; `Iris.xcodeproj` is a generated artefact; `Tools/audit.py` check C12 fails on any divergence between the spec, the generated project and the sources.
+Consequences: a signing fix made only in Xcode is a bug, not a fix; the identity is stable before StoreKit; no personal Apple credential is ever versioned.
+
 ## Forbidden
+- Changing the bundle identifier, the development team or the signing style anywhere but in `project.yml` (README, « Apple Signing »).
 - Views deciding destinations; navigation only through AppCoordinator or a Navigating protocol.
 - Domain or GameEngine importing SwiftUI, UIKit, ARKit, AVFoundation, Combine.
 - ViewModels importing SwiftUI or holding ARKit types.
@@ -191,3 +232,4 @@ Consequences: no gaze data is ever stored; a mediocre profile kept on purpose is
 - Allocations or locks that block inside SineSynth.render.
 - Any WebView.
 - A hard-coded interface orientation, axis sign, mirror, ppi or camera position on the calibrated gaze path.
+- A campaign level that is not covered by CampaignSimulationTests, or a timer, score or failure state visible during play.

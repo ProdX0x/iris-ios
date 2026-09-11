@@ -1,6 +1,6 @@
 // RootView.swift
 // Layer: Presentation (Navigation)
-// Purpose: Renders the coordinator's route and forwards scene phase changes to the running game
+// Purpose: Renders the coordinator's route and sheet, forwards scene phase changes to the running game
 
 import SwiftUI
 
@@ -29,8 +29,11 @@ struct RootView: View {
                     GazeSetupView(viewModel: viewModel)
                         .transition(transition)
                 }
-            case .tutorial:
-                TutorialView()
+            case .chapters:
+                ChaptersView()
+                    .transition(transition)
+            case .carnet:
+                CarnetView()
                     .transition(transition)
             case .game:
                 if let viewModel = coordinator.gameViewModel {
@@ -48,6 +51,15 @@ struct RootView: View {
         .animation(DSMotion.animation(DSMotion.slowAnimation, reduceMotion: reduceMotion), value: coordinator.route)
         .environment(coordinator)
         .preferredColorScheme(.dark)
+        .sheet(item: sheetBinding) { sheet in
+            switch sheet {
+            case .settings:
+                SettingsView()
+                    .environment(coordinator)
+                    .presentationBackground(DSColor.backgroundSurface)
+                    .presentationDragIndicator(.visible)
+            }
+        }
         .onChange(of: scenePhase) { _, phase in
             switch phase {
             case .background, .inactive:
@@ -60,7 +72,11 @@ struct RootView: View {
         }
     }
 
+    private var sheetBinding: Binding<AppSheet?> {
+        Binding(get: { coordinator.sheet }, set: { coordinator.sheet = $0 })
+    }
+
     private var transition: AnyTransition {
-        reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.98))
+        reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.985))
     }
 }

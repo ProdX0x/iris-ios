@@ -40,19 +40,19 @@ enum GameFailure: Hashable, Sendable {
 enum GamePhase: Hashable, Sendable {
     /// AR session starting, waiting for the first tracked frame.
     case initializing
-    /// Tracking works, waiting for the player's tap (the reference engine's `start` state).
+    /// Level intro card: the level is visible behind it, waiting for the player.
     case ready
     case playing
     case paused
-    /// All spheres validated; `isLast` when it was level 14.
-    case levelComplete(number: Int, isLast: Bool)
+    /// Every iris closed: result screen with éclats.
+    case levelComplete(LevelResult)
     /// The AR session was interrupted (call, camera taken by another app).
     case interrupted
     /// The face left the camera for more than 0.3 s while playing; resumes by itself when it is back.
     case faceLost
     /// Tracking is back after an interruption or a background trip; waiting for a tap.
     case resuming
-    /// The app is in the background.
+    /// The app is in the background, or the gaze setup runs a recalibration.
     case suspended
     case failed(GameFailure)
 }

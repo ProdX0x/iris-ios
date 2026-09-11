@@ -11,6 +11,7 @@ final class AppContainer {
     let cameraAuthorization: any CameraAuthorizationService
     let settings: GameSettingsStore
     let calibrationStore: any CalibrationStore
+    let progressStore: any ProgressStore
     let orientationProvider: any InterfaceOrientationProvider
     let isPad: Bool
     let launchOptions: LaunchOptions
@@ -23,6 +24,7 @@ final class AppContainer {
          cameraAuthorization: any CameraAuthorizationService,
          settings: GameSettingsStore,
          calibrationStore: any CalibrationStore,
+         progressStore: any ProgressStore,
          orientationProvider: any InterfaceOrientationProvider,
          isPad: Bool,
          launchOptions: LaunchOptions = .none) {
@@ -31,6 +33,7 @@ final class AppContainer {
         self.cameraAuthorization = cameraAuthorization
         self.settings = settings
         self.calibrationStore = calibrationStore
+        self.progressStore = progressStore
         self.orientationProvider = orientationProvider
         self.isPad = isPad
         self.launchOptions = launchOptions
@@ -44,12 +47,16 @@ final class AppContainer {
         #else
         let launchOptions = LaunchOptions.none
         #endif
+        let progressStore: any ProgressStore = launchOptions.seededProgress.map {
+            InMemoryProgressStore(progress: LaunchOptions.progress(for: $0))
+        } ?? UserDefaultsProgressStore()
         #if targetEnvironment(simulator)
         return AppContainer(environment: .simulator,
                             capabilities: StaticDeviceCapabilities(supportsFaceTracking: true),
                             cameraAuthorization: StubCameraAuthorizationService(status: .authorized),
                             settings: GameSettingsStore(),
                             calibrationStore: UserDefaultsCalibrationStore(),
+                            progressStore: progressStore,
                             orientationProvider: WindowSceneOrientationProvider(),
                             isPad: DeviceIdiom.isPad,
                             launchOptions: launchOptions)
@@ -59,6 +66,7 @@ final class AppContainer {
                             cameraAuthorization: AVCaptureCameraAuthorizationService(),
                             settings: GameSettingsStore(),
                             calibrationStore: UserDefaultsCalibrationStore(),
+                            progressStore: progressStore,
                             orientationProvider: WindowSceneOrientationProvider(),
                             isPad: DeviceIdiom.isPad,
                             launchOptions: launchOptions)
@@ -68,12 +76,14 @@ final class AppContainer {
     static func preview(supportsFaceTracking: Bool = true,
                         cameraStatus: CameraAuthorizationStatus = .authorized,
                         calibrationStore: any CalibrationStore = InMemoryCalibrationStore(),
+                        progressStore: any ProgressStore = InMemoryProgressStore(),
                         launchOptions: LaunchOptions = .none) -> AppContainer {
         AppContainer(environment: .preview,
                      capabilities: StaticDeviceCapabilities(supportsFaceTracking: supportsFaceTracking),
                      cameraAuthorization: StubCameraAuthorizationService(status: cameraStatus),
                      settings: GameSettingsStore(defaults: UserDefaults(suiteName: "iris.preview.\(UUID().uuidString)") ?? .standard),
                      calibrationStore: calibrationStore,
+                     progressStore: progressStore,
                      orientationProvider: FixedOrientationProvider(),
                      isPad: false,
                      launchOptions: launchOptions)
@@ -110,18 +120,17 @@ final class AppContainer {
         AppCoordinator(container: self)
     }
 
-    func makeGameViewModel(navigator: any GameNavigating) -> GameViewModel {
-        let startingIndex = (launchOptions.startingLevel ?? 1) - 1
-        return GameViewModel(progression: GameProgression(startingIndex: startingIndex),
-                             gaze: gazeTracking,
-                             audio: makeAudioService(),
-                             clock: makeGameClock(),
-                             settings: settings,
-                             calibrationStore: calibrationStore,
-                             orientation: orientationProvider,
-                             isPad: isPad,
-                             autoplay: launchOptions.autoplay,
-                             navigator: navigator)
+    func makeGameViewModel(level: LevelDefinition, navigator: any GameNavigating) -> GameViewModel {
+        GameViewModel(level: level,
+                      gaze: gazeTracking,
+                      audio: makeAudioService(),
+                      clock: makeGameClock(),
+                      settings: settings,
+                      calibrationStore: calibrationStore,
+                      orientation: orientationProvider,
+                      isPad: isPad,
+                      autoplay: launchOptions.autoplay,
+                      navigator: navigator)
     }
 
     func makeCameraAccessViewModel(navigator: any CameraAccessNavigating) -> CameraAccessViewModel {

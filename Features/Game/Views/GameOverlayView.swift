@@ -1,6 +1,6 @@
 // GameOverlayView.swift
 // Layer: Presentation
-// Purpose: One overlay per game phase: ready, pause, level end, interruption, resume, failure
+// Purpose: One overlay per game phase: intro, pause, result, interruption, face lost, resume, suspension, failure
 
 import SwiftUI
 
@@ -11,35 +11,35 @@ struct GameOverlayView: View {
     var body: some View {
         switch viewModel.phase {
         case .initializing:
-            DSOverlayPanel(title: "iris", subtitle: "initialisation du regard…", dim: 0.94) {
+            DSOverlayPanel(title: "iris", subtitle: "le regard s'éveille…", dim: 0.94) {
                 DSIrisMark(size: 72, isBreathing: true)
             }
         case .ready:
-            tapPanel(title: "iris", subtitle: readySubtitle, action: "Commencer")
+            LevelIntroCard(level: viewModel.level, chapter: viewModel.chapter,
+                           onStart: { viewModel.primaryAction() }, onChapters: { viewModel.openChapters() })
         case .playing:
             EmptyView()
         case .paused:
             pausePanel
-        case let .levelComplete(number, isLast):
-            DSOverlayPanel(title: "niveau terminé", subtitle: "niveau \(number) / \(viewModel.levelCount)", tint: DSColor.statusSuccess) {
-                DSButton(isLast ? "Voir le parcours" : "Continuer", systemImage: isLast ? "flag.checkered" : "arrow.right") {
-                    viewModel.primaryAction()
-                }
-                DSButton("Quitter", variant: .ghost) { viewModel.exit() }
-            }
+        case let .levelComplete(result):
+            LevelResultView(result: result, level: viewModel.level, chapter: viewModel.chapter, hapticsEnabled: viewModel.hapticsEnabled,
+                            onPrimary: { viewModel.primaryAction() }, onReplay: { viewModel.replay() }, onChapters: { viewModel.openChapters() })
         case .interrupted:
-            DSOverlayPanel(title: "session interrompue",
-                           subtitle: "La caméra est utilisée ailleurs ou l'app a été interrompue. Le jeu reprendra dès que le suivi du regard sera de retour.",
+            DSOverlayPanel(title: "interrompu",
+                           subtitle: "La caméra est utilisée ailleurs. La partie reprendra dès que votre regard sera retrouvé.",
                            tint: DSColor.statusDanger) {
-                DSButton("Quitter", variant: .secondary) { viewModel.exit() }
+                DSButton("Chapitres", variant: .secondary) { viewModel.openChapters() }
             }
         case .resuming:
-            tapPanel(title: "reprise", subtitle: "touchez l'écran pour reprendre", action: "Reprendre")
+            DSOverlayPanel(title: "reprise", subtitle: "\(viewModel.chapter.numeral) · \(viewModel.chapter.name) — \(viewModel.level.title)") {
+                DSButton("Reprendre", systemImage: "play.fill") { viewModel.primaryAction() }
+                DSButton("Chapitres", variant: .ghost) { viewModel.openChapters() }
+            }
         case .faceLost:
             DSOverlayPanel(title: "visage perdu",
-                           subtitle: "Replacez-vous face à l'écran. La partie reprend d'elle-même dès que votre regard est retrouvé.",
-                           tint: DSColor.statusDanger, dim: 0.8) {
-                DSButton("Quitter", variant: .ghost) { viewModel.exit() }
+                           subtitle: "Replacez-vous face à l'écran. La partie reprend d'elle-même.",
+                           tint: DSColor.statusDanger, dim: 0.75) {
+                DSButton("Chapitres", variant: .ghost) { viewModel.openChapters() }
             }
         case .suspended:
             DSOverlayPanel(title: "en pause", subtitle: "Iris attend votre retour.", dim: 0.94) {
@@ -53,44 +53,23 @@ struct GameOverlayView: View {
                     }
                 }
                 DSButton("Réessayer", variant: .secondary) { viewModel.retryAfterFailure() }
-                DSButton("Quitter", variant: .ghost) { viewModel.exit() }
+                DSButton("Seuil", variant: .ghost) { viewModel.exit() }
             }
         }
-    }
-
-    private var readySubtitle: String {
-        switch viewModel.gazeState {
-        case .tracking(true): "touchez l'écran pour commencer"
-        case .tracking(false): "placez votre visage face à l'écran, puis touchez pour commencer"
-        default: "touchez l'écran pour commencer"
-        }
-    }
-
-    private func tapPanel(title: String, subtitle: String, action: String) -> some View {
-        Button(action: { viewModel.primaryAction() }) {
-            DSOverlayPanel(title: title, subtitle: subtitle) {
-                Text(action)
-                    .dsEyebrowStyle(tint: DSColor.accent)
-                    .padding(.top, DSSpacing.s)
-            }
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(action)
     }
 
     private var pausePanel: some View {
-        DSOverlayPanel(title: "pause", subtitle: "niveau \(viewModel.levelNumber) / \(viewModel.levelCount)") {
+        DSOverlayPanel(title: "pause", subtitle: "\(viewModel.chapter.numeral) · \(viewModel.chapter.name) — \(viewModel.level.title)") {
             DSButton("Reprendre", systemImage: "play.fill") { viewModel.primaryAction() }
-            DSButton("Recommencer le niveau", variant: .secondary) { viewModel.restartLevel() }
-            DSButton("Quitter", variant: .ghost) { viewModel.exit() }
+            DSButton("Recommencer", variant: .secondary) { viewModel.restartLevel() }
+            DSButton("Chapitres", variant: .ghost) { viewModel.openChapters() }
             DSCard(style: .glass) {
                 Text("regard").dsEyebrowStyle()
                 Text(viewModel.calibrationStatus.description)
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.textSecondary)
                 DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { viewModel.requestRecalibration() }
-                Toggle("Afficher les points de regard", isOn: $viewModel.showsGazeIndicator)
+                Toggle("Points de regard (diagnostic)", isOn: $viewModel.showsGazeIndicator)
                     .tint(DSColor.accent)
                     .foregroundStyle(DSColor.textPrimary)
                 Text("Corail : brut. Menthe : calibré. Ambre : curseur lissé utilisé par le jeu.")

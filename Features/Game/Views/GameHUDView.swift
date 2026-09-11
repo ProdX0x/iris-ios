@@ -1,97 +1,64 @@
 // GameHUDView.swift
 // Layer: Presentation
-// Purpose: Level readout, pause control, gaze and sound status (the reference engine's HUD texts)
+// Purpose: Peripheral HUD: level mark, pause, contextual hint at the bottom, diagnostic badges when enabled
 
 import SwiftUI
 
 struct GameHUDView: View {
-    let levelNumber: Int
-    let levelCount: Int
-    let targetCount: Int
-    let isSequential: Bool
-    let gazeState: GazeTrackingState
-    let audioStatus: AudioStatus
-    let isSimulatedGaze: Bool
+    let levelMark: String
+    let hint: String?
     let showsPause: Bool
+    let diagnostics: [String]?
     let onPause: () -> Void
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                    Text("niveau \(levelNumber) / \(levelCount)")
-                        .dsEyebrowStyle(tint: DSColor.textPrimary)
-                    Text(targetCount > 1 ? "\(targetCount) sphères" : "1 sphère")
-                        .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
-                }
-                .accessibilityElement(children: .combine)
+            HStack(alignment: .center) {
+                Text(levelMark)
+                    .dsEyebrowStyle(tint: DSColor.textSecondary)
+                    .accessibilityLabel("Niveau \(levelMark)")
                 Spacer()
-                if showsPause {
-                    Button(action: onPause) {
-                        Image(systemName: "pause.fill")
-                            .font(DSFont.headline)
-                            .foregroundStyle(DSColor.textPrimary)
-                            .frame(width: 44, height: 44)
-                            .background(DSColor.backgroundSurface.opacity(0.7), in: Circle())
-                            .overlay(Circle().strokeBorder(DSColor.lineSubtle, lineWidth: 1))
-                    }
-                    .accessibilityLabel("Pause")
+                Button(action: onPause) {
+                    Image(systemName: "pause")
+                        .font(DSFont.headline)
+                        .foregroundStyle(DSColor.textPrimary)
+                        .frame(width: 44, height: 44)
+                        .background(DSColor.backgroundSurface.opacity(0.6), in: Circle())
+                        .overlay(Circle().strokeBorder(DSColor.lineSubtle, lineWidth: 1))
                 }
+                .opacity(showsPause ? 1 : 0)
+                .disabled(!showsPause)
+                .accessibilityLabel("Pause")
             }
             Spacer()
-            VStack(alignment: .leading, spacing: DSSpacing.s) {
-                if isSequential {
-                    Text("la validation ne compte que dans l'ordre 1, 2, 3…")
-                        .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary.opacity(0.8))
-                }
+            if let hint {
+                Text(hint)
+                    .font(DSFont.callout)
+                    .foregroundStyle(DSColor.textWarm)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .padding(.horizontal, DSSpacing.m)
+                    .padding(.vertical, DSSpacing.s)
+                    .background(DSColor.fieldInk.opacity(0.55), in: Capsule())
+                    .transition(.opacity)
+                    .id(hint)
+            }
+            if let diagnostics {
                 HStack(spacing: DSSpacing.s) {
-                    DSBadge(gazeLabel, tone: gazeTone)
-                    DSBadge(audioLabel, tone: audioTone)
+                    ForEach(diagnostics, id: \.self) { DSBadge($0, tone: .info) }
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DSSpacing.m)
-        .padding(.vertical, DSSpacing.s)
-    }
-
-    private var gazeLabel: String {
-        if isSimulatedGaze { return "mode : simulateur (toucher)" }
-        switch gazeState {
-        case .idle: return "regard : inactif"
-        case .starting: return "regard : initialisation"
-        case let .tracking(faceVisible): return faceVisible ? "mode : regard" : "regard : visage perdu"
-        case .interrupted: return "regard : interrompu"
-        case .unavailable: return "regard : indisponible"
-        case .failed: return "regard : erreur"
-        }
-    }
-
-    private var gazeTone: DSBadge.Tone {
-        if isSimulatedGaze { return .info }
-        switch gazeState {
-        case .tracking(true): return .success
-        case .tracking(false), .starting, .idle: return .neutral
-        case .interrupted, .unavailable, .failed: return .danger
-        }
-    }
-
-    private var audioLabel: String {
-        switch audioStatus {
-        case .active: "son : actif"
-        case .inactive: "son : coupé"
-        case .interrupted: "son : interrompu"
-        case .unavailable: "son : indisponible"
-        }
-    }
-
-    private var audioTone: DSBadge.Tone {
-        switch audioStatus {
-        case .active: .success
-        case .inactive, .interrupted: .neutral
-        case .unavailable: .danger
+        .padding(.top, DSSpacing.s)
+        .padding(.bottom, DSSpacing.l)
+        .animation(DSMotion.animation(.easeInOut(duration: 0.35), reduceMotion: reduceMotion), value: hint)
+        .onChange(of: hint) { _, newHint in
+            if let newHint {
+                AccessibilityNotification.Announcement(newHint).post()
+            }
         }
     }
 }
@@ -101,21 +68,40 @@ struct GameHUDHost: View {
     let viewModel: GameViewModel
 
     var body: some View {
-        GameHUDView(levelNumber: viewModel.levelNumber,
-                    levelCount: viewModel.levelCount,
-                    targetCount: viewModel.targetCount,
-                    isSequential: viewModel.isSequential,
-                    gazeState: viewModel.gazeState,
-                    audioStatus: viewModel.audioStatus,
-                    isSimulatedGaze: viewModel.isSimulatedGaze,
+        GameHUDView(levelMark: "\(viewModel.chapter.numeral) · \(viewModel.level.index)",
+                    hint: viewModel.phase == .playing ? viewModel.hint : nil,
                     showsPause: viewModel.phase == .playing,
+                    diagnostics: viewModel.showsGazeIndicator ? diagnosticLabels : nil,
                     onPause: { viewModel.pause() })
+    }
+
+    private var diagnosticLabels: [String] {
+        let gaze: String
+        if viewModel.isSimulatedGaze {
+            gaze = "regard : simulé"
+        } else {
+            switch viewModel.gazeState {
+            case .idle: gaze = "regard : inactif"
+            case .starting: gaze = "regard : démarrage"
+            case let .tracking(faceVisible): gaze = faceVisible ? "regard : suivi" : "regard : visage perdu"
+            case .interrupted: gaze = "regard : interrompu"
+            case .unavailable: gaze = "regard : indisponible"
+            case .failed: gaze = "regard : erreur"
+            }
+        }
+        let sound: String
+        switch viewModel.audioStatus {
+        case .active: sound = "son : actif"
+        case .inactive: sound = "son : coupé"
+        case .interrupted: sound = "son : interrompu"
+        case .unavailable: sound = "son : indisponible"
+        }
+        return [gaze, sound]
     }
 }
 
 #Preview {
-    GameHUDView(levelNumber: 9, levelCount: 14, targetCount: 3, isSequential: true,
-                gazeState: .tracking(faceVisible: true), audioStatus: .active, isSimulatedGaze: false,
-                showsPause: true, onPause: {})
+    GameHUDView(levelMark: "III · 2", hint: "Regardez juste sous la lueur : elle montera.", showsPause: true,
+                diagnostics: nil, onPause: {})
         .background(DSColor.backgroundPrimary)
 }

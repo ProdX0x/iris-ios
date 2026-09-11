@@ -11,7 +11,7 @@ struct GameSessionTests {
 
     @Test("loading a level places every target at its start with zero velocity")
     func loadsLevel() {
-        let session = GameSession(level: LevelCatalog.all[8], bounds: .referencePhone)
+        let session = GameSession(level: PrototypeLevelCatalog.all[8], bounds: .referencePhone)
 
         #expect(session.targets.count == 3)
         #expect(session.targets.map(\.sequence) == [1, 2, 3])
@@ -48,8 +48,8 @@ struct GameSessionTests {
 
     @Test("R-14 a 30 Hz frame equals two 60 Hz frames exactly")
     func thirtyHertzEqualsTwoFrames() {
-        var slow = SessionFixture.session(level: LevelCatalog.all[0])
-        var fast = SessionFixture.session(level: LevelCatalog.all[0])
+        var slow = SessionFixture.session(level: PrototypeLevelCatalog.all[0])
+        var fast = SessionFixture.session(level: PrototypeLevelCatalog.all[0])
 
         for _ in 0..<120 {
             _ = slow.advance(by: 1.0 / 30.0)
@@ -97,8 +97,8 @@ struct GameSessionTests {
 
     @Test("R-14 on a real level with repulsion, 120 Hz stays within a few points of 60 Hz over three seconds")
     func hundredTwentyHertzWithRepulsion() {
-        var half = SessionFixture.session(level: LevelCatalog.all[0])
-        var whole = SessionFixture.session(level: LevelCatalog.all[0])
+        var half = SessionFixture.session(level: PrototypeLevelCatalog.all[0])
+        var whole = SessionFixture.session(level: PrototypeLevelCatalog.all[0])
 
         for _ in 0..<180 {
             _ = half.advance(by: 1.0 / 120.0)
@@ -122,7 +122,7 @@ struct GameSessionTests {
 
     @Test("R-13 ingested gaze is smoothed toward the raw sample")
     func gazeSmoothing() {
-        var session = SessionFixture.session(level: LevelCatalog.all[0], gaze: Vector2(x: 100, y: 100))
+        var session = SessionFixture.session(level: PrototypeLevelCatalog.all[0], gaze: Vector2(x: 100, y: 100))
 
         session.ingestGaze(Vector2(x: 200, y: 100))
 

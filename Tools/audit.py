@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Layer audit for Iris (layer-auditor skill, checks C1, C2, C8, C9, C10 plus dead-file and TODO scans).
+"""Layer audit for Iris (layer-auditor skill, checks C1, C2, C8, C9, C10, C12 plus dead-file and TODO scans).
+C12 locks the Apple identity: project.yml (XcodeGen source of truth), the generated pbxproj and the sources must agree on the bundle identifiers and the development team.
 Run from the project root: python3 Tools/audit.py [--write-file-map]
 """
 import os, re, sys, subprocess
@@ -34,7 +35,7 @@ def strip_strings_and_comments(text):
     text = re.sub(r'"(?:\\.|[^"\\])*"', '""', text)
     return text
 
-findings = {"C1": [], "C2": [], "C8": [], "C9": [], "TODO": [], "C10": []}
+findings = {"C1": [], "C2": [], "C8": [], "C9": [], "TODO": [], "C10": [], "C12": []}
 rows = []
 files = sorted(swift_files())
 for path in files:
@@ -82,6 +83,38 @@ for path in files:
         purpose = pm.group(1).strip()
     kind = top_level and TYPE_DECL.search(text) and TYPE_DECL.search(text).group(1) or "-"
     rows.append((path, kind, layer, purpose))
+
+# C12: Apple identity lock (README, "Apple Signing"). project.yml is the source of truth; the pbxproj is generated from it.
+APP_BUNDLE_ID = "net.steve-s.iris"
+TESTS_BUNDLE_ID = "net.steve-s.iris.tests"
+TEAM_ID = "G4U9RG5GL7"
+RETIRED_PREFIX = "com.prodx0x"
+spec = open(os.path.join(ROOT, "project.yml")).read()
+for expected in (f"bundleIdPrefix: net.steve-s\n", f"PRODUCT_BUNDLE_IDENTIFIER: {APP_BUNDLE_ID}\n", f"PRODUCT_BUNDLE_IDENTIFIER: {TESTS_BUNDLE_ID}\n",
+                 f"DEVELOPMENT_TEAM: {TEAM_ID}\n", "CODE_SIGN_STYLE: Automatic\n"):
+    if expected not in spec:
+        findings["C12"].append(f"project.yml: missing `{expected.strip()}`")
+if "PROVISIONING_PROFILE" in spec:
+    findings["C12"].append("project.yml: a provisioning profile is pinned; automatic signing must stay unpinned")
+pbx_path = os.path.join(ROOT, "Iris.xcodeproj", "project.pbxproj")
+if os.path.exists(pbx_path):
+    pbx = open(pbx_path).read()
+    for value in re.findall(r"PRODUCT_BUNDLE_IDENTIFIER = \"?([^\";]+)\"?;", pbx):
+        if value not in (APP_BUNDLE_ID, TESTS_BUNDLE_ID):
+            findings["C12"].append(f"project.pbxproj: PRODUCT_BUNDLE_IDENTIFIER = {value} (regenerate with `xcodegen generate`)")
+    for value in re.findall(r"DEVELOPMENT_TEAM = \"?([^\";]+)\"?;", pbx):
+        if value != TEAM_ID:
+            findings["C12"].append(f"project.pbxproj: DEVELOPMENT_TEAM = {value} (regenerate with `xcodegen generate`)")
+    for value in re.findall(r"CODE_SIGN_STYLE = \"?([^\";]+)\"?;", pbx):
+        if value != "Automatic":
+            findings["C12"].append(f"project.pbxproj: CODE_SIGN_STYLE = {value}")
+    if "PROVISIONING_PROFILE" in pbx:
+        findings["C12"].append("project.pbxproj: a provisioning profile is pinned")
+else:
+    findings["C12"].append("Iris.xcodeproj/project.pbxproj is missing: run `xcodegen generate`")
+for path in files + ["project.yml", "Config/Info.plist"]:
+    if RETIRED_PREFIX in open(os.path.join(ROOT, path)).read():
+        findings["C12"].append(f"{path}: retired bundle prefix {RETIRED_PREFIX}")
 
 # C10: file map vs disk
 fm_path = os.path.join(ROOT, "Docs", "file-map.md")

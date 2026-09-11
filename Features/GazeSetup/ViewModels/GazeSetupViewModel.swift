@@ -51,7 +51,7 @@ final class GazeSetupViewModel {
     @ObservationIgnored private let criteria: GazeQualityCriteria
     @ObservationIgnored private let isPad: Bool
     @ObservationIgnored private weak var navigator: (any GazeSetupNavigating)?
-    @ObservationIgnored private let logger = Logger(subsystem: "com.prodx0x.iris", category: "calibration")
+    @ObservationIgnored private let logger = Logger(subsystem: "net.steve-s.iris", category: "calibration")
 
     init(intent: GazeSetupIntent,
          gaze: any GazeTrackingService,

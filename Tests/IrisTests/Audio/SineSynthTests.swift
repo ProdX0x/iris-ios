@@ -109,3 +109,52 @@ struct SineSynthTests {
         #expect(render(synth, seconds: 0.1).allSatisfy { $0 == 0 })
     }
 }
+
+@Suite("SineSynth campaign sounds")
+struct SineSynthCampaignTests {
+    private let sampleRate = 44_100.0
+
+    private func render(_ synth: SineSynth, seconds: Double) -> [Float] {
+        var samples = [Float](repeating: 0, count: Int(seconds * sampleRate))
+        samples.withUnsafeMutableBufferPointer { synth.render(into: $0) }
+        return samples
+    }
+
+    @Test("the completion arpeggio lasts four notes of 0.16 s and cancels a pending chime")
+    func completion() {
+        let synth = SineSynth(configuration: SineSynth.Configuration(sampleRate: sampleRate))
+        synth.triggerChime()
+        synth.triggerCompletion()
+
+        let samples = render(synth, seconds: 1.0)
+
+        #expect((samples[Int(sampleRate * 0.05)..<Int(sampleRate * 0.12)].map { abs($0) }.max() ?? 0) > 0.01)
+        #expect(samples[Int(sampleRate * 0.7)...].allSatisfy { $0 == 0 })
+    }
+
+    @Test("the veilleuse pulse is short and soft")
+    func pulse() {
+        let synth = SineSynth(configuration: SineSynth.Configuration(sampleRate: sampleRate))
+        synth.triggerPulse()
+
+        let samples = render(synth, seconds: 0.2)
+
+        let peak = samples.map { abs($0) }.max() ?? 0
+        #expect(peak > 0.01 && peak <= 0.05 + 1e-3)
+        #expect(samples[Int(sampleRate * 0.07)...].allSatisfy { $0 == 0 })
+    }
+
+    @Test("the ambient drone fades in quietly and fades out")
+    func ambient() {
+        let synth = SineSynth(configuration: SineSynth.Configuration(sampleRate: sampleRate))
+        synth.setAmbient(frequency: 110)
+
+        let fadeIn = render(synth, seconds: 4)
+        let settled = fadeIn[Int(sampleRate * 3)...].map { abs($0) }.max() ?? 0
+        synth.setAmbient(frequency: nil)
+        let fadeOut = render(synth, seconds: 8)
+
+        #expect(settled > 0.01 && settled < 0.03, "about 0.012 x 2 master gain")
+        #expect((fadeOut[Int(sampleRate * 7)...].map { abs($0) }.max() ?? 1) < 1e-3)
+    }
+}

@@ -33,7 +33,7 @@ enum SessionFixture {
                             noiseAmplitude: noiseAmplitude)
         }
         return Level(id: LevelID(raw: "fixture_\(number)"), number: number, targets: targets,
-                     holdDuration: LevelCatalog.holdDuration, isSequential: sequential ?? (placements.count > 1))
+                     holdDuration: PrototypeLevelCatalog.holdDuration, isSequential: sequential ?? (placements.count > 1))
     }
 
     /// Session without noise, gaze parked far away.

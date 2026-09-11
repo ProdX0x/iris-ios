@@ -1,16 +1,27 @@
 // GameSceneSnapshot.swift
 // Layer: Presentation
-// Purpose: Plain value copied from the session once per frame; the only thing the canvas reads
+// Purpose: Plain values copied from the session once per frame; the only thing the canvas reads
 
 import Foundation
 
-struct SceneTargetSnapshot: Hashable, Sendable {
+struct LueurSnapshot: Hashable, Sendable {
     let sequence: Int
     let position: Vector2
+    let radius: Double
     let arrival: Vector2
-    let speed: Double
+    let irisRadius: Double
     let progress: Double
     let isValidated: Bool
+    let isIrisOpen: Bool
+    let disturbance: Double
+    let temperament: Temperament
+}
+
+struct VeilleuseSnapshot: Hashable, Sendable {
+    let position: Vector2
+    let lookRadius: Double
+    let charge: Double
+    let isLow: Bool
 }
 
 /// Diagnostic gaze points: uncalibrated (nominal) and calibrated but unfiltered positions.
@@ -26,28 +37,68 @@ struct GazeDiagnostics: Hashable, Sendable {
 
 struct GameSceneSnapshot: Hashable, Sendable {
     var bounds: PlayfieldBounds
-    var targets: [SceneTargetSnapshot]
+    var scale: Double
+    var lueurs: [LueurSnapshot]
+    var currents: [CurrentField]
+    var veils: [VeilSegment]
+    var veilleuses: [VeilleuseSnapshot]
+    /// Designer routes (help), empty until the help delay elapsed.
+    var routes: [[Vector2]]
     var isSequential: Bool
+    var time: TimeInterval
+    var isAttentionOnField: Bool
     /// Smoothed cursor actually used by the physics (diagnostic display only).
     var gaze: Vector2?
     var diagnostics: GazeDiagnostics?
 
-    init(bounds: PlayfieldBounds, targets: [SceneTargetSnapshot] = [], isSequential: Bool = false, gaze: Vector2? = nil,
-         diagnostics: GazeDiagnostics? = nil) {
+    init(bounds: PlayfieldBounds) {
         self.bounds = bounds
-        self.targets = targets
-        self.isSequential = isSequential
-        self.gaze = gaze
-        self.diagnostics = diagnostics
+        scale = 1
+        lueurs = []
+        currents = []
+        veils = []
+        veilleuses = []
+        routes = []
+        isSequential = false
+        time = 0
+        isAttentionOnField = true
+        gaze = nil
+        diagnostics = nil
     }
 
-    init(session: GameSession, showsGaze: Bool, diagnostics: GazeDiagnostics? = nil) {
+    init(session: GameSession, resolved: ResolvedLevel, showsRoute: Bool, showsGaze: Bool, diagnostics: GazeDiagnostics?) {
         bounds = session.bounds
-        targets = session.targets.map {
-            SceneTargetSnapshot(sequence: $0.sequence, position: $0.position, arrival: $0.arrival,
-                                speed: $0.speed, progress: $0.validationProgress, isValidated: $0.isValidated)
+        scale = resolved.scale
+        lueurs = session.targets.enumerated().map { index, target in
+            LueurSnapshot(sequence: target.sequence,
+                          position: target.position,
+                          radius: session.radius(ofTargetAt: index),
+                          arrival: target.arrival,
+                          irisRadius: session.physics.arrivalRadius,
+                          progress: target.isValidated ? 1 : target.validationProgress,
+                          isValidated: target.isValidated,
+                          isIrisOpen: session.isIrisOpen(for: target),
+                          disturbance: target.disturbance,
+                          temperament: resolved.definition.lueurs.indices.contains(index) ? resolved.definition.lueurs[index].temperament : .normale)
+        }
+        currents = session.environment.currents
+        veils = session.environment.veils
+        veilleuses = session.veilleuses.map {
+            VeilleuseSnapshot(position: $0.position, lookRadius: $0.lookRadius, charge: $0.charge, isLow: $0.isLow)
+        }
+        if showsRoute {
+            routes = session.targets.indices.compactMap { index in
+                let route = resolved.routes[index]
+                guard !route.isEmpty, !session.targets[index].isValidated else { return nil }
+                let start = resolved.definition.lueurs[index].start.absolute(in: session.bounds)
+                return [start] + route + [session.targets[index].arrival]
+            }
+        } else {
+            routes = []
         }
         isSequential = session.level.isSequential
+        time = session.elapsed
+        isAttentionOnField = session.isAttentionOnField
         gaze = showsGaze ? session.gaze.position : nil
         self.diagnostics = showsGaze ? diagnostics : nil
     }

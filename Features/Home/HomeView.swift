@@ -1,6 +1,6 @@
 // HomeView.swift
 // Layer: Presentation
-// Purpose: Welcome screen: identity, promise, start action, privacy note
+// Purpose: The threshold: emblem, promise, one main action (begin or continue), chapters, settings
 
 import SwiftUI
 
@@ -8,64 +8,58 @@ struct HomeView: View {
     @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
-        DSScreen(intensity: .vivid) {
-            HStack {
-                Spacer()
-                DSIrisMark(size: 150, isBreathing: true)
-                Spacer()
+        let summary = coordinator.homeSummary
+        ZStack {
+            DSBackground(intensity: .vivid)
+            VStack(spacing: DSSpacing.l) {
+                HStack {
+                    Spacer()
+                    Button { coordinator.showSettings() } label: {
+                        Image(systemName: "slider.horizontal.3")
+                            .font(DSFont.headline)
+                            .foregroundStyle(DSColor.textSecondary)
+                            .frame(width: 44, height: 44)
+                    }
+                    .accessibilityLabel("Réglages")
+                }
+                Spacer(minLength: DSSpacing.l)
+                DSIrisMark(size: 132, isBreathing: true)
+                VStack(spacing: DSSpacing.s) {
+                    Text("iris")
+                        .font(DSFont.display)
+                        .foregroundStyle(DSColor.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
+                    Text("Ce que vous regardez s'éloigne.")
+                        .font(DSFont.callout)
+                        .foregroundStyle(DSColor.textSecondary)
+                }
+                Spacer(minLength: DSSpacing.l)
+                VStack(spacing: DSSpacing.s) {
+                    DSButton(summary.primaryTitle, systemImage: "eye") { coordinator.continueJourney() }
+                    if let detail = summary.detail {
+                        Text(detail)
+                            .font(DSFont.footnote)
+                            .foregroundStyle(DSColor.textTertiary)
+                            .multilineTextAlignment(.center)
+                    }
+                    DSButton("Chapitres", variant: .secondary) { coordinator.openChapters() }
+                        .padding(.top, DSSpacing.xs)
+                    if summary.eclats > 0 {
+                        Text("\(summary.eclats) éclats sur \(summary.maxEclats)")
+                            .dsEyebrowStyle(tint: DSColor.statusSuccess)
+                            .padding(.top, DSSpacing.xs)
+                    }
+                }
+                .frame(maxWidth: 420)
             }
-            .padding(.top, DSSpacing.l)
-
-            VStack(alignment: .leading, spacing: DSSpacing.s) {
-                Text("attention indirecte")
-                    .dsEyebrowStyle(tint: DSColor.accent)
-                Text("iris")
-                    .font(DSFont.display)
-                    .foregroundStyle(DSColor.textPrimary)
-                    .accessibilityAddTraits(.isHeader)
-                Text("Regarder une sphère la repousse. Laissez-la tranquille : elle dérive vers son point d'arrivée.")
-                    .font(DSFont.body)
-                    .foregroundStyle(DSColor.textSecondary)
-            }
-
-            DSCard(style: .flat) {
-                HomeFactRow(systemImage: "circle.grid.3x3", text: "14 niveaux, jusqu'à 3 sphères à ignorer en même temps")
-                HomeFactRow(systemImage: "faceid", text: "Regard suivi par la caméra TrueDepth, sans calibration")
-                HomeFactRow(systemImage: "timer", text: "Pas de chronomètre, pas de vies, pas de score")
-            }
-
-            DSButton("Commencer", systemImage: "eye") {
-                coordinator.beginJourney()
-            }
-            DSButton("Les règles", variant: .ghost) {
-                coordinator.showTutorial()
-            }
-
-            Text("Le regard est analysé sur l'appareil, en temps réel. Aucune image et aucune donnée du visage ne sont enregistrées ni transmises.")
-                .font(DSFont.footnote)
-                .foregroundStyle(DSColor.textTertiary)
+            .padding(.horizontal, DSSpacing.gutter)
+            .padding(.vertical, DSSpacing.m)
         }
+        .preferredColorScheme(.dark)
     }
 }
 
-private struct HomeFactRow: View {
-    let systemImage: String
-    let text: String
-
-    var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: DSSpacing.m) {
-            Image(systemName: systemImage)
-                .foregroundStyle(DSColor.accent)
-                .frame(width: DSSpacing.l)
-                .accessibilityHidden(true)
-            Text(text)
-                .font(DSFont.callout)
-                .foregroundStyle(DSColor.textWarm)
-        }
-    }
-}
-
-#Preview {
+#Preview("First launch") {
     HomeView()
         .environment(AppContainer.preview().makeAppCoordinator())
 }

@@ -1,6 +1,6 @@
 // GameView.swift
 // Layer: Presentation
-// Purpose: The game screen: full-screen canvas, HUD and phase overlays
+// Purpose: The game screen: chambre noire background, world canvas, peripheral HUD and phase overlays
 
 import SwiftUI
 
@@ -10,6 +10,7 @@ struct GameView: View {
 
     var body: some View {
         ZStack {
+            DSBackground()
             GameCanvasHost(viewModel: viewModel)
                 .ignoresSafeArea()
                 .onGeometryChange(for: CGSize.self) { proxy in
@@ -21,7 +22,7 @@ struct GameView: View {
             GameHUDHost(viewModel: viewModel)
             GameOverlayHost(viewModel: viewModel)
         }
-        .background(DSColor.backgroundSurface)
+        .background(DSColor.fieldInk)
         .statusBarHidden(true)
         .persistentSystemOverlays(.hidden)
         .onDisappear { viewModel.viewDisappeared() }
@@ -49,5 +50,7 @@ private struct SimulatedPointerModifier: ViewModifier {
 
 #Preview {
     let container = AppContainer.preview()
-    GameView(viewModel: container.makeGameViewModel(navigator: container.makeAppCoordinator()))
+    if let level = Campaign.level(id: "4-6") {
+        GameView(viewModel: container.makeGameViewModel(level: level, navigator: container.makeAppCoordinator()))
+    }
 }

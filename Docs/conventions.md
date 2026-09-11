@@ -77,3 +77,8 @@ Deviation from the skill default tree: `Core/` is replaced by `App/DI` and `Navi
 
 ## Localisation
 - French only for v1. Base language: fr.
+
+## Project generation and Apple identity
+- `Iris.xcodeproj` is generated: edit `project.yml`, then run `xcodegen generate`. Never hand-edit the `.pbxproj` and never rely on a value typed into Xcode's Signing & Capabilities: it is overwritten at the next generation.
+- Bundle identifiers (`net.steve-s.iris`, `net.steve-s.iris.tests`), team `G4U9RG5GL7` and automatic signing are locked (README, « Apple Signing »); `Tools/audit.py` check C12 enforces it.
+- No Apple credential (e-mail, password, app-specific password, token, key, App Store Connect secret) in the repository. Bundle ID, Team ID and non-secret entitlements may be versioned.

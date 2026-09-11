@@ -39,7 +39,7 @@ Chaîne v2 :
 11. **Lissage** : inchangé (`GazeFilter`, alpha 0,1, rejet des sauts > 300 pt sauf 3 consécutifs), appliqué **après** calibration et conversion en points, uniquement pendant `playing`.
 12. **Perte de visage** : après 0,3 s sans visage pendant la partie, phase `faceLost` (boucle arrêtée, crescendos coupés), reprise automatique au retour du visage. Aucun point périmé n'est réutilisé.
 13. **Diagnostic visuel** : « Afficher les points de regard » (menu pause et écrans de calibration) : corail = brut nominal, menthe = calibré non lissé, ambre = curseur lissé du jeu. Le réglage « miroir » a été supprimé.
-14. **Logs** (`os.Logger`, sous-systèmes `com.prodx0x.iris`, catégories `gaze`, `calibration`, `game`) : orientation, viewport, états AR, axes résolus, résidus de calibration, erreurs de vérification, chargement de profil. Aucune donnée faciale.
+14. **Logs** (`os.Logger`, sous-systèmes `net.steve-s.iris`, catégories `gaze`, `calibration`, `game`) : orientation, viewport, états AR, axes résolus, résidus de calibration, erreurs de vérification, chargement de profil. Aucune donnée faciale.
 
 ## Fichiers modifiés ou créés
 
@@ -112,5 +112,5 @@ Ouvrir `Iris.xcodeproj`, choisir l'iPhone, Run (signature automatique). Puis :
 9. **Coins** : balayer les quatre coins : le point suit chaque coin sans inversion ni rotation.
 10. **Partie réelle** : Continuer → tutoriel → Jouer ; regarder une sphère la repousse, regarder ailleurs la laisse rejoindre son cercle ; en pause, « Afficher les points de regard » montre corail (brut), menthe (calibré), ambre (curseur) ; « Recalibrer le regard » refait le parcours et revient au niveau en cours.
 
-Si l'étape 5, 6, 7 ou 8 est inversée, relever la ligne « Orientation du regard » du diagnostic et les logs `subsystem:com.prodx0x.iris category:gaze` (Console) : ils indiquent le mapping résolu et la main du repère, ce qui permettra de corriger sans conjecture.
+Si l'étape 5, 6, 7 ou 8 est inversée, relever la ligne « Orientation du regard » du diagnostic et les logs `subsystem:net.steve-s.iris category:gaze` (Console) : ils indiquent le mapping résolu et la main du repère, ce qui permettra de corriger sans conjecture.
 

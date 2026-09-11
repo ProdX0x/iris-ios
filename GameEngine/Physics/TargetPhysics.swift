@@ -24,19 +24,29 @@ struct TargetPhysics: Hashable, Sendable {
     /// `impulseScale(f) = friction^(1 - f) * (1 - friction^f) / (1 - friction)`; the cap is raised to
     /// `maxSpeed * friction^(1 - f)` so that the post-friction cruise speed is identical at every rate.
     /// At f = 1 every factor is exactly 1 and the step is bit-for-bit the reference step.
-    func integrate(_ target: inout Target, gaze: Vector2, noise: (Double) -> Double, frameTime: Double, frameFraction: Double) {
+    ///
+    /// `externalImpulse` (currents, R-24) is added inside the same per-frame map, before the cap, whether the lueur
+    /// is attracted or repelled. It is zero for prototype levels, which keeps the reference step bit-for-bit.
+    func integrate(_ target: inout Target, gaze: Vector2, noise: (Double) -> Double, frameTime: Double, frameFraction: Double,
+                   externalImpulse: Vector2 = .zero) {
         let scaling = FractionalStep(friction: constants.friction, frameFraction: frameFraction)
         let fromGaze = target.position - gaze
         let gazeDistance = nonZero(fromGaze.length)
         if gazeDistance < target.attentionZone {
             let force = target.repulsionGain * (target.attentionZone - gazeDistance)
             target.velocity += (fromGaze / gazeDistance) * (force * scaling.impulseScale)
+            let maximum = target.repulsionGain * target.attentionZone
+            target.disturbance = maximum > 0 ? min(1, force / maximum) : 0
         } else {
+            target.disturbance = 0
             let toArrival = target.arrival - target.position
             let arrivalDistance = nonZero(toArrival.length)
             target.velocity += (toArrival / arrivalDistance) * (target.passiveAttraction * scaling.impulseScale)
             target.velocity.x += noise(frameTime * 0.02) * target.noiseAmplitude * scaling.impulseScale
             target.velocity.y += noise(frameTime * 0.02 + 50) * target.noiseAmplitude * scaling.impulseScale
+        }
+        if externalImpulse != .zero {
+            target.velocity += externalImpulse * scaling.impulseScale
         }
 
         let speed = target.velocity.length

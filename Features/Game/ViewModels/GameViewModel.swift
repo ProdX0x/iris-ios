@@ -1,6 +1,6 @@
 // GameViewModel.swift
 // Layer: Presentation
-// Purpose: Owns the game loop: session, progression, gaze mapping, audio, phase transitions
+// Purpose: Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, results and phases
 
 import Foundation
 import Observation
@@ -11,13 +11,11 @@ import os
 final class GameViewModel {
     // Coarse state read by HUD and overlays.
     private(set) var phase: GamePhase = .initializing
-    private(set) var levelNumber: Int
-    private(set) var levelCount: Int
-    private(set) var targetCount: Int
-    private(set) var isSequential: Bool
+    private(set) var level: LevelDefinition
+    private(set) var chapter: ChapterDefinition
+    private(set) var hint: String?
     private(set) var gazeState: GazeTrackingState = .idle
     private(set) var audioStatus: AudioStatus = .inactive
-    private(set) var completedLevels = 0
     private(set) var calibrationStatus: GazeCalibrationStatus = .uncalibrated
 
     // Per-frame state read by the canvas only.
@@ -31,19 +29,24 @@ final class GameViewModel {
         }
     }
 
+    var hapticsEnabled: Bool { settings.hapticsEnabled }
     var isSimulatedGaze: Bool { gaze is SimulatedGazeTrackingService }
 
     /// Face absence tolerated while playing before the game pauses itself (the reference engine's FACE_LOST_TIMEOUT).
     static let faceLostTimeout: TimeInterval = 0.3
+    /// Seconds before the route help or the empty-space advice appears.
+    static let helpDelay: TimeInterval = 45
 
-    @ObservationIgnored private var progression: GameProgression
+    @ObservationIgnored private var bounds: PlayfieldBounds = .referencePhone
+    @ObservationIgnored private var resolved: ResolvedLevel
     @ObservationIgnored private var session: GameSession
-    @ObservationIgnored private var bounds: PlayfieldBounds
+    @ObservationIgnored private var hints: HintTracker
+    @ObservationIgnored private var hintsBegun = false
+    @ObservationIgnored private var showsRoute = false
     @ObservationIgnored private var nominal: NominalDisplayGeometry?
     @ObservationIgnored private var mapper: GazeMapper?
     @ObservationIgnored private var diagnostics = GazeDiagnostics()
     @ObservationIgnored private var cuePolicy = AudioCuePolicy()
-    @ObservationIgnored private var playDuration: TimeInterval = 0
     @ObservationIgnored private var levelInProgress = false
     @ObservationIgnored private var phaseBeforeSuspension: GamePhase?
     @ObservationIgnored private var isPrepared = false
@@ -62,9 +65,9 @@ final class GameViewModel {
     @ObservationIgnored private let isPad: Bool
     @ObservationIgnored private let autoplay: Bool
     @ObservationIgnored private weak var navigator: (any GameNavigating)?
-    @ObservationIgnored private let logger = Logger(subsystem: "com.prodx0x.iris", category: "game")
+    @ObservationIgnored private let logger = Logger(subsystem: "net.steve-s.iris", category: "game")
 
-    init(progression: GameProgression,
+    init(level: LevelDefinition,
          gaze: any GazeTrackingService,
          audio: any AudioService,
          clock: any GameClock,
@@ -74,7 +77,15 @@ final class GameViewModel {
          isPad: Bool,
          autoplay: Bool = false,
          navigator: any GameNavigating) {
-        self.progression = progression
+        self.level = level
+        self.chapter = Campaign.chapter(of: level) ?? Campaign.chapters[0]
+        let resolved = LevelResolver.resolve(level, in: .referencePhone)
+        let session = resolved.makeSession()
+        self.resolved = resolved
+        self.session = session
+        self.hints = HintTracker.forLevel(level, helpDelay: Self.helpDelay)
+        self.snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false,
+                                          showsGaze: settings.showsGazeIndicator, diagnostics: nil)
         self.gaze = gaze
         self.audio = audio
         self.clock = clock
@@ -84,18 +95,11 @@ final class GameViewModel {
         self.isPad = isPad
         self.autoplay = autoplay
         self.navigator = navigator
-        self.bounds = .referencePhone
-        self.session = GameSession(level: progression.currentLevel, bounds: .referencePhone)
-        self.snapshot = GameSceneSnapshot(session: session, showsGaze: settings.showsGazeIndicator)
-        self.levelNumber = progression.currentNumber
-        self.levelCount = progression.levelCount
-        self.targetCount = progression.currentLevel.targetCount
-        self.isSequential = progression.currentLevel.isSequential
     }
 
     // MARK: Lifecycle
 
-    /// Called by the view once its size is known. Builds the gaze mapper, starts gaze tracking and audio.
+    /// Called by the view once its size is known. Builds the gaze mapper, loads the level, starts tracking and audio.
     func prepare(width: Double, height: Double, displayScale: Double) {
         let newBounds = PlayfieldBounds(width: width, height: height)
         let geometry = NominalDisplayGeometry.estimate(viewport: newBounds, displayScale: displayScale, isPad: isPad)
@@ -107,14 +111,12 @@ final class GameViewModel {
         bounds = newBounds
         nominal = geometry
         reloadCalibration()
-        loadLevel(progression.currentLevel)
+        loadLevel(level)
         wireServices()
         phase = .initializing
         gaze.start(viewport: GazeViewport(bounds: bounds, nominal: geometry))
-        audio.activate()
+        activateAudio()
     }
-
-
 
     /// Rebuilds the mapper from the stored profile (after a recalibration or at start).
     func reloadCalibration() {
@@ -123,7 +125,7 @@ final class GameViewModel {
         if let profile = calibrationStore.load(), profile.isUsable(viewport: bounds, interfaceOrientation: orientationName) {
             mapper = GazeMapper(viewport: bounds, profile: profile)
             calibrationStatus = .calibrated(meanError: profile.validationMeanError, isValid: profile.isValid)
-            logger.info("calibration loaded: valid \(profile.isValid) mean error \(profile.validationMeanError ?? -1, format: .fixed(precision: 3)) axes \(GazeReadinessEvaluator.describe(profile.axisMapping), privacy: .public)")
+            logger.info("calibration loaded: valid \(profile.isValid)")
         } else {
             mapper = GazeMapper(viewport: bounds, nominal: nominal)
             calibrationStatus = .uncalibrated
@@ -138,17 +140,16 @@ final class GameViewModel {
 
     // MARK: Player intents
 
-    /// Tap on the scene: starts, resumes or continues depending on the phase.
+    /// Tap on the scene or the main button: starts, resumes or moves on depending on the phase.
     func primaryAction() {
         switch phase {
         case .ready, .paused, .resuming:
             play()
-        case let .levelComplete(_, isLast):
-            if isLast {
-                finishJourney()
+        case let .levelComplete(result):
+            if result.isCampaignEnd {
+                finishCampaign()
             } else {
-                loadLevel(progression.currentLevel)
-                play()
+                playNext()
             }
         case .initializing, .playing, .interrupted, .faceLost, .suspended, .failed:
             break
@@ -164,9 +165,29 @@ final class GameViewModel {
     func restartLevel() {
         guard phase == .paused || phase == .playing || phase == .resuming else { return }
         haltLoop()
-        loadLevel(progression.currentLevel)
-        levelInProgress = false
+        loadLevel(level)
         phase = .ready
+    }
+
+    func replay() {
+        guard case .levelComplete = phase else { return }
+        loadLevel(level)
+        phase = .ready
+    }
+
+    func playNext() {
+        guard case .levelComplete = phase, let next = Campaign.next(after: level) else { return }
+        let chapterChanged = next.chapter != level.chapter
+        loadLevel(next)
+        if chapterChanged && settings.soundEnabled {
+            audio.apply(.ambient(frequency: chapter.ambientFrequency))
+        }
+        phase = .ready
+    }
+
+    func openChapters() {
+        teardown()
+        navigator?.gameDidRequestChapters()
     }
 
     func retryAfterFailure() {
@@ -174,7 +195,7 @@ final class GameViewModel {
         phase = .initializing
         if !ownsGaze { wireServices() }
         gaze.start(viewport: GazeViewport(bounds: bounds, nominal: nominal))
-        audio.activate()
+        activateAudio()
     }
 
     func exit() {
@@ -182,13 +203,13 @@ final class GameViewModel {
         navigator?.gameDidRequestExit()
     }
 
-    /// Leaves the game screen for the gaze setup (recalibration) and keeps the progression.
+    /// Leaves the game screen for the gaze setup (recalibration) and keeps the level.
     func requestRecalibration() {
         guard phase == .paused else { return }
         phaseBeforeSuspension = .paused
         haltLoop()
         releaseGaze()
-        audio.deactivate()
+        deactivateAudio()
         phase = .suspended
         navigator?.gameDidRequestRecalibration()
     }
@@ -200,7 +221,7 @@ final class GameViewModel {
         wireServices()
         phase = .initializing
         gaze.start(viewport: GazeViewport(bounds: bounds, nominal: nominal))
-        audio.activate()
+        activateAudio()
     }
 
     /// Simulator and previews only: the pointer plays the role of the gaze.
@@ -215,7 +236,7 @@ final class GameViewModel {
         phaseBeforeSuspension = phase
         haltLoop()
         gaze.pause()
-        audio.deactivate()
+        deactivateAudio()
         phase = .suspended
     }
 
@@ -228,7 +249,7 @@ final class GameViewModel {
             wireServices()
             gaze.start(viewport: GazeViewport(bounds: bounds, nominal: nominal))
         }
-        audio.activate()
+        activateAudio()
     }
 
     // MARK: Loop
@@ -238,14 +259,17 @@ final class GameViewModel {
         levelInProgress = true
         faceLostDuration = 0
         seedCursorIfNeeded()
+        if !hintsBegun {
+            hintsBegun = true
+            hints.begin()
+            hint = hints.current
+        }
         clock.start { [weak self] deltaTime in
             self?.tick(deltaTime)
         }
     }
 
-    /// The reference engine started its cursor at the screen centre because no gaze data existed yet.
-    /// Here samples already flow before the first tap, so the cursor starts exactly at the current gaze
-    /// instead of smoothing its way there and repelling spheres near the centre for no reason.
+    /// Samples already flow before the first tap, so the cursor starts exactly at the current gaze.
     private func seedCursorIfNeeded() {
         guard !session.gaze.isActive, let sample = gaze.latestSample, let point = mapper?.screenPoint(sample) else { return }
         session.placeGaze(at: point)
@@ -265,9 +289,16 @@ final class GameViewModel {
             faceLostDuration = 0
         }
         let events = session.advance(by: deltaTime)
-        playDuration += min(max(deltaTime, 0), session.maxDeltaTime)
-        for cue in cuePolicy.cues(for: events, at: session.elapsed) {
-            audio.apply(cue)
+        if settings.soundEnabled {
+            for cue in cuePolicy.cues(for: events, at: session.elapsed) {
+                audio.apply(cue)
+            }
+        }
+        if hints.observe(events: events, elapsed: session.elapsed) {
+            hint = hints.current
+        }
+        if !showsRoute && level.requiresPushing && session.elapsed >= Self.helpDelay {
+            showsRoute = true
         }
         refreshSnapshot()
         if events.contains(.levelCompleted) {
@@ -278,33 +309,46 @@ final class GameViewModel {
     private func completeLevel() {
         haltLoop()
         levelInProgress = false
-        completedLevels += 1
-        let completedNumber = progression.currentNumber
-        switch progression.completeCurrentLevel() {
-        case .nextLevel:
-            phase = .levelComplete(number: completedNumber, isLast: false)
-        case .journeyFinished:
-            phase = .levelComplete(number: completedNumber, isLast: true)
-        }
+        hint = nil
+        let outcome = LevelOutcome(time: session.elapsed, intrusions: session.metrics.intrusions, losses: session.metrics.losses)
+        let previous = navigator?.gameDidComplete(level: level, outcome: outcome) ?? LevelRecord()
+        let earned = outcome.eclats(par: level.par)
+        let next = Campaign.next(after: level)
+        phase = .levelComplete(LevelResult(levelID: level.id,
+                                           outcome: outcome,
+                                           earned: earned,
+                                           newlyEarned: earned.subtracting(previous.eclats),
+                                           isNewBestTime: previous.bestTime.map { outcome.time < $0 } ?? false,
+                                           hasNextLevel: next != nil,
+                                           isChapterEnd: Campaign.isLastInChapter(level),
+                                           isCampaignEnd: next == nil))
+        logger.info("level \(self.level.id, privacy: .public) completed in \(outcome.time, format: .fixed(precision: 1)) s, intrusions \(outcome.intrusions), losses \(outcome.losses)")
     }
 
-    private func finishJourney() {
-        let summary = JourneySummary(levelCount: progression.levelCount, playDuration: playDuration)
+    private func finishCampaign() {
         teardown()
-        navigator?.gameDidFinishJourney(summary: summary)
+        navigator?.gameDidFinishCampaign()
     }
 
-    private func loadLevel(_ level: Level) {
-        session = GameSession(level: level, bounds: bounds)
+    private func loadLevel(_ definition: LevelDefinition) {
+        level = definition
+        chapter = Campaign.chapter(of: definition) ?? chapter
+        resolved = LevelResolver.resolve(definition, in: bounds)
+        session = resolved.makeSession()
+        hints = HintTracker.forLevel(definition, helpDelay: Self.helpDelay)
+        hintsBegun = false
+        hint = nil
+        showsRoute = false
         cuePolicy.reset()
-        levelNumber = level.number
-        targetCount = level.targetCount
-        isSequential = level.isSequential
+        faceLostDuration = 0
+        levelInProgress = false
         refreshSnapshot()
+        navigator?.gameDidStart(level: definition)
     }
 
     private func refreshSnapshot() {
-        snapshot = GameSceneSnapshot(session: session, showsGaze: settings.showsGazeIndicator, diagnostics: diagnostics)
+        snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: showsRoute,
+                                     showsGaze: settings.showsGazeIndicator, diagnostics: diagnostics)
     }
 
     /// Stops ticking and silences every crescendo voice; the scene stays as it is.
@@ -323,7 +367,7 @@ final class GameViewModel {
     private func teardown() {
         haltLoop()
         releaseGaze()
-        audio.deactivate()
+        deactivateAudio()
     }
 
     private func releaseGaze() {
@@ -332,6 +376,17 @@ final class GameViewModel {
         gaze.onSample = nil
         gaze.onStateChange = nil
         gaze.stop()
+    }
+
+    private func activateAudio() {
+        guard settings.soundEnabled else { return }
+        audio.activate()
+        audio.apply(.ambient(frequency: chapter.ambientFrequency))
+    }
+
+    private func deactivateAudio() {
+        audio.apply(.ambient(frequency: nil))
+        audio.deactivate()
     }
 
     // MARK: Services
@@ -411,8 +466,8 @@ final class GameViewModel {
         switch previous {
         case .playing, .paused, .resuming, .interrupted, .faceLost:
             levelInProgress ? .resuming : .ready
-        case let .levelComplete(number, isLast):
-            .levelComplete(number: number, isLast: isLast)
+        case let .levelComplete(result):
+            .levelComplete(result)
         case .initializing, .ready, .suspended, .failed:
             .ready
         }

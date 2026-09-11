@@ -1,7 +1,8 @@
 // SineSynth.swift
 // Layer: Audio
 // Purpose: Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph
-// (per-target crescendo, three-note chime, descending loss tone); render side owned by the audio thread.
+// (per-target crescendo, three-note chime, descending loss tone) plus the campaign sounds (completion arpeggio,
+// veilleuse pulse, chapter drone); render side owned by the audio thread.
 
 import Foundation
 import os
@@ -28,6 +29,15 @@ final class SineSynth: @unchecked Sendable {
         var lossEndFrequency: Double = 120
         var lossDuration: Double = 0.25
         var lossGain: Double = 0.05
+        var completionFrequencies: [Double] = [440, 554.37, 659.25, 880]
+        var completionNoteDuration: Double = 0.16
+        var completionGain: Double = 0.05
+        var pulseFrequency: Double = 990
+        var pulseDuration: Double = 0.06
+        var pulseGain: Double = 0.025
+        /// Drone gain per voice pair, far below the gameplay sounds.
+        var ambientGain: Double = 0.012
+        var ambientTimeConstant: Double = 0.8
 
         init(sampleRate: Double) {
             self.sampleRate = sampleRate
@@ -47,6 +57,10 @@ final class SineSynth: @unchecked Sendable {
         var voice2 = VoiceCommand()
         var chimeGeneration: UInt32 = 0
         var lossGeneration: UInt32 = 0
+        var completionGeneration: UInt32 = 0
+        var pulseGeneration: UInt32 = 0
+        var ambientFrequency: Double = 110
+        var ambientActive = false
 
         subscript(voice voice: Int) -> VoiceCommand {
             get {
@@ -93,10 +107,16 @@ final class SineSynth: @unchecked Sendable {
     private var lastCommands: Commands
     private var chime = OneShotRuntime()
     private var loss = OneShotRuntime()
+    private var completion = OneShotRuntime()
+    private var pulse = OneShotRuntime()
+    private var ambientPhaseA = 0.0
+    private var ambientPhaseB = 0.0
+    private var ambientLevel = 0.0
     private var sampleClock: Int64 = 0
     private let smoothingCoefficient: Double
     private let releaseCoefficient: Double
     private let twoPiOverSampleRate: Double
+    private let ambientCoefficient: Double
 
     init(configuration: Configuration) {
         var configuration = configuration
@@ -109,6 +129,7 @@ final class SineSynth: @unchecked Sendable {
         smoothingCoefficient = 1 - exp(-1 / (configuration.smoothingTimeConstant * configuration.sampleRate))
         releaseCoefficient = 1 - exp(-1 / (configuration.releaseTimeConstant * configuration.sampleRate))
         twoPiOverSampleRate = 2 * .pi / configuration.sampleRate
+        ambientCoefficient = 1 - exp(-1 / (configuration.ambientTimeConstant * configuration.sampleRate))
     }
 
     // MARK: Control side (any thread)
@@ -139,6 +160,26 @@ final class SineSynth: @unchecked Sendable {
         commands.withLock { $0.lossGeneration &+= 1 }
     }
 
+    func triggerCompletion() {
+        commands.withLock { $0.completionGeneration &+= 1 }
+    }
+
+    func triggerPulse() {
+        commands.withLock { $0.pulseGeneration &+= 1 }
+    }
+
+    /// Starts (or retunes) the chapter drone; nil fades it out.
+    func setAmbient(frequency: Double?) {
+        commands.withLock { state in
+            if let frequency {
+                state.ambientFrequency = frequency
+                state.ambientActive = true
+            } else {
+                state.ambientActive = false
+            }
+        }
+    }
+
     // MARK: Render side (audio thread only)
 
     /// Fills `buffer` with mono samples. Never blocks: if the control lock is busy the previous commands are reused.
@@ -151,6 +192,13 @@ final class SineSynth: @unchecked Sendable {
             if fresh.lossGeneration != lastCommands.lossGeneration {
                 loss.startSample = sampleClock
                 loss.phase = 0
+            }
+            if fresh.completionGeneration != lastCommands.completionGeneration {
+                completion.startSample = sampleClock
+                chime.startSample = -1
+            }
+            if fresh.pulseGeneration != lastCommands.pulseGeneration {
+                pulse.startSample = sampleClock
             }
             lastCommands = fresh
         }
@@ -174,33 +222,62 @@ final class SineSynth: @unchecked Sendable {
                 }
                 voices[index] = voice
             }
-            mix += renderChime()
+            mix += Self.phrase(&chime, sampleClock: sampleClock, sampleRate: configuration.sampleRate,
+                               frequencies: configuration.chimeFrequencies, noteDuration: configuration.chimeNoteDuration,
+                               gain: configuration.chimeGain)
+            mix += Self.phrase(&completion, sampleClock: sampleClock, sampleRate: configuration.sampleRate,
+                               frequencies: configuration.completionFrequencies, noteDuration: configuration.completionNoteDuration,
+                               gain: configuration.completionGain)
             mix += renderLoss()
+            mix += renderPulse()
+            mix += renderAmbient(commandsNow)
             buffer[frame] = Float(mix * master)
             sampleClock += 1
         }
     }
 
-    private func renderChime() -> Double {
-        guard chime.startSample >= 0 else { return 0 }
-        let elapsed = Double(sampleClock - chime.startSample) / configuration.sampleRate
-        let noteDuration = configuration.chimeNoteDuration
-        let total = noteDuration * Double(configuration.chimeFrequencies.count)
+    /// A sequence of equal notes with a 30 percent attack and a linear release, stopping by itself.
+    private static func phrase(_ runtime: inout OneShotRuntime, sampleClock: Int64, sampleRate: Double,
+                               frequencies: [Double], noteDuration: Double, gain: Double) -> Double {
+        guard runtime.startSample >= 0, !frequencies.isEmpty else { return 0 }
+        let elapsed = Double(sampleClock - runtime.startSample) / sampleRate
+        let total = noteDuration * Double(frequencies.count)
         if elapsed >= total {
-            chime.startSample = -1
+            runtime.startSample = -1
             return 0
         }
-        let noteIndex = min(Int(elapsed / noteDuration), configuration.chimeFrequencies.count - 1)
+        let noteIndex = min(Int(elapsed / noteDuration), frequencies.count - 1)
         let noteTime = elapsed - Double(noteIndex) * noteDuration
         let attack = noteDuration * 0.3
         let envelope: Double
         if noteTime < attack {
-            envelope = configuration.chimeGain * (noteTime / attack)
+            envelope = gain * (noteTime / attack)
         } else {
-            envelope = configuration.chimeGain * (1 - (noteTime - attack) / (noteDuration - attack))
+            envelope = gain * (1 - (noteTime - attack) / (noteDuration - attack))
         }
-        let frequency = configuration.chimeFrequencies[noteIndex]
-        return sin(2 * .pi * frequency * noteTime) * max(envelope, 0)
+        return sin(2 * .pi * frequencies[noteIndex] * noteTime) * max(envelope, 0)
+    }
+
+    private func renderPulse() -> Double {
+        guard pulse.startSample >= 0 else { return 0 }
+        let elapsed = Double(sampleClock - pulse.startSample) / configuration.sampleRate
+        if elapsed >= configuration.pulseDuration {
+            pulse.startSample = -1
+            return 0
+        }
+        let envelope = sin(Double.pi * elapsed / configuration.pulseDuration)
+        return sin(2 * .pi * configuration.pulseFrequency * elapsed) * configuration.pulseGain * envelope
+    }
+
+    private func renderAmbient(_ commandsNow: Commands) -> Double {
+        let target = commandsNow.ambientActive ? configuration.ambientGain : 0
+        ambientLevel += (target - ambientLevel) * ambientCoefficient
+        guard ambientLevel > 1e-6 else { return 0 }
+        ambientPhaseA += commandsNow.ambientFrequency * twoPiOverSampleRate
+        ambientPhaseB += commandsNow.ambientFrequency * 1.5 * twoPiOverSampleRate
+        if ambientPhaseA > 2 * .pi { ambientPhaseA -= 2 * .pi }
+        if ambientPhaseB > 2 * .pi { ambientPhaseB -= 2 * .pi }
+        return (sin(ambientPhaseA) * 0.6 + sin(ambientPhaseB) * 0.4) * ambientLevel
     }
 
     private func renderLoss() -> Double {

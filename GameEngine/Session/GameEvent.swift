@@ -1,14 +1,16 @@
 // GameEvent.swift
 // Layer: GameEngine
-// Purpose: Facts produced by one engine tick, consumed by audio, haptics and presentation
+// Purpose: Facts produced by one engine tick, consumed by audio, haptics, hints and presentation
 
 import Foundation
 
 enum LossCause: Hashable, Sendable {
-    /// The validated sphere drifted beyond the wobble tolerance.
+    /// The validated lueur drifted beyond the wobble tolerance.
     case drift
-    /// A lower-ranked sphere lost its validation (R-11).
+    /// A lower-ranked lueur lost its validation (R-11).
     case cascade
+    /// The veilleuse lighting its iris went out (R-26).
+    case veilleuse
 }
 
 enum GameEvent: Hashable, Sendable {
@@ -17,4 +19,12 @@ enum GameEvent: Hashable, Sendable {
     case targetValidated(sequence: Int)
     case targetLost(sequence: Int, cause: LossCause)
     case levelCompleted
+    /// A lueur entered the attention zone (it starts being repelled).
+    case intrusion(sequence: Int)
+    /// R-23: the gaze left the screen; irises are closed until it comes back.
+    case attentionLeftField
+    case attentionReturned
+    case veilleuseLow(index: Int)
+    case veilleuseOut(index: Int)
+    case veilleuseRelit(index: Int)
 }

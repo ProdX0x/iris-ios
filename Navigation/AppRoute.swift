@@ -7,10 +7,14 @@ import Foundation
 struct JourneySummary: Hashable, Sendable {
     let levelCount: Int
     let playDuration: TimeInterval
+    let eclats: Int
+    let maxEclats: Int
 
-    init(levelCount: Int, playDuration: TimeInterval) {
+    init(levelCount: Int, playDuration: TimeInterval, eclats: Int, maxEclats: Int) {
         self.levelCount = levelCount
         self.playDuration = playDuration
+        self.eclats = eclats
+        self.maxEclats = maxEclats
     }
 }
 
@@ -22,7 +26,8 @@ enum AppRoute: Hashable, Sendable {
     case home
     case cameraAccess
     case gazeSetup(GazeSetupIntent)
-    case tutorial
+    case chapters
+    case carnet
     case game
     case journeyComplete(JourneySummary)
     case unavailable(DeviceUnavailability)

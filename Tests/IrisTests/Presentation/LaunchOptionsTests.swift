@@ -1,6 +1,6 @@
 // LaunchOptionsTests.swift
 // Layer: Tests
-// Purpose: Debug launch argument parsing
+// Purpose: Debug launch argument parsing and seeded progress
 
 import Foundation
 import Testing
@@ -8,28 +8,38 @@ import Testing
 
 @Suite("LaunchOptions")
 struct LaunchOptionsTests {
-    @Test("parses route, level and autoplay")
+    @Test("parses route, level, progress, autoplay and oracle gaze")
     func parse() {
-        let options = LaunchOptions.parse(["Iris", "--iris-route", "game", "--iris-level", "9", "--iris-autoplay"])
+        let options = LaunchOptions.parse(["Iris", "--iris-route", "chapters", "--iris-level", "4-3", "--iris-progress", "all",
+                                           "--iris-autoplay", "--iris-oracle-gaze", "--iris-gaze", "10,20"])
 
-        #expect(options.initialRoute == .game)
-        #expect(options.startingLevel == 9)
+        #expect(options.initialRoute == .chapters)
+        #expect(options.level == "4-3")
+        #expect(options.seededProgress == .all)
         #expect(options.autoplay)
+        #expect(options.oracleGaze)
+        #expect(options.parkedGaze == Vector2(x: 10, y: 20))
     }
 
-    @Test("ignores unknown arguments and bad values")
-    func ignoresUnknown() {
-        let options = LaunchOptions.parse(["Iris", "-NSFoo", "--iris-route", "nowhere", "--iris-level", "x"])
+    @Test("ignores unknown arguments and invalid values")
+    func invalid() {
+        let options = LaunchOptions.parse(["Iris", "-NSFoo", "--iris-route", "nowhere", "--iris-level", "9-9", "--iris-progress", "x"])
 
         #expect(options.initialRoute == nil)
-        #expect(options.startingLevel == nil)
-        #expect(!options.autoplay)
+        #expect(options.level == nil)
+        #expect(options.seededProgress == nil)
     }
 
-    @Test("progression clamps the starting level into range")
-    func startingIndexClamp() {
-        #expect(GameProgression(startingIndex: 99).currentNumber == 14)
-        #expect(GameProgression(startingIndex: -3).currentNumber == 1)
-        #expect(GameProgression(startingIndex: 8).currentNumber == 9)
+    @Test("seeded progress completes levels up to the given one with varied éclats")
+    func seeded() {
+        let through = LaunchOptions.progress(for: .through("2-1"))
+        let all = LaunchOptions.progress(for: .all)
+
+        #expect(through.completedCount(in: Campaign.levels) == 6)
+        #expect(through.nextLevel(in: Campaign.levels)?.id == "2-2")
+        #expect(all.nextLevel(in: Campaign.levels) == nil)
+        let counts = Set(Campaign.levels.map { all.record(for: $0).eclats.count })
+        #expect(counts.count >= 2)
+        #expect(all.encounteredElements == Set(GameElement.allCases))
     }
 }

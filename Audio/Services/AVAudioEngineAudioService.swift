@@ -47,6 +47,9 @@ final class AVAudioEngineAudioService: AudioService {
         case let .stopProgress(voice): synth.stopProgress(voice: voice)
         case .validation: synth.triggerChime()
         case .loss: synth.triggerLoss()
+        case .levelComplete: synth.triggerCompletion()
+        case .veilleuseLow: synth.triggerPulse()
+        case let .ambient(frequency): synth.setAmbient(frequency: frequency)
         }
     }
 

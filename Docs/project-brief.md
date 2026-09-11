@@ -4,7 +4,7 @@
 Iris. A native iOS game where the player guides spheres to their arrival points by not looking at them: a direct gaze repels a sphere, indirect attention lets it drift home. Category: utility-style single-purpose game (perception, attention).
 
 ## Bundle
-Bundle identifier `com.prodx0x.iris`. Minimum iOS 17.0. Swift 6 language mode, strict concurrency complete. Xcode 26.3 (build 17C529), iOS SDK 26.2.
+Bundle identifier `net.steve-s.iris` (tests: `net.steve-s.iris.tests`), Apple Developer team `G4U9RG5GL7` (Stéphane SAULNIER), automatic signing; these values live in `project.yml`, the XcodeGen source of truth (see README, « Apple Signing »). Minimum iOS 17.0. Swift 6 language mode, strict concurrency complete. Xcode 26.3 (build 17C529), iOS SDK 26.2.
 
 ## User
 A curious iPhone owner with a Face ID device who wants a short, calm, unusual game session. The frustration removed: every gaze-driven experience they tried needed a clunky calibration or a browser and a webcam. Iris starts in seconds, needs no calibration and runs fully on device.

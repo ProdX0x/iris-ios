@@ -1,6 +1,7 @@
 // GameSession.swift
 // Layer: GameEngine
-// Purpose: Deterministic per-level simulation: physics, validation, cascade and events (port of `step()`)
+// Purpose: Deterministic per-level simulation: physics, environment, validation, cascade, metrics and events
+// (port of `step()`, extended by the campaign rules R-23 to R-28)
 
 import Foundation
 
@@ -18,30 +19,53 @@ struct GameSession: Sendable {
     private(set) var frameTime: Double = 0
     private(set) var elapsed: TimeInterval = 0
     private(set) var isComplete = false
+    private(set) var environment: LevelEnvironment
+    private(set) var metrics = SessionMetrics()
+    private(set) var isAttentionOnField = true
 
     private let noiseSources: [any NoiseSource]
     private let integrator: TargetPhysics
     private let validationRule: ValidationRule
+    private var wasInZone: [Bool]
 
     init(level: Level,
          bounds: PlayfieldBounds,
          physics: PhysicsConstants = .reference,
          validation: ValidationRules? = nil,
+         environment: LevelEnvironment = .empty,
          initialGaze: Vector2? = nil,
+         gazeJumpThreshold: Double = 300,
          noiseSources: [any NoiseSource]? = nil) {
         self.level = level
         self.bounds = bounds
         self.physics = physics
         let rules = validation ?? ValidationRules.reference(physics: physics)
         self.validation = rules
-        self.targets = level.targets.map { Target(blueprint: $0, bounds: bounds, holdDuration: level.holdDuration) }
-        self.gaze = GazeFilter(initialPosition: initialGaze ?? bounds.center)
+        self.environment = environment
+        var targets = level.targets.map { Target(blueprint: $0, bounds: bounds, holdDuration: level.holdDuration) }
+        for (index, path) in environment.irisPaths where targets.indices.contains(index) {
+            targets[index].arrival = path.position(at: 0)
+        }
+        self.targets = targets
+        self.gaze = GazeFilter(initialPosition: initialGaze ?? bounds.center, jumpThreshold: gazeJumpThreshold)
         self.noiseSources = noiseSources ?? level.targets.indices.map { ValueNoise1D(seed: 1000 + $0 * 137) }
         self.integrator = TargetPhysics(constants: physics, bounds: bounds)
         self.validationRule = ValidationRule(rules: rules)
+        self.wasInZone = Array(repeating: false, count: targets.count)
+        self.isAttentionOnField = true
     }
 
     var allValidated: Bool { targets.allSatisfy(\.isValidated) }
+    var veilleuses: [VeilleuseState] { environment.veilleuses }
+
+    func radius(ofTargetAt index: Int) -> Double {
+        environment.lueurRadii.indices.contains(index) ? environment.lueurRadii[index] : physics.targetRadius
+    }
+
+    /// Whether the iris of `target` is currently open (attention on field and every linked veilleuse lit).
+    func isIrisOpen(for target: Target) -> Bool {
+        isAttentionOnField && environment.veilleuses.allSatisfy { !$0.lights(sequence: target.sequence) || $0.isLit }
+    }
 
     /// Smoothed gaze input (what the reference engine's gaze listener did).
     mutating func ingestGaze(_ point: Vector2) {
@@ -56,6 +80,7 @@ struct GameSession: Sendable {
     /// Replaces the runtime targets; used by tests and previews to stage a scene.
     mutating func replaceTargets(_ newTargets: [Target]) {
         targets = newTargets
+        wasInZone = Array(repeating: false, count: newTargets.count)
         isComplete = false
     }
 
@@ -81,27 +106,54 @@ struct GameSession: Sendable {
         frameTime += frameFraction
         elapsed += seconds
         var events: [GameEvent] = []
+        let cursor = gaze.position
+        updateAttention(cursor: cursor, events: &events)
+        updateVeilleuses(seconds: seconds, cursor: cursor, events: &events)
+
         var everyTargetValidated = true
         let lowestUnvalidated = level.isSequential ? TurnRule.lowestUnvalidatedSequence(in: targets) : nil
-        let cursor = gaze.position
 
         for index in targets.indices {
             var target = targets[index]
             let wasHolding = target.isHolding
+            if let path = environment.irisPaths[index] {
+                target.arrival = path.position(at: elapsed)
+            }
+            detectIntrusion(index: index, target: target, cursor: cursor, events: &events)
+
             let noise = noiseSources[index]
-            integrator.integrate(&target, gaze: cursor, noise: { noise.value(at: $0) }, frameTime: frameTime, frameFraction: frameFraction)
+            integrator.integrate(&target, gaze: cursor, noise: { noise.value(at: $0) }, frameTime: frameTime,
+                                 frameFraction: frameFraction, externalImpulse: environment.impulse(at: target.position))
+            for veil in environment.veils {
+                veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)
+            }
+
+            let irisOpen = isIrisOpen(for: target)
+            let linkedLit = environment.veilleuses.allSatisfy { !$0.lights(sequence: target.sequence) || $0.isLit }
+            if target.isValidated && !linkedLit {
+                target.isValidated = false
+                target.holdTime = 0
+                events.append(.targetLost(sequence: target.sequence, cause: .veilleuse))
+                metrics.losses += 1
+            }
             let isTurn = TurnRule.isTurn(of: target, lowestUnvalidated: lowestUnvalidated, isSequential: level.isSequential)
-            let transition = validationRule.apply(to: &target, isTurn: isTurn, elapsed: seconds)
+            let transition = validationRule.apply(to: &target, isTurn: isTurn, elapsed: seconds, canAccumulate: irisOpen)
 
             if target.isHolding {
-                events.append(.validationProgressed(sequence: target.sequence, progress: target.validationProgress))
+                if irisOpen {
+                    events.append(.validationProgressed(sequence: target.sequence, progress: target.validationProgress))
+                }
             } else if wasHolding {
                 events.append(.validationProgressStopped(sequence: target.sequence))
             }
             switch transition {
-            case .validated: events.append(.targetValidated(sequence: target.sequence))
-            case .lost: events.append(.targetLost(sequence: target.sequence, cause: .drift))
-            case .unchanged: break
+            case .validated:
+                events.append(.targetValidated(sequence: target.sequence))
+            case .lost:
+                events.append(.targetLost(sequence: target.sequence, cause: .drift))
+                metrics.losses += 1
+            case .unchanged:
+                break
             }
             if !target.isValidated { everyTargetValidated = false }
             targets[index] = target
@@ -111,6 +163,7 @@ struct GameSession: Sendable {
             let cascaded = CascadeRule.apply(to: &targets)
             for sequence in cascaded {
                 events.append(.targetLost(sequence: sequence, cause: .cascade))
+                metrics.losses += 1
             }
             if !cascaded.isEmpty { everyTargetValidated = false }
         }
@@ -120,5 +173,38 @@ struct GameSession: Sendable {
             events.append(.levelCompleted)
         }
         return events
+    }
+
+    private mutating func updateAttention(cursor: Vector2, events: inout [GameEvent]) {
+        guard environment.requiresAttentionOnField else { return }
+        let onField = gaze.isActive && environment.isOnField(cursor, bounds: bounds)
+        guard onField != isAttentionOnField else { return }
+        isAttentionOnField = onField
+        if onField {
+            events.append(.attentionReturned)
+        } else {
+            metrics.attentionExits += 1
+            events.append(.attentionLeftField)
+        }
+    }
+
+    private mutating func updateVeilleuses(seconds: TimeInterval, cursor: Vector2, events: inout [GameEvent]) {
+        for index in environment.veilleuses.indices {
+            switch environment.veilleuses[index].update(seconds: seconds, gaze: cursor, gazeActive: gaze.isActive) {
+            case .becameLow: events.append(.veilleuseLow(index: index))
+            case .wentOut: events.append(.veilleuseOut(index: index))
+            case .relit: events.append(.veilleuseRelit(index: index))
+            case .none: break
+            }
+        }
+    }
+
+    private mutating func detectIntrusion(index: Int, target: Target, cursor: Vector2, events: inout [GameEvent]) {
+        let inZone = gaze.isActive && target.position.distance(to: cursor) < target.attentionZone
+        if inZone && !wasInZone[index] {
+            metrics.intrusions += 1
+            events.append(.intrusion(sequence: target.sequence))
+        }
+        wasInZone[index] = inZone
     }
 }

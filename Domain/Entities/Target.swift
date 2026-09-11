@@ -8,7 +8,8 @@ struct Target: Identifiable, Hashable, Sendable {
     let id: TargetID
     var position: Vector2
     var velocity: Vector2
-    let arrival: Vector2
+    /// Iris position; mutable because an iris may glide (R-27).
+    var arrival: Vector2
     let attentionZone: Double
     let repulsionGain: Double
     let passiveAttraction: Double
@@ -18,6 +19,8 @@ struct Target: Identifiable, Hashable, Sendable {
     /// Continuous time spent inside the arrival zone while it is this target's turn.
     var holdTime: TimeInterval
     var isValidated: Bool
+    /// 0...1 share of the maximum repulsion felt during the last step (visual trouble only, no physics effect).
+    var disturbance: Double = 0
 
     init(id: TargetID, position: Vector2, velocity: Vector2 = .zero, arrival: Vector2, attentionZone: Double,
          repulsionGain: Double, passiveAttraction: Double, noiseAmplitude: Double, requiredHoldTime: TimeInterval,

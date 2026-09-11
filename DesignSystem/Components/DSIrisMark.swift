@@ -1,6 +1,6 @@
 // DSIrisMark.swift
 // Layer: DesignSystem
-// Purpose: The Iris emblem: concentric amber rings around a dark pupil, optionally breathing
+// Purpose: The Iris emblem: a six-blade amber diaphragm around a pearl lueur, optionally breathing
 
 import SwiftUI
 
@@ -9,7 +9,7 @@ struct DSIrisMark: View {
     private let isBreathing: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var breath = false
+    @State private var open = false
 
     init(size: CGFloat = 120, isBreathing: Bool = false) {
         self.size = size
@@ -19,34 +19,55 @@ struct DSIrisMark: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(RadialGradient(colors: [DSColor.accent.opacity(0.35), DSColor.accent.opacity(0)],
-                                     center: .center, startRadius: size * 0.3, endRadius: size * 0.75))
-                .frame(width: size * 1.5, height: size * 1.5)
+                .fill(RadialGradient(colors: [DSColor.accent.opacity(0.18), .clear], center: .center, startRadius: size * 0.2, endRadius: size * 0.8))
+                .frame(width: size * 1.6, height: size * 1.6)
             Circle()
-                .strokeBorder(AngularGradient(colors: [DSColor.accentDeep, DSColor.accent, DSColor.accentDeep, DSColor.accent, DSColor.accentDeep],
-                                              center: .center), lineWidth: size * 0.16)
+                .strokeBorder(DSColor.accent.opacity(0.45), lineWidth: max(1, size * 0.012))
                 .frame(width: size, height: size)
+            DSApertureBlades(closure: open ? 0.25 : 0.55, rotation: open ? 12 : 0)
+                .stroke(DSColor.accent, style: StrokeStyle(lineWidth: max(1.5, size * 0.07), lineCap: .round))
+                .frame(width: size * 0.84, height: size * 0.84)
             Circle()
-                .strokeBorder(DSColor.accent.opacity(0.35), lineWidth: 1)
-                .frame(width: size * 0.62, height: size * 0.62)
+                .fill(RadialGradient(colors: [DSColor.lueurCore, DSColor.lueurGlow.opacity(0)], center: .center, startRadius: 0, endRadius: size * 0.16))
+                .frame(width: size * 0.32, height: size * 0.32)
             Circle()
-                .fill(DSColor.backgroundPrimary)
-                .frame(width: size * 0.42, height: size * 0.42)
-                .overlay(alignment: .topLeading) {
-                    Circle()
-                        .fill(DSColor.textPrimary.opacity(0.85))
-                        .frame(width: size * 0.09, height: size * 0.09)
-                        .offset(x: size * 0.1, y: size * 0.1)
-                }
+                .fill(DSColor.lueurCore)
+                .frame(width: size * 0.08, height: size * 0.08)
         }
-        .scaleEffect(breath ? 1.04 : 1)
-        .opacity(breath ? 1 : 0.92)
-        .frame(width: size * 1.5, height: size * 1.5)
+        .frame(width: size * 1.6, height: size * 1.6)
         .onAppear {
             guard isBreathing, !reduceMotion else { return }
-            withAnimation(DSMotion.breathAnimation) { breath = true }
+            withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) { open = true }
         }
         .accessibilityHidden(true)
+    }
+}
+
+/// Six arcs that tighten toward the centre as `closure` grows (0 open, 1 closed).
+struct DSApertureBlades: Shape {
+    var closure: Double
+    var rotation: Double
+
+    var animatableData: AnimatablePair<Double, Double> {
+        get { AnimatablePair(closure, rotation) }
+        set {
+            closure = newValue.first
+            rotation = newValue.second
+        }
+    }
+
+    func path(in rect: CGRect) -> Path {
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        let maxRadius = min(rect.width, rect.height) / 2
+        let radius = maxRadius * (1 - 0.6 * min(max(closure, 0), 1))
+        var path = Path()
+        for index in 0..<6 {
+            let start = Angle.degrees(Double(index) * 60 + rotation + closure * 40)
+            // Each blade is its own subpath: without the move, addArc would join the blades with straight lines.
+            path.move(to: CGPoint(x: center.x + radius * cos(start.radians), y: center.y + radius * sin(start.radians)))
+            path.addArc(center: center, radius: radius, startAngle: start, endAngle: start + .degrees(34), clockwise: false)
+        }
+        return path
     }
 }
 

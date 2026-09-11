@@ -14,7 +14,9 @@ struct ValidationRule: Hashable, Sendable {
     /// Mirrors the reference engine: a validated target loses its place beyond the wobble tolerance;
     /// an unvalidated target accumulates presence only inside the settle radius and only on its turn;
     /// anything else resets the accumulated presence to zero.
-    func apply(to target: inout Target, isTurn: Bool, elapsed: TimeInterval) -> ValidationTransition {
+    /// `canAccumulate` false (iris closed: gaze off screen R-23, or veilleuse out R-26) freezes the presence:
+    /// it neither grows nor resets, and no validation can happen.
+    func apply(to target: inout Target, isTurn: Bool, elapsed: TimeInterval, canAccumulate: Bool = true) -> ValidationTransition {
         let distance = target.distanceToArrival
         let wasValidated = target.isValidated
         if target.isValidated {
@@ -23,8 +25,10 @@ struct ValidationRule: Hashable, Sendable {
                 target.holdTime = 0
             }
         } else if distance < rules.settleRadius && isTurn {
-            target.holdTime += elapsed
-            target.isValidated = target.holdTime >= target.requiredHoldTime - rules.holdEpsilon
+            if canAccumulate {
+                target.holdTime += elapsed
+                target.isValidated = target.holdTime >= target.requiredHoldTime - rules.holdEpsilon
+            }
         } else {
             target.holdTime = 0
         }

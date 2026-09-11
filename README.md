@@ -1,6 +1,6 @@
 # Iris
 
-Jeu iOS natif d'attention indirecte : **regarder directement une sphère la repousse**. Le joueur doit répartir son attention sans la fixer pour laisser une, deux puis trois sphères rejoindre leur point d'arrivée, dans l'ordre, sur quatorze niveaux.
+Jeu iOS natif d'attention indirecte : **ce que vous regardez s'éloigne**. Le joueur guide des lueurs vers leurs iris en choisissant où poser les yeux et où ne pas les poser, sur une campagne de six chapitres et 34 niveaux conçus un par un : éviter, partager son attention, pousser contre un courant, contourner un voile, raviver une veilleuse, anticiper un iris mouvant.
 
 Ce README est le carnet technique autoritaire du projet. Les statuts utilisés sont :
 
@@ -10,37 +10,91 @@ Ce README est le carnet technique autoritaire du projet. Les statuts utilisés s
 
 ---
 
+# Apple Signing — NE PAS MODIFIER SANS RAISON EXPLICITE
+
+| | |
+|---|---|
+| App | `Iris` |
+| Bundle ID principal | `net.steve-s.iris` |
+| Bundle ID des tests | `net.steve-s.iris.tests` |
+| Signing | `Automatic` (aucun certificat ni profil de provisioning imposé) |
+| Development Team | `G4U9RG5GL7` — Stéphane SAULNIER, équipe individuelle de l'Apple Developer Program |
+| Concepteur | Stéphane SAULNIER |
+| Marque potentielle | ProdX0xSs (marque ou studio éventuel : ni Apple Account, ni Team ID, ni préfixe de Bundle ID) |
+
+**Toute future génération ou modification du projet doit préserver ces valeurs.**
+
+- La source de vérité est `project.yml` (XcodeGen). `Iris.xcodeproj` est régénéré par `xcodegen generate`, et tout réglage saisi dans Xcode (Signing & Capabilities, Build Settings) est écrasé à la régénération suivante : corriger `project.yml`, jamais le `.pbxproj` seul.
+- `python3 Tools/audit.py` (contrôle C12) échoue si `project.yml`, le projet généré ou les sources s'écartent de ces valeurs, ou si un profil de provisioning est épinglé.
+- `NKN63DTRM4` n'est **pas** une équipe : c'est l'identifiant personnel inscrit dans le nom des certificats « Apple Development » ; l'équipe (champ OU des certificats) est `G4U9RG5GL7`. Ne jamais le réintroduire.
+- Aucun identifiant Apple personnel (e-mail, mot de passe, jeton, clé, secret App Store Connect) n'est versionné ; le compte reste géré par Xcode et le trousseau macOS.
+
+Migration, cause du problème et vérifications : § 13.
+
+---
+
+## 0. Refonte du produit (11 septembre 2026)
+
+Le prototype (moteur HTML porté, 14 niveaux générés par graine) a été traité comme la première démonstration d'une idée. Il reste autoritaire pour le **noyau mécanique** (répulsion par le regard, attraction, présence 0,75 s, ordre, cascade, physique), mais plus pour le périmètre du jeu.
+
+Documents de référence du produit, dans `Design/` :
+
+| Document | Contenu |
+|---|---|
+| `PRODUCT_AUDIT.md` | Audit mesuré du prototype : niveau 2 presque résolu d'avance, 0,4 % d'écran libre au niveau 5, difficulté non monotone, faille « regarder hors de l'écran », un seul usage du regard. |
+| `GAME_VISION.md` | Vision, piliers, arc d'expérience, ce qu'Iris n'est pas. |
+| `GAME_DESIGN.md` | Règles conservées, modifiées et nouvelles (R-23 à R-28), progression, éclats, apprentissage, retours, idées rejetées, revue critique, écarts d'implémentation. |
+| `LEVEL_DESIGN_SYSTEM.md` | Paramètres, règles de combinaison, familles, métriques, vérification automatique, 13 critères de différence, justification des 34 niveaux, mesures réelles de chaque niveau. |
+| `UX_VISION.md` | Parcours, fonction de chaque écran, consignes contextuelles, mouvement, accessibilité. |
+| `ART_DIRECTION.md` | La « chambre noire » : palette, formes (diaphragme à six lames), typographie, mouvement, son. |
+
+Ce qui change pour le joueur :
+
+- **Six chapitres** : Éveil, Partage, Courants, Voiles, Veilleuses, Clairvoyance. Chaque chapitre introduit un seul élément, d'abord seul, puis le combine.
+- **Le regard devient un outil** : les courants et les voiles exigent de pousser une lueur en regardant de l'autre côté ; les veilleuses exigent de regarder quelque chose sans troubler le reste.
+- **Regard sur l'écran (R-23)** : hors de l'écran, les iris se ferment. La faille du prototype est supprimée.
+- **Apprentissage joué** : plus d'écran de règles. Le niveau I-1 est le tutoriel, et des consignes apparaissent quand le joueur fait la chose.
+- **Progression persistante** : carte des chapitres, déblocage niveau par niveau, trois éclats par niveau (atteint, fluide, serein), Carnet des éléments rencontrés, aide « voie » après 45 s.
+- **Nouvelle identité** : vue de face sans perspective trompeuse, lueurs émissives, iris-diaphragmes, nappe sonore par chapitre, arpège de fin de niveau.
+
+Chaque niveau est **prouvé par simulation** (`Tests/IrisTests/Campaign/`) : faisable par un joueur-robot bruité, et impossible sans l'élément qu'il enseigne.
+
+---
+
 ## 1. Projet
 
 | | |
 |---|---|
-| Objectif | Portage natif fidèle du moteur `attention-indirecte.html` avec suivi du regard ARKit, audio synthétisé et identité visuelle propre |
+| Objectif | Jeu complet construit sur le noyau mécanique porté fidèlement de `attention-indirecte.html` : campagne de 34 niveaux conçus, suivi du regard ARKit calibré, audio synthétisé, identité propre |
 | Plateforme | iOS 17.0 et plus, iPhone et iPad, **portrait uniquement**, plein écran |
 | Contrainte matérielle | Caméra TrueDepth / `ARFaceTrackingConfiguration.isSupported` (Face ID). Sans elle : écran « regard indisponible » |
 | Technologies | Swift 6 (concurrence stricte complète), SwiftUI, Observation, ARKit, AVFoundation / AVAudioEngine, simd, QuartzCore (CADisplayLink) |
 | Dépendances tierces | Aucune |
 | Outils | Xcode 26.3 (17C529), SDK iOS 26.2, XcodeGen 2.45.4 pour générer `Iris.xcodeproj` depuis `project.yml` |
-| Bundle | `com.prodx0x.iris`, équipe de développement pré-renseignée, signature automatique |
+| Bundle | `net.steve-s.iris` (tests : `net.steve-s.iris.tests`), équipe `G4U9RG5GL7`, signature automatique — voir « Apple Signing » |
+| Concepteur | Stéphane SAULNIER |
+| Marque potentielle | ProdX0xSs (non utilisée dans la configuration Apple) |
 
 Arborescence (le projet Xcode est directement dans ce dossier, pas de conteneur `Iris/`) :
 
 ```
-Iris.xcodeproj  project.yml  Config/Info.plist  README.md  attention-indirecte.html (intact)
-App/          IrisApp, DI/AppContainer, Platform/ (CADisplayLink, liens système, options de lancement)
-Domain/       entités, valeurs, constantes physiques, règles de validation, catalogue de niveaux (Foundation seul)
-GameEngine/   bruit, intégrateur, session, progression, filtre de regard, horloge (Foundation seul)
-AR/           GazeTrackingService (ARKit / simulé), projection du regard, capacités, permission caméra
+Iris.xcodeproj  project.yml  Config/Info.plist  README.md  GAZE_ENGINE_V2_REPORT.md  attention-indirecte.html (intact)
+Design/       audit du prototype, vision, game design, level design, UX, direction artistique (référence produit)
+App/          IrisApp, DI/AppContainer, Persistence/ (progression), Platform/ (CADisplayLink, liens système, options de lancement)
+Domain/       entités, constantes physiques, règles de validation, Campaign/ (34 niveaux), Progress/ (éclats, déblocages), catalogue prototype
+GameEngine/   bruit, intégrateur, session, Environment/ (courants, voiles, veilleuses, iris mouvants), Campaign/ (résolution, consignes)
+AR/           GazeTrackingService (ARKit / simulé), Calibration/ (Gaze Engine v2), capacités, permission caméra
 Audio/        AudioService (AVAudioEngine / silencieux), synthétiseur sinus, politique sonore
-Navigation/   AppRoute, AppCoordinator, RootView
-Features/     Home, CameraAccess, Tutorial, Game (ViewModels, Views, Rendering), JourneyComplete, Unavailable
-DesignSystem/ Tokens, Components, Modifiers
-Resources/    Assets.xcassets (couleurs, icône)
-Tests/IrisTests  suite Swift Testing + fixtures golden + mocks
-Docs/         brief, conventions, produit, architecture, modèle de domaine, design system, file-map, audit
+Navigation/   AppRoute, AppSheet, HomeSummary, AppCoordinator, RootView
+Features/     Home, CameraAccess, GazeSetup, Chapters, Carnet, Settings, Game (ViewModels, Views, Rendering), JourneyComplete, Unavailable
+DesignSystem/ Tokens, Components (dont DSIrisMark, DSEclats, DSGlyph), Modifiers
+Resources/    Assets.xcassets (palette chambre noire, icône)
+Tests/IrisTests  suite Swift Testing, fixtures golden, robots de campagne, mocks
+Docs/         brief, conventions, architecture (ADR-1 à 16), modèle de domaine (R-01 à R-30), design system, file-map, audit
 Tools/        MakeAppIcon.swift (icône), audit.py (audit de couches)
 ```
 
-Regénérer le projet après ajout de fichiers : `xcodegen generate`.
+Regénérer le projet après ajout de fichiers : `xcodegen generate`. `project.yml` est la seule source de vérité des réglages Xcode, signature comprise : un réglage modifié dans Xcode sans être reporté dans `project.yml` est perdu à la régénération.
 
 ---
 
@@ -53,17 +107,17 @@ Regénérer le projet après ajout de fichiers : `xcodegen generate`.
 | HTML / JavaScript | Swift | Statut |
 |---|---|---|
 | `makeNoise1D(seed)` (LCG 9301 / 49297 / 233280, table 256, smoothstep) | `LinearCongruentialGenerator`, `ValueNoise1D` (GameEngine/Noise) | `[vérifié automatiquement]` valeurs bit à bit |
-| `rngFor(2000 + n*97)`, `randomPoint(margin 0.2)`, `buildLevel(n)`, `GAZE_ZONE_MULTIPLIER = 1.6` | `LevelCatalog`, `LevelDifficulty`, `TargetBlueprint` (Domain/Levels) | `[vérifié automatiquement]` géométrie identique |
+| `rngFor(2000 + n*97)`, `randomPoint(margin 0.2)`, `buildLevel(n)`, `GAZE_ZONE_MULTIPLIER = 1.6` | `PrototypeLevelCatalog`, `LevelDifficulty`, `TargetBlueprint` (Domain/Levels), conservés comme référence historique des traces golden | `[vérifié automatiquement]` géométrie identique |
 | bandes : n<3 → 1 cible, 220, 0.008, 0.6 ; n<8 → 2, 190, 0.009, 0.55 ; sinon 3, 150, 0.013, 0.5 | `LevelDifficulty.band(forLevelIndex:)` | `[vérifié automatiquement]` |
-| `hold_time_frames = 45` | `LevelCatalog.holdDuration = 45/60 s`, `Target.requiredHoldTime` | `[vérifié automatiquement]` |
+| `hold_time_frames = 45` | `PrototypeLevelCatalog.holdDuration = 45/60 s`, `LevelDefinition.hold = 0,75 s`, `Target.requiredHoldTime` | `[vérifié automatiquement]` |
 | `RADIUS_TARGET 24`, `RADIUS_ARRIVAL 40`, `VITESSE_MAX 2.2`, `FRICTION 0.94`, `MARGE_BORD 60`, `PERTE_REBOND 0.5` | `PhysicsConstants` | `[vérifié automatiquement]` |
 | `SETTLE_RADIUS = 40 - 24`, `WOBBLE_TOLERANCE = SETTLE_RADIUS + 20` | `ValidationRules` (16 pt, 36 pt) | `[vérifié automatiquement]` |
 | `step()` : répulsion `k*(zone-d)`, attraction, bruit, plafond, friction, intégration, rebonds | `TargetPhysics.integrate` | `[vérifié automatiquement]` traces golden |
 | `isTargetsTurn`, `lowestUnsettledSeq` | `TurnRule` | `[vérifié automatiquement]` |
 | bloc `settled / holdFrames` | `ValidationRule` | `[vérifié automatiquement]` |
 | cascade (`brokenSeq`) | `CascadeRule` | `[vérifié automatiquement]` |
-| `allSettled` → niveau suivant | `GameSession.isComplete`, `GameProgression` | `[vérifié automatiquement]` |
-| `LEVELS` (14), `currentLevelIndex`, `gameState` | `GameProgression`, `AppRoute` + `GamePhase` | `[vérifié automatiquement]` |
+| `allSettled` → niveau suivant | `GameSession.isComplete`, `Campaign.next(after:)`, écran de résultat | `[vérifié automatiquement]` |
+| `LEVELS` (14), `currentLevelIndex`, `gameState` | `PrototypeLevelCatalog` (référence) ; le jeu utilise `Campaign` (34 niveaux), `CampaignProgress`, `AppRoute` + `GamePhase` | `[vérifié automatiquement]` |
 | listener WebGazer : `alpha = 0.1`, saut > 300 px ignoré sauf 3 consécutifs | `GazeFilter` (appliqué après calibration, en points) | `[vérifié automatiquement]` |
 | `cursor` initialisé au centre | `GameSession.gaze` initialisé au centre, puis amorcé sur le dernier regard calibré au premier tap | `[vérifié automatiquement]` |
 | `FACE_LOST_TIMEOUT = 300 ms` (défini, non utilisé par le HTML) | phase `faceLost` du jeu après 0,3 s sans visage, reprise automatique (évolution v2) | `[vérifié automatiquement]` |
@@ -71,9 +125,9 @@ Regénérer le projet après ajout de fichiers : `xcodegen generate`.
 | `ensureCrescendoOsc / updateCrescendo / stopCrescendo` (220 + p·340 Hz, gain 0.02 + p·0.025, τ 0.05, arrêt τ 0.08) | `SineSynth` voix de progression, `AudioCue.progress/stopProgress` | `[vérifié automatiquement]` (rendu hors ligne) |
 | `playChime([660, 880, 1100], 0.12, 0.05)` | `SineSynth.triggerChime` | `[vérifié automatiquement]` |
 | `playFail()` (220 → 120 Hz, 0.25 s, gain 0.05 → 0) | `SineSynth.triggerLoss` | `[vérifié automatiquement]` |
-| `draw()` : horizon 38 %, dégradés ciel/sol, lignes de fuite, échelle `0.55 + 0.65·profondeur`, anneau aplati (0.4), arc de progression, ombre aplatie (0.35), dégradé radial, halo de vitesse, anneaux et numéros de séquence | `GameSceneRenderer` (Canvas SwiftUI) | `[vérifié par compilation]` + captures simulateur |
-| `drawOverlay`, `drawRules`, `drawCameraPrompt` | `DSOverlayPanel`, `TutorialView`, `CameraAccessView` | `[vérifié par compilation]` |
-| `SEQ_COLORS`, `#16171a`, `#5DCAA5`, `#D85A30`, `#EEEDFE`, `#B4B2A9`, `#D3D1C7` | tokens `ds.sequence.n`, `ds.background.surface`, `ds.status.success`, `ds.status.danger`, `ds.text.*` | `[vérifié par compilation]` |
+| `draw()` : horizon, sol en perspective, échelle selon la profondeur, sphères en dégradé | remplacé par la chambre noire (`GameSceneRenderer`, ADR-16) : vue de face, lueurs émissives, iris-diaphragmes, filaments de courant, voiles, veilleuses, onde de trouble | `[vérifié par compilation]` + captures simulateur |
+| `drawOverlay`, `drawRules`, `drawCameraPrompt` | `DSOverlayPanel`, `LevelIntroCard`, consignes contextuelles (`HintTracker`), `CameraAccessView` | `[vérifié automatiquement]` (consignes) et `[vérifié par compilation]` (vues) |
+| `SEQ_COLORS` (5 couleurs), `#16171a`, `#5DCAA5`, `#D85A30` | rangs `ds.rank.1…3` toujours doublés de points, palette chambre noire (`Docs/design-system.md`) | `[vérifié par compilation]` |
 | `FACE_LOST_TIMEOUT`, `faceCurrentlyLost()` (défini mais jamais utilisé par la physique) | état `GazeTrackingState.tracking(faceVisible:)` affiché dans le HUD, sans effet sur la physique | conforme au comportement effectif |
 | `driftNoise`, `arrivalBaseX/Y` (définis, jamais utilisés) | non portés | conforme au comportement effectif |
 
@@ -85,6 +139,7 @@ Regénérer le projet après ajout de fichiers : `xcodegen generate`.
 4. **Pause** : Échap devient un bouton de pause dans le HUD ; la mise en arrière-plan suspend automatiquement.
 5. **Gain audio** : les gains Web Audio sont conservés dans leurs rapports, multipliés par 2 pour le haut-parleur iPhone (`SineSynth.Configuration.masterGain`).
 6. **Indépendance au framerate** : voir §5.
+7. **Périmètre du jeu** : les 14 niveaux, l'écran de règles, la perspective et l'enchaînement immédiat sont remplacés par la campagne, l'apprentissage joué, la chambre noire et l'écran de résultat (§0).
 
 ---
 
@@ -101,8 +156,8 @@ App (composition root, adaptateurs plateforme)
 ```
 
 - **Injection** : `AppContainer` unique, construit par `IrisApp`, fabrique les services (`AudioService`, `GameClock`), possède le `GazeTrackingService` **partagé** (une seule `ARSession` par processus, utilisée tour à tour par le setup du regard et par le jeu, avec un drapeau de propriété des callbacks), le `CalibrationStore` et l'`InterfaceOrientationProvider`, et fabrique les ViewModels par injection de constructeur. Environnements `live`, `simulator` (regard piloté au doigt, faute de TrueDepth), `preview` (services simulés, horloge manuelle). Aucun singleton global.
-- **Navigation** : `AppCoordinator` (`@Observable`, `@MainActor`) possède un `AppRoute` unique (`home`, `cameraAccess`, `gazeSetup(intent)`, `tutorial`, `game`, `journeyComplete`, `unavailable`). Le jeu ne démarre qu'après un regard validé dans le processus courant ; premier lancement : accueil → caméra → diagnostic → calibration → vérification → regard prêt → tutoriel → jeu ; lancements suivants : accueil → diagnostic → vérification → jeu. Les vues émettent des intentions ; `RootView` rend la route. Dans le jeu, `GameViewModel.phase` est un unique enum `GamePhase` (`initializing`, `ready`, `playing`, `paused`, `levelComplete`, `interrupted`, `resuming`, `suspended`, `failed`). Aucun booléen contradictoire.
-- **ViewModels** : `GameViewModel`, `GazeSetupViewModel` et `CameraAccessViewModel` (`@MainActor @Observable`). Les écrans statiques (accueil, tutoriel, fin de parcours, indisponibilité) appellent directement le coordinateur (ADR-4).
+- **Navigation** : `AppCoordinator` (`@Observable`, `@MainActor`) possède un `AppRoute` unique (`home`, `cameraAccess`, `gazeSetup(intent)`, `chapters`, `carnet`, `game`, `journeyComplete`, `unavailable`), une feuille `AppSheet` (réglages) et la `CampaignProgress`. Un niveau ne démarre qu'après un regard validé dans le processus courant ; premier lancement : seuil → caméra → diagnostic → calibration → vérification → regard prêt → niveau I-1 (tutoriel joué) ; lancements suivants : seuil → diagnostic → vérification → prochain niveau. Dans le jeu, `GameViewModel.phase` est un unique enum `GamePhase` (`initializing`, `ready` = carte d'intro, `playing`, `paused`, `levelComplete(résultat)`, `interrupted`, `faceLost`, `resuming`, `suspended`, `failed`). Aucun booléen contradictoire.
+- **ViewModels** : `GameViewModel`, `GazeSetupViewModel` et `CameraAccessViewModel` (`@MainActor @Observable`). Les écrans sans état propre (seuil, chapitres, carnet, réglages, fin de parcours, indisponibilité) lisent le coordinateur et lui envoient leurs intentions (ADR-4). La progression est enregistrée par le coordinateur via `ProgressStore` (ADR-15).
 - **Concurrence** : tout l'état UI est sur le MainActor ; le délégué `ARSession` est livré sur la file principale et bascule via `MainActor.assumeIsolated` ; le bloc de rendu audio est `@Sendable`, sans allocation ni verrou bloquant (`withLockIfAvailable`, structures de taille fixe) ; l'horloge `CADisplayLink` utilise un proxy faible (pas de cycle). Aucune `Task` non structurée dans les ViewModels (les vues possèdent les tâches asynchrones).
 - **Skills utilisés** (pack `ios-app-skills` et `swiftui-expert-skill`) : product-conception (`Docs/product.md`, `Docs/Features/*.md`), architecture-designer (`Docs/architecture.md`, 9 ADR), domain-modeler et business-logic-engine (`Docs/domain-model.md`, règles R-01 à R-15), ui-ux-designer et swiftui-component-library (`Docs/design-system.md`, `DesignSystem/`), viewmodel-generator / view-generator / coordinator-navigator / dependency-injector (Features, Navigation, App/DI), test-generator (Tests), file-structure-organizer (`Docs/file-map.md`), layer-auditor (`Tools/audit.py`, `Docs/audit-2026-09-11.md`), code-deduplicator (`Docs/dedup-log.md`). Les couches Data et use cases du pack n'ont pas été créées : l'app n'a ni persistance ni réseau (ADR-2).
 
@@ -181,21 +236,38 @@ Fenêtre glissante de 1,2 s, dix contrôles : caméra TrueDepth, accès caméra,
 - **Validation (R-08, R-10)** : présence continue < 16 pt du point d'arrivée pendant 0,75 s (45 frames) ; sortie → progression remise à zéro ; une fois validée, tolérance 36 pt (16 + 20) ; au-delà, perte immédiate.
 - **Ordre (R-09)** : la présence ne compte que pour la plus petite séquence non validée (ou pour une sphère déjà validée). Une sphère hors tour peut atteindre et rester dans son cercle sans jamais valider.
 - **Cascade (R-11)** : toute sphère validée de rang supérieur à la première non validée est invalidée dans le même tick, progression remise à zéro.
-- **Événements** : `validationProgressed`, `validationProgressStopped`, `targetValidated`, `targetLost(cause: drift | cascade)`, `levelCompleted`.
+- **Événements** : `validationProgressed`, `validationProgressStopped`, `targetValidated`, `targetLost(cause: drift | cascade | veilleuse)`, `levelCompleted`, `intrusion`, `attentionLeftField`, `attentionReturned`, `veilleuseLow`, `veilleuseOut`, `veilleuseRelit`.
+- **Règles de campagne (R-23 à R-28)**, portées par `LevelEnvironment` sans modifier le pas historique (ADR-14) : regard hors écran (tolérance 6 % du petit côté) = présence gelée et validation impossible ; courant = impulsion constante dans une bande, dans le même pas fractionnaire ; voile = collision disque-segment avec rebond amorti ; veilleuse = charge qui se vide en `decay` s et se remplit en `recharge` s sous le regard, et qui, éteinte, ferme ses iris et coûte leur validation ; iris mouvant = oscillation cosinus entre deux points ; tempéraments lourde et vive.
+- **Échelle** : `LevelResolver` multiplie forces, vitesses et rayons par `petit côté / 393 pt` et exprime la zone d'attention en fraction du petit côté (0,42 à 0,50). Le prototype reste en unités absolues pour ses traces golden.
+- **Mesures** : `SessionMetrics` compte les intrusions (entrées dans la zone), les pertes et les sorties de l'écran, pour les éclats.
 
 ---
 
 ## 6. Niveaux
 
-| Niveaux | Cibles | zone_attention (× 1,6) | k_repulsion | attraction_passive | bruit | hold |
-|---|---|---|---|---|---|---|
-| 1 à 3 | 1 | 220 → **352 pt** | 0,008 | 0,6 | 0,15 | 0,75 s |
-| 4 à 8 | 2 | 190 → **304 pt** | 0,009 | 0,55 | 0,15 | 0,75 s |
-| 9 à 14 | 3 | 150 → **240 pt** | 0,013 | 0,5 | 0,15 | 0,75 s |
+La campagne compte **34 niveaux en six chapitres**. La longueur est justifiée par la matière disponible dans `Design/LEVEL_DESIGN_SYSTEM.md` § 8, et chaque niveau y est décrit avec son intention et ses mesures.
 
-Positions de départ et d'arrivée générées avec les mêmes graines que le HTML (`2000 + n·97`), marge 0,2, ordre des tirages identique : les 14 niveaux sont géométriquement identiques à l'original (test `LevelCatalogTests.exactGeometry` contre des valeurs calculées indépendamment en Python et JavaScript). La difficulté est strictement croissante : zone décroissante, répulsion croissante, nombre de cibles croissant. Aucune courbe n'a été inventée.
+| Chapitre | Niveaux | Élément introduit | Zone d'attention | Compétence |
+|---|---|---|---|---|
+| I · éveil | 5 | lueur, iris, regard sur l'écran, tempéraments | 0,50 | éviter, tenir, traverser |
+| II · partage | 5 | ordre, cascade | 0,46 | répartir, croiser, protéger |
+| III · courants | 6 | courant | 0,48 | pousser contre |
+| IV · voiles | 6 | voile | 0,46 | contourner en poussant |
+| V · veilleuses | 6 | veilleuse | 0,44 | regarder sans troubler |
+| VI · clairvoyance | 6 | iris mouvant | 0,42 | anticiper, puis tout combiner |
 
-Note de jouabilité : sur un iPhone de 393 × 852 pt, la zone de 352 pt des trois premiers niveaux couvre une grande partie de l'écran ; c'est le comportement validé du HTML (multiplicateur 1,6) conservé tel quel ; `LevelCatalog.gazeZoneMultiplier` reste le seul endroit à ajuster si un test sur appareil montrait que ARKit est plus précis que WebGazer.
+Vérifications automatiques (`CampaignStructureTests`, `CampaignSimulationTests`) :
+
+- Structure, règles de combinaison (un élément nouveau par chapitre, au plus deux types hors chapitre VI) et géométrie (positions, iris hors courants, voiles, veilleuses visibles).
+- **Faisabilité** : un robot guidé au regard bruité (± 24 pt, lissage du jeu) termine chaque niveau avec 3 graines en moins de 90 s.
+- **Nécessité** : l'évitement suffit aux chapitres I et II ; tout niveau à voie échoue sans pousser ; tout niveau à veilleuse échoue sans regarder la flamme ; aucun niveau ne se termine hors écran.
+- **Références d'éclats** : temps et intrusions atteignables mais exigeants.
+- **Différence** : deux niveaux d'un chapitre diffèrent sur au moins deux des 13 critères.
+- **Maîtrise** : le dernier niveau de chaque chapitre a la difficulté estimée la plus élevée de son chapitre.
+
+`LevelLabTests` imprime la table de mesures reprise dans `LEVEL_DESIGN_SYSTEM.md` § 10.
+
+Les 14 niveaux du prototype existent toujours (`PrototypeLevelCatalog`) comme référence historique : ils valident le port exact du moteur JavaScript (traces golden), mais ne sont plus jouables.
 
 ---
 
@@ -203,7 +275,8 @@ Note de jouabilité : sur un iPhone de 393 × 852 pt, la zone de 352 pt des troi
 
 - `AVAudioEngine` → `AVAudioSourceNode` mono (Float32, fréquence du matériel) → mixeur → sortie. Session `.ambient` + `mixWithOthers` (respecte le commutateur silence).
 - `SineSynth` (thread audio) : 3 voix de crescendo (sinus, fréquence 220 + p·340 Hz, gain 0,02 + p·0,025, constante de temps 0,05 s ; relâchement 0,08 s), carillon 3 notes (660/880/1100 Hz, 0,12 s chacune, enveloppe 30 % montée / 70 % descente, gain 0,05), perte (220 → 120 Hz linéaire sur 0,25 s, gain 0,05 → 0). Commandes de taille fixe protégées par `OSAllocatedUnfairLock`, lecture non bloquante côté rendu, aucune allocation dans la boucle.
-- **Politique sonore** (`AudioCuePolicy`, R-15) : crescendo par cible (voix = séquence − 1) tant que la présence progresse ; un carillon par validation ; **un seul son de perte par tick**, même en cascade (drift + cascades), et jamais deux sons de perte à moins de 150 ms. Pause, interruption, arrière-plan et sortie coupent toutes les voix de progression.
+- **Sons de campagne** : arpège de fin de niveau (440, 554, 659, 880 Hz, 0,16 s par note) qui remplace le carillon de la dernière validation ; battement de veilleuse faible (990 Hz, 60 ms) ; nappe d'ambiance par chapitre (deux sinus en quinte, gain 0,012, fondu de 0,8 s), fondamentale propre à chaque chapitre.
+- **Politique sonore** (`AudioCuePolicy`, R-15) : crescendo par cible (voix = séquence − 1) tant que la présence progresse ; un carillon par validation, ou l'arpège si elle termine le niveau ; **un seul son de perte par tick**, même en cascade, extinction de veilleuse comprise, jamais deux à moins de 150 ms ; battement de veilleuse au plus une fois par seconde. Pause, interruption, arrière-plan et sortie coupent les voix de progression. Le réglage « Son » désactive le moteur audio.
 - Cycle de vie : interruption `AVAudioSession` (began → pause, ended + shouldResume → redémarrage), `AVAudioEngineConfigurationChange` et `mediaServicesWereReset` → reconstruction du graphe. Échec de démarrage → `AudioStatus.unavailable` affiché dans le HUD, le jeu continue sans son.
 - Statuts : synthèse et politique `[vérifié automatiquement]` (rendu hors ligne à 44,1 kHz : hauteurs, enveloppes, silences) ; démarrage moteur exercé sur simulateur `[vérifié par compilation]` ; sortie réelle sur appareil `[nécessite validation sur appareil TrueDepth]`.
 
@@ -211,11 +284,22 @@ Note de jouabilité : sur un iPhone de 393 × 852 pt, la zone de 352 pt des troi
 
 ## 8. UI / UX
 
-- **Identité** : fond noir chaud (#0F1013), lueur ambre montant de l'horizon, emblème « iris » (anneaux ambre, pupille sombre) décliné en icône d'app, titres en serif minuscules, corps en SF, menthe pour la validation, corail pour la perte, tons neutres chauds. Tokens et composants dans `DesignSystem/` (aucun littéral de couleur dans les écrans).
-- **Écrans** : accueil (Commencer, Les règles) ; explication et demande de permission caméra (états explication, demande, refus avec Réglages, restriction) ; **setup du regard** (diagnostic avec liste de contrôles et point de fixation, cibles de calibration et de vérification avec anneau de progression, verdict « regard prêt » ou « la précision peut être améliorée », échecs) ; tutoriel ; jeu (canvas plein écran, HUD, overlays prêt / pause avec recalibration / fin de niveau / interruption / visage perdu / reprise / arrière-plan / erreur) ; fin de parcours ; appareil sans suivi facial.
-- **Rendu** : `Canvas` SwiftUI, snapshot immuable par frame ; le HUD et les overlays observent des propriétés grossières et ne se réévaluent pas à chaque tick.
-- **Accessibilité** : Dynamic Type sur tout le texte UI, boutons ≥ 44 pt, labels VoiceOver, overlays modaux, Reduce Motion respecté (pas de respiration ni de scale), contraste ≥ 4,5:1 pour le texte principal et secondaire.
-- Captures simulateur réalisées pendant le développement (accueil, tutoriel, permission, indisponibilité, fin de parcours, jeu prêt, jeu en cours niveaux 1 et 9, validations niveau 9 et 14).
+Référence : `Design/UX_VISION.md` et `Design/ART_DIRECTION.md`. Implémentation : `Docs/design-system.md`.
+
+- **Identité « chambre noire »** : fond encre avec fibres d'iris et respiration lente, lueurs nacrées émissives, iris dessinés comme des diaphragmes à six lames qui se referment pendant la présence, ambre réservé à l'attention, menthe à la réussite, corail au trouble, bleu marée pour les courants. Titres en serif minuscules, sourcils en capitales espacées, numéraux romains pour les chapitres. Nouvelle icône d'application : le diaphragme ambre autour d'une lueur.
+- **Écrans** :
+  - **seuil** : emblème, promesse, *Commencer* ou *Continuer* avec le prochain niveau, *Chapitres*, total d'éclats, réglages ;
+  - **permission caméra** et **setup du regard** (Gaze Engine v2, restylés) ;
+  - **chapitres** : six cartes, nœuds de niveau avec arcs d'éclats, prochain niveau cerclé d'ambre, chapitres verrouillés ;
+  - **carnet** : éléments rencontrés, glyphe et une phrase, les autres « à découvrir » ;
+  - **réglages** (feuille) : son, vibrations, points de regard, recalibrer, carnet, réinitialiser la progression avec confirmation, confidentialité ;
+  - **jeu** : champ plein écran, repère « III · 2 » et pause en périphérie, consignes en bas, carte d'intro compacte et translucide, pause avec recalibration, **résultat** avec trois éclats qui s'allument l'un après l'autre et vibration de réussite, interruption, visage perdu, reprise, erreurs ;
+  - **fin de parcours** « clairvoyance » avec niveaux, éclats et temps de jeu ;
+  - **appareil sans suivi facial**.
+- **Retours** : onde corail proportionnelle à la force de répulsion, lames qui se ferment, iris grisés quand le regard quitte l'écran ou qu'une veilleuse s'éteint, flamme qui vacille et anneau de charge corail sous 30 %, voie en pointillés après 45 s.
+- **Rendu** : un fond statique et un seul `Canvas` alimenté par un snapshot immuable par frame ; halos en dégradés radiaux additifs, sans filtre de flou ; HUD et overlays observent des propriétés grossières.
+- **Accessibilité** : Dynamic Type, cibles ≥ 44 pt, libellés VoiceOver (chapitres, nœuds, éclats, HUD), consignes publiées comme annonces d'accessibilité, rang jamais porté par la seule couleur, Reduce Motion (pas de respiration, filaments figés, pas de scintillement ni d'onde animée), texte tertiaire ≥ 4,5:1.
+- **Captures simulateur** (iPhone 17) réalisées après implémentation : seuil (premier lancement et reprise), chapitres, carnet, intro 3-1, jeu 4-6, 5-6 et 6-5, résultat 1-2, fin de parcours, calibration. Deux défauts visuels relevés ainsi ont été corrigés : les lames se reliaient en anneau continu, et la carte d'intro masquait le niveau.
 
 ---
 
@@ -223,13 +307,18 @@ Note de jouabilité : sur un iPhone de 393 × 852 pt, la zone de 352 pt des troi
 
 - Caméra frontale utilisée uniquement via `ARFaceTrackingConfiguration` pour estimer `lookAtPoint` en temps réel. Message `NSCameraUsageDescription` (`Config/Info.plist`) en français, compréhensible.
 - Aucune image, aucune vidéo, aucune géométrie ni représentation du visage n'est conservée : les `ARFrame` sont lus puis relâchés dans le callback ; l'échantillon brut (impact sur le plan, position des yeux, clignements) vit le temps d'une frame et n'est jamais persisté ; les échantillons de calibration sont agrégés puis oubliés.
-- Aucun compte, serveur, cloud, analytics. Stockage limité, dans `UserDefaults`, à deux booléens de préférence (points de regard visibles, tutoriel vu) et au profil de calibration (6 coefficients, mapping d'axes, orientation, viewport, repère nominal, date, erreurs de vérification, validité) : aucune donnée de regard ni de visage.
+- Aucun compte, serveur, cloud, analytics. Stockage local dans `UserDefaults`, limité à :
+  - trois préférences : points de regard, son, vibrations ;
+  - le profil de calibration : 6 coefficients, mapping d'axes, orientation, viewport, repère nominal, date, erreurs de vérification, validité ;
+  - la progression : pour chaque niveau, nombre de réussites, meilleur temps, moins d'intrusions et éclats ; plus le temps de jeu total et les éléments rencontrés.
+
+  Aucune donnée de regard ni de visage n'est stockée. La progression peut être effacée depuis les réglages.
 
 ---
 
 ## 10. Tests
 
-Suite Swift Testing (`Tests/IrisTests`, 30 fichiers) exécutée sur simulateur iPhone 17 Pro (iOS 26.3.1) via `xcodebuild test`.
+Suite Swift Testing (`Tests/IrisTests`, 37 fichiers) exécutée sur simulateur iPhone 17 Pro (iOS 26.3.1) via `xcodebuild test`.
 
 | Domaine | Fichiers | Ce qui est couvert |
 |---|---|---|
@@ -237,14 +326,17 @@ Suite Swift Testing (`Tests/IrisTests`, 30 fichiers) exécutée sur simulateur i
 | Validation | `ValidationRuleTests` | entrée dans la zone, refus à 44 frames, validation à 45, validation temporelle à 30 et 120 Hz, sortie avant validation, rayon strict 16 pt, maintien à 35 pt, perte à 37 pt, progression des événements |
 | Ordre | `SequenceOrderTests` | 1 immédiatement, 2 pas avant 1, 3 pas avant 1 et 2, arrivée physique hors tour, validation 1 → 2 → 3, `TurnRule` |
 | Cascade | `CascadeRuleTests` | perte de 3 seule ; perte de 2 → 2 et 3 ; perte de 1 → 1, 2, 3 (règle et session, avec événements), retour à l'ordre, absence de cascade en niveau simple |
-| Progression | `LevelCatalogTests`, `GameProgressionTests`, `LaunchOptionsTests` | 14 niveaux, comptes 1/2/3, bandes exactes, monotonie de la difficulté, hold 0,75 s, marges, géométrie exacte niveaux 1 et 9, enchaînement, redémarrage, bornage |
+| Prototype | `PrototypeLevelCatalogTests` | 14 niveaux historiques, comptes 1/2/3, bandes exactes, hold 0,75 s, marges, géométrie exacte niveaux 1 et 9 |
+| Campagne | `CampaignStructureTests`, `CampaignSimulationTests`, `LevelLabTests` | structure 5/5/6/6/6/6, introductions, combinaisons, géométrie, résolution sur 3 tailles d'écran ; faisabilité (robot guidé, 3 graines), nécessité (évitement, sans veilleuse, hors écran), références, 13 critères de différence, maîtrise ; table de mesures |
+| Environnement | `LevelEnvironmentTests` | échelle du résolveur, R-23 regard hors écran et tolérance, courant bloquant puis traversé en poussant, voile bloquant et réponse de collision, cycle et arithmétique de veilleuse, iris mouvant, intrusions, prototype non affecté |
+| Progression et consignes | `CampaignProgressTests`, `ProgressStoreTests`, `HintTrackerTests`, `LaunchOptionsTests` | éclats, records, déblocage et prochain niveau, éléments rencontrés ; stockage UserDefaults et mémoire ; consignes par déclencheur, disparition après 4,5 s, aide générique ; options de lancement et progression amorcée |
 | Fidélité | `GameSessionGoldenTests` | deux traces frame par frame générées par le moteur JavaScript extrait (`Fixtures/golden_generator.js`) : niveau 1 (393 frames, répulsion, rebonds, attraction, validation) et niveau 9 (241 frames, validations 1, 2, 3 aux frames 151, 196, 241), tolérance 1e-6 |
 | Session | `GameSessionTests`, `GazeFilterTests`, `ValueNoise1DTests`, `LinearCongruentialGeneratorTests` | chargement, complétion, bornage 0,1 s, 30 Hz = 2 × 60 Hz exact, 120 Hz, deltas nuls, lissage, sauts, bruit, LCG |
-| Audio | `AudioCuePolicyTests`, `SineSynthTests` | cascade → un seul son, garde 150 ms, hauteurs 560 / 305 Hz, gains, extinction, carillon, balayage descendant |
+| Audio | `AudioCuePolicyTests`, `SineSynthTests` | cascade → un seul son, garde 150 ms, arpège de fin qui remplace le carillon, veilleuse (perte, battement limité), hauteurs 560 / 305 Hz, gains, extinction, carillon, balayage descendant, arpège, battement, nappe (fondu entrant et sortant) |
 | Regard v2 | `AxisMappingTests`, `AffineTransform2DTests`, `RobustAggregatorTests`, `FixationSequenceTests`, `NormalizedCoordinatesTests`, `CalibrationProfileTests`, `GazeMapperTests`, `GazeReadinessEvaluatorTests`, `GazeSetupViewModelTests` | repère standard, retourné 180°, miroir, pivoté 90°, gravité / repli, dégénérescences, votes ; identité, offsets, échelles, combinaison, miroir corrigé, bruit, refus (< 3 points, non fini, colinéaire) ; médiane / MAD ; stabilisation, collecte, clignements, reprise puis échec, prolongation ; conversions et grilles ; sauvegarde / chargement (mémoire et UserDefaults), compatibilité (version, validité, orientation, viewport, âge) ; rayon / plan des deux côtés, mapping appliqué avant le nominal, calibration appliquée une fois, bornage, détecteur de clignements ; readiness (prêt, en attente, bloqué, yeux, direction, stabilité, blend shapes) ; parcours complet avec biais appris, regard miroir corrigé, verdict insuffisant / continuer quand même, recalibration, revalidation, signal insuffisant, matériel / caméra, clignements ignorés, cycle de vie, propriété du tracker partagé |
-| Présentation | `GameViewModelTests`, `AppCoordinatorTests`, `CameraAccessViewModelTests` | prêt, jeu, pause, curseur amorcé / lissé / figé, profil appliqué, visage perdu, recalibration, fin de niveau, fin de parcours, redémarrage, interruption, refus caméra, erreurs, arrière-plan / retour, sortie, autoplay, réglages ; routes (setup premier lancement / revalidation, complétion, annulation, recalibration aller-retour), permission |
+| Présentation | `GameViewModelTests`, `AppCoordinatorTests`, `CameraAccessViewModelTests` | intro, nappe du chapitre, son désactivé, consignes jouées, résultat et éclats nouveaux, niveau suivant, fin de chapitre et de campagne, rejouer, recommencer, chapitres, voie après 45 s, curseur, profil appliqué, visage perdu, interruptions et erreurs, arrière-plan, recalibration, autoplay, propriété du tracker partagé ; seuil, appareil incompatible, premier lancement, revalidation, caméra, annulation, niveaux verrouillés et progression, carnet, parcours depuis les chapitres, réglages et recalibration, finale, réinitialisation, options de lancement ; permission |
 
-### 10.1 Résultats réels de la dernière exécution (11 septembre 2026, Gaze Engine v2)
+### 10.1 Résultats réels de la dernière exécution (11 septembre 2026, après le verrouillage de l'identité Apple)
 
 Commande :
 
@@ -253,37 +345,47 @@ xcodebuild -project Iris.xcodeproj -scheme Iris \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug test
 ```
 
-Résultat : `Test run with 185 tests in 27 suites passed after 0.544 seconds` puis `** TEST SUCCEEDED **`.
+Résultat : `Test run with 220 tests in 33 suites passed after 9.971 seconds` puis `** TEST SUCCEEDED **`. Le bundle de tests construit porte l'identifiant `net.steve-s.iris.tests`, l'hôte `net.steve-s.iris`.
 
 | Exécutés | Réussis | Échoués | Ignorés |
 |---|---|---|---|
-| 185 | 185 | 0 | 0 |
+| 220 | 220 | 0 | 0 |
 
-**185/185 PASS** (121 tests de la phase 1 conservés, dont les 5 tests de projection v1 remplacés par les tests v2 ; 69 tests ajoutés pour le Gaze Engine v2 et la navigation associée). Aucun test désactivé. Les traces golden du moteur JavaScript restent vertes : le moteur de jeu n'a pas changé.
+**220/220 PASS**. Aucun test n'est désactivé. Les traces golden du moteur JavaScript restent vertes : le noyau historique n'a pas changé.
+
+Deux tests de présentation ont été réécrits parce que leur objet a disparu : le parcours à 14 niveaux (`GameProgression`) et le tutoriel. Deux tests audio ont été adaptés : la dernière validation joue désormais l'arpège de fin au lieu du carillon. Au premier passage de la suite complète, un test échouait : il supposait qu'une caméra encore refusée menait au setup du regard. Le code est correct, car le coordinateur revérifie l'autorisation réelle. Le test a été corrigé et couvre maintenant les deux cas.
 
 ---
 
 ## 10 bis. Builds
 
-Toutes les commandes ont été réellement exécutées depuis la racine du projet, sur macOS 26.3 (Darwin 25.3.0), Xcode 26.3 (17C529), SDK iOS 26.2, simulateur iPhone 17 Pro (iOS 26.3.1), le 11 septembre 2026 après l'intégration du Gaze Engine v2.
+Toutes les commandes ont été réellement exécutées depuis la racine du projet, sur macOS 26.3 (Darwin 25.3.0), Xcode 26.3 (17C529), SDK iOS 26.2, simulateur iPhone 17 Pro (iOS 26.3.1), le 11 septembre 2026 après le verrouillage de l'identité Apple (§ 13). Les builds appareil sont désormais **signés** (signature automatique, équipe `G4U9RG5GL7`), plus `CODE_SIGNING_ALLOWED=NO`.
 
 | # | Commande | Résultat réel |
 |---|---|---|
 | 1 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug build` | `** BUILD SUCCEEDED **`, 0 erreur, 0 warning issu de notre code |
-| 2 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug test` | `** TEST SUCCEEDED **`, 185 tests, 185 réussis, 0 échec, 0 ignoré |
+| 2 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Debug test` | `** TEST SUCCEEDED **`, 220 tests, 220 réussis, 0 échec, 0 ignoré |
 | 3 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -configuration Release build` | `** BUILD SUCCEEDED **`, 0 erreur, 0 warning |
-| 4 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Debug build CODE_SIGNING_ALLOWED=NO` | `** BUILD SUCCEEDED **` (arm64 appareil, non signé) |
-| 5 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Release build CODE_SIGNING_ALLOWED=NO` | `** BUILD SUCCEEDED **` (arm64 appareil, non signé) |
-| 6 | `python3 Tools/audit.py` | C1, C2, C8, C9, C10 et scan TODO : pass, 138 fichiers |
+| 4 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Debug build` (signé) | `** BUILD SUCCEEDED **` ; `codesign` : `Identifier=net.steve-s.iris`, `TeamIdentifier=G4U9RG5GL7`, identité « Apple Development », profil « iOS Team Provisioning Profile: * » choisi automatiquement (rien d'épinglé), entitlements `application-identifier`, `com.apple.developer.team-identifier`, `get-task-allow` |
+| 5 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Release build` (signé) | `** BUILD SUCCEEDED **` ; `Identifier=net.steve-s.iris`, `TeamIdentifier=G4U9RG5GL7` |
+| 6 | `xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'generic/platform=iOS' -configuration Debug build-for-testing` (signé) | `** TEST BUILD SUCCEEDED **` ; `IrisTests.xctest` signé `net.steve-s.iris.tests`, équipe `G4U9RG5GL7` |
+| 7 | `xcrun devicectl device install app --device <iPhone 14 Pro> Iris.app` puis `xcrun devicectl device process launch --device <iPhone 14 Pro> net.steve-s.iris` | `App installed: bundleID: net.steve-s.iris` ; `Launched application` ; processus `Iris` toujours présent 8 s après le lancement |
+| 8 | `python3 Tools/audit.py` | C1, C2, C8, C9, C10, C12 et scan TODO : pass, 191 fichiers |
 
 Diagnostics restants :
 
 - `appintentsmetadataprocessor[...] warning: Metadata extraction skipped. No AppIntents.framework dependency found.` : notice de l'outillage Xcode émise pour toute app sans App Intents ; aucun défaut du projet, non masquée.
 - Aucun warning du compilateur Swift (mode Swift 6, concurrence stricte complète, `ExistentialAny` activé) ni de l'éditeur de liens.
 
-Appareils physiques : `xcrun xctrace list devices` montre un iPhone 14 Pro (« iPhone Steve. », iOS 26.5.2) appairé et accessible ; les builds appareil ci-dessus sont compilés sans signature pour ne pas dépendre d'un profil de provisioning dans cette session ; le projet contient l'équipe de développement et la signature automatique pour un Run direct depuis Xcode. **Aucune installation ni exécution n'a été faite sur cet iPhone : `[compilation appareil réussie]` n'équivaut pas à `[calibration TrueDepth validée humainement]`.**
+Appareil physique : `xcrun devicectl list devices` montre l'iPhone 14 Pro « iPhone Steve. » (iOS 26.5.2, mode développeur activé, jumelé, connecté) ; son UDID figure dans le profil de développement automatique de l'équipe. Statuts réels :
 
-Vérifications sur simulateur (iPhone 17, options DEBUG `--iris-route gazeSetup --iris-oracle-gaze`) : captures du diagnostic (dix contrôles verts), des cibles de calibration (progression), de la vérification et de l'écran « regard prêt » (point menthe vivant, erreurs 0 % avec le regard scripté). Une régression détectée par ce moyen (liste de diagnostic débordant sous l'îlot, libellé et bouton chevauchant des cibles) a été corrigée.
+- `[build appareil réussi]` : Debug et Release signés pour arm64 (lignes 4 à 6).
+- `[installation appareil réussie]` : le build Debug a été installé par `devicectl` (mise à jour de l'installation `net.steve-s.iris` déjà présente, données conservées), lancé, et le processus était vivant 8 s plus tard. Aucune interaction n'a eu lieu sur l'écran.
+- `[nécessite validation humaine]` : tout ce qui suit le lancement : permission caméra, diagnostic, calibration et vérification TrueDepth, jouabilité au regard.
+
+L'iPhone conserve aussi une installation `com.prodx0x.iris` faite depuis Xcode avant la migration ; rien ne la met plus à jour, elle peut être supprimée à la main.
+
+Vérifications sur simulateur (iPhone 17, options DEBUG `--iris-route`, `--iris-level`, `--iris-progress`, `--iris-autoplay`, `--iris-gaze`, `--iris-oracle-gaze`) : captures des écrans listés au § 8, aucun rapport de plantage produit. Le regard y est simulé : ces captures valident le rendu et la navigation, pas la jouabilité au regard.
 
 ---
 
@@ -291,17 +393,85 @@ Vérifications sur simulateur (iPhone 17, options DEBUG `--iris-route gazeSetup 
 
 | Élément | Statut |
 |---|---|
-| Générateur, niveaux, bruit, physique, validation, ordre, cascade, progression, filtre de regard, politique audio, synthèse audio, rayon / plan, résolution des axes, modèle affine, agrégation robuste, protocole de fixation, critères de qualité, profil et persistance, readiness, machines d'états du jeu et du setup, coordinateur, permission | `[vérifié automatiquement]` |
-| Intégration ARKit (`ARSession`, délégué, interruptions), `AVAudioEngine` sur appareil, `CADisplayLink`, rendu Canvas, écrans SwiftUI, Info.plist / permission caméra | `[vérifié par compilation]` (Debug et Release simulateur, Debug et Release device arm64) ; écrans et rendu également observés sur simulateur |
-| Direction réelle du regard après résolution des axes et calibration, précision obtenue, confort du protocole (durées, tailles de cibles), latence perçue, jouabilité de la zone 352 pt, sortie audio réelle, comportement en appel entrant, arrière-plan réel | `[nécessite validation sur iPhone TrueDepth]` |
+| Noyau historique (générateur prototype, bruit, physique, validation, ordre, cascade, filtre de regard), règles de campagne R-23 à R-30, faisabilité et nécessité de chaque niveau par simulation, références d'éclats, progression et stockage, consignes, politique et synthèse audio, Gaze Engine v2 (rayon, axes, affine, agrégation, fixation, critères, profil, readiness), machines d'états du jeu, du setup et du coordinateur, permission | `[vérifié automatiquement]` |
+| Intégration ARKit (`ARSession`, délégué, interruptions), `AVAudioEngine` sur appareil, `CADisplayLink`, rendu Canvas de la chambre noire, écrans SwiftUI (seuil, chapitres, carnet, réglages, intro, résultat, fin de parcours), vibration de réussite, Info.plist / permission caméra | `[vérifié par compilation]` (Debug et Release simulateur, Debug et Release appareil arm64 signés) ; écrans et rendu également observés sur simulateur avec un regard simulé ; lancement sur iPhone 14 Pro sans plantage à 8 s |
+| Identité Apple : Bundle ID `net.steve-s.iris`, équipe `G4U9RG5GL7`, signature automatique, cohérence `project.yml` / projet généré / sources | `[vérifié automatiquement]` (audit C12) et `[build appareil réussi]` (signature réelle, profil automatique) |
+| Direction réelle du regard, précision obtenue après calibration, jouabilité réelle des niveaux de poussée (III, IV, VI) et de vigilance (V) avec la précision d'ARKit, pertinence des références d'éclats pour un humain, durée et courbe de difficulté ressenties, lisibilité en lumière réelle, sons et vibrations sur appareil | `[nécessite validation sur iPhone TrueDepth]` |
 
 ---
 
 ## 12. Limites honnêtes
 
-- Aucun appareil TrueDepth n'a été utilisé pendant ces sessions : le suivi du regard n'a **pas** été testé physiquement par un humain. Les deux iPhone appairés visibles depuis cette machine (iPhone 14 Pro, iPhone 15 Pro) n'ont reçu aucune installation. Procédure de test humain : voir `GAZE_ENGINE_V2_REPORT.md`.
+- Le suivi du regard n'a **pas** été testé physiquement par un humain. L'app a été installée et lancée sur l'iPhone 14 Pro le 11 septembre 2026 (§ 10 bis), mais personne n'a accordé la caméra, passé la calibration ni joué : la validation TrueDepth reste entièrement à faire. Procédure de test humain : voir `GAZE_ENGINE_V2_REPORT.md`.
 - Les conventions d'axes du repère caméra ARKit pour la caméra frontale ne sont pas documentées de façon exploitable ; le Gaze Engine v2 ne les présume plus (résolution par les yeux et la gravité), mais la première confirmation viendra du diagnostic sur appareil (ligne « Orientation du regard » et logs `gaze`).
 - Le simulateur n'a pas de TrueDepth : la build simulateur remplace le regard par le doigt (glisser sur l'écran) ou, avec `--iris-oracle-gaze`, par un regard scripté qui fixe chaque cible ; le HUD l'indique (« mode : simulateur (toucher) »). Ces modes n'existent pas sur appareil.
 - L'échelle physique de l'écran et la position de la caméra sont des estimations par famille d'appareil (erreur attendue de quelques pour cent). Les iPad dont la caméra est sur le bord long (iPad Pro M4, iPad 10) sont approximés avec une caméra en haut.
 - La suite de tests s'exécute avec l'app comme hôte sur simulateur ; elle ne dépend d'aucun matériel.
 - Les gains sonores absolus ont été validés hors ligne, pas à l'oreille sur appareil.
+- Le robot de campagne est plus précis et plus rapide qu'un humain. Il prouve qu'un niveau est faisable et qu'un élément est nécessaire, pas qu'il est agréable. La courbe de difficulté ressentie, la frustration et la durée réelle d'un parcours (estimée entre 1 h 30 et 2 h 30) restent à mesurer avec des joueurs.
+- Trois retours conçus ne sont pas implémentés : le trait corail qui relie une perte en cascade à sa cause, l'assombrissement avant le résultat, et la vibration à chaque validation (`Design/GAME_DESIGN.md` § 11).
+- La carte d'intro, même translucide, recouvre le bas de l'écran. Sur les niveaux dont la lueur part en bas, le joueur la découvre pleinement en touchant *Commencer*, avant tout mouvement.
+- Les niveaux sont réglés et vérifiés sur un écran de 393 × 852 pt. Ils se résolvent sur toutes les tailles testées (375 × 812, 430 × 932, 834 × 1194), mais la simulation de faisabilité n'est exécutée que sur l'écran de référence ; l'iPad, au rapport d'aspect différent, n'est pas vérifié par simulation.
+
+---
+
+## 13. Identité Apple : migration, cause et vérifications (11 septembre 2026)
+
+Résumé autoritaire en tête de ce fichier (« Apple Signing »). Ce paragraphe donne les faits.
+
+### 13.1 Bundle
+
+| | |
+|---|---|
+| Ancienne valeur constatée | `com.prodx0x.iris` (app) et `com.prodx0x.iris.tests` (tests) dans `project.yml`, donc dans chaque projet régénéré ; `net.steve-s.iris` saisi à la main dans Xcode, présent seulement dans le `.pbxproj` |
+| Nouvelle valeur | `net.steve-s.iris` (app), `net.steve-s.iris.tests` (tests), `bundleIdPrefix: net.steve-s` |
+| Fichiers migrés | `project.yml` (source), `Iris.xcodeproj/project.pbxproj` (régénéré), sous-systèmes `os.Logger` de `ARKitGazeTrackingService`, `GazeSetupViewModel`, `GameViewModel` (`net.steve-s.iris`, pour filtrer la Console), `GAZE_ENGINE_V2_REPORT.md`, `Docs/project-brief.md`, ce README |
+| Non concernés | `Config/Info.plist` (`$(PRODUCT_BUNDLE_IDENTIFIER)`), aucun `.xcconfig`, `.entitlements`, `.storekit`, URL scheme, App Group, groupe de trousseau, domaine associé, script de CI ; le scheme référence les cibles par identifiant interne |
+| Occurrences restantes de l'ancien préfixe | `Tools/audit.py` (chaîne interdite recherchée par le contrôle C12), `Docs/architecture.md` ADR-17 et ce paragraphe (historique). Aucune dans le code, la configuration ou les ressources |
+
+### 13.2 Team
+
+| | |
+|---|---|
+| Team ID retenu | `G4U9RG5GL7` |
+| Méthode | (1) `security find-identity -v -p codesigning` puis lecture du champ **OU** des certificats : les quatre certificats « Apple Development » et les deux « Apple Distribution » portent `OU=G4U9RG5GL7`, `O=Stéphane SAULNIER` ; (2) Xcode (`defaults read com.apple.dt.Xcode`) ne connaît qu'une équipe, `G4U9RG5GL7`, « Stéphane SAULNIER », type Individual, payante, dernière équipe sélectionnée ; (3) les 29 profils de provisioning installés appartiennent tous à `G4U9RG5GL7` et les autres apps du compte utilisent le préfixe `net.steve-s` ; (4) le seul build appareil signé présent dans DerivedData portait `TeamIdentifier=G4U9RG5GL7` |
+| Ce qu'est `NKN63DTRM4` | l'identifiant personnel inscrit entre parenthèses dans le **nom** des certificats « Apple Development » (`CN=Apple Development: Stéphane SAULNIER (NKN63DTRM4)`). Ce n'est pas une équipe : Xcode ne le trouve dans aucun compte, d'où l'absence d'équipe dans Signing & Capabilities |
+| Persistance | `project.yml` → `settings.base.DEVELOPMENT_TEAM` (hérité par `Iris` et `IrisTests`), donc dans chaque projet régénéré ; contrôlé par C12 |
+
+### 13.3 Signing
+
+| Réglage | Debug | Release |
+|---|---|---|
+| `PRODUCT_BUNDLE_IDENTIFIER` (Iris) | `net.steve-s.iris` | `net.steve-s.iris` |
+| `PRODUCT_BUNDLE_IDENTIFIER` (IrisTests) | `net.steve-s.iris.tests` | `net.steve-s.iris.tests` |
+| `DEVELOPMENT_TEAM` | `G4U9RG5GL7` | `G4U9RG5GL7` |
+| `CODE_SIGN_STYLE` | `Automatic` | `Automatic` |
+| `CODE_SIGN_IDENTITY` | `Apple Development` (type générique, pas un certificat précis) | `Apple Development` |
+| `PROVISIONING_PROFILE_SPECIFIER` | absent | absent |
+| Entitlements | aucun fichier ; la caméra n'en exige pas ; entitlements injectés par le profil automatique | idem |
+
+Valeurs lues avec `xcodebuild -showBuildSettings` pour les deux configurations, pour l'appareil et le simulateur, et confirmées par `codesign -dv` sur les produits signés (§ 10 bis). Il n'existe pas de configuration Archive distincte : l'archive utilise Release.
+
+### 13.4 Cause réelle du problème
+
+1. Lors de la création du projet (11 septembre 2026, première mission), le Team ID a été lu dans le **nom** du certificat « Apple Development » au lieu de son champ OU : `project.yml` a reçu `DEVELOPMENT_TEAM: NKN63DTRM4`, et un préfixe d'identifiant inventé, `com.prodx0x`.
+2. Xcode ne connaissant aucune équipe `NKN63DTRM4`, Signing & Capabilities affichait une équipe manquante. Le concepteur a corrigé dans Xcode (équipe `G4U9RG5GL7`, identifiant `net.steve-s.iris`). Xcode n'écrit que dans `Iris.xcodeproj/project.pbxproj` ; `project.yml` n'a pas changé. Cet état a été commité (`6e1b726`).
+3. Chaque `xcodegen generate` (après chaque ajout de fichier, à de nombreuses reprises pendant les missions Gaze Engine v2 et refonte) a régénéré le `.pbxproj` depuis `project.yml`, rétablissant `com.prodx0x.iris` et `NKN63DTRM4`. D'où le retour répété dans Signing & Capabilities, et deux installations différentes sur l'iPhone (`com.prodx0x.iris` et `net.steve-s.iris`).
+4. Aucun `.xcconfig`, script, CI ou suppression explicite de `DEVELOPMENT_TEAM` n'est en cause. La cause est double : une valeur fausse dans la source génératrice, et une correction faite dans le fichier généré.
+
+Correction : les bonnes valeurs sont dans `project.yml` (commentaire de tête explicite), l'identité « iPhone Developer » héritée du préréglage XcodeGen est remplacée par « Apple Development » (ce qu'écrit Xcode lui-même), `ORGANIZATIONNAME` du projet vaut « Stéphane SAULNIER » (en-têtes des nouveaux fichiers Xcode ; sans effet sur la signature), et `Tools/audit.py` C12 échoue si `project.yml`, le `.pbxproj` ou les sources s'écartent des valeurs verrouillées.
+
+### 13.5 Appareil
+
+iPhone 14 Pro « iPhone Steve. » détecté, connecté, mode développeur activé ; build Debug signé, installé et lancé (§ 10 bis, lignes 4 à 7). Statuts : `[build appareil réussi]`, `[installation appareil réussie]`, `[nécessite validation humaine]` pour la calibration et le jeu.
+
+### 13.6 Identité
+
+- Concepteur : Stéphane SAULNIER (champ `O` des certificats, nom de l'équipe Apple, `ORGANIZATIONNAME` du projet).
+- Marque éventuelle : ProdX0xSs, non utilisée comme Apple Account, Team ID, identité légale, Bundle ID ou nom de vendeur.
+- Aucune donnée de compte (e-mail, mot de passe, jeton, clé) dans le dépôt ; le dépôt distant GitHub est authentifié par Xcode / le trousseau, hors projet.
+- `NSHumanReadableCopyright` n'est pas ajouté à `Info.plist` : la clé est ignorée sur iOS.
+
+### 13.7 StoreKit readiness
+
+Le Bundle ID principal `net.steve-s.iris` est stabilisé : défini dans la source génératrice, régénéré à l'identique, vérifié par l'audit, signé et installé sous l'équipe `G4U9RG5GL7`. La configuration StoreKit (App ID explicite sur le portail, produits, `.storekit` de test) peut être entreprise sur cette base. Prérequis restant côté portail, non fait ici : enregistrer l'App ID explicite `net.steve-s.iris` (le profil actuel est un profil de développement générique `G4U9RG5GL7.*`, suffisant pour le développement, pas pour les achats intégrés ni pour la distribution).

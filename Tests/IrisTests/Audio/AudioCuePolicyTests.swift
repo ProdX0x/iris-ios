@@ -48,10 +48,26 @@ struct AudioCuePolicyTests {
         #expect(later == [.loss])
     }
 
-    @Test("level completion is silent for the policy (handled by presentation)")
-    func levelCompletedSilent() {
+    @Test("the validation that completes the level plays the arpeggio instead of the chime")
+    func levelCompletedArpeggio() {
         var policy = AudioCuePolicy()
 
-        #expect(policy.cues(for: [.levelCompleted], at: 0).isEmpty)
+        let cues = policy.cues(for: [.targetValidated(sequence: 3), .levelCompleted], at: 0)
+
+        #expect(cues == [.levelComplete])
+    }
+
+    @Test("a dying veilleuse loses like a validation, and its pulse is rate limited")
+    func veilleuseSounds() {
+        var policy = AudioCuePolicy(pulseInterval: 1)
+
+        let low = policy.cues(for: [.veilleuseLow(index: 0)], at: 0)
+        let tooSoon = policy.cues(for: [.veilleuseLow(index: 1)], at: 0.5)
+        let out = policy.cues(for: [.veilleuseOut(index: 0), .targetLost(sequence: 1, cause: .veilleuse)], at: 2)
+
+        #expect(low == [.veilleuseLow])
+        #expect(tooSoon.isEmpty)
+        #expect(out == [.loss])
+        #expect(policy.cues(for: [.intrusion(sequence: 1), .attentionLeftField, .attentionReturned, .veilleuseRelit(index: 0)], at: 3).isEmpty)
     }
 }

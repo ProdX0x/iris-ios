@@ -1,6 +1,14 @@
 # Domain Model
 
 ## Entities
+
+Campaign (Design/GAME_DESIGN.md, Design/LEVEL_DESIGN_SYSTEM.md):
+- LevelDefinition (Campaign). chapter, index, title, principle, introduces [GameElement], ordered, zone (fraction of short side), repulsionForce, attraction, noise, hold, lueurs [LueurDefinition], currents, veils, veilleuses, hints [LevelHint], par LevelPar. Id "chapter-index".
+- LueurDefinition. start, iris (NormalizedPoint), temperament, irisMotion, route [NormalizedPoint].
+- ChapterDefinition. number, name, principle, ambientFrequency, levels.
+- CampaignProgress (Progress). records [id: LevelRecord], totalPlayTime, encounteredElements. LevelRecord: completions, bestTime, fewestIntrusions, eclats.
+
+Engine (prototype core):
 - Target (Game). id: TargetID(sequence), position: Vector2, velocity: Vector2, arrival: Vector2, attentionZone, repulsionGain, passiveAttraction, noiseAmplitude, requiredHoldTime, holdTime, isValidated. Invariants: holdTime >= 0; isValidated implies holdTime >= requiredHoldTime at validation time; holdTime resets to 0 on loss.
 - Level (Game). id: LevelID, number 1...14, targets [TargetBlueprint] ordered by sequence, holdDuration 0.75 s, isSequential = targets.count > 1.
 - TargetBlueprint (Game). sequence, start and arrival as NormalizedPoint, attentionZone, repulsionGain, passiveAttraction, noiseAmplitude.
@@ -52,6 +60,14 @@ No thrown domain errors: the engine is total. Failure states are values (GazeTra
 | R-20 | A calibration is valid when five control targets give a mean error below 18 percent and a max below 30 percent of the short side | validation measurements | verdict | GazeQualityCriteria, ValidationResult | GazeSetupViewModelTests |
 | R-21 | A stored profile is reused only for the same model version, orientation, viewport (1 percent) and age under 30 days; the game may use an unvalidated fresh profile | profile, context | usable / compatible | CalibrationProfile | CalibrationProfileTests |
 | R-22 | Playing with the face absent for 0.3 s pauses the game; it resumes when the face is back | gaze state, dt | GamePhase.faceLost | GameViewModel | GameViewModelTests |
+| R-23 | Gaze off the playfield (tolerance 6 percent of the short side) freezes presence and blocks validation, without resetting it | gaze, bounds | canAccumulate | GameSession.updateAttention, ValidationRule | LevelEnvironmentTests, CampaignSimulationTests |
+| R-24 | A current adds a constant impulse inside its band, attracted or repelled | position, bands | velocity | LevelEnvironment.impulse, TargetPhysics | LevelEnvironmentTests |
+| R-25 | A veil pushes the lueur out and reflects the inward velocity with 0.5 loss | position, velocity, segment | position, velocity | VeilSegment.resolve | LevelEnvironmentTests |
+| R-26 | A veilleuse loses its charge in `decay` s unless looked at (refill in `recharge` s); dark, it closes its irises and costs their validation (cascade follows) | gaze, time | charge, losses | VeilleuseState, GameSession | LevelEnvironmentTests, CampaignSimulationTests |
+| R-27 | A moving iris glides between two points with a cosine ease | time | arrival | IrisPath | LevelEnvironmentTests |
+| R-28 | Temperaments scale repulsion, attraction and radius (lourde 0.6/0.6/1.2, vive 1.45/1.2/0.8) | temperament | target parameters | Temperament, LevelResolver | LevelEnvironmentTests |
+| R-29 | Éclats: atteint always, fluide under par time, serein with no loss and intrusions within par; records keep the union and bests | outcome, par | Set<Eclat> | LevelOutcome, LevelRecord | CampaignProgressTests |
+| R-30 | A level unlocks when the previous one in campaign order is completed; the next level is the first unlocked, uncompleted one | records | unlocked, next | CampaignProgress | CampaignProgressTests, AppCoordinatorTests |
 
 ## Glossary
 - Sphere / target: the moving object the player must let arrive.
@@ -69,3 +85,8 @@ No thrown domain errors: the engine is total. Failure states are values (GazeTra
 - Axis mapping: which camera axes are the screen's right and up, resolved from the user.
 - Fixation: aggregated gaze measurement on one target.
 - Profile: persisted calibration coefficients and their context.
+- Lueur: the moving object (formerly "sphere").
+- Iris: the arrival, drawn as a closing diaphragm.
+- Courant, voile, veilleuse, iris mouvant: the campaign elements (R-24 to R-27).
+- Éclat: one of the three mastery marks (atteint, fluide, serein).
+- Voie: the designer route shown as help after 45 s.

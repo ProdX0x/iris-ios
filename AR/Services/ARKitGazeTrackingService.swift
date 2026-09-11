@@ -27,7 +27,7 @@ final class ARKitGazeTrackingService: NSObject, GazeTrackingService {
     private var viewport: GazeViewport?
     private let capabilities: any DeviceCapabilities
     private let orientationProvider: any InterfaceOrientationProvider
-    private let logger = Logger(subsystem: "com.prodx0x.iris", category: "gaze")
+    private let logger = Logger(subsystem: "net.steve-s.iris", category: "gaze")
 
     init(capabilities: any DeviceCapabilities = ARKitDeviceCapabilities(),
          orientationProvider: any InterfaceOrientationProvider = WindowSceneOrientationProvider()) {

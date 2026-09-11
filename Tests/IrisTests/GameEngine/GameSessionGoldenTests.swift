@@ -25,7 +25,7 @@ struct GameSessionGoldenTests {
     @Test("level 1 scripted gaze: repulsion, bounces, then attraction and validation match the reference")
     func level1Scripted() throws {
         let golden = try GoldenTrace.load(named: "golden_level1_scripted")
-        var session = GameSession(level: LevelCatalog.all[golden.levelIndex],
+        var session = GameSession(level: PrototypeLevelCatalog.all[golden.levelIndex],
                                   bounds: PlayfieldBounds(width: golden.canvas.width, height: golden.canvas.height))
         var validatedFrame: Int?
         var completedFrame: Int?
@@ -48,7 +48,7 @@ struct GameSessionGoldenTests {
     @Test("level 9 with a parked gaze: three spheres validate in order 1, 2, 3 exactly like the reference")
     func level9Ordered() throws {
         let golden = try GoldenTrace.load(named: "golden_level9_far")
-        var session = GameSession(level: LevelCatalog.all[golden.levelIndex],
+        var session = GameSession(level: PrototypeLevelCatalog.all[golden.levelIndex],
                                   bounds: PlayfieldBounds(width: golden.canvas.width, height: golden.canvas.height))
         var validations: [(frame: Int, sequence: Int)] = []
 
