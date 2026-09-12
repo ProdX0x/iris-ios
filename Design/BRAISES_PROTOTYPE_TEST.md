@@ -140,3 +140,17 @@ Version `prototype/braises-b-ux-audio`. La règle de B est désormais écrite su
 
 ## COMMENTAIRE LIBRE
 Confusion, frustration, intérêt, impression de règle artificielle, autre :
+
+---
+
+# TEST HUMAIN — VERSION aeafc28 (B1.2)
+
+Réalisé sur iPhone 14 Pro, `aeafc28cd0b38147c9d45db166724dc6d454629d`.
+
+- Audio : Effets sonores activés, Ambiance sonore coupée ; aucune nappe sourde, sons utiles conservés : **validé**.
+- Braises A : toujours validé.
+- Braises B : **la consigne est comprise**, mais **aucune conséquence pratique** n'est perçue entre la respecter et ne pas la respecter ; le niveau semble se dérouler et se terminer de la même façon.
+
+# CLÔTURE DE BRAISES B (B1.3)
+
+Diagnostic final : `BRAISES_B_FINAL_DIAGNOSTIC_REPORT.md`. Le « trop tard » ne produit qu'une perte transitoire de 45 à 98 pt réparée automatiquement en 1 à 2,5 s, et aucune perte du tout quand le regard se pose un peu au-dessus de la braise. Aucune correction naturelle n'existe. **Braises B est rejeté dans sa forme actuelle ; aucun test humain final n'est demandé pour B.** Braises A reste la référence validée.

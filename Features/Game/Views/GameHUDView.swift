@@ -9,6 +9,8 @@ struct GameHUDView: View {
     let hint: String?
     let showsPause: Bool
     let diagnostics: [String]?
+    /// DEBUG lab readout of experimental levels (nil in the campaign and in Release).
+    var readout: String? = nil
     let onPause: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -50,6 +52,16 @@ struct GameHUDView: View {
                     ForEach(diagnostics, id: \.self) { DSBadge($0, tone: .info) }
                 }
             }
+            if let readout {
+                Text(readout)
+                    .font(DSFont.caption.monospaced())
+                    .foregroundStyle(DSColor.textSecondary)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(DSSpacing.s)
+                    .background(DSColor.fieldInk.opacity(0.55), in: RoundedRectangle(cornerRadius: DSRadius.m, style: .continuous))
+                    .accessibilityHidden(true)
+            }
         }
         .padding(.horizontal, DSSpacing.m)
         .padding(.top, DSSpacing.s)
@@ -72,7 +84,16 @@ struct GameHUDHost: View {
                     hint: viewModel.phase == .playing ? viewModel.hint : nil,
                     showsPause: viewModel.phase == .playing,
                     diagnostics: viewModel.showsGazeIndicator ? diagnosticLabels : nil,
+                    readout: labReadout,
                     onPause: { viewModel.pause() })
+    }
+
+    private var labReadout: String? {
+        #if DEBUG
+        return viewModel.phase == .playing ? viewModel.experimentReadout : nil
+        #else
+        return nil
+        #endif
     }
 
     private var diagnosticLabels: [String] {

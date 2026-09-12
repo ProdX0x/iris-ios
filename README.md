@@ -587,3 +587,19 @@ Test humain de `ea1cfae` : A toujours validé ; **B toujours incompris** malgré
 | Debug appareil signé, installation, lancement | réussis sur l'iPhone 14 Pro, processus vivant après 8 s |
 
 Statuts : A `[validé humainement, figé]` ; audio `[routage vérifié automatiquement]`, écoute réelle `[nécessite validation humaine]` ; B `[règle explicitée, stratégie déterministe établie par l'analyse]`, compréhension et intérêt `[nécessite un nouveau test humain]` (fiche B1.2). Aucune décision de chapitre.
+
+### 17.3 B1.3 : diagnostic final et clôture de Braises B (branche `prototype/braises-b-final-diagnostic`)
+
+Test humain de `aeafc28` : audio validé (effets activés, ambiance coupée) ; A validé ; **B compris mais sans conséquence pratique perçue**. Mesure avec le moteur réel sur 96 scénarios de regard tardif réalistes (`BRAISES_B_FINAL_DIAGNOSTIC_REPORT.md`) : une perte est émise dans 83 % des cas, mais elle est une sortie de 45 à 98 pt réparée automatiquement en 1 à 2,5 s ; dans les autres cas (curseur 40 à 70 pt au-dessus de la braise), aucune perte. La brièveté du réveil, la vitesse plafonnée et l'attraction automatique bornent la conséquence quelle que soit la géométrie ; la rendre durable exigerait un artifice. **Issue B : Braises B rejeté dans sa forme actuelle, aucune itération B1.x supplémentaire.** Aucun gameplay modifié ; un relevé de laboratoire DEBUG (chapitre 0 seulement) et un test de caractérisation ont été ajoutés.
+
+| Étape | Résultat réel |
+|---|---|
+| `git diff --check` | propre |
+| A, moteur Braises, Gaze Engine, campagne (vs `416feb9`) ; audio, haptique, préférences, B (vs `aeafc28`) | identiques, diff vide |
+| Debug simulateur | BUILD SUCCEEDED |
+| Tests | 254 exécutés, 254 réussis, 0 échec, 0 ignoré (1 test de caractérisation ajouté) |
+| Release simulateur | BUILD SUCCEEDED |
+| Audit | C1, C2, C8, C9, C10, C12 pass, 205 fichiers |
+| Debug appareil signé, installation, lancement | réussis sur l'iPhone 14 Pro, processus vivant après 8 s ; le relevé DEBUG est visible en bas de l'écran pendant une partie de A ou B |
+
+Statuts : audio `[validé humainement, figé]` ; A `[validé humainement, figé]` ; B `[rejeté dans sa forme actuelle]`. Aucune décision de chapitre.

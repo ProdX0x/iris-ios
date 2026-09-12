@@ -21,6 +21,14 @@ final class GameViewModel {
     // Per-frame state read by the canvas only.
     private(set) var snapshot: GameSceneSnapshot
 
+    #if DEBUG
+    /// EXPERIMENTAL lab readout, chapter 0 levels only: what the engine sees (states, distances, thresholds, last event),
+    /// refreshed ten times per second, so that a human test on device can tell what really happened. Removable.
+    private(set) var experimentReadout: String?
+    @ObservationIgnored private var readoutTick = 0
+    @ObservationIgnored private var lastExperimentEvent: (name: String, time: TimeInterval)?
+    #endif
+
     var showsGazeIndicator: Bool {
         get { settings.showsGazeIndicator }
         set {
@@ -307,6 +315,9 @@ final class GameViewModel {
         if hints.observe(events: events, elapsed: session.elapsed) {
             hint = hints.current
         }
+        #if DEBUG
+        if level.isExperimental { updateExperimentReadout(events: events) }
+        #endif
         if !showsRoute && level.requiresPushing && session.elapsed >= Self.helpDelay {
             showsRoute = true
         }
@@ -368,10 +379,46 @@ final class GameViewModel {
         cuePolicy.reset()
         hapticPolicy.reset()
         faceLostDuration = 0
+        #if DEBUG
+        experimentReadout = nil
+        lastExperimentEvent = nil
+        readoutTick = 0
+        #endif
         levelInProgress = false
         refreshSnapshot()
         navigator?.gameDidStart(level: definition)
     }
+
+    #if DEBUG
+    private func updateExperimentReadout(events: [GameEvent]) {
+        for event in events {
+            switch event {
+            case .targetValidated, .targetLost, .braiseLit, .braiseCooled, .braiseFlared, .levelCompleted:
+                let name = String(describing: event)
+                lastExperimentEvent = (name, session.elapsed)
+                logger.debug("lab \(self.level.id, privacy: .public) t=\(self.session.elapsed, format: .fixed(precision: 2)) \(name, privacy: .public)")
+            default:
+                break
+            }
+        }
+        readoutTick += 1
+        guard readoutTick % 6 == 0 || !events.isEmpty else { return }
+        var lines: [String] = []
+        for (index, target) in session.targets.enumerated() {
+            let state = target.isValidated ? "validée" : (target.isHolding ? "présence \(Int(target.validationProgress * 100)) %" : "en route")
+            var line = "L\(target.sequence) \(state) · iris \(Int(target.distanceToArrival)) pt · regard \(Int(target.position.distance(to: session.gaze.position))) pt"
+            if let braise = session.braises[index] {
+                line += " · \(braise.isLit ? (braise.isFlaring ? "affolée" : "allumée") : "endormie") \(String(format: "%.2f", braise.heat))"
+            }
+            lines.append(line)
+        }
+        lines.append("présence < \(Int(session.validation.settleRadius)) pt · perte > \(Int(session.validation.wobbleTolerance)) pt · pertes \(session.metrics.losses) · t \(String(format: "%.1f", session.elapsed)) s")
+        if let last = lastExperimentEvent {
+            lines.append("dernier : \(last.name) à \(String(format: "%.2f", last.time)) s")
+        }
+        experimentReadout = lines.joined(separator: "\n")
+    }
+    #endif
 
     private func refreshSnapshot() {
         snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: showsRoute,

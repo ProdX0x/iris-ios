@@ -98,30 +98,38 @@ struct BraisesPrototypeTests {
     private struct Run {
         var events: [(time: Double, event: GameEvent)] = []
         var maxDisturbanceOfOne = 0.0
+        /// Farthest lueur 1 got from its iris after the wake began (points).
+        var excursionOfOne = 0.0
         var time = 0.0
         var losses = 0
         var complete = false
         func times(of predicate: (GameEvent) -> Bool) -> [Double] { events.filter { predicate($0.event) }.map(\.time) }
     }
 
-    /// Plays B with a smoothed gaze like the real game: rests at `rest`, wakes the braise (looking 20 pt under it until it
-    /// lights) as soon as `wakeWhen` says so, then rests again.
-    private func playB(rest: Vector2, wakeWhen: (GameSession) -> Bool) -> Run {
+    /// Plays B with a smoothed gaze like the real game: rests at `rest`, wakes the braise as soon as `wakeWhen` says so
+    /// (looking at it with `offset`, following it or fixating its sleeping spot, until it lights plus a reaction `tail`),
+    /// then rests again.
+    private func playB(rest: Vector2, offset: Vector2 = Vector2(x: 0, y: 20), tracking: Bool = true, tail: Double = 0,
+                       wakeWhen: (GameSession) -> Bool) -> Run {
         let level = BraisesPrototype.b
         let resolved = LevelResolver.resolve(level, in: bounds)
         var session = resolved.makeSession(noiseSources: level.lueurs.map { _ in SilentNoise() })
         session.placeGaze(at: rest)
+        let sleepingSpot = level.lueurs[1].start.absolute(in: bounds)
         var run = Run()
         var waking = false
         var woken = false
+        var litAt: Double?
         for _ in 0..<Int(20 * 60) {
             if !woken && !waking && wakeWhen(session) { waking = true }
-            if waking && session.braises[1]?.isLit == true { waking = false; woken = true }
-            let gaze = waking ? session.targets[1].position + Vector2(x: 0, y: 20) : rest
+            if waking, litAt == nil, session.braises[1]?.isLit == true { litAt = session.elapsed }
+            if waking, let litAt, session.elapsed - litAt >= tail { waking = false; woken = true }
+            let gaze = waking ? (tracking ? session.targets[1].position : sleepingSpot) + offset : rest
             session.ingestGaze(gaze)
             let events = session.advance(by: frame)
             run.events += events.map { (session.elapsed, $0) }
             run.maxDisturbanceOfOne = max(run.maxDisturbanceOfOne, session.targets[0].disturbance)
+            if waking || woken { run.excursionOfOne = max(run.excursionOfOne, session.targets[0].distanceToArrival) }
             if session.isComplete { break }
         }
         run.time = session.elapsed
@@ -138,7 +146,8 @@ struct BraisesPrototypeTests {
         let irisOne = level.lueurs[0].iris.absolute(in: bounds)
         let braiseStart = level.lueurs[1].start.absolute(in: bounds)
         let braiseIris = level.lueurs[1].iris.absolute(in: bounds)
-        #expect(abs(braiseStart.distance(to: irisOne) - 120) < 2, "a gaze that wakes the braise is 120 pt from iris 1: inside the 181 pt zone")
+        #expect(abs(braiseStart.distance(to: irisOne) - 120) < 2, "a gaze that wakes the braise is 120 pt from iris 1")
+        #expect(braiseStart.distance(to: irisOne) < zone, "inside the attention zone of the first lueur")
         #expect(braiseIris.distance(to: irisOne) > 150, "the lit braise waits far enough from iris 1")
         #expect(level.ordered && level.lueurs[0].braise == nil && level.lueurs[1].braise != nil)
         #expect(level.lueurs[1].braise == .prototype, "B uses exactly the braise tuning validated in A")
@@ -173,6 +182,27 @@ struct BraisesPrototypeTests {
             #expect(conflict.time > prudent.time + 1.5, "waiting is not free")
             #expect(prudent.maxDisturbanceOfOne < 0.45, "woken first, the lueur is at most brushed while rising")
         }
+    }
+
+    @Test("B1.3 characterization: a late wake costs at most a transient, self-healing blip, and none at all when the gaze sits above the braise")
+    func lateWakeConsequenceIsTransient() {
+        // Nominal human look: rest top-right, gaze slightly under the braise, following it, 0.25 s of reaction after it lights.
+        let nominal = playB(rest: Vector2(x: 350, y: 60), offset: Vector2(x: 0, y: 20), tracking: true, tail: 0.25) { $0.targets[0].isValidated }
+        let lost = nominal.times(of: { $0 == .targetLost(sequence: 1, cause: .drift) })
+        let validated = nominal.times(of: { $0 == .targetValidated(sequence: 1) })
+        #expect(nominal.complete && nominal.losses == 1)
+        #expect(lost.count == 1 && validated.count == 2)
+        if let loss = lost.first, validated.count == 2 {
+            #expect(validated[1] - loss < 2.6, "the lueur is back and re-validated by itself in under 2.6 s")
+        }
+        #expect(nominal.excursionOfOne < 110, "the excursion never exceeds about five lueur diameters")
+        #expect(nominal.excursionOfOne > 36.5, "it does cross the 36 pt loss tolerance")
+
+        // The same look with the cursor 60 pt above the braise (a vertical calibration error, or the glow's upper half):
+        // lueur 1 is only brushed, under the loss tolerance, and nothing is reported to the player.
+        let above = playB(rest: Vector2(x: 350, y: 60), offset: Vector2(x: 0, y: -60), tracking: false, tail: 0.25) { $0.targets[0].isValidated }
+        #expect(above.times(of: { $0 == .targetLost(sequence: 1, cause: .drift) }).isEmpty)
+        #expect(above.excursionOfOne <= 36.5)
     }
 
     @Test("A is frozen: the definition validated by the human test of 416feb9 is byte for byte the same")
