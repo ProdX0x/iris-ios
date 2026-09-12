@@ -115,7 +115,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/Rendering/GameSceneSnapshot.swift | struct | Presentation | Plain values copied from the session once per frame; the only thing the canvas reads | Claude (mission Iris) |
 | Features/Game/ViewModels/GameNavigating.swift | protocol | Presentation | Intents and progress reports emitted by the game screen | Claude (mission Iris) |
 | Features/Game/ViewModels/GamePhase.swift | enum | Presentation | Single state of the game screen; every overlay derives from it | Claude (mission Iris) |
-| Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
+| Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound effects, ambience, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
 | Features/Game/ViewModels/GameViewModel.swift | class | Presentation | Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, haptics, results and phases | Claude (mission Iris) |
 | Features/Game/ViewModels/GazeCalibrationStatus.swift | enum | Presentation | What the game knows about the calibration in use (pause panel readout) | Claude (mission Iris) |
 | Features/Game/ViewModels/LevelResult.swift | struct | Presentation | What the result screen shows after a level: measurements, éclats and what comes next | Claude (mission Iris) |
@@ -135,7 +135,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/GazeSetup/Views/GazeVerdictView.swift | struct | Presentation | "Regard prêt" or "La précision peut être améliorée" with measured errors and actions | Claude (mission Iris) |
 | Features/Home/HomeView.swift | struct | Presentation | The threshold: emblem, promise, one main action (begin or continue), chapters, settings | Claude (mission Iris) |
 | Features/JourneyComplete/JourneyCompleteView.swift | struct | Presentation | The end of the campaign: the last iris closed, éclats and play time, replay a chapter | Claude (mission Iris) |
-| Features/Settings/SettingsView.swift | struct | Presentation | Sound, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note | Claude (mission Iris) |
+| Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
 | Features/Unavailable/UnavailableView.swift | struct | Presentation | Shown when the device cannot track faces (no TrueDepth / ARFaceTracking unsupported) | Claude (mission Iris) |
 | GameEngine/Campaign/HintTracker.swift | struct | GameEngine | Decides which contextual instruction is visible, from engine events and elapsed time | Claude (mission Iris) |
@@ -205,7 +205,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Mocks/MockHapticFeedbackService.swift | class | Tests | Recording mock for HapticFeedbackService | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
-| Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences default to on and persist across store instances | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |

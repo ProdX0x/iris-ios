@@ -143,6 +143,12 @@ struct BraisesPrototypeTests {
         #expect(level.ordered && level.lueurs[0].braise == nil && level.lueurs[1].braise != nil)
         #expect(level.lueurs[1].braise == .prototype, "B uses exactly the braise tuning validated in A")
         #expect(braiseStart.y >= 0.12 * bounds.height && braiseIris.y >= 0.12 * bounds.height, "nothing to look at in the top margin")
+        // B1.2: the experimental rule is stated on the intro card and its consequence at the start; the loss names the cause.
+        #expect(level.principle == "Réveillez la braise avant que la 1 n'atteigne son iris.")
+        #expect(level.hints.map(\.trigger) == [.start, .braiseFlared, .firstLoss])
+        #expect(level.hints[0].text == "Trop tard, votre regard chassera la 1.")
+        #expect(level.hints[2].text == "Trop tard : votre regard sur la braise a chassé la 1.")
+        #expect(level.hints.allSatisfy { $0.text.split(separator: " ").count <= 12 }, "one short line each")
     }
 
     @Test("B: the waking gaze physically reaches the settled lueur: woken first, nothing is lost; woken after the lueur settled, it is chased")

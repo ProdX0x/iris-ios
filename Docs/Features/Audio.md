@@ -15,9 +15,10 @@ None. Feedback inside GameView.
 - AC-2 Given a validation, when it happens, then a three-note chime (660, 880, 1100 Hz, 0.12 s each) plays.
 - AC-3 Given a loss, when it happens, then a 220 to 120 Hz sweep over 0.25 s plays; a cascade produces one tone only.
 - AC-4 Given an audio interruption or route change, when it ends, then the engine restarts without crashing.
+- AC-5 Given the two preferences, when "Effets sonores" is on and "Ambiance sonore" is off (the default), then event cues play and no drone; the reverse plays only the drone; both off never start the engine. The former single "Son" switch migrates without switching anything back on.
 
 ## Entities
 AudioCue, AudioStatus.
 
 ## Test coverage
-AC-1 to AC-3: SineSynthTests, AudioCuePolicyTests. AC-4: compiled, not exercised automatically.
+AC-1 to AC-3: SineSynthTests, AudioCuePolicyTests. AC-4: compiled, not exercised automatically. AC-5: GameViewModelTests (four combinations), GameSettingsStoreTests (defaults, migration, persistence).

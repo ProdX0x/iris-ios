@@ -278,6 +278,7 @@ Les 14 niveaux du prototype existent toujours (`PrototypeLevelCatalog`) comme r�
 - `AVAudioEngine` → `AVAudioSourceNode` mono (Float32, fréquence du matériel) → mixeur → sortie. Session `.ambient` + `mixWithOthers` (respecte le commutateur silence).
 - `SineSynth` (thread audio) : 3 voix de crescendo (sinus, fréquence 220 + p·340 Hz, gain 0,02 + p·0,025, constante de temps 0,05 s ; relâchement 0,08 s), carillon 3 notes (660/880/1100 Hz, 0,12 s chacune, enveloppe 30 % montée / 70 % descente, gain 0,05), perte (220 → 120 Hz linéaire sur 0,25 s, gain 0,05 → 0). Commandes de taille fixe protégées par `OSAllocatedUnfairLock`, lecture non bloquante côté rendu, aucune allocation dans la boucle.
 - **Sons de campagne** : arpège de fin de niveau (440, 554, 659, 880 Hz, 0,16 s par note) qui remplace le carillon de la dernière validation ; battement de veilleuse faible (990 Hz, 60 ms) ; nappe d'ambiance par chapitre (deux sinus en quinte, gain 0,012, fondu de 0,8 s), fondamentale propre à chaque chapitre.
+- **Deux réglages** depuis le 12 septembre 2026 (B1.2) : **Effets sonores** (crescendo, carillon, perte, arpège, battements ; activés par défaut) et **Ambiance sonore** (la nappe ; coupée par défaut après le retour humain : sourde, désagréable, sans bénéfice perçu). L'ancien réglage unique « Son » est migré sans rien rallumer : coupé reste tout coupé, activé garde sa nappe. Le moteur audio ne démarre que si l'un des deux est actif.
 - **Politique sonore** (`AudioCuePolicy`, R-15) : crescendo par cible (voix = séquence − 1) tant que la présence progresse ; un carillon par validation, ou l'arpège si elle termine le niveau ; **un seul son de perte par tick**, même en cascade, extinction de veilleuse comprise, jamais deux à moins de `FeedbackTiming.lossRetriggerInterval` (150 ms, garde partagée avec l'haptique, § 15) ; battement de veilleuse au plus une fois par seconde. Pause, interruption, arrière-plan et sortie coupent les voix de progression. Le réglage « Son » désactive le moteur audio.
 - Cycle de vie : interruption `AVAudioSession` (began → pause, ended + shouldResume → redémarrage), `AVAudioEngineConfigurationChange` et `mediaServicesWereReset` → reconstruction du graphe. Échec de démarrage → `AudioStatus.unavailable` affiché dans le HUD, le jeu continue sans son.
 - Statuts : synthèse et politique `[vérifié automatiquement]` (rendu hors ligne à 44,1 kHz : hauteurs, enveloppes, silences) ; démarrage moteur exercé sur simulateur `[vérifié par compilation]` ; sortie réelle sur appareil `[nécessite validation sur appareil TrueDepth]`.
@@ -294,7 +295,7 @@ Référence : `Design/UX_VISION.md` et `Design/ART_DIRECTION.md`. Implémentatio
   - **permission caméra** et **setup du regard** (Gaze Engine v2, restylés) ;
   - **chapitres** : six cartes, nœuds de niveau avec arcs d'éclats, prochain niveau cerclé d'ambre, chapitres verrouillés ;
   - **carnet** : éléments rencontrés, glyphe et une phrase, les autres « à découvrir » ;
-  - **réglages** (feuille) : son, vibrations, points de regard, recalibrer, carnet, réinitialiser la progression avec confirmation, confidentialité ;
+  - **réglages** (feuille) : effets sonores, ambiance sonore, vibrations, points de regard, recalibrer, carnet, réinitialiser la progression avec confirmation, confidentialité ;
   - **jeu** : champ plein écran, repère « III · 2 » et pause en périphérie, consignes en bas, carte d'intro compacte et translucide, pause avec recalibration, **résultat** avec trois éclats qui s'allument l'un après l'autre, interruption, visage perdu, reprise, erreurs ;
   - **fin de parcours** « clairvoyance » avec niveaux, éclats et temps de jeu ;
   - **appareil sans suivi facial**.
@@ -310,7 +311,7 @@ Référence : `Design/UX_VISION.md` et `Design/ART_DIRECTION.md`. Implémentatio
 - Caméra frontale utilisée uniquement via `ARFaceTrackingConfiguration` pour estimer `lookAtPoint` en temps réel. Message `NSCameraUsageDescription` (`Config/Info.plist`) en français, compréhensible.
 - Aucune image, aucune vidéo, aucune géométrie ni représentation du visage n'est conservée : les `ARFrame` sont lus puis relâchés dans le callback ; l'échantillon brut (impact sur le plan, position des yeux, clignements) vit le temps d'une frame et n'est jamais persisté ; les échantillons de calibration sont agrégés puis oubliés.
 - Aucun compte, serveur, cloud, analytics. Stockage local dans `UserDefaults`, limité à :
-  - trois préférences : points de regard, son, vibrations ;
+  - quatre préférences : points de regard, effets sonores, ambiance sonore, vibrations ;
   - le profil de calibration : 6 coefficients, mapping d'axes, orientation, viewport, repère nominal, date, erreurs de vérification, validité ;
   - la progression : pour chaque niveau, nombre de réussites, meilleur temps, moins d'intrusions et éclats ; plus le temps de jeu total et les éléments rencontrés.
 
@@ -567,3 +568,22 @@ Le test humain sur iPhone 14 Pro a **validé A** (réveil, attraction, affolemen
 | Installation et lancement | réussis sur l'iPhone 14 Pro, processus vivant après 8 s : `[installation appareil réussie]` |
 
 Statuts : A `[validé humainement, figé]` ; B corrigé `[conflit vérifié automatiquement]`, `[nécessite un nouveau test humain]` (fiche : `Design/BRAISES_PROTOTYPE_TEST.md`, section B1.1). Interférence d'apprentissage : non résolue. Aucune décision de chapitre.
+
+### 17.2 B1.2 : ambiance séparée des effets, règle de B explicitée (branche `prototype/braises-b-ux-audio`)
+
+Test humain de `ea1cfae` : A toujours validé ; **B toujours incompris** malgré le conflit physique (le joueur ne trouve ni sa fonction ni son intérêt) ; **son coupé volontairement** à cause de la nappe, ce qui supprimait aussi les sons utiles. Rapport : `BRAISES_B1_2_AUDIO_UX_REPORT.md`.
+
+- **Audio** : la nappe (refonte, direction artistique « chambre noire », deux sinus graves en quinte, gain 0,012) est désormais commandée par « Ambiance sonore », coupée par défaut ; les cues d'événements par « Effets sonores », activés par défaut ; migration de l'ancien réglage sans rien rallumer. Aucun changement du synthétiseur, de la politique sonore ni de l'haptique.
+- **Braises B** : aucun changement de géométrie ni de physique. La règle expérimentale est écrite sur la carte d'intro (« Réveillez la braise avant que la 1 n'atteigne son iris. »), sa conséquence au départ (« Trop tard, votre regard chassera la 1. »), et la perte nomme la cause. Trois phrases, 27 mots. L'analyse conclut qu'une fois la règle comprise, la stratégie est déterministe (réveiller tôt) : **fonction compréhensible, deuxième profondeur non démontrée**. Le test humain B1.2 doit distinguer « pas compris », « compris mais règle optimale » et « vrai arbitrage ».
+- A, le réglage de braise, le moteur, le Gaze Engine et la campagne sont inchangés (tests `aIsFrozen`, `officialCampaignUntouched`).
+
+| Étape | Résultat réel |
+|---|---|
+| `git diff --check` | propre |
+| Debug simulateur | BUILD SUCCEEDED |
+| Tests | 253 exécutés, 253 réussis, 0 échec, 0 ignoré |
+| Release simulateur | BUILD SUCCEEDED |
+| Audit | C1, C2, C8, C9, C10, C12 pass, 205 fichiers |
+| Debug appareil signé, installation, lancement | réussis sur l'iPhone 14 Pro, processus vivant après 8 s |
+
+Statuts : A `[validé humainement, figé]` ; audio `[routage vérifié automatiquement]`, écoute réelle `[nécessite validation humaine]` ; B `[règle explicitée, stratégie déterministe établie par l'analyse]`, compréhension et intérêt `[nécessite un nouveau test humain]` (fiche B1.2). Aucune décision de chapitre.

@@ -29,13 +29,14 @@ enum BraisesPrototype {
     /// Waking the braise is a gaze that also reaches that iris: wake it before the lueur settles there, or chase the lueur.
     static let b = LevelDefinition(
         chapter: 0, index: 2, title: "deux feux",
-        principle: "La 1 monte au centre. La braise dort juste au-dessus.",
+        // B1.2: the rule is stated outright so that the human test judges the decision, not the riddle.
+        principle: "Réveillez la braise avant que la 1 n'atteigne son iris.",
         ordered: true, zone: 0.46,
         lueurs: [LueurDefinition(start: Campaign.pt(0.5, 0.86), iris: Campaign.pt(0.5, 0.32)),
                  LueurDefinition(start: Campaign.pt(0.5, 0.18), iris: Campaign.pt(0.2, 0.2), braise: .prototype)],
-        hints: [LevelHint(.start, "La braise dort au-dessus de l'iris de la 1."),
+        hints: [LevelHint(.start, "Trop tard, votre regard chassera la 1."),
                 LevelHint(.braiseFlared, "Trop regardée, elle s'affole."),
-                LevelHint(.firstLoss, "Votre regard sur la braise a chassé la 1. Réveillez-la avant.")],
+                LevelHint(.firstLoss, "Trop tard : votre regard sur la braise a chassé la 1.")],
         par: LevelPar(time: 15, intrusions: 4))
 
     static func level(id: String) -> LevelDefinition? {

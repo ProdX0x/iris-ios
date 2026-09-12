@@ -91,3 +91,52 @@ Frustration : ☐ aucune ☐ légère ☐ nette
 Remarque libre :
 
 **Le critère C reste provisoire après deux niveaux.** L'interférence d'apprentissage avec les six chapitres n'est pas testée ici.
+
+---
+
+# TEST HUMAIN — VERSION ea1cfae (B1.1)
+
+Réalisé sur iPhone 14 Pro, `ea1cfaec8b3f91d0ae2dcfa11cf28fbeee7a48f5`.
+
+- Braises A : toujours validé (sommeil, réveil, attraction, répulsion, affolement, portée accrue).
+- Braises B : le conflit physique existe, mais **le joueur ne comprend toujours pas clairement à quoi sert B** : ni sa raison d'être, ni la décision supplémentaire, ni l'intérêt de « réveiller tôt / trop tard ». Il perd du temps à chercher la fonction d'un élément dont l'intérêt n'est pas évident.
+- Audio : le joueur a volontairement coupé le son parce que l'ambiance continue lui est désagréable (sourde, sans bénéfice) ; ce choix supprimait aussi les sons utiles.
+
+---
+
+# TEST HUMAIN B1.2
+
+Version `prototype/braises-b-ux-audio`. La règle de B est désormais écrite sur la carte d'intro : **« Réveillez la braise avant que la 1 n'atteigne son iris. »** Au départ : « Trop tard, votre regard chassera la 1. » Jouez B au moins deux fois, une fois en réveillant tôt, une fois en attendant exprès.
+
+## COMPRÉHENSION
+« Maintenant que l'objectif est expliqué clairement, comprends-tu ce que B te demande ? »
+☐ Oui immédiatement ☐ Oui après essai ☐ Non
+
+## PERCEPTION
+« Vois-tu réellement la différence entre réveiller la braise avant ou après la pose de la 1 ? »
+☐ Oui nettement ☐ Faiblement ☐ Non
+
+## INTÉRÊT
+« Une fois la règle comprise, est-ce que choisir QUAND réveiller la braise te paraît intéressant ? »
+☐ Oui ☐ Un peu ☐ Non
+
+## DIFFÉRENCE AVEC A
+« B te fait-il prendre une décision réellement différente de A ? »
+☐ Oui ☐ Partiellement ☐ Non
+
+## HÉSITATION RÉELLE
+« Pendant le niveau, arrives-tu parfois à hésiter réellement entre réveiller maintenant ou attendre ? »
+☐ Oui, selon la situation ☐ Rarement ☐ Non, je sais toujours qu'il faut réveiller tôt
+
+## ARBITRAGE
+« Existe-t-il parfois une bonne raison d'attendre avant de réveiller la braise ? »
+☐ Oui ☐ Peut-être ☐ Non
+
+**Si les deux dernières réponses sont « Non, je sais toujours qu'il faut réveiller tôt » et « Non », B est compris sans constituer une vraie décision supplémentaire.** C'est un résultat valide.
+
+## AUDIO
+« Avec Effets sonores activés et Ambiance sonore coupée, entends-tu les sons utiles (montée, validation, perte, fin) sans la nappe ? »
+☐ Oui ☐ Non
+
+## COMMENTAIRE LIBRE
+Confusion, frustration, intérêt, impression de règle artificielle, autre :
