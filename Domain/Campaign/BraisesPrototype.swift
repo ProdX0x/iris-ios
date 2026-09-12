@@ -25,17 +25,18 @@ enum BraisesPrototype {
                 LevelHint(.afterSeconds(30), "Un regard bref suffit. Puis regardez ailleurs.")],
         par: LevelPar(time: 14, intrusions: 4))
 
-    /// B, first mastery: a normal lueur settles first; the braise must be fed from where the settled lueur is not troubled.
+    /// B, first mastery (reworked in B1.1): the braise sleeps 120 pt above the iris of a normal lueur that rises to it.
+    /// Waking the braise is a gaze that also reaches that iris: wake it before the lueur settles there, or chase the lueur.
     static let b = LevelDefinition(
         chapter: 0, index: 2, title: "deux feux",
-        principle: "La 1 se pose. Réveillez la 2 sans chasser la 1.",
+        principle: "La 1 monte au centre. La braise dort juste au-dessus.",
         ordered: true, zone: 0.46,
-        lueurs: [LueurDefinition(start: Campaign.pt(0.22, 0.86), iris: Campaign.pt(0.5, 0.5)),
-                 LueurDefinition(start: Campaign.pt(0.76, 0.86), iris: Campaign.pt(0.62, 0.36), braise: .prototype)],
-        hints: [LevelHint(.start, "D'abord la 1. La 2 dort."),
+        lueurs: [LueurDefinition(start: Campaign.pt(0.5, 0.86), iris: Campaign.pt(0.5, 0.32)),
+                 LueurDefinition(start: Campaign.pt(0.5, 0.18), iris: Campaign.pt(0.2, 0.2), braise: .prototype)],
+        hints: [LevelHint(.start, "La braise dort au-dessus de l'iris de la 1."),
                 LevelHint(.braiseFlared, "Trop regardée, elle s'affole."),
-                LevelHint(.firstLoss, "La 1 a perdu sa place : réveillez la 2 de plus loin.")],
-        par: LevelPar(time: 22, intrusions: 7))
+                LevelHint(.firstLoss, "Votre regard sur la braise a chassé la 1. Réveillez-la avant.")],
+        par: LevelPar(time: 15, intrusions: 4))
 
     static func level(id: String) -> LevelDefinition? {
         levels.first { $0.id == id }

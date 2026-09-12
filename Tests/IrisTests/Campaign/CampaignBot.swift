@@ -135,16 +135,15 @@ private struct Brain {
         return nil
     }
 
-    /// EXPERIMENTAL: warms the braise whose turn it is, looking just beyond it on the side away from its iris, so that
-    /// the flight it provokes helps; stops once the braise is warm enough, feeds again only if it nearly sleeps.
+    /// EXPERIMENTAL: warms any sleeping braise as soon as possible (waking validates nothing, the engine keeps the order),
+    /// looking just beyond it on the side away from its iris, so that the flight it provokes helps; stops once the
+    /// braise is warm enough, feeds again only if it nearly sleeps.
     private func feedAim(session: GameSession) -> Vector2? {
         let targets = session.targets
-        let lowest = resolved.level.isSequential ? TurnRule.lowestUnvalidatedSequence(in: targets) : nil
         for index in targets.indices {
             guard let braise = session.braises[index] else { continue }
             let target = targets[index]
             if target.isValidated { continue }
-            if let lowest, target.sequence != lowest { continue }
             let wanted = braise.isLit ? 0.45 : 0.75
             if braise.heat >= wanted { continue }
             let away = target.position - target.arrival

@@ -93,16 +93,139 @@ struct BraisesPrototypeTests {
         }
     }
 
-    @Test("B: feeding the braise where the settled lueur is troubled costs that lueur its place")
-    func guardPressure() {
+    // MARK: B1.1 — the conflict of B exists physically and depends on when the braise is woken
+
+    private struct Run {
+        var events: [(time: Double, event: GameEvent)] = []
+        var maxDisturbanceOfOne = 0.0
+        var time = 0.0
+        var losses = 0
+        var complete = false
+        func times(of predicate: (GameEvent) -> Bool) -> [Double] { events.filter { predicate($0.event) }.map(\.time) }
+    }
+
+    /// Plays B with a smoothed gaze like the real game: rests at `rest`, wakes the braise (looking 20 pt under it until it
+    /// lights) as soon as `wakeWhen` says so, then rests again.
+    private func playB(rest: Vector2, wakeWhen: (GameSession) -> Bool) -> Run {
         let level = BraisesPrototype.b
-        let irisOne = level.lueurs[0].iris.absolute(in: bounds)
-        let irisTwo = level.lueurs[1].iris.absolute(in: bounds)
+        let resolved = LevelResolver.resolve(level, in: bounds)
+        var session = resolved.makeSession(noiseSources: level.lueurs.map { _ in SilentNoise() })
+        session.placeGaze(at: rest)
+        var run = Run()
+        var waking = false
+        var woken = false
+        for _ in 0..<Int(20 * 60) {
+            if !woken && !waking && wakeWhen(session) { waking = true }
+            if waking && session.braises[1]?.isLit == true { waking = false; woken = true }
+            let gaze = waking ? session.targets[1].position + Vector2(x: 0, y: 20) : rest
+            session.ingestGaze(gaze)
+            let events = session.advance(by: frame)
+            run.events += events.map { (session.elapsed, $0) }
+            run.maxDisturbanceOfOne = max(run.maxDisturbanceOfOne, session.targets[0].disturbance)
+            if session.isComplete { break }
+        }
+        run.time = session.elapsed
+        run.losses = session.metrics.losses
+        run.complete = session.isComplete
+        return run
+    }
+
+    @Test("B geometry: the sleeping braise sits inside the zone of a gaze on the first lueur's iris; its own iris is far from it")
+    func geometryOfB() {
+        let level = BraisesPrototype.b
         let resolved = LevelResolver.resolve(level, in: bounds)
         let zone = resolved.level.targets[0].attentionZone
-        #expect(irisOne.distance(to: irisTwo) < zone, "the braise's iris is inside the zone of a gaze on it: feeding there is unsafe")
-        #expect(level.lueurs[1].start.absolute(in: bounds).distance(to: irisOne) > zone + 20, "feeding at the start is safe")
+        let irisOne = level.lueurs[0].iris.absolute(in: bounds)
+        let braiseStart = level.lueurs[1].start.absolute(in: bounds)
+        let braiseIris = level.lueurs[1].iris.absolute(in: bounds)
+        #expect(abs(braiseStart.distance(to: irisOne) - 120) < 2, "a gaze that wakes the braise is 120 pt from iris 1: inside the 181 pt zone")
+        #expect(braiseIris.distance(to: irisOne) > 150, "the lit braise waits far enough from iris 1")
         #expect(level.ordered && level.lueurs[0].braise == nil && level.lueurs[1].braise != nil)
+        #expect(level.lueurs[1].braise == .prototype, "B uses exactly the braise tuning validated in A")
+        #expect(braiseStart.y >= 0.12 * bounds.height && braiseIris.y >= 0.12 * bounds.height, "nothing to look at in the top margin")
+    }
+
+    @Test("B: the waking gaze physically reaches the settled lueur: woken first, nothing is lost; woken after the lueur settled, it is chased")
+    func timingConflict() {
+        for rest in [Vector2(x: 350, y: 800), Vector2(x: 350, y: 60)] {
+            let prudent = playB(rest: rest) { _ in true }
+            let conflict = playB(rest: rest) { $0.targets[0].isValidated }
+
+            #expect(prudent.complete && prudent.losses == 0, "wake first: \(prudent.time) s")
+            #expect(prudent.times(of: { $0 == .targetValidated(sequence: 1) }).count == 1)
+            #expect(prudent.time < 7)
+
+            #expect(conflict.complete, "the level stays completable after the conflict")
+            #expect(conflict.losses == 1)
+            let validatedOne = conflict.times(of: { $0 == .targetValidated(sequence: 1) })
+            let lostOne = conflict.times(of: { $0 == .targetLost(sequence: 1, cause: .drift) })
+            #expect(validatedOne.count == 2 && lostOne.count == 1, "settled, chased by the waking gaze, settled again")
+            if let firstValidation = validatedOne.first, let loss = lostOne.first {
+                #expect(loss > firstValidation && loss - firstValidation < 1.2, "the loss follows the waking gaze within a second")
+            }
+            #expect(conflict.maxDisturbanceOfOne > 0.25, "the same gaze that wakes the braise pushes the lueur (0.25 already reaches the speed cap)")
+            #expect(conflict.time > prudent.time + 1.5, "waiting is not free")
+            #expect(prudent.maxDisturbanceOfOne < 0.45, "woken first, the lueur is at most brushed while rising")
+        }
+    }
+
+    @Test("A is frozen: the definition validated by the human test of 416feb9 is byte for byte the same")
+    func aIsFrozen() {
+        let a = BraisesPrototype.a
+        #expect(a.id == "0-1" && a.title == "braise" && a.principle == "Elle dort, froide. Votre regard la réveille.")
+        #expect(a.introduces.isEmpty && !a.ordered && a.zone == 0.46 && a.repulsionForce == 2.4 && a.attraction == 0.5)
+        #expect(a.noise == 0.15 && a.hold == 0.75)
+        #expect(a.currents.isEmpty && a.veils.isEmpty && a.veilleuses.isEmpty)
+        #expect(a.lueurs.count == 1)
+        let lueur = a.lueurs[0]
+        #expect(lueur.start == NormalizedPoint(x: 0.5, y: 0.74) && lueur.iris == NormalizedPoint(x: 0.5, y: 0.32))
+        #expect(lueur.temperament == .normale && lueur.irisMotion == .fixed && lueur.route.isEmpty)
+        let expectedBraise = BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30,
+                                              acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0)
+        #expect(lueur.braise == expectedBraise)
+        #expect(BraiseDefinition.prototype == expectedBraise, "the shared tuning is the one the human validated")
+        #expect(a.hints.map(\.trigger) == [.start, .braiseLit, .braiseFlared, .afterSeconds(30)])
+        #expect(a.hints.map(\.text) == ["Elle est froide. Regardez-la.",
+                                        "Elle s'allume et fuit. Laissez-la venir.",
+                                        "Trop regardée, elle s'affole.",
+                                        "Un regard bref suffit. Puis regardez ailleurs."])
+        #expect(a.par == LevelPar(time: 14, intrusions: 4))
+        let resolved = LevelResolver.resolve(a, in: bounds)
+        #expect(resolved.environment.braises.count == 1 && resolved.environment.braises[0]?.chargeRadius == 0.22 * 393)
+    }
+
+    @Test("A, human-observed behaviour: a flaring braise is pushed by a gaze that a calm lit braise ignores")
+    func flareReach() {
+        /// Looks at the braise until it lights (calm), or until it is fully hot (flare at its strongest, zone x 1.5).
+        func woken(until flare: Bool) -> GameSession {
+            var sut = session(BraisesPrototype.a, gaze: Vector2(x: 40, y: 800))
+            for _ in 0..<Int(2.5 * 60) {
+                sut.placeGaze(at: sut.targets[0].position + Vector2(x: 0, y: 45))
+                _ = sut.advance(by: frame)
+                let braise = sut.braises[0]
+                if flare ? (braise?.heat ?? 0) >= 0.99 : braise?.isLit == true { break }
+            }
+            return sut
+        }
+        func pushed(_ start: GameSession) -> Double {
+            var sut = start
+            let origin = sut.targets[0].position
+            sut.placeGaze(at: origin + Vector2(x: 230, y: 0))
+            for _ in 0..<Int(0.4 * 60) {
+                sut.placeGaze(at: sut.gaze.position)
+                _ = sut.advance(by: frame)
+            }
+            return origin.x - sut.targets[0].position.x
+        }
+
+        let calm = woken(until: false)
+        let flaring = woken(until: true)
+        #expect(calm.braises[0]?.isLit == true && calm.braises[0]?.isFlaring == false)
+        #expect(flaring.braises[0]?.isFlaring == true)
+        let calmPush = pushed(calm)
+        let flarePush = pushed(flaring)
+        #expect(abs(calmPush) < 4, "230 pt is beyond the 181 pt zone: a calm braise is not moved sideways")
+        #expect(flarePush > 20, "flaring, the zone reaches 271 pt: the same distant gaze pushes it away")
     }
 
     @Test("hints, audio and haptics: lighting shows its hint and reuses the soft pulse; flaring and cooling are silent")

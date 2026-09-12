@@ -551,3 +551,19 @@ Expérience contrôlée, **hors campagne**, destinée à répondre à deux quest
 - **Isolation** : `LueurDefinition.braise` (nil dans les 34 niveaux officiels), `BraiseState` et `BehaviourScale` dans le moteur (neutres, × 1,0 exact, pour toute lueur ordinaire ; traces golden inchangées), trois événements, deux déclencheurs de consigne, un dessin de braise dans le renderer, un lanceur DEBUG. Le Gaze Engine, la calibration, la physique de référence et les six chapitres sont inchangés ; un test le vérifie (identifiants des 34 niveaux, absence de braise, environnement sans braise).
 - **Vérifié automatiquement** : chaleur, hystérésis, affolement, comportement ; réveil, fuite, retour et validation en session ; faisabilité par le joueur simulé qui nourrit (3 graines) et impossibilité sans nourrir ou hors écran ; références d'éclats ; consignes, son et haptique ; isolation de la progression et du flux de résultat.
 - **Statut** : `[logique vérifiée automatiquement]` ; `[build appareil réussi]` et `[installation appareil réussie]` selon § 10 bis ; le geste lui-même, sa lisibilité et son agrément : `[nécessite validation humaine]`. Aucune décision de chapitre n'est prise.
+
+### 17.1 B1.1 : test humain de `416feb9` et correction de B (branche `prototype/braises-b-rework`)
+
+Le test humain sur iPhone 14 Pro a **validé A** (réveil, attraction, affolement, portée accrue du regard après affolement) et n'a **pas perçu de différence** dans B. Diagnostic par reconstitution tick par tick (`BRAISES_B_REWORK_REPORT.md`) : dans `416feb9`, le regard qui réveille la braise est à 315 pt de tout, la braise réveillée est autonome, et aucune stratégie ne produit de perte ; le rapport B1 était techniquement vrai mais pratiquement neutralisé. Décision : **issue 1, B réparable par le seul level design**. La braise dort désormais 120 pt au-dessus de l'iris de la lueur 1, qui monte du bas : la réveiller avant que la 1 ne se pose ne coûte rien, la réveiller après chasse la 1 (perte 0,4 à 0,7 s après sa validation). A, le réglage de braise, le moteur, le Gaze Engine et la campagne sont inchangés ; A est figé par un test champ par champ.
+
+| Étape | Résultat réel |
+|---|---|
+| `git diff --check` | propre |
+| Debug simulateur | BUILD SUCCEEDED |
+| Tests | 249 exécutés, 249 réussis, 0 échec, 0 ignoré (3 ajoutés : géométrie de B, conflit de moment, A figé, portée de l'affolement ; l'ancien test géométrique de B retiré) |
+| Release simulateur | BUILD SUCCEEDED |
+| Audit | C1, C2, C8, C9, C10, C12 pass, 205 fichiers |
+| Debug appareil signé | BUILD SUCCEEDED, `net.steve-s.iris`, `G4U9RG5GL7` |
+| Installation et lancement | réussis sur l'iPhone 14 Pro, processus vivant après 8 s : `[installation appareil réussie]` |
+
+Statuts : A `[validé humainement, figé]` ; B corrigé `[conflit vérifié automatiquement]`, `[nécessite un nouveau test humain]` (fiche : `Design/BRAISES_PROTOTYPE_TEST.md`, section B1.1). Interférence d'apprentissage : non résolue. Aucune décision de chapitre.

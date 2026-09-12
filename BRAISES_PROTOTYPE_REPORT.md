@@ -1,5 +1,7 @@
 # Iris — rapport du prototype B1 « Braises »
 
+> **Note B1.1 (12 septembre 2026).** Le test humain de cette version (`416feb9`) a validé A et n'a pas perçu de différence dans B. Le diagnostic et la correction de B sont dans `BRAISES_B_REWORK_REPORT.md` ; la section « Prototype B » ci-dessous décrit la version `416feb9`, conservée telle quelle comme trace.
+
 Date : 12 septembre 2026. Branche : `prototype/braises`, créée depuis `937d549` (conception de phase A). Bundle `net.steve-s.iris`, équipe `G4U9RG5GL7`, `project.yml` source de vérité, inchangés.
 Nature : expérience contrôlée, hors campagne. Deux niveaux, pas davantage. Aucune décision de chapitre.
 
