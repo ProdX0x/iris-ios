@@ -72,7 +72,7 @@ Le diaphragme à six lames entrouvert, ambre sur encre, avec une petite lueur na
 
 ## 8. Son
 
-- **Nappe d'ambiance** par chapitre : deux sinus graves en quinte, gain très faible, fondue en entrée et en sortie. Fondamentales : I 110 Hz, II 123,5 Hz, III 98 Hz, IV 130,8 Hz, V 116,5 Hz, VI 146,8 Hz.
+- **Nappe d'ambiance** par chapitre : deux sinus graves en quinte, gain très faible, fondue en entrée et en sortie. Fondamentales : I 110 Hz, II 123,5 Hz, III 98 Hz, IV 130,8 Hz, V 116,5 Hz, VI 146,8 Hz. **Retour humain du 12 septembre 2026 : jugée sourde et désagréable sur le haut-parleur de l'iPhone, sans bénéfice perçu.** Elle est conservée mais coupée par défaut (réglage « Ambiance sonore »), séparée des effets ; à retravailler (timbre, registre, gain) ou à retirer après un nouveau test.
 - **Crescendo, carillon, perte** : ceux du prototype, conservés.
 - **Veilleuse faible** : battement doux (990 Hz, 60 ms), au plus une fois par seconde.
 - **Niveau atteint** : arpège ascendant de 4 notes (440, 554, 660, 880 Hz), plus lent que le carillon, qui le remplace.

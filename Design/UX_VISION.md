@@ -91,7 +91,7 @@ Existant (Gaze Engine v2) et restylé. Le titre de l'étape et une ligne d'aide 
 
 ### 3.8 Réglages (feuille)
 
-Son, vibrations, points de regard (diagnostic), *Recalibrer le regard*, *Carnet*, *Réinitialiser la progression* (confirmation destructive), note de confidentialité.
+Effets sonores, ambiance sonore (coupée par défaut depuis le test du 12 septembre 2026), vibrations, points de regard (diagnostic), *Recalibrer le regard*, *Carnet*, *Réinitialiser la progression* (confirmation destructive), note de confidentialité.
 
 ### 3.9 Carnet
 

@@ -47,8 +47,9 @@ struct GameViewModelTests {
         }
     }
 
-    @Test("prepare loads the level, shows the intro once tracking works, starts audio with the chapter drone")
+    @Test("prepare loads the level, shows the intro once tracking works, starts audio with the chapter drone when the ambience is on")
     func intro() {
+        settings.ambienceEnabled = true
         let sut = makeSUT(level: restingLevel())
 
         #expect(sut.phase == .initializing)
@@ -63,16 +64,60 @@ struct GameViewModelTests {
         #expect(sut.snapshot.lueurs.count == 1)
     }
 
-    @Test("sound disabled: the audio engine is never activated and no cue is sent")
-    func soundDisabled() {
-        settings.soundEnabled = false
+    private func isSilenceCue(_ cue: AudioCue) -> Bool {
+        if case .stopProgress = cue { return true }
+        return false
+    }
+
+    @Test("effects on, ambience off (default): the engine runs, event cues play, no drone")
+    func effectsWithoutAmbience() {
+        let sut = makeSUT(level: restingLevel())
+        startPlaying(sut)
+        clock.tick(frames: 50)
+
+        #expect(audio.activateCount == 1)
+        #expect(!audio.cues.contains(.ambient(frequency: 110)))
+        #expect(audio.cues.contains { if case .progress = $0 { return true } else { return false } })
+        #expect(audio.cues.contains(.levelComplete))
+    }
+
+    @Test("effects off, ambience on: the drone plays and every event cue stays silent")
+    func ambienceWithoutEffects() {
+        settings.soundEffectsEnabled = false
+        settings.ambienceEnabled = true
+        let sut = makeSUT(level: restingLevel())
+        startPlaying(sut)
+        clock.tick(frames: 50)
+
+        #expect(audio.activateCount == 1)
+        #expect(audio.cues.contains(.ambient(frequency: 110)))
+        #expect(audio.cues.allSatisfy { $0 == .ambient(frequency: 110) || isSilenceCue($0) })
+        #expect(sut.phase != .playing, "the level still completes without event sounds")
+    }
+
+    @Test("effects off, ambience off: the audio engine is never activated and no cue is sent")
+    func allAudioOff() {
+        settings.soundEffectsEnabled = false
+        settings.ambienceEnabled = false
         let sut = makeSUT(level: restingLevel())
 
         startPlaying(sut)
         clock.tick(frames: 60)
 
         #expect(audio.activateCount == 0)
-        #expect(audio.cues.allSatisfy { if case .stopProgress = $0 { return true } else { return false } })
+        #expect(audio.cues.allSatisfy(isSilenceCue))
+    }
+
+    @Test("effects on, ambience on: drone and event cues together")
+    func allAudioOn() {
+        settings.ambienceEnabled = true
+        let sut = makeSUT(level: restingLevel())
+        startPlaying(sut)
+        clock.tick(frames: 50)
+
+        #expect(audio.activateCount == 1)
+        #expect(audio.cues.contains(.ambient(frequency: 110)))
+        #expect(audio.cues.contains(.levelComplete))
     }
 
     @Test("haptics on: the hold prepares the engine, the completing validation is one success pulse alongside the arpeggio")
@@ -191,8 +236,9 @@ struct GameViewModelTests {
         #expect(gaze.state == .idle)
     }
 
-    @Test("the last level of a chapter proposes the next chapter and changes the drone")
+    @Test("the last level of a chapter proposes the next chapter and changes the drone when the ambience is on")
     func chapterEnd() {
+        settings.ambienceEnabled = true
         let sut = makeSUT(level: restingLevel(chapter: 1, index: 5))
         startPlaying(sut)
         clock.tick(frames: 50)

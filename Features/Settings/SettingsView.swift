@@ -1,6 +1,6 @@
 // SettingsView.swift
 // Layer: Presentation
-// Purpose: Sound, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note
+// Purpose: Sound effects, ambience, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note
 
 import SwiftUI
 
@@ -24,7 +24,8 @@ struct SettingsView: View {
                         .frame(minHeight: 44)
                 }
                 DSCard(style: .flat) {
-                    Toggle("Son", isOn: $settings.soundEnabled)
+                    Toggle("Effets sonores", isOn: $settings.soundEffectsEnabled)
+                    Toggle("Ambiance sonore", isOn: $settings.ambienceEnabled)
                     Toggle("Vibrations", isOn: $settings.hapticsEnabled)
                     Toggle("Points de regard (diagnostic)", isOn: $settings.showsGazeIndicator)
                 }

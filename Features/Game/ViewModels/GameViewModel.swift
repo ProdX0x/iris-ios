@@ -184,7 +184,7 @@ final class GameViewModel {
         guard case .levelComplete = phase, let next = Self.next(after: level) else { return }
         let chapterChanged = next.chapter != level.chapter
         loadLevel(next)
-        if chapterChanged && settings.soundEnabled {
+        if chapterChanged && settings.ambienceEnabled {
             audio.apply(.ambient(frequency: chapter.ambientFrequency))
         }
         phase = .ready
@@ -294,7 +294,7 @@ final class GameViewModel {
             faceLostDuration = 0
         }
         let events = session.advance(by: deltaTime)
-        if settings.soundEnabled {
+        if settings.soundEffectsEnabled {
             for cue in cuePolicy.cues(for: events, at: session.elapsed) {
                 audio.apply(cue)
             }
@@ -405,10 +405,13 @@ final class GameViewModel {
         gaze.stop()
     }
 
+    /// The engine runs when effects or ambience are wanted; the drone plays only if the ambience is wanted.
     private func activateAudio() {
-        guard settings.soundEnabled else { return }
+        guard settings.wantsAudio else { return }
         audio.activate()
-        audio.apply(.ambient(frequency: chapter.ambientFrequency))
+        if settings.ambienceEnabled {
+            audio.apply(.ambient(frequency: chapter.ambientFrequency))
+        }
     }
 
     private func deactivateAudio() {
