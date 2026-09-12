@@ -1,5 +1,11 @@
 # Iris — système de level design
 
+# STATUT : PROVISOIRE — NON AUTORITAIRE AVANT VALIDATION HUMAINE DES CONCEPTS
+
+Ce document a deux parties. La **partie A** (§ 1 à § 10) décrit le système implémenté et vérifié pour les six chapitres actuels : elle reste exacte pour eux. La **partie B** (§ 11 et suivants, ajoutée le 12 septembre 2026) étend le système aux concepts candidats de `GAME_EXPANSION_CONCEPTS.md` ; elle est provisoire. Aucune règle de ce document ne doit contraindre un concept approuvé : si un chapitre approuvé exige une nouvelle dimension, c'est le système qui évolue, jamais le chapitre qui se plie au format.
+
+## Partie A — système implémenté (chapitres I à VI)
+
 Un niveau d'Iris est une **donnée** (`LevelDefinition`, `Domain/Campaign/`). Il est résolu contre la taille réelle de l'écran (`LevelResolver`), puis simulé par le moteur existant enrichi (`GameSession` + `LevelEnvironment`). Chaque niveau est **vérifié par simulation** (`Tests/IrisTests/Campaign/`).
 
 ## 1. Unités
@@ -230,3 +236,62 @@ Lecture :
 - Tous les niveaux à voie échouent sans pousser. Tous les niveaux à veilleuse échouent sans regarder la flamme. Aucun niveau ne se termine hors écran.
 - Le robot est bien plus précis et rapide qu'un humain : les temps réels d'un joueur seront de 2 à 5 fois plus longs. Les références en tiennent compte.
 - 6-5 est le niveau le plus long pour le robot, mais 6-6 reste le plus difficile selon l'estimation (règle 8), grâce à ses deux croisements et à sa pression de garde.
+
+## Partie B — extension provisoire (12 septembre 2026)
+
+### 11. Dimensions de variation
+
+Un niveau varie sur des dimensions ; un chapitre en explore une nouvelle. Les dimensions connues et candidates :
+
+| Dimension | État | Portée |
+|---|---|---|
+| Espace du regard | implémentée (évitement, poussée) | où poser les yeux |
+| Ordre et protection | implémentée | ordre, cascade, garde |
+| Résistance au trajet | implémentée (courants, voiles) | pousser, viser |
+| Obligation de regard | implémentée (veilleuses) | coups d'œil programmés |
+| Mobilité du but | implémentée (iris mouvant) ; candidate (rendez-vous : le but fuit) | anticiper, converger |
+| Tiers mobile | candidate (souffles) | protéger |
+| Temps | candidate (phares) | attendre, retenir, relâcher |
+| Dosage du regard sur la lueur | candidate (braises) | nourrir |
+| Attention diffuse | réserve (nuée) | rassembler |
+| Fixation imposée | réserve (ancres) | attention couverte |
+
+### 12. Structure d'un chapitre
+
+Entrée (1 niveau : l'élément seul, une lueur) → montée (2 à 3 : variations, puis combinaison avec un acquis) → respiration (1 : précision ≤ 1, stabilité 0, cascade ≤ 1 selon `DIFFICULTY_MODEL.md`) → finale (1 : la charge dominante du chapitre à son maximum). Un chapitre de respiration (rendez-vous, phares) a la même structure avec une amplitude réduite.
+
+### 13. Règles à assouplir ou à préciser
+
+| Règle actuelle | Évolution proposée | Pourquoi |
+|---|---|---|
+| Au plus 3 lueurs | maintenue pour les lueurs individuelles ; une nuée (réserve) compterait comme un groupe | la charge attentionnelle d'un groupe est inférieure à celle de trois lueurs ordonnées |
+| Un seul élément nouveau par chapitre | maintenue ; un chapitre peut aussi introduire une **règle de validation** nouvelle (présence mutuelle, fenêtre) | rendez-vous et phares ne sont pas des objets de plus, ce sont des buts différents |
+| Hors chapitre de synthèse, au plus deux types d'éléments | maintenue ; un souffle ou une braise compte comme un type | lisibilité |
+| Nécessité prouvée pour tout chapitre | nécessité prouvée pour les chapitres de tension ; **différence prouvée** (le but se comporte autrement) pour les chapitres déclarés de respiration, avec nécessité sur au moins deux de leurs niveaux | un chapitre de respiration existe pour reposer, pas pour forcer |
+| Un iris n'est jamais dans un courant | étendue : jamais dans le trajet permanent d'un souffle ; un phare n'est jamais dans un courant | sinon aucune présence n'est possible |
+| Toute veilleuse est atteignable par le regard | étendue à toute cible de regard obligatoire, avec rayon ≥ 0,18 ou hystérésis (`PLAYER_COMFORT_CONSTRAINTS.md` § 3.1) | test humain |
+| Le dernier niveau est le plus difficile (estimation) | maintenue comme contrôle automatique ; la conception utilise le profil de `DIFFICULTY_MODEL.md` | un nombre ne décrit pas une charge |
+
+### 14. Éléments candidats : paramètres provisoires
+
+À ne lire que comme des hypothèses de prototype. Aucune valeur n'est réglée.
+
+| Élément | Paramètres | Plages provisoires | Preuve de nécessité (nouveau robot) |
+|---|---|---|---|
+| Souffle | trajet (segment aller-retour ou cercle), vitesse, rayon, force d'entraînement, sensibilité au regard | vitesse ≤ 0,06 largeur/s ; rayon 0,10 – 0,16 ; force ≥ attraction ; au plus 2 ; trajet visible en permanence | le robot qui ne dévie jamais le souffle échoue en 60 s ; le robot qui dévie réussit |
+| Braise | charge initiale, rayon de charge, vitesse de chauffe, vitesse de refroidissement, seuil d'acceptation | rayon ≥ 0,20 ; chauffe 1 – 2 s ; refroidissement 6 – 10 s ; seuil 0,6 – 0,8 | le robot qui ne regarde jamais la braise échoue ; le robot qui alterne regarder / relâcher réussit ; dispersion des fuites mesurée |
+| Phare | durée d'ouverture, durée de fermeture, phase initiale, rayon et force d'expiration | ouverture ≥ 1,5 s (viser 2,5 – 4) ; fermeture 3 – 8 s ; rayon d'expiration 0,25 – 0,40 ; force > attraction | le robot qui gare la lueur et attend échoue ; le robot qui retient puis relâche réussit |
+| Jumelles (rendez-vous) | paire, distance de rendez-vous (= rayon de validation), tempéraments | comme les lueurs ; distance 16 pt à l'échelle 1 | différence : la trajectoire du but n'est pas celle d'un iris fixe ni d'un iris mouvant ; nécessité sur ≥ 2 niveaux du chapitre grâce aux voiles et courants |
+
+### 15. Vérification des nouveaux types
+
+La vérification actuelle (validité, faisabilité, nécessité, hors écran, références, différence, maîtrise) s'applique. Elle s'enrichit de :
+
+- un **biais constant** de 71 pt (calibration acceptée de justesse) en plus du bruit de ± 24 pt, pour toute mécanique qui regarde une région ;
+- une mesure de **lisibilité temporelle** pour les phares : la prochaine ouverture doit être prévisible 5 s à l'avance (paramètre, pas simulation) ;
+- une mesure de **tolérance de trajet** pour les souffles : aucune validation ne doit pouvoir être perdue sans qu'une déviation ait été possible pendant ≥ 2 s ;
+- une mesure de **dispersion** pour les braises : la fuite provoquée par un regard de charge ne doit jamais envoyer la lueur dans un voile ou un courant depuis le point de charge prévu.
+
+### 16. Ce que la partie B ne dit pas
+
+Elle ne décrit aucun niveau. Elle ne fixe aucune valeur. Elle ne remplace pas un prototype joué. Après le jugement des concepts par l'utilisateur, chaque chapitre approuvé sera d'abord prototypé sur deux niveaux, joué sur iPhone, puis seulement conçu en entier.

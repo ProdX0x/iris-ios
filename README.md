@@ -518,3 +518,23 @@ Statut : **Gaze Engine v2 suffisamment validé humainement pour démarrer le gam
 **Réglage.** « Vibrations » commande tous les retours haptiques volontaires d'Iris, prend effet au tick suivant, et persiste dans `UserDefaults` avec les autres préférences.
 
 **Tests.** `HapticCuePolicyTests` (8), `GameSettingsStoreTests` (2), `GameViewModelTests` (2 nouveaux) : `[logique haptique vérifiée automatiquement]`. La sensation réelle des impulsions, leur intensité et leur discrétion : `[sensation physique nécessite validation humaine]`.
+
+---
+
+## 16. Conception de l'expansion — phase A (12 septembre 2026)
+
+Sur `feature/game-expansion`, après la validation humaine du Gaze Engine (§ 14) et de l'haptique (§ 15), une phase de conception sans implémentation a produit, dans `Design/` :
+
+| Document | Contenu | Statut |
+|---|---|---|
+| `GAME_CORE_INVARIANTS.md` | ce qui fait Iris, ce qui varie, ce qui l'approfondit, ce qui le dénaturerait | autoritaire (A et D) |
+| `PLAYER_COMFORT_CONSTRAINTS.md` | contraintes issues du test iPhone : précision, périphérie, micro-mouvements, fatigue, calibration, haptique | autoritaire |
+| `DIFFICULTY_MODEL.md` | douze axes, profils des chapitres, garde-fous de séquence | provisoire |
+| `GAME_EXPANSION_CONCEPTS.md` | douze concepts de chapitre, critiques à charge, matrice, éliminations, quatre finalistes, seconde passe | à juger |
+| `CAMPAIGN_STRUCTURE.md` | campagne de dix chapitres proposée, courbe, découpages, solutions de repli, partie gratuite | à juger |
+| `LEVEL_DESIGN_SYSTEM.md` | partie A implémentée (I à VI) ; partie B provisoire (dimensions, règles à assouplir, éléments candidats) | provisoire |
+| `GAME_VISION.md`, `GAME_DESIGN.md` | révisés : audit des six chapitres, espace inexploité, sections de rythme et de confort, indécisions | révisés |
+
+Rapport de synthèse : `GAME_EXPANSION_DESIGN_REPORT.md` (racine). Aucun niveau, aucun chapitre, aucune mécanique, aucun paramètre du regard ni du moteur n'a été modifié pendant cette phase ; les 232 tests et les six chapitres sont ceux du commit haptique.
+
+**Étape suivante : validation humaine de la conception avant toute implémentation des nouveaux chapitres.**
