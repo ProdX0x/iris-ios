@@ -60,6 +60,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Tokens/DSMotion.swift | enum | DesignSystem | Motion tokens; every animation has a Reduce Motion variant (cross-fade only) | Claude (mission Iris) |
 | DesignSystem/Tokens/DSRadius.swift | enum | DesignSystem | Corner radius scale | Claude (mission Iris) |
 | DesignSystem/Tokens/DSSpacing.swift | enum | DesignSystem | Spacing scale on a 4 pt grid | Claude (mission Iris) |
+| Domain/Campaign/BraiseDefinition.swift | struct | Domain | EXPERIMENTAL (prototype B1, not in the campaign): tuning of a braise, a cold lueur that the gaze warms and | Claude (mission Iris) |
+| Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Clairvoyance.swift | - | Domain | Chapter VI, Clairvoyance: gliding irises, then every idea combined | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
@@ -74,7 +76,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/LevelDefinition.swift | struct | Domain | One authored campaign level: intention, lueurs, elements, tuning, hints and par | Claude (mission Iris) |
 | Domain/Campaign/LevelHint.swift | enum | Domain | Contextual instruction shown once when the player does (or fails to do) something | Claude (mission Iris) |
 | Domain/Campaign/LevelPar.swift | struct | Domain | Reference time and intrusion count behind the "fluide" and "serein" éclats | Claude (mission Iris) |
-| Domain/Campaign/LueurDefinition.swift | struct | Domain | One authored lueur: start, iris, temperament, iris motion and the designer's intended route | Claude (mission Iris) |
+| Domain/Campaign/LueurDefinition.swift | struct | Domain | One authored lueur: start, iris, temperament, iris motion, the designer's intended route, and an | Claude (mission Iris) |
 | Domain/Campaign/Temperament.swift | enum | Domain | R-28 how strongly a lueur reacts to the gaze and to its iris | Claude (mission Iris) |
 | Domain/Campaign/VeilDefinition.swift | struct | Domain | R-25 an impenetrable segment | Claude (mission Iris) |
 | Domain/Campaign/VeilleuseDefinition.swift | struct | Domain | R-26 a flame that dies unless looked at; while dark it closes the irises it lights | Claude (mission Iris) |
@@ -141,6 +143,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Campaign/ResolvedLevel.swift | struct | GameEngine | A campaign level turned into engine values for one playfield size | Claude (mission Iris) |
 | GameEngine/Clock/GameClock.swift | protocol | GameEngine | Frame source abstraction: delivers deltaTime ticks to the game loop | Claude (mission Iris) |
 | GameEngine/Clock/ManualGameClock.swift | class | GameEngine | Deterministic clock driven by tests and previews | Claude (mission Iris) |
+| GameEngine/Environment/BraiseState.swift | struct | GameEngine | EXPERIMENTAL (prototype B1): resolved braise and its heat; lit with hysteresis, flaring above a threshold | Claude (mission Iris) |
 | GameEngine/Environment/CurrentField.swift | struct | GameEngine | R-24 resolved current: an axis-aligned band applying a constant impulse | Claude (mission Iris) |
 | GameEngine/Environment/IrisPath.swift | struct | GameEngine | R-27 resolved gliding iris: cosine ease between two points | Claude (mission Iris) |
 | GameEngine/Environment/LevelEnvironment.swift | struct | GameEngine | Everything a campaign level adds around the historical engine (empty for prototype levels) | Claude (mission Iris) |
@@ -174,7 +177,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/AR/RobustAggregatorTests.swift | struct | Tests | Median-based aggregation with outlier rejection | Claude (mission Iris) |
 | Tests/IrisTests/Audio/AudioCuePolicyTests.swift | struct | Tests | Sound policy: crescendo per target, chime on validation, one loss tone per cascade | Claude (mission Iris) |
 | Tests/IrisTests/Audio/SineSynthTests.swift | struct | Tests | The synthesizer renders the crescendo, chime and loss tones with bounded amplitude and expected pitch | Claude (mission Iris) |
-| Tests/IrisTests/Campaign/CampaignBot.swift | struct | Tests | Simulated players used to prove each level feasible (guided) and each element necessary (limited policies) | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/BraisesPrototypeTests.swift | struct | Tests | EXPERIMENTAL Braises A (human-validated, frozen): the braise level behaves as designed, is feasible when fed | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/CampaignBot.swift | struct | Tests | Simulated players used to prove each level feasible (guided) and each element necessary (limited policies); | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignMeasurements.swift | struct | Tests | One shared, lazily computed simulation of every level (reused by all campaign validation tests) | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignValidationTests.swift | struct | Tests | LEVEL_DESIGN_SYSTEM.md section 6: structure, validity, feasibility, necessity, par, difference, mastery | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
@@ -187,6 +191,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Domain/ValidationRuleTests.swift | struct | Tests | R-08 continuous 0.75 s presence and R-10 wobble tolerance, at rule and session level | Claude (mission Iris) |
 | Tests/IrisTests/Fixtures/GoldenTrace.swift | struct | Tests | Decodes the golden traces produced by the reference JavaScript engine (Fixtures/golden_generator.js) | Claude (mission Iris) |
 | Tests/IrisTests/Fixtures/SessionFixture.swift | enum | Tests | Helpers to stage deterministic sessions (no noise, explicit positions) | Claude (mission Iris) |
+| Tests/IrisTests/GameEngine/BraiseStateTests.swift | struct | Tests | EXPERIMENTAL prototype B1: heat, hysteresis of charging and lighting, flare, behaviour scale, determinism | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/GameSessionGoldenTests.swift | struct | Tests | The Swift engine reproduces the reference JavaScript engine frame by frame (golden traces) | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/GameSessionTests.swift | struct | Tests | R-12 and R-14 session behaviour: completion, delta clamping, sub-stepping, gaze handling | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/GazeFilterTests.swift | struct | Tests | R-13 exponential smoothing and sustained-jump gating of the reference gaze listener | Claude (mission Iris) |

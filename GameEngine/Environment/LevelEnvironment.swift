@@ -10,6 +10,8 @@ struct LevelEnvironment: Hashable, Sendable {
     var veilleuses: [VeilleuseState]
     /// Gliding irises keyed by target index.
     var irisPaths: [Int: IrisPath]
+    /// EXPERIMENTAL (prototype B1): braises keyed by target index; empty in the campaign.
+    var braises: [Int: BraiseState]
     /// Physical radius of each lueur (collisions with veils); empty uses the physics target radius.
     var lueurRadii: [Double]
     /// R-23: irises close while the gaze is off the playfield.
@@ -18,12 +20,13 @@ struct LevelEnvironment: Hashable, Sendable {
     var fieldTolerance: Double
 
     init(currents: [CurrentField] = [], veils: [VeilSegment] = [], veilleuses: [VeilleuseState] = [],
-         irisPaths: [Int: IrisPath] = [:], lueurRadii: [Double] = [], requiresAttentionOnField: Bool = false,
-         fieldTolerance: Double = 0) {
+         irisPaths: [Int: IrisPath] = [:], braises: [Int: BraiseState] = [:], lueurRadii: [Double] = [],
+         requiresAttentionOnField: Bool = false, fieldTolerance: Double = 0) {
         self.currents = currents
         self.veils = veils
         self.veilleuses = veilleuses
         self.irisPaths = irisPaths
+        self.braises = braises
         self.lueurRadii = lueurRadii
         self.requiresAttentionOnField = requiresAttentionOnField
         self.fieldTolerance = fieldTolerance

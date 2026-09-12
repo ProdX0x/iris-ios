@@ -15,6 +15,25 @@ struct LueurSnapshot: Hashable, Sendable {
     let isIrisOpen: Bool
     let disturbance: Double
     let temperament: Temperament
+    /// EXPERIMENTAL (prototype B1): heat of a braise, nil for a normal lueur.
+    let heat: Double?
+    let isFlaring: Bool
+
+    init(sequence: Int, position: Vector2, radius: Double, arrival: Vector2, irisRadius: Double, progress: Double,
+         isValidated: Bool, isIrisOpen: Bool, disturbance: Double, temperament: Temperament, heat: Double? = nil, isFlaring: Bool = false) {
+        self.sequence = sequence
+        self.position = position
+        self.radius = radius
+        self.arrival = arrival
+        self.irisRadius = irisRadius
+        self.progress = progress
+        self.isValidated = isValidated
+        self.isIrisOpen = isIrisOpen
+        self.disturbance = disturbance
+        self.temperament = temperament
+        self.heat = heat
+        self.isFlaring = isFlaring
+    }
 }
 
 struct VeilleuseSnapshot: Hashable, Sendable {
@@ -79,7 +98,9 @@ struct GameSceneSnapshot: Hashable, Sendable {
                           isValidated: target.isValidated,
                           isIrisOpen: session.isIrisOpen(for: target),
                           disturbance: target.disturbance,
-                          temperament: resolved.definition.lueurs.indices.contains(index) ? resolved.definition.lueurs[index].temperament : .normale)
+                          temperament: resolved.definition.lueurs.indices.contains(index) ? resolved.definition.lueurs[index].temperament : .normale,
+                          heat: session.braises[index]?.heat,
+                          isFlaring: session.braises[index]?.isFlaring ?? false)
         }
         currents = session.environment.currents
         veils = session.environment.veils

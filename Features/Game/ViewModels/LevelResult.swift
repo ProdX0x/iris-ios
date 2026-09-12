@@ -28,6 +28,7 @@ struct LevelResult: Hashable, Sendable {
 
     var primaryTitle: String {
         if isCampaignEnd { return "Voir la fin" }
+        if !hasNextLevel { return "Chapitres" }
         if isChapterEnd { return "Chapitre suivant" }
         return "Suivant"
     }

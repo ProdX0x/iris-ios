@@ -57,14 +57,18 @@ struct GameSession: Sendable {
 
     var allValidated: Bool { targets.allSatisfy(\.isValidated) }
     var veilleuses: [VeilleuseState] { environment.veilleuses }
+    /// EXPERIMENTAL (prototype B1): braises keyed by target index.
+    var braises: [Int: BraiseState] { environment.braises }
 
     func radius(ofTargetAt index: Int) -> Double {
         environment.lueurRadii.indices.contains(index) ? environment.lueurRadii[index] : physics.targetRadius
     }
 
-    /// Whether the iris of `target` is currently open (attention on field and every linked veilleuse lit).
+    /// Whether the iris of `target` is currently open (attention on field, every linked veilleuse lit, and, for a braise, lit).
     func isIrisOpen(for target: Target) -> Bool {
-        isAttentionOnField && environment.veilleuses.allSatisfy { !$0.lights(sequence: target.sequence) || $0.isLit }
+        isAttentionOnField
+            && environment.veilleuses.allSatisfy { !$0.lights(sequence: target.sequence) || $0.isLit }
+            && (environment.braises[target.sequence - 1]?.isLit ?? true)
     }
 
     /// Smoothed gaze input (what the reference engine's gaze listener did).
@@ -109,6 +113,7 @@ struct GameSession: Sendable {
         let cursor = gaze.position
         updateAttention(cursor: cursor, events: &events)
         updateVeilleuses(seconds: seconds, cursor: cursor, events: &events)
+        updateBraises(seconds: seconds, cursor: cursor, events: &events)
 
         var everyTargetValidated = true
         let lowestUnvalidated = level.isSequential ? TurnRule.lowestUnvalidatedSequence(in: targets) : nil
@@ -123,7 +128,8 @@ struct GameSession: Sendable {
 
             let noise = noiseSources[index]
             integrator.integrate(&target, gaze: cursor, noise: { noise.value(at: $0) }, frameTime: frameTime,
-                                 frameFraction: frameFraction, externalImpulse: environment.impulse(at: target.position))
+                                 frameFraction: frameFraction, externalImpulse: environment.impulse(at: target.position),
+                                 behaviour: environment.braises[index]?.behaviour ?? .neutral)
             for veil in environment.veils {
                 veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)
             }
@@ -194,6 +200,22 @@ struct GameSession: Sendable {
             case .becameLow: events.append(.veilleuseLow(index: index))
             case .wentOut: events.append(.veilleuseOut(index: index))
             case .relit: events.append(.veilleuseRelit(index: index))
+            case .none: break
+            }
+        }
+    }
+
+    /// EXPERIMENTAL (prototype B1): warms or cools each braise from the gaze distance to its lueur.
+    private mutating func updateBraises(seconds: TimeInterval, cursor: Vector2, events: inout [GameEvent]) {
+        for index in environment.braises.keys.sorted() where targets.indices.contains(index) {
+            guard var braise = environment.braises[index] else { continue }
+            let distance = targets[index].position.distance(to: cursor)
+            let change = braise.update(seconds: seconds, gazeDistance: distance, gazeActive: gaze.isActive)
+            environment.braises[index] = braise
+            switch change {
+            case .lit: events.append(.braiseLit(sequence: targets[index].sequence))
+            case .cooled: events.append(.braiseCooled(sequence: targets[index].sequence))
+            case .flared: events.append(.braiseFlared(sequence: targets[index].sequence))
             case .none: break
             }
         }

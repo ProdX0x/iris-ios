@@ -62,5 +62,8 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     }
 
     var hasTemperaments: Bool { lueurs.contains { $0.temperament != .normale } }
+    /// Chapter 0 is reserved for experiments (prototype levels): never part of the campaign, never recorded in the progress.
+    var isExperimental: Bool { chapter == 0 }
+    var hasBraises: Bool { lueurs.contains { $0.braise != nil } }
     var requiresPushing: Bool { lueurs.contains { !$0.route.isEmpty } }
 }

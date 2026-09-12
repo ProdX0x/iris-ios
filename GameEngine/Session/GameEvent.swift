@@ -27,4 +27,8 @@ enum GameEvent: Hashable, Sendable {
     case veilleuseLow(index: Int)
     case veilleuseOut(index: Int)
     case veilleuseRelit(index: Int)
+    /// EXPERIMENTAL (prototype B1): a braise woke, went back to sleep, or flared.
+    case braiseLit(sequence: Int)
+    case braiseCooled(sequence: Int)
+    case braiseFlared(sequence: Int)
 }

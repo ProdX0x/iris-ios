@@ -538,3 +538,16 @@ Sur `feature/game-expansion`, après la validation humaine du Gaze Engine (§ 14
 Rapport de synthèse : `GAME_EXPANSION_DESIGN_REPORT.md` (racine). Aucun niveau, aucun chapitre, aucune mécanique, aucun paramètre du regard ni du moteur n'a été modifié pendant cette phase ; les 232 tests et les six chapitres sont ceux du commit haptique.
 
 **Étape suivante : validation humaine de la conception avant toute implémentation des nouveaux chapitres.**
+
+---
+
+## 17. Prototype « Braises A » (hors campagne, DEBUG, validé humainement)
+
+Un niveau expérimental, `0-1` « braise », chapitre « P » (`Domain/Campaign/BraisesPrototype.swift`, compilé en DEBUG seulement), issu de la phase B1 et validé sur iPhone 14 Pro le 12 septembre 2026. Statut détaillé : `Design/BRAISES_VALIDATION_STATUS.md`.
+
+- **Mécanique** : une braise dort, froide et immobile ; le regard posé sur elle (rayon 0,22 du petit côté, 86 pt) la réchauffe en 0,9 s ; à 0,5 elle s'allume : elle fuit le regard comme toute lueur, dérive vers son iris, et l'iris l'accepte ; ignorée, elle refroidit en 30 s et se rendort sous 0,4. Au-delà de 0,85 elle s'affole : sa zone d'attention grandit jusqu'à × 1,5 et le regard l'influence de plus loin. Elle ne perd jamais sa chaleur pour avoir été regardée. **Ces valeurs sont figées** (`BraiseDefinition.prototype`, test `aIsFrozen`).
+- **Accès sur iPhone** : Réglages → *prototypes (debug)* → Braises A. Option de lancement : `--iris-route game --iris-level 0-1`. Rien n'est enregistré dans la progression ; le résultat propose les chapitres, jamais la fin de parcours.
+- **Isolation** : `LueurDefinition.braise` (nil dans les 34 niveaux officiels), `BraiseState` et `BehaviourScale` dans le moteur (neutres, × 1,0 exact, pour toute lueur ordinaire ; traces golden inchangées), trois événements, deux déclencheurs de consigne, un dessin de braise, un lanceur DEBUG. Le Gaze Engine, la calibration, la physique de référence et les six chapitres sont inchangés ; un test le vérifie.
+- **Vérifié automatiquement** : chaleur, hystérésis, affolement, comportement ; réveil, fuite, retour et validation en session ; portée accrue d'une braise affolée ; faisabilité par le joueur simulé qui nourrit et impossibilité sans nourrir ou hors écran ; consignes, son et haptique ; isolation de la progression ; définition figée.
+- **Validé humainement** : sommeil, réveil, attraction naturelle, répulsion, affolement, portée accrue après affolement.
+- **Braises B** (une seconde lueur à protéger) a été prototypé, retravaillé trois fois et **rejeté dans sa forme testée** : absent de cette baseline. Trace et motifs : `Design/BRAISES_VALIDATION_STATUS.md` ; branches d'archive `prototype/braises*`.

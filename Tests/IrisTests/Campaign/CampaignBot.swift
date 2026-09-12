@@ -1,6 +1,7 @@
 // CampaignBot.swift
 // Layer: Tests
-// Purpose: Simulated players used to prove each level feasible (guided) and each element necessary (limited policies)
+// Purpose: Simulated players used to prove each level feasible (guided) and each element necessary (limited policies);
+// the guided player also feeds braises (EXPERIMENTAL prototype B1), the avoidance player never does
 
 import Foundation
 @testable import Iris
@@ -95,6 +96,10 @@ private struct Brain {
             aim = session.veilleuses[flame].position
             return
         }
+        if policy == .guided || policy == .ignoresVeilleuses, let feed = feedAim(session: session) {
+            aim = feed
+            return
+        }
         if policy == .guided || policy == .ignoresVeilleuses, let push = pushAim(session: session) {
             aim = push
             return
@@ -126,6 +131,26 @@ private struct Brain {
         if let weakest = flames.indices.min(by: { flames[$0].charge < flames[$1].charge }), flames[weakest].charge < 0.42 {
             servingVeilleuse = weakest
             return weakest
+        }
+        return nil
+    }
+
+    /// EXPERIMENTAL: warms any sleeping braise as soon as possible (waking validates nothing, the engine keeps the order),
+    /// looking just beyond it on the side away from its iris, so that the flight it provokes helps; stops once the
+    /// braise is warm enough, feeds again only if it nearly sleeps.
+    private func feedAim(session: GameSession) -> Vector2? {
+        let targets = session.targets
+        for index in targets.indices {
+            guard let braise = session.braises[index] else { continue }
+            let target = targets[index]
+            if target.isValidated { continue }
+            let wanted = braise.isLit ? 0.45 : 0.75
+            if braise.heat >= wanted { continue }
+            let away = target.position - target.arrival
+            let length = away.length
+            let direction = length > 1e-6 ? away / length : Vector2(x: 0, y: 1)
+            let raw = target.position + direction * (braise.chargeRadius * 0.45)
+            return Vector2(x: min(max(raw.x, 4), resolved.bounds.width - 4), y: min(max(raw.y, 4), resolved.bounds.height - 4))
         }
         return nil
     }

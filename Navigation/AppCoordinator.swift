@@ -106,6 +106,16 @@ final class AppCoordinator {
         proceedToLevel()
     }
 
+    #if DEBUG
+    /// EXPERIMENTAL (prototype B1): starts a prototype level outside the campaign; nothing is unlocked or recorded.
+    func playPrototype(_ level: LevelDefinition) {
+        guard level.isExperimental else { return }
+        sheet = nil
+        pendingLevel = level
+        proceedToLevel()
+    }
+    #endif
+
     /// Recalibration from the settings sheet; comes back to the current route.
     func recalibrate() {
         sheet = nil
@@ -159,12 +169,21 @@ final class AppCoordinator {
         container.progressStore.save(progress)
     }
 
+    private static func launchLevel(id: String) -> LevelDefinition? {
+        if let level = Campaign.level(id: id) { return level }
+        #if DEBUG
+        return BraisesPrototype.level(id: id)
+        #else
+        return nil
+        #endif
+    }
+
     /// Opens a route directly (debug launch options).
     private func jump(to route: AppRoute) {
         switch route {
         case .game:
             isGazeReady = true
-            pendingLevel = container.launchOptions.level.flatMap(Campaign.level(id:)) ?? nextLevel ?? Campaign.levels.first
+            pendingLevel = container.launchOptions.level.flatMap(Self.launchLevel(id:)) ?? nextLevel ?? Campaign.levels.first
             presentPendingLevel()
         case .cameraAccess:
             cameraAccessViewModel = container.makeCameraAccessViewModel(navigator: self)
@@ -237,6 +256,7 @@ extension AppCoordinator: GameNavigating {
     }
 
     func gameDidComplete(level: LevelDefinition, outcome: LevelOutcome) -> LevelRecord {
+        guard !level.isExperimental else { return LevelRecord() }
         let previous = progress.record(for: level)
         progress.register(outcome, for: level)
         persist()

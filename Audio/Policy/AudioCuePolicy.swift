@@ -40,9 +40,10 @@ struct AudioCuePolicy: Hashable, Sendable {
                 lossRequested = true
             case .levelCompleted:
                 cues.append(.levelComplete)
-            case .veilleuseLow:
+            case .veilleuseLow, .braiseLit:
+                // EXPERIMENTAL: a braise that lights reuses the soft pulse until the idea earns a cue of its own.
                 pulseRequested = true
-            case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseRelit:
+            case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseRelit, .braiseCooled, .braiseFlared:
                 break
             }
         }

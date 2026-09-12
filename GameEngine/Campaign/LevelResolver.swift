@@ -41,9 +41,13 @@ enum LevelResolver {
                           holdDuration: definition.hold, isSequential: definition.ordered)
 
         var paths: [Int: IrisPath] = [:]
+        var braises: [Int: BraiseState] = [:]
         for (index, lueur) in definition.lueurs.enumerated() {
             if case let .oscillate(to, period) = lueur.irisMotion {
                 paths[index] = IrisPath(from: lueur.iris.absolute(in: bounds), to: to.absolute(in: bounds), period: period)
+            }
+            if let braise = lueur.braise {
+                braises[index] = BraiseState(definition: braise, shortSide: shortSide)
             }
         }
         let environment = LevelEnvironment(
@@ -60,6 +64,7 @@ enum LevelResolver {
                                decay: $0.decay, recharge: $0.recharge, initialCharge: $0.initialCharge, linked: $0.linked)
             },
             irisPaths: paths,
+            braises: braises,
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)
