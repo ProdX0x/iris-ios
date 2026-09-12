@@ -36,7 +36,7 @@ struct AppCoordinatorTests {
         #expect(sut.homeSummary.action == .begin)
         #expect(sut.homeSummary.primaryTitle == "Commencer")
         #expect(sut.homeSummary.detail == "I · éveil — 1 · premier regard")
-        #expect(sut.homeSummary.maxEclats == 102)
+        #expect(sut.homeSummary.maxEclats == Campaign.levels.count * 3)
     }
 
     @Test("an unsupported device goes to the unavailability screen")
@@ -179,9 +179,9 @@ struct AppCoordinatorTests {
             Issue.record("expected journey end")
             return
         }
-        #expect(summary.levelCount == 34)
-        #expect(summary.maxEclats == 102)
-        #expect(summary.eclats > 34)
+        #expect(summary.levelCount == Campaign.levels.count)
+        #expect(summary.maxEclats == Campaign.levels.count * 3)
+        #expect(summary.eclats > Campaign.levels.count)
         #expect(sut.homeSummary.action == .replay)
     }
 

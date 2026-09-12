@@ -20,7 +20,7 @@ struct JourneyCompleteView: View {
             .padding(.top, DSSpacing.l)
             VStack(alignment: .leading, spacing: DSSpacing.s) {
                 Text("le dernier iris").dsEyebrowStyle(tint: DSColor.statusSuccess)
-                Text("clairvoyance")
+                Text(Campaign.chapters.last?.name ?? "")
                     .font(DSFont.display)
                     .foregroundStyle(DSColor.textPrimary)
                     .accessibilityAddTraits(.isHeader)
@@ -55,6 +55,7 @@ struct JourneyCompleteView: View {
 }
 
 #Preview {
-    JourneyCompleteView(summary: JourneySummary(levelCount: 34, playDuration: 5_412, eclats: 81, maxEclats: 102))
+    JourneyCompleteView(summary: JourneySummary(levelCount: Campaign.levels.count, playDuration: 5_412,
+                                                eclats: Campaign.levels.count * 3 - 21, maxEclats: Campaign.levels.count * 3))
         .environment(AppContainer.preview().makeAppCoordinator())
 }

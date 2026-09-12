@@ -1,0 +1,11 @@
+// ChapterTheme.swift
+// Layer: Domain
+// Purpose: The visual identity a chapter asks for: the historical chapters keep the chambre noire untouched,
+// every expansion chapter (VII and beyond) names the tint the presentation washes over it
+
+import Foundation
+
+enum ChapterTheme: String, Hashable, Sendable, CaseIterable {
+    /// Chapters I to VI: ink ground, amber attention, no wash. Rendering is exactly the historical one.
+    case chambreNoire
+}

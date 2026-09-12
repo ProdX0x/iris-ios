@@ -53,6 +53,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Components/DSProgressRing.swift | struct | DesignSystem | Circular progress used for journey completion and hold progress readouts | Claude (mission Iris) |
 | DesignSystem/Components/DSScreen.swift | struct | DesignSystem | Page container: atmosphere background, safe-area aware column, consistent gutters | Claude (mission Iris) |
 | DesignSystem/Components/DSStatusRow.swift | struct | DesignSystem | Icon, title, detail and a coloured state dot; used for capability and permission lists | Claude (mission Iris) |
+| DesignSystem/Components/DSThemeWash.swift | struct | DesignSystem | Tints the chambre noire with a chapter's wash and a soft glow at the top; draws nothing for the historical palette | Claude (mission Iris) |
 | DesignSystem/Modifiers/DSEyebrowStyle.swift | struct | DesignSystem | Small uppercase tracked label style used for section markers and HUD readouts | Claude (mission Iris) |
 | DesignSystem/Modifiers/DSGlow.swift | struct | DesignSystem | Soft coloured glow used for the iris mark and validated states | Claude (mission Iris) |
 | DesignSystem/Tokens/DSColor.swift | enum | DesignSystem | Semantic colour tokens of the "chambre noire" identity (values live in the asset catalogue) | Claude (mission Iris) |
@@ -60,6 +61,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Tokens/DSMotion.swift | enum | DesignSystem | Motion tokens; every animation has a Reduce Motion variant (cross-fade only) | Claude (mission Iris) |
 | DesignSystem/Tokens/DSRadius.swift | enum | DesignSystem | Corner radius scale | Claude (mission Iris) |
 | DesignSystem/Tokens/DSSpacing.swift | enum | DesignSystem | Spacing scale on a 4 pt grid | Claude (mission Iris) |
+| DesignSystem/Tokens/DSThemePalette.swift | struct | DesignSystem | The few colours a chapter identity adds to the chambre noire: its attention accent, its glow, and the | Claude (mission Iris) |
 | Domain/Campaign/BraiseDefinition.swift | struct | Domain | EXPERIMENTAL (prototype B1, not in the campaign): tuning of a braise, a cold lueur that the gaze warms and | Claude (mission Iris) |
 | Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Clairvoyance.swift | - | Domain | Chapter VI, Clairvoyance: gliding irises, then every idea combined | Claude (mission Iris) |
@@ -68,8 +70,9 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Partage.swift | - | Domain | Chapter II, Partage: order, crossing, guard, cascade, three lueurs | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Veilleuses.swift | - | Domain | Chapter V, Veilleuses: look at something without disturbing the rest | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Voiles.swift | - | Domain | Chapter IV, Voiles: push around what the lueur cannot cross | Claude (mission Iris) |
-| Domain/Campaign/Campaign.swift | enum | Domain | The authored campaign: six chapters, 34 levels (see Design/LEVEL_DESIGN_SYSTEM.md) | Claude (mission Iris) |
-| Domain/Campaign/ChapterDefinition.swift | struct | Domain | A campaign chapter: numeral, name, principle, ambient tone and its levels | Claude (mission Iris) |
+| Domain/Campaign/Campaign.swift | enum | Domain | The authored campaign: the six historical chapters (34 levels, frozen; see Design/LEVEL_DESIGN_SYSTEM.md) | Claude (mission Iris) |
+| Domain/Campaign/ChapterDefinition.swift | struct | Domain | A campaign chapter: numeral, name, principle, ambient tone, visual theme and its levels | Claude (mission Iris) |
+| Domain/Campaign/ChapterTheme.swift | enum | Domain | The visual identity a chapter asks for: the historical chapters keep the chambre noire untouched, | Claude (mission Iris) |
 | Domain/Campaign/CurrentDefinition.swift | struct | Domain | R-24 a band where lueurs are carried in one direction | Claude (mission Iris) |
 | Domain/Campaign/GameElement.swift | enum | Domain | The ideas a player meets along the campaign (level intro "nouveau" chip and the Carnet) | Claude (mission Iris) |
 | Domain/Campaign/IrisMotion.swift | enum | Domain | R-27 whether an iris stays still or glides back and forth | Claude (mission Iris) |
@@ -109,20 +112,20 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/CameraAccess/CameraAccessViewModel.swift | class | Presentation | Camera permission flow: explanation, request, denied and restricted states | Claude (mission Iris) |
 | Features/Carnet/CarnetView.swift | struct | Presentation | The ideas met so far, one glyph and one sentence each; the others stay unknown | Claude (mission Iris) |
 | Features/Chapters/ChapterCard.swift | struct | Presentation | One chapter on the map: numeral, name, principle, level nodes, progress; locked state | Claude (mission Iris) |
-| Features/Chapters/ChaptersView.swift | struct | Presentation | The map: six chapters, their levels and éclats; choose a level to play | Claude (mission Iris) |
+| Features/Chapters/ChaptersView.swift | struct | Presentation | The map: every chapter, its levels and éclats; choose a level to play | Claude (mission Iris) |
 | Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneRenderer.swift | struct | Presentation | Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneSnapshot.swift | struct | Presentation | Plain values copied from the session once per frame; the only thing the canvas reads | Claude (mission Iris) |
 | Features/Game/ViewModels/GameNavigating.swift | protocol | Presentation | Intents and progress reports emitted by the game screen | Claude (mission Iris) |
 | Features/Game/ViewModels/GamePhase.swift | enum | Presentation | Single state of the game screen; every overlay derives from it | Claude (mission Iris) |
-| Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
+| Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound effects, ambience, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
 | Features/Game/ViewModels/GameViewModel.swift | class | Presentation | Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, haptics, results and phases | Claude (mission Iris) |
 | Features/Game/ViewModels/GazeCalibrationStatus.swift | enum | Presentation | What the game knows about the calibration in use (pause panel readout) | Claude (mission Iris) |
 | Features/Game/ViewModels/LevelResult.swift | struct | Presentation | What the result screen shows after a level: measurements, éclats and what comes next | Claude (mission Iris) |
 | Features/Game/Views/GameCanvasView.swift | struct | Presentation | Draws one scene snapshot; re-evaluated only when the snapshot changes | Claude (mission Iris) |
 | Features/Game/Views/GameHUDView.swift | struct | Presentation | Peripheral HUD: level mark, pause, contextual hint at the bottom, diagnostic badges when enabled | Claude (mission Iris) |
 | Features/Game/Views/GameOverlayView.swift | struct | Presentation | One overlay per game phase: intro, pause, result, interruption, face lost, resume, suspension, failure | Claude (mission Iris) |
-| Features/Game/Views/GameView.swift | struct | Presentation | The game screen: chambre noire background, world canvas, peripheral HUD and phase overlays | Claude (mission Iris) |
+| Features/Game/Views/GameView.swift | struct | Presentation | The game screen: chambre noire background, chapter wash, world canvas, peripheral HUD and phase overlays | Claude (mission Iris) |
 | Features/Game/Views/LevelIntroCard.swift | struct | Presentation | What the level asks, in three seconds; a compact translucent card so the level stays readable behind it | Claude (mission Iris) |
 | Features/Game/Views/LevelResultView.swift | struct | Presentation | "atteint": three éclats lighting one after the other, measurements, next / replay / chapters | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupIntent.swift | enum | Presentation | Why the gaze setup runs: first launch, quick revalidation of a stored profile, or manual recalibration | Claude (mission Iris) |
@@ -135,7 +138,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/GazeSetup/Views/GazeVerdictView.swift | struct | Presentation | "Regard prêt" or "La précision peut être améliorée" with measured errors and actions | Claude (mission Iris) |
 | Features/Home/HomeView.swift | struct | Presentation | The threshold: emblem, promise, one main action (begin or continue), chapters, settings | Claude (mission Iris) |
 | Features/JourneyComplete/JourneyCompleteView.swift | struct | Presentation | The end of the campaign: the last iris closed, éclats and play time, replay a chapter | Claude (mission Iris) |
-| Features/Settings/SettingsView.swift | struct | Presentation | Sound, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note | Claude (mission Iris) |
+| Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note | Claude (mission Iris) |
+| Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
 | Features/Unavailable/UnavailableView.swift | struct | Presentation | Shown when the device cannot track faces (no TrueDepth / ARFaceTracking unsupported) | Claude (mission Iris) |
 | GameEngine/Campaign/HintTracker.swift | struct | GameEngine | Decides which contextual instruction is visible, from engine events and elapsed time | Claude (mission Iris) |
@@ -181,6 +185,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/CampaignBot.swift | struct | Tests | Simulated players used to prove each level feasible (guided) and each element necessary (limited policies); | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignMeasurements.swift | struct | Tests | One shared, lazily computed simulation of every level (reused by all campaign validation tests) | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignValidationTests.swift | struct | Tests | LEVEL_DESIGN_SYSTEM.md section 6: structure, validity, feasibility, necessity, par, difference, mastery | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/HistoricalCampaignDump.swift | enum | Tests | Canonical text of the 34 historical levels: every authored field, their resolution on the reference phone, | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/HistoricalCampaignFingerprintTests.swift | struct | Tests | Protection of the historical campaign (chapters I to VI, 34 levels) and of the frozen engine: the canonical | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelLabTests.swift | struct | Tests | Prints the measured table of every campaign level (design tool; always passes) | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CampaignProgressTests.swift | struct | Tests | Éclats, records and unlock rules of the campaign | Claude (mission Iris) |
@@ -205,7 +211,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Mocks/MockHapticFeedbackService.swift | class | Tests | Recording mock for HapticFeedbackService | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
-| Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences default to on and persist across store instances | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |

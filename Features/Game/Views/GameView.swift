@@ -1,6 +1,6 @@
 // GameView.swift
 // Layer: Presentation
-// Purpose: The game screen: chambre noire background, world canvas, peripheral HUD and phase overlays
+// Purpose: The game screen: chambre noire background, chapter wash, world canvas, peripheral HUD and phase overlays
 
 import SwiftUI
 
@@ -11,6 +11,7 @@ struct GameView: View {
     var body: some View {
         ZStack {
             DSBackground()
+            DSThemeWash(palette: viewModel.chapter.theme.palette)
             GameCanvasHost(viewModel: viewModel)
                 .ignoresSafeArea()
                 .onGeometryChange(for: CGSize.self) { proxy in

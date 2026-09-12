@@ -17,7 +17,7 @@ struct ChapterCard: View {
             HStack(alignment: .firstTextBaseline) {
                 Text(chapter.numeral)
                     .font(DSFont.numeral)
-                    .foregroundStyle(isUnlocked ? DSColor.accent : DSColor.textTertiary)
+                    .foregroundStyle(isUnlocked ? chapter.theme.palette.accent : DSColor.textTertiary)
                     .frame(minWidth: 36, alignment: .leading)
                 VStack(alignment: .leading, spacing: DSSpacing.xxs) {
                     Text(chapter.name)

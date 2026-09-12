@@ -66,6 +66,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
     var isSequential: Bool
     var time: TimeInterval
     var isAttentionOnField: Bool
+    /// Visual identity of the chapter being played (chambre noire for the historical chapters).
+    var theme: ChapterTheme
     /// Smoothed cursor actually used by the physics (diagnostic display only).
     var gaze: Vector2?
     var diagnostics: GazeDiagnostics?
@@ -81,11 +83,13 @@ struct GameSceneSnapshot: Hashable, Sendable {
         isSequential = false
         time = 0
         isAttentionOnField = true
+        theme = .chambreNoire
         gaze = nil
         diagnostics = nil
     }
 
-    init(session: GameSession, resolved: ResolvedLevel, showsRoute: Bool, showsGaze: Bool, diagnostics: GazeDiagnostics?) {
+    init(session: GameSession, resolved: ResolvedLevel, showsRoute: Bool, showsGaze: Bool, diagnostics: GazeDiagnostics?,
+         theme: ChapterTheme = .chambreNoire) {
         bounds = session.bounds
         scale = resolved.scale
         lueurs = session.targets.enumerated().map { index, target in
@@ -120,6 +124,7 @@ struct GameSceneSnapshot: Hashable, Sendable {
         isSequential = session.level.isSequential
         time = session.elapsed
         isAttentionOnField = session.isAttentionOnField
+        self.theme = theme
         gaze = showsGaze ? session.gaze.position : nil
         self.diagnostics = showsGaze ? diagnostics : nil
     }

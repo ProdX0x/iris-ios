@@ -100,7 +100,8 @@ struct LaunchOptions: Hashable, Sendable {
         case "chapters": .chapters
         case "carnet": .carnet
         case "game": .game
-        case "journeyComplete": .journeyComplete(JourneySummary(levelCount: 34, playDuration: 5_412, eclats: 81, maxEclats: 102))
+        case "journeyComplete": .journeyComplete(JourneySummary(levelCount: Campaign.levels.count, playDuration: 5_412,
+                                                                 eclats: Campaign.levels.count * 3 - 21, maxEclats: Campaign.levels.count * 3))
         case "unavailable": .unavailable(.faceTrackingUnsupported)
         default: nil
         }

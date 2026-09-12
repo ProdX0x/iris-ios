@@ -79,15 +79,16 @@ final class GameViewModel {
          isPad: Bool,
          autoplay: Bool = false,
          navigator: any GameNavigating) {
+        let chapter = Self.chapter(of: level)
         self.level = level
-        self.chapter = Self.chapter(of: level)
+        self.chapter = chapter
         let resolved = LevelResolver.resolve(level, in: .referencePhone)
         let session = resolved.makeSession()
         self.resolved = resolved
         self.session = session
         self.hints = HintTracker.forLevel(level, helpDelay: Self.helpDelay)
         self.snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false,
-                                          showsGaze: settings.showsGazeIndicator, diagnostics: nil)
+                                          showsGaze: settings.showsGazeIndicator, diagnostics: nil, theme: chapter.theme)
         self.gaze = gaze
         self.audio = audio
         self.haptics = haptics
@@ -375,7 +376,7 @@ final class GameViewModel {
 
     private func refreshSnapshot() {
         snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: showsRoute,
-                                     showsGaze: settings.showsGazeIndicator, diagnostics: diagnostics)
+                                     showsGaze: settings.showsGazeIndicator, diagnostics: diagnostics, theme: chapter.theme)
     }
 
     /// Stops ticking and silences every crescendo voice; the scene stays as it is.

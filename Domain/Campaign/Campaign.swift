@@ -1,11 +1,20 @@
 // Campaign.swift
 // Layer: Domain
-// Purpose: The authored campaign: six chapters, 34 levels (see Design/LEVEL_DESIGN_SYSTEM.md)
+// Purpose: The authored campaign: the six historical chapters (34 levels, frozen; see Design/LEVEL_DESIGN_SYSTEM.md)
+// followed by the expansion chapters (VII and beyond, Design/IRIS_FULL_EXPANSION_REPORT.md)
 
 import Foundation
 
 enum Campaign {
-    static let chapters: [ChapterDefinition] = [eveil, partage, courants, voiles, veilleuses, clairvoyance]
+    /// Chapters I to VI exactly as validated: never edited, protected by the historical fingerprint tests.
+    static let historicalChapters: [ChapterDefinition] = [eveil, partage, courants, voiles, veilleuses, clairvoyance]
+
+    /// Chapters VII and beyond, played after the historical campaign in the same progression.
+    static let expansionChapters: [ChapterDefinition] = []
+
+    static let chapters: [ChapterDefinition] = historicalChapters + expansionChapters
+
+    static let historicalLevels: [LevelDefinition] = historicalChapters.flatMap(\.levels)
 
     static let levels: [LevelDefinition] = chapters.flatMap(\.levels)
 

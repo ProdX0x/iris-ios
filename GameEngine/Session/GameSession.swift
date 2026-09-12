@@ -27,6 +27,9 @@ struct GameSession: Sendable {
     private let integrator: TargetPhysics
     private let validationRule: ValidationRule
     private var wasInZone: [Bool]
+    /// Impulses queued for the next integration step by the expansion mechanics (one per target). Always zero in the
+    /// historical chapters, whose step therefore stays bit-for-bit the reference step (a zero queue is never added).
+    private var pendingImpulses: [Vector2]
 
     init(level: Level,
          bounds: PlayfieldBounds,
@@ -52,6 +55,7 @@ struct GameSession: Sendable {
         self.integrator = TargetPhysics(constants: physics, bounds: bounds)
         self.validationRule = ValidationRule(rules: rules)
         self.wasInZone = Array(repeating: false, count: targets.count)
+        self.pendingImpulses = Array(repeating: .zero, count: targets.count)
         self.isAttentionOnField = true
     }
 
@@ -85,7 +89,15 @@ struct GameSession: Sendable {
     mutating func replaceTargets(_ newTargets: [Target]) {
         targets = newTargets
         wasInZone = Array(repeating: false, count: newTargets.count)
+        pendingImpulses = Array(repeating: .zero, count: newTargets.count)
         isComplete = false
+    }
+
+    /// Queues an impulse (points per reference frame) that the next step adds to the target's velocity, on top of the
+    /// currents. Used by the expansion mechanics and their tests; the queue is consumed by the next tick.
+    mutating func applyImpulse(_ impulse: Vector2, toTargetAt index: Int) {
+        guard pendingImpulses.indices.contains(index) else { return }
+        pendingImpulses[index] += impulse
     }
 
     /// R-14: advances the simulation by `deltaTime` seconds. The delta is clamped, then split into
@@ -127,8 +139,12 @@ struct GameSession: Sendable {
             detectIntrusion(index: index, target: target, cursor: cursor, events: &events)
 
             let noise = noiseSources[index]
+            let queued = pendingImpulses[index]
+            pendingImpulses[index] = .zero
+            let fieldImpulse = environment.impulse(at: target.position)
+            let externalImpulse = queued == .zero ? fieldImpulse : fieldImpulse + queued
             integrator.integrate(&target, gaze: cursor, noise: { noise.value(at: $0) }, frameTime: frameTime,
-                                 frameFraction: frameFraction, externalImpulse: environment.impulse(at: target.position),
+                                 frameFraction: frameFraction, externalImpulse: externalImpulse,
                                  behaviour: environment.braises[index]?.behaviour ?? .neutral)
             for veil in environment.veils {
                 veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)

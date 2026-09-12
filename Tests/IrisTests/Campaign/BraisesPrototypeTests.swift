@@ -182,11 +182,12 @@ struct BraisesPrototypeTests {
                            "4-1", "4-2", "4-3", "4-4", "4-5", "4-6",
                            "5-1", "5-2", "5-3", "5-4", "5-5", "5-6",
                            "6-1", "6-2", "6-3", "6-4", "6-5", "6-6"]
-        #expect(Campaign.chapters.count == 6)
-        #expect(Campaign.chapters.map(\.name) == ["éveil", "partage", "courants", "voiles", "veilleuses", "clairvoyance"])
-        #expect(Campaign.levels.map(\.id) == expectedIDs)
-        #expect(Campaign.levels.allSatisfy { !$0.hasBraises && !$0.isExperimental })
-        #expect(Campaign.levels.allSatisfy { LevelResolver.resolve($0, in: bounds).environment.braises.isEmpty })
+        #expect(Campaign.historicalChapters.count == 6)
+        #expect(Campaign.historicalChapters.map(\.name) == ["éveil", "partage", "courants", "voiles", "veilleuses", "clairvoyance"])
+        #expect(Campaign.historicalLevels.map(\.id) == expectedIDs)
+        #expect(Campaign.historicalLevels.allSatisfy { !$0.hasBraises && !$0.isExperimental })
+        #expect(Campaign.historicalLevels.allSatisfy { LevelResolver.resolve($0, in: bounds).environment.braises.isEmpty })
+        #expect(Campaign.levels.allSatisfy { !$0.isExperimental })
         #expect(BraisesPrototype.levels.map(\.id) == ["0-1"], "only Braises A remains; B is rejected and absent")
         #expect(BraisesPrototype.levels.allSatisfy { $0.isExperimental && $0.hasBraises && Campaign.level(id: $0.id) == nil })
         #expect(BraisesPrototype.chapter.numeral == "P")

@@ -22,7 +22,7 @@ struct LevelIntroCard: View {
             VStack(alignment: .leading, spacing: DSSpacing.s) {
                 HStack(alignment: .firstTextBaseline) {
                     Text("\(chapter.numeral) · \(chapter.name) — \(level.index)")
-                        .dsEyebrowStyle(tint: DSColor.accent)
+                        .dsEyebrowStyle(tint: chapter.theme.palette.accent)
                     Spacer()
                     Button("chapitres", action: onChapters)
                         .font(DSFont.footnote)

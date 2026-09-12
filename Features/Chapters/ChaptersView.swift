@@ -1,6 +1,6 @@
 // ChaptersView.swift
 // Layer: Presentation
-// Purpose: The map: six chapters, their levels and éclats; choose a level to play
+// Purpose: The map: every chapter, its levels and éclats; choose a level to play
 
 import SwiftUI
 

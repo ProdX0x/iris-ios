@@ -8,17 +8,22 @@ import Testing
 
 @Suite("Campaign structure and validity")
 struct CampaignStructureTests {
-    @Test("six chapters of 5, 5, 6, 6, 6, 6 levels, unique ids and titles, numbered in order")
+    @Test("six historical chapters of 5, 5, 6, 6, 6, 6 levels first, then the expansion; unique ids and titles, numbered in order")
     func structure() {
-        #expect(Campaign.chapters.map(\.levels.count) == [5, 5, 6, 6, 6, 6])
-        #expect(Campaign.levels.count == 34)
-        #expect(Set(Campaign.levels.map(\.id)).count == 34)
-        #expect(Set(Campaign.levels.map(\.title)).count == 34)
+        #expect(Campaign.historicalChapters.map(\.levels.count) == [5, 5, 6, 6, 6, 6])
+        #expect(Campaign.historicalLevels.count == 34)
+        #expect(Campaign.historicalChapters.map(\.numeral) == ["I", "II", "III", "IV", "V", "VI"])
+        #expect(Array(Campaign.chapters.prefix(6)) == Campaign.historicalChapters)
+        #expect(Array(Campaign.levels.prefix(34)) == Campaign.historicalLevels)
+        #expect(Campaign.chapters.map(\.number) == Array(1...Campaign.chapters.count))
+        #expect(Set(Campaign.levels.map(\.id)).count == Campaign.levels.count)
+        #expect(Set(Campaign.levels.map(\.title)).count == Campaign.levels.count)
         for chapter in Campaign.chapters {
             #expect(chapter.levels.map(\.index) == Array(1...chapter.levels.count))
             #expect(chapter.levels.allSatisfy { $0.chapter == chapter.number })
+            #expect(chapter.isHistorical == (chapter.theme == .chambreNoire) || !chapter.isHistorical, "\(chapter.number)")
         }
-        #expect(Campaign.chapters.map(\.numeral) == ["I", "II", "III", "IV", "V", "VI"])
+        #expect(Campaign.historicalChapters.allSatisfy { $0.theme == .chambreNoire })
     }
 
     @Test("rule 1: chapters III to VI open with a single lueur introducing their element")
@@ -35,9 +40,9 @@ struct CampaignStructureTests {
         }
     }
 
-    @Test("rules 2 and 3: at most two element kinds outside chapter VI, bounded counts, iris motion only in chapter VI")
+    @Test("rules 2 and 3 (historical chapters): at most two element kinds outside chapter VI, bounded counts, iris motion only in chapter VI")
     func combination() {
-        for level in Campaign.levels {
+        for level in Campaign.historicalLevels {
             if level.chapter < 6 {
                 #expect(level.elementKinds.count <= 2, "\(level.id)")
                 #expect(!level.elementKinds.contains(.irisMouvant), "\(level.id)")
@@ -100,7 +105,8 @@ struct CampaignStructureTests {
     func helpers() {
         #expect(Campaign.level(id: "3-2")?.title == "la brèche")
         #expect(Campaign.next(after: Campaign.levels[4])?.id == "2-1")
-        #expect(Campaign.next(after: Campaign.levels[33]) == nil)
+        #expect(Campaign.next(after: Campaign.historicalLevels[33])?.id == Campaign.expansionChapters.first?.levels.first?.id)
+        #expect(Campaign.next(after: Campaign.levels[Campaign.levels.count - 1]) == nil)
         #expect(Campaign.isLastInChapter(Campaign.levels[4]))
         #expect(!Campaign.isLastInChapter(Campaign.levels[0]))
     }
