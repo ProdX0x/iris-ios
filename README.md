@@ -552,3 +552,24 @@ Un niveau expérimental, `0-1` « braise », chapitre « P » (`Domain/Campaign/
 - **Vérifié automatiquement** : chaleur, hystérésis, affolement, comportement ; réveil, fuite, retour et validation en session ; portée accrue d'une braise affolée ; faisabilité par le joueur simulé qui nourrit et impossibilité sans nourrir ou hors écran ; consignes, son et haptique ; isolation de la progression ; définition figée.
 - **Validé humainement** : sommeil, réveil, attraction naturelle, répulsion, affolement, portée accrue après affolement.
 - **Braises B** (une seconde lueur à protéger) a été prototypé, retravaillé trois fois et **rejeté dans sa forme testée** : absent de cette baseline. Trace et motifs : `Design/BRAISES_VALIDATION_STATUS.md` ; branches d'archive `prototype/braises*`.
+
+---
+
+## 18. Baseline validée d'expansion (branche `baseline/iris-expansion-validated`, 12 septembre 2026)
+
+Point de départ autoritatif des prochains prototypes : l'ancêtre propre `937d549` (phase A) plus, transplantés à l'identique, **Braises A** validé humainement et la **séparation audio** validée humainement. Braises B et tout son laboratoire en sont absents. Rapport : `VALIDATED_EXPANSION_BASELINE_REPORT.md` ; statut Braises : `Design/BRAISES_VALIDATION_STATUS.md` ; hypothèse de distance de calibration (environ 30 cm subjectivement plus favorable, non vérifiée) : `Design/GAZE_CALIBRATION_DISTANCE_HYPOTHESIS.md`.
+
+Résultats réels, mesurés sur l'arbre du HEAD final juste avant le commit documentaire (le commit n'ajoute que de la documentation) :
+
+| Étape | Résultat |
+|---|---|
+| `git diff --check` | propre |
+| Parité Braises A avec `416feb9` | diff vide sur tous les fichiers de support ; bloc de définition d'A identique |
+| Parité audio avec `aeafc28` | diff vide sur les fichiers audio, préférences et tests |
+| Gaze Engine, synthétiseur, service audio, physique de référence, campagne | identiques à `937d549` ; seule `HapticCuePolicy` diffère, par les trois événements de braise ignorés (support d'A, identique à `416feb9`) |
+| Absence de B | aucune référence à `BraisesPrototype.b`, « deux feux », `0-2`, relevé de laboratoire ; `BraisesPrototype.levels` = [`0-1`] ; un seul bouton de prototype dans les réglages |
+| Debug simulateur | BUILD SUCCEEDED |
+| Tests | 251 exécutés, 251 réussis, 0 échec, 0 ignoré |
+| Release simulateur | BUILD SUCCEEDED |
+| Audit | C1, C2, C8, C9, C10, C12 pass, 205 fichiers |
+| Appareil | build Debug signé (`net.steve-s.iris`, `G4U9RG5GL7`), installation et lancement réussis sur l'iPhone 14 Pro, processus vivant après 8 s ; l'accès Braises A et les deux réglages audio sont ceux du code compilé, aucune validation humaine n'a été refaite |
