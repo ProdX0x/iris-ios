@@ -34,7 +34,7 @@ struct LaunchOptions: Hashable, Sendable {
             case "--iris-route":
                 options.initialRoute = iterator.next().flatMap(route(named:))
             case "--iris-level":
-                options.level = iterator.next().flatMap { Campaign.level(id: $0) != nil ? $0 : nil }
+                options.level = iterator.next().flatMap { Self.isKnownLevel($0) ? $0 : nil }
             case "--iris-autoplay":
                 options.autoplay = true
             case "--iris-gaze":
@@ -69,6 +69,16 @@ struct LaunchOptions: Hashable, Sendable {
             progress.encounter(level.introduces)
         }
         return progress
+    }
+
+    /// Campaign ids, plus the experimental prototype ids in DEBUG builds.
+    private static func isKnownLevel(_ id: String) -> Bool {
+        if Campaign.level(id: id) != nil { return true }
+        #if DEBUG
+        return BraisesPrototype.level(id: id) != nil
+        #else
+        return false
+        #endif
     }
 
     private static func seed(named name: String) -> SeededProgress? {

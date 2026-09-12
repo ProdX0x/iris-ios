@@ -538,3 +538,16 @@ Sur `feature/game-expansion`, après la validation humaine du Gaze Engine (§ 14
 Rapport de synthèse : `GAME_EXPANSION_DESIGN_REPORT.md` (racine). Aucun niveau, aucun chapitre, aucune mécanique, aucun paramètre du regard ni du moteur n'a été modifié pendant cette phase ; les 232 tests et les six chapitres sont ceux du commit haptique.
 
 **Étape suivante : validation humaine de la conception avant toute implémentation des nouveaux chapitres.**
+
+---
+
+## 17. Prototype B1 « Braises » (branche `prototype/braises`, 12 septembre 2026)
+
+Expérience contrôlée, **hors campagne**, destinée à répondre à deux questions par un test humain : Braises fait-il utiliser le regard autrement, et le joueur comprend-il le geste sans explication lourde ? Rapport : `BRAISES_PROTOTYPE_REPORT.md` ; fiche de test : `Design/BRAISES_PROTOTYPE_TEST.md`.
+
+- **Deux niveaux** (`Domain/Campaign/BraisesPrototype.swift`, chapitre 0 « P », compilés en DEBUG seulement) : **A · braise** (une braise froide, un iris) et **B · deux feux** (une lueur normale à poser d'abord, puis une braise à réveiller sans chasser la première).
+- **Mécanique** : une braise dort, froide, immobile ; le regard posé sur elle (rayon 0,22 du petit côté, 86 pt) la réchauffe en 0,9 s ; à 0,5 elle s'allume : elle fuit le regard comme toute lueur, dérive vers son iris, et l'iris l'accepte ; ignorée, elle refroidit en 30 s et se rendort sous 0,4. Au-delà de 0,85 elle s'affole : sa zone d'attention grandit jusqu'à × 1,5. Elle ne perd jamais sa chaleur pour avoir été regardée.
+- **Accès sur iPhone** : Réglages → *prototypes (debug)* → Braises A / Braises B. Options de lancement : `--iris-route game --iris-level 0-1` ou `0-2`. Rien n'est enregistré dans la progression ; le résultat propose le prototype suivant puis les chapitres, jamais la fin de parcours.
+- **Isolation** : `LueurDefinition.braise` (nil dans les 34 niveaux officiels), `BraiseState` et `BehaviourScale` dans le moteur (neutres, × 1,0 exact, pour toute lueur ordinaire ; traces golden inchangées), trois événements, deux déclencheurs de consigne, un dessin de braise dans le renderer, un lanceur DEBUG. Le Gaze Engine, la calibration, la physique de référence et les six chapitres sont inchangés ; un test le vérifie (identifiants des 34 niveaux, absence de braise, environnement sans braise).
+- **Vérifié automatiquement** : chaleur, hystérésis, affolement, comportement ; réveil, fuite, retour et validation en session ; faisabilité par le joueur simulé qui nourrit (3 graines) et impossibilité sans nourrir ou hors écran ; références d'éclats ; consignes, son et haptique ; isolation de la progression et du flux de résultat.
+- **Statut** : `[logique vérifiée automatiquement]` ; `[build appareil réussi]` et `[installation appareil réussie]` selon § 10 bis ; le geste lui-même, sa lisibilité et son agrément : `[nécessite validation humaine]`. Aucune décision de chapitre n'est prise.

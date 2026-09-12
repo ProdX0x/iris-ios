@@ -17,6 +17,7 @@
 		08C06F6328901159489B17A5 /* GazeSetupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0782523A70B6E6C8B3B861F /* GazeSetupViewModelTests.swift */; };
 		0B4A1495726212C955AD778F /* UserDefaultsProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CC4833E2986E27D59ECE3A /* UserDefaultsProgressStore.swift */; };
 		0C2B5B24A9B1CBE33DE030DF /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9362D94447166741649F5784 /* AppContainer.swift */; };
+		0C4424A093630F7C4516EE55 /* BraiseStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1572AD8AD958A319467FFA /* BraiseStateTests.swift */; };
 		0DD1A247AF0396C78D50C2D8 /* DeviceCapabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA83F5A055F5EAF728EA344F /* DeviceCapabilities.swift */; };
 		0EA8738AC9494778D067B17B /* DSFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9321BE95580A63B791802BD7 /* DSFont.swift */; };
 		0EB6BF41499EFA900443D559 /* CalibrationProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181F3802D2524DA7DFB1A582 /* CalibrationProfileTests.swift */; };
@@ -38,6 +39,7 @@
 		1ADDE1EF4068C4B63093FEEE /* LinearCongruentialGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988419B0C5BE91DBAA541561 /* LinearCongruentialGeneratorTests.swift */; };
 		1B1375D2A6BE18AD394750B2 /* GazeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F910EB238B986CDDC7C66C /* GazeFilter.swift */; };
 		1F8F6F9D936991ECCD088729 /* Campaign+Veilleuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7334D66F403CCED5EEFC84E /* Campaign+Veilleuses.swift */; };
+		208A16199BB8CE507B96628F /* BraisesPrototype.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18258373507964A5C012E825 /* BraisesPrototype.swift */; };
 		212CF6CFD534F7810B9DF3A8 /* CalibrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77098F1FB45C7F13877AEAD0 /* CalibrationStore.swift */; };
 		23791663624A85BBF7772F00 /* SimulatedGazeTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0876AF61255786B54E6B7CA1 /* SimulatedGazeTrackingService.swift */; };
 		24385E12016E14C53C04D618 /* AudioCue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63669236D77A269D0C392E57 /* AudioCue.swift */; };
@@ -91,6 +93,7 @@
 		6266836DB1BC1C40FC2AAEA4 /* ManualGameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D242A860A1DDC94DA38992 /* ManualGameClock.swift */; };
 		67B105C8AE8C920CAF549F43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 636694E9043AC8362E68025D /* Assets.xcassets */; };
 		67C74CBD5868678813B7A51C /* VeilDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B2ABCFEA818E92CC86A7EC /* VeilDefinition.swift */; };
+		69C6467DBC6B4E7A5B3AD355 /* BraisesPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */; };
 		6B86C28C1AC98414AC28E39C /* GazeRay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F67B3E93111CBEC6533C7F /* GazeRay.swift */; };
 		6E1B86D42D6A513E5C2BE925 /* DSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173CFEFE85CFD6276C224FC1 /* DSBadge.swift */; };
 		6E581A04DAA346B1C4485098 /* DSGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7AD342653D374AF694FE25 /* DSGlyph.swift */; };
@@ -133,6 +136,7 @@
 		9A711B9C7A79821B956497A5 /* DeviceAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */; };
 		9AC4C195616DC896137DF12F /* LinearCongruentialGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272C51EEF33C3FE08A938E8E /* LinearCongruentialGenerator.swift */; };
 		9C2F2EDE1CEFD43AC4A4DFA7 /* UIKitHapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */; };
+		9CA168397570BA3C97A2169B /* BraiseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CE1C80EBCEA72FBA91A69 /* BraiseState.swift */; };
 		9CB34104705E561CEA9F5F2B /* DSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9E4FD0BD7CE4E6BB7BBF79 /* DSColor.swift */; };
 		9D6AF35F8C4B870D0BF39D0E /* AffineTransform2DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3EA6296DB64CBC82A728AD /* AffineTransform2DTests.swift */; };
 		9D914AE3CFD470F2D6C2642F /* CameraAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0051F77DFB87391146F0FBD3 /* CameraAccessView.swift */; };
@@ -176,6 +180,7 @@
 		CFF2D00899F00B76C21B75B1 /* GazeReadinessEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E47576FE9A465F3D18C714 /* GazeReadinessEvaluator.swift */; };
 		D2A6A169B9D8C424EE94716B /* SilentNoise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E6BD72F5C7667F2B02585 /* SilentNoise.swift */; };
 		D43BE8F07861543B836411BB /* ValidationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA13FEF873190BE68059074 /* ValidationRule.swift */; };
+		D5E0E66E322891B68074776C /* BraiseDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF77AE1F41D398E8C51E742 /* BraiseDefinition.swift */; };
 		D633A1C6F164CB89EDD24EDA /* InterfaceOrientationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622DC62D0A9FF4662E83D6EF /* InterfaceOrientationProvider.swift */; };
 		D6FB76E356CE058E251024A5 /* AudioCuePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F240F98DB0B0B86BAFEEB1FE /* AudioCuePolicyTests.swift */; };
 		DB1B932804E31EC05579D487 /* GameSceneRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895A77572444EA0B5AFB485A /* GameSceneRenderer.swift */; };
@@ -246,6 +251,7 @@
 		16E66479CC04D834B768E3FA /* LevelRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRecord.swift; sourceTree = "<group>"; };
 		173CFEFE85CFD6276C224FC1 /* DSBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSBadge.swift; sourceTree = "<group>"; };
 		181F3802D2524DA7DFB1A582 /* CalibrationProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationProfileTests.swift; sourceTree = "<group>"; };
+		18258373507964A5C012E825 /* BraisesPrototype.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraisesPrototype.swift; sourceTree = "<group>"; };
 		18756B7B93381F8C60E98CDA /* FixationSequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixationSequenceTests.swift; sourceTree = "<group>"; };
 		18ABDF9A8FDA336DCA7ABFBF /* IrisMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrisMotion.swift; sourceTree = "<group>"; };
 		18FE0D5280B10AB864D751F2 /* LevelLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLabTests.swift; sourceTree = "<group>"; };
@@ -267,6 +273,7 @@
 		294A4A3C6F8935D0485A0695 /* NormalizedCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedCoordinates.swift; sourceTree = "<group>"; };
 		2A19970A39C36C9149697807 /* IrisPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrisPath.swift; sourceTree = "<group>"; };
 		2C3831048F60D51B2C372E34 /* ValidationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTransition.swift; sourceTree = "<group>"; };
+		2C9CE1C80EBCEA72FBA91A69 /* BraiseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseState.swift; sourceTree = "<group>"; };
 		2C9E4FD0BD7CE4E6BB7BBF79 /* DSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSColor.swift; sourceTree = "<group>"; };
 		2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHapticFeedbackService.swift; sourceTree = "<group>"; };
 		308F25679A5A110E8EE8B174 /* GameCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCanvasView.swift; sourceTree = "<group>"; };
@@ -282,6 +289,7 @@
 		490735E24BFA02393F0D0DDD /* CascadeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeRule.swift; sourceTree = "<group>"; };
 		4AA13FEF873190BE68059074 /* ValidationRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRule.swift; sourceTree = "<group>"; };
 		4B92CB552F572A3D8921D8BC /* golden_level1_scripted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = golden_level1_scripted.json; sourceTree = "<group>"; };
+		4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraisesPrototypeTests.swift; sourceTree = "<group>"; };
 		503F9C3502EF31E0B3FDA77B /* Campaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Campaign.swift; sourceTree = "<group>"; };
 		5475244795788D1DC0B6380F /* DSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSButton.swift; sourceTree = "<group>"; };
 		54B361F6FB2CAF7BCBAFF1B9 /* AppSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSheet.swift; sourceTree = "<group>"; };
@@ -351,6 +359,7 @@
 		9BEF58786CACDB18BD42EC22 /* MockGameNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGameNavigating.swift; sourceTree = "<group>"; };
 		9BFD67321E82EA13C8FB030E /* GazeReadinessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeReadinessView.swift; sourceTree = "<group>"; };
 		9D5BF25D73E9B570A57FD3BF /* LevelResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelResolver.swift; sourceTree = "<group>"; };
+		9DF77AE1F41D398E8C51E742 /* BraiseDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseDefinition.swift; sourceTree = "<group>"; };
 		9F337E175FB7D36A09AC4FE2 /* golden_generator.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = golden_generator.js; sourceTree = "<group>"; };
 		9FC6C35F2B3670EF05BC8871 /* DSScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSScreen.swift; sourceTree = "<group>"; };
 		A149778CB2D807A315CFB89E /* FeedbackTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackTiming.swift; sourceTree = "<group>"; };
@@ -363,6 +372,7 @@
 		AB1B81D2F724067717A73CFE /* DSCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCard.swift; sourceTree = "<group>"; };
 		ADA87ADA525EF1C50F514A53 /* CalibrationGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationGrid.swift; sourceTree = "<group>"; };
 		ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelAnalysis.swift; sourceTree = "<group>"; };
+		AE1572AD8AD958A319467FFA /* BraiseStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseStateTests.swift; sourceTree = "<group>"; };
 		AE46076AAECA1EF108B5C091 /* NominalDisplayGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NominalDisplayGeometry.swift; sourceTree = "<group>"; };
 		AF1585AF6D44A5E92F30099E /* DSEyebrowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEyebrowStyle.swift; sourceTree = "<group>"; };
 		B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAxis.swift; sourceTree = "<group>"; };
@@ -805,6 +815,7 @@
 		8213C6D2EB53ECF8F2B9BACB /* Campaign */ = {
 			isa = PBXGroup;
 			children = (
+				4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */,
 				621EE5D15ABA6251FC1752DE /* CampaignBot.swift */,
 				764880C619F51A22B56FF194 /* CampaignMeasurements.swift */,
 				21F4691736CD5299B0A55EC1 /* CampaignValidationTests.swift */,
@@ -919,6 +930,7 @@
 		CB83B7F2CD0DC3F97302DF1C /* Environment */ = {
 			isa = PBXGroup;
 			children = (
+				2C9CE1C80EBCEA72FBA91A69 /* BraiseState.swift */,
 				D193ED9955EC8AC01E8BFD47 /* CurrentField.swift */,
 				2A19970A39C36C9149697807 /* IrisPath.swift */,
 				00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */,
@@ -955,6 +967,7 @@
 		CEB07F5ABBA7DAC09FAED44E /* GameEngine */ = {
 			isa = PBXGroup;
 			children = (
+				AE1572AD8AD958A319467FFA /* BraiseStateTests.swift */,
 				5EB61564C7CCA8A2C7ADD305 /* GameSessionGoldenTests.swift */,
 				1EEB9F52FA98B6CDAFD36D8F /* GameSessionTests.swift */,
 				0024C2B4375A74F4D0C38552 /* GazeFilterTests.swift */,
@@ -1037,6 +1050,8 @@
 		E40DF66A63A1DBCC7E983069 /* Campaign */ = {
 			isa = PBXGroup;
 			children = (
+				9DF77AE1F41D398E8C51E742 /* BraiseDefinition.swift */,
+				18258373507964A5C012E825 /* BraisesPrototype.swift */,
 				503F9C3502EF31E0B3FDA77B /* Campaign.swift */,
 				D1560C44E3EA509640C54D77 /* Campaign+Clairvoyance.swift */,
 				F888AF8EFFC2A1C549E4C75E /* Campaign+Courants.swift */,
@@ -1291,6 +1306,8 @@
 				84883B202993ACDABF7C0DE6 /* AppCoordinatorTests.swift in Sources */,
 				D6FB76E356CE058E251024A5 /* AudioCuePolicyTests.swift in Sources */,
 				1728812802F3A935D50C6777 /* AxisMappingTests.swift in Sources */,
+				0C4424A093630F7C4516EE55 /* BraiseStateTests.swift in Sources */,
+				69C6467DBC6B4E7A5B3AD355 /* BraisesPrototypeTests.swift in Sources */,
 				0EB6BF41499EFA900443D559 /* CalibrationProfileTests.swift in Sources */,
 				1053BCD7045784A7AFB2A02F /* CameraAccessViewModelTests.swift in Sources */,
 				86A59EFF200A589887FAAAD1 /* CampaignBot.swift in Sources */,
@@ -1347,6 +1364,9 @@
 				4630F1348E42703E785FC415 /* AudioService.swift in Sources */,
 				EE0F796B52316277AE87CEC0 /* AxisMapping.swift in Sources */,
 				72720E8F7628B8B367C2FA5C /* BlinkDetector.swift in Sources */,
+				D5E0E66E322891B68074776C /* BraiseDefinition.swift in Sources */,
+				9CA168397570BA3C97A2169B /* BraiseState.swift in Sources */,
+				208A16199BB8CE507B96628F /* BraisesPrototype.swift in Sources */,
 				A6BD4D687B285DA80AD62AA3 /* CalibrationGrid.swift in Sources */,
 				CAFF97F65B9D19B9B9D9688C /* CalibrationProfile.swift in Sources */,
 				AE6CF845E898D1DA9203CA80 /* CalibrationResult.swift in Sources */,

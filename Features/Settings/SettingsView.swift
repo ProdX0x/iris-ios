@@ -41,6 +41,16 @@ struct SettingsView: View {
                         .font(DSFont.footnote)
                         .foregroundStyle(DSColor.textSecondary)
                 }
+                #if DEBUG
+                DSCard(style: .flat) {
+                    Text("prototypes (debug)").dsEyebrowStyle()
+                    Text("Hors campagne. Rien n'est enregistré.")
+                        .font(DSFont.footnote)
+                        .foregroundStyle(DSColor.textSecondary)
+                    DSButton("Braises A · braise", systemImage: "flame", variant: .secondary) { coordinator.playPrototype(BraisesPrototype.a) }
+                    DSButton("Braises B · deux feux", systemImage: "flame", variant: .secondary) { coordinator.playPrototype(BraisesPrototype.b) }
+                }
+                #endif
                 DSButton("Réinitialiser la progression", variant: .ghost) { confirmsReset = true }
                     .confirmationDialog("Effacer tous les niveaux atteints et les éclats ?", isPresented: $confirmsReset, titleVisibility: .visible) {
                         Button("Réinitialiser", role: .destructive) { coordinator.resetProgress() }

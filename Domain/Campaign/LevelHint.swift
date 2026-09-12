@@ -13,6 +13,9 @@ enum HintTrigger: Hashable, Sendable {
     case firstLoss
     case attentionLeftField
     case veilleuseLow
+    /// EXPERIMENTAL (prototype B1).
+    case braiseLit
+    case braiseFlared
 }
 
 struct LevelHint: Hashable, Sendable {

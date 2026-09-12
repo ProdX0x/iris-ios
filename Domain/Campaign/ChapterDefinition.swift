@@ -24,6 +24,7 @@ struct ChapterDefinition: Hashable, Sendable, Identifiable {
 
     var numeral: String {
         let numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+        if number == 0 { return "P" }
         return number >= 1 && number <= numerals.count ? numerals[number - 1] : "\(number)"
     }
 }

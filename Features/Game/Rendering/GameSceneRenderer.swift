@@ -156,6 +156,10 @@ struct GameSceneRenderer {
     // MARK: Lueur: emissive disc, rank ring, trouble ripple
 
     private func drawLueur(_ lueur: LueurSnapshot, sequential: Bool, time: TimeInterval, in context: inout GraphicsContext, reduceMotion: Bool) {
+        if let heat = lueur.heat, !lueur.isValidated {
+            drawBraise(lueur, heat: heat, sequential: sequential, time: time, in: &context, reduceMotion: reduceMotion)
+            return
+        }
         let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
         let radius = lueur.radius
         let glowColor = lueur.isValidated ? DSColor.statusSuccess : DSColor.lueurGlow
@@ -171,6 +175,52 @@ struct GameSceneRenderer {
 
         if sequential {
             context.stroke(circle(center, radius + 3.5 * lueur.radius / 20), with: .color(DSColor.rank(lueur.sequence).opacity(0.9)), lineWidth: 1.6 * lueur.radius / 20)
+            let pip = radius * 0.11
+            let spacing = radius * 0.36
+            let startX = center.x - Double(lueur.sequence - 1) * spacing / 2
+            for index in 0..<lueur.sequence {
+                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: center.y), pip), with: .color(DSColor.fieldInk.opacity(0.8)))
+            }
+        }
+
+        if lueur.disturbance > 0.02 {
+            if reduceMotion {
+                context.stroke(circle(center, radius * 1.5), with: .color(DSColor.statusDanger.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
+            } else {
+                let phase = fract(time * 2.2 + Double(lueur.sequence) * 0.3)
+                context.stroke(circle(center, radius * (1.25 + 0.95 * phase)),
+                               with: .color(DSColor.statusDanger.opacity(min(0.85, lueur.disturbance * 1.2) * (1 - phase))), lineWidth: 2)
+            }
+        }
+    }
+
+    // MARK: Braise (EXPERIMENTAL): an ember whose light is its heat; white-hot and pulsing when it flares
+
+    private func drawBraise(_ lueur: LueurSnapshot, heat: Double, sequential: Bool, time: TimeInterval, in context: inout GraphicsContext, reduceMotion: Bool) {
+        let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
+        let radius = lueur.radius
+        let warmth = min(max(heat, 0), 1)
+        let flarePulse = (lueur.isFlaring && !reduceMotion) ? 0.5 + 0.5 * sin(time * 26) : (lueur.isFlaring ? 1 : 0)
+        let haloRadius = radius * (1.6 + 1.6 * warmth + 1.0 * flarePulse)
+        let haloOpacity = 0.06 + 0.32 * warmth + 0.25 * flarePulse
+        var glow = context
+        glow.blendMode = .plusLighter
+        glow.fill(circle(center, haloRadius), with: .radialGradient(Gradient(colors: [DSColor.accent.opacity(haloOpacity), DSColor.accent.opacity(0)]),
+                                                                    center: center, startRadius: radius * 0.5, endRadius: haloRadius))
+        // Ember body: dark when cold, amber as it warms, nacre core once lit.
+        context.fill(circle(center, radius), with: .color(DSColor.fieldAbyss))
+        context.fill(circle(center, radius), with: .color(DSColor.accentDeep.opacity(0.35 + 0.65 * warmth)))
+        let coreRadius = radius * (0.25 + 0.55 * warmth)
+        let coreOpacity = max(0, (warmth - 0.3) / 0.7)
+        context.fill(circle(center, coreRadius), with: .radialGradient(Gradient(colors: [DSColor.lueurCore.opacity(coreOpacity), DSColor.accent.opacity(coreOpacity * 0.6)]),
+                                                                       center: center, startRadius: 0, endRadius: coreRadius))
+        if lueur.isFlaring {
+            context.stroke(circle(center, radius * (1.15 + 0.35 * flarePulse)), with: .color(DSColor.lueurCore.opacity(0.5 + 0.4 * flarePulse)), lineWidth: 1.5)
+        }
+        context.stroke(circle(center, radius + 2.5 * radius / 20), with: .color(DSColor.accent.opacity(0.35 + 0.45 * warmth)),
+                       style: StrokeStyle(lineWidth: 1.4 * radius / 20, dash: lueur.isIrisOpen ? [] : [2.5 * radius / 20, 3.5 * radius / 20]))
+
+        if sequential {
             let pip = radius * 0.11
             let spacing = radius * 0.36
             let startX = center.x - Double(lueur.sequence - 1) * spacing / 2

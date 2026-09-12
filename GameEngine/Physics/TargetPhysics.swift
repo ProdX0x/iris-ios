@@ -27,13 +27,17 @@ struct TargetPhysics: Hashable, Sendable {
     ///
     /// `externalImpulse` (currents, R-24) is added inside the same per-frame map, before the cap, whether the lueur
     /// is attracted or repelled. It is zero for prototype levels, which keeps the reference step bit-for-bit.
+    ///
+    /// `behaviour` (EXPERIMENTAL, braises) scales the attention zone and the passive drift; it is neutral (× 1.0, exact)
+    /// for every campaign lueur.
     func integrate(_ target: inout Target, gaze: Vector2, noise: (Double) -> Double, frameTime: Double, frameFraction: Double,
-                   externalImpulse: Vector2 = .zero) {
+                   externalImpulse: Vector2 = .zero, behaviour: BehaviourScale = .neutral) {
         let scaling = FractionalStep(friction: constants.friction, frameFraction: frameFraction)
         let fromGaze = target.position - gaze
         let gazeDistance = nonZero(fromGaze.length)
-        if gazeDistance < target.attentionZone {
-            let force = target.repulsionGain * (target.attentionZone - gazeDistance)
+        let zone = target.attentionZone * behaviour.attentionZone
+        if gazeDistance < zone {
+            let force = target.repulsionGain * (zone - gazeDistance)
             target.velocity += (fromGaze / gazeDistance) * (force * scaling.impulseScale)
             let maximum = target.repulsionGain * target.attentionZone
             target.disturbance = maximum > 0 ? min(1, force / maximum) : 0
@@ -41,9 +45,11 @@ struct TargetPhysics: Hashable, Sendable {
             target.disturbance = 0
             let toArrival = target.arrival - target.position
             let arrivalDistance = nonZero(toArrival.length)
-            target.velocity += (toArrival / arrivalDistance) * (target.passiveAttraction * scaling.impulseScale)
-            target.velocity.x += noise(frameTime * 0.02) * target.noiseAmplitude * scaling.impulseScale
-            target.velocity.y += noise(frameTime * 0.02 + 50) * target.noiseAmplitude * scaling.impulseScale
+            let attraction = target.passiveAttraction * behaviour.drift
+            let amplitude = target.noiseAmplitude * behaviour.drift
+            target.velocity += (toArrival / arrivalDistance) * (attraction * scaling.impulseScale)
+            target.velocity.x += noise(frameTime * 0.02) * amplitude * scaling.impulseScale
+            target.velocity.y += noise(frameTime * 0.02 + 50) * amplitude * scaling.impulseScale
         }
         if externalImpulse != .zero {
             target.velocity += externalImpulse * scaling.impulseScale

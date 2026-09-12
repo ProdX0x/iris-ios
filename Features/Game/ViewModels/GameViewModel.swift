@@ -80,7 +80,7 @@ final class GameViewModel {
          autoplay: Bool = false,
          navigator: any GameNavigating) {
         self.level = level
-        self.chapter = Campaign.chapter(of: level) ?? Campaign.chapters[0]
+        self.chapter = Self.chapter(of: level)
         let resolved = LevelResolver.resolve(level, in: .referencePhone)
         let session = resolved.makeSession()
         self.resolved = resolved
@@ -151,8 +151,10 @@ final class GameViewModel {
         case let .levelComplete(result):
             if result.isCampaignEnd {
                 finishCampaign()
-            } else {
+            } else if result.hasNextLevel {
                 playNext()
+            } else {
+                openChapters()
             }
         case .initializing, .playing, .interrupted, .faceLost, .suspended, .failed:
             break
@@ -179,7 +181,7 @@ final class GameViewModel {
     }
 
     func playNext() {
-        guard case .levelComplete = phase, let next = Campaign.next(after: level) else { return }
+        guard case .levelComplete = phase, let next = Self.next(after: level) else { return }
         let chapterChanged = next.chapter != level.chapter
         loadLevel(next)
         if chapterChanged && settings.soundEnabled {
@@ -321,15 +323,15 @@ final class GameViewModel {
         let outcome = LevelOutcome(time: session.elapsed, intrusions: session.metrics.intrusions, losses: session.metrics.losses)
         let previous = navigator?.gameDidComplete(level: level, outcome: outcome) ?? LevelRecord()
         let earned = outcome.eclats(par: level.par)
-        let next = Campaign.next(after: level)
+        let next = Self.next(after: level)
         phase = .levelComplete(LevelResult(levelID: level.id,
                                            outcome: outcome,
                                            earned: earned,
                                            newlyEarned: earned.subtracting(previous.eclats),
                                            isNewBestTime: previous.bestTime.map { outcome.time < $0 } ?? false,
                                            hasNextLevel: next != nil,
-                                           isChapterEnd: Campaign.isLastInChapter(level),
-                                           isCampaignEnd: next == nil))
+                                           isChapterEnd: !level.isExperimental && Campaign.isLastInChapter(level),
+                                           isCampaignEnd: !level.isExperimental && next == nil))
         logger.info("level \(self.level.id, privacy: .public) completed in \(outcome.time, format: .fixed(precision: 1)) s, intrusions \(outcome.intrusions), losses \(outcome.losses)")
     }
 
@@ -338,9 +340,25 @@ final class GameViewModel {
         navigator?.gameDidFinishCampaign()
     }
 
+    /// Campaign chapters, plus the experimental chapter in DEBUG builds (prototype levels are never in the campaign).
+    private static func chapter(of level: LevelDefinition) -> ChapterDefinition {
+        if let chapter = Campaign.chapter(of: level) { return chapter }
+        #if DEBUG
+        if let chapter = BraisesPrototype.chapter(of: level) { return chapter }
+        #endif
+        return Campaign.chapters[0]
+    }
+
+    private static func next(after level: LevelDefinition) -> LevelDefinition? {
+        #if DEBUG
+        if level.isExperimental { return BraisesPrototype.next(after: level) }
+        #endif
+        return Campaign.next(after: level)
+    }
+
     private func loadLevel(_ definition: LevelDefinition) {
         level = definition
-        chapter = Campaign.chapter(of: definition) ?? chapter
+        chapter = Self.chapter(of: definition)
         resolved = LevelResolver.resolve(definition, in: bounds)
         session = resolved.makeSession()
         hints = HintTracker.forLevel(definition, helpDelay: Self.helpDelay)
