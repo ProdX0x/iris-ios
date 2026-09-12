@@ -220,7 +220,8 @@ struct GameViewModelTests {
 
     @Test("the last level of the campaign ends on the finale")
     func campaignEnd() {
-        let sut = makeSUT(level: restingLevel(chapter: 6, index: 6))
+        let last = Campaign.levels[Campaign.levels.count - 1]
+        let sut = makeSUT(level: restingLevel(chapter: last.chapter, index: last.index))
         startPlaying(sut)
         clock.tick(frames: 50)
 

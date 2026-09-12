@@ -31,4 +31,7 @@ enum GameEvent: Hashable, Sendable {
     case braiseLit(sequence: Int)
     case braiseCooled(sequence: Int)
     case braiseFlared(sequence: Int)
+    /// Chapter VII: the twins of `sequence` (the lower of the pair) came within reach, or lost each other.
+    case twinsLinked(sequence: Int)
+    case twinsParted(sequence: Int)
 }

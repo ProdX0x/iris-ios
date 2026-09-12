@@ -16,6 +16,8 @@ enum HintTrigger: Hashable, Sendable {
     /// EXPERIMENTAL (prototype B1).
     case braiseLit
     case braiseFlared
+    /// Chapter VII: the first time two twins come within reach of each other.
+    case twinsLinked
 }
 
 struct LevelHint: Hashable, Sendable {

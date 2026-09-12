@@ -63,16 +63,20 @@ struct GameSession: Sendable {
     var veilleuses: [VeilleuseState] { environment.veilleuses }
     /// EXPERIMENTAL (prototype B1): braises keyed by target index.
     var braises: [Int: BraiseState] { environment.braises }
+    /// Chapter VII: twins keyed by target index.
+    var twins: [Int: TwinState] { environment.twins }
 
     func radius(ofTargetAt index: Int) -> Double {
         environment.lueurRadii.indices.contains(index) ? environment.lueurRadii[index] : physics.targetRadius
     }
 
-    /// Whether the iris of `target` is currently open (attention on field, every linked veilleuse lit, and, for a braise, lit).
+    /// Whether the iris of `target` is currently open (attention on field, every linked veilleuse lit, for a braise lit,
+    /// and for a twin within reach of its partner).
     func isIrisOpen(for target: Target) -> Bool {
         isAttentionOnField
             && environment.veilleuses.allSatisfy { !$0.lights(sequence: target.sequence) || $0.isLit }
             && (environment.braises[target.sequence - 1]?.isLit ?? true)
+            && (environment.twins[target.sequence - 1]?.isLinked ?? true)
     }
 
     /// Smoothed gaze input (what the reference engine's gaze listener did).
@@ -126,6 +130,8 @@ struct GameSession: Sendable {
         updateAttention(cursor: cursor, events: &events)
         updateVeilleuses(seconds: seconds, cursor: cursor, events: &events)
         updateBraises(seconds: seconds, cursor: cursor, events: &events)
+        let positions = targets.map(\.position)
+        updateTwins(positions: positions, events: &events)
 
         var everyTargetValidated = true
         let lowestUnvalidated = level.isSequential ? TurnRule.lowestUnvalidatedSequence(in: targets) : nil
@@ -135,6 +141,10 @@ struct GameSession: Sendable {
             let wasHolding = target.isHolding
             if let path = environment.irisPaths[index] {
                 target.arrival = path.position(at: elapsed)
+            }
+            if let twin = environment.twins[index] {
+                // Chapter VII: within reach the partner is the iris; out of reach the lueur waits at its poste.
+                target.arrival = twin.isLinked && positions.indices.contains(twin.partner) ? positions[twin.partner] : twin.poste
             }
             detectIntrusion(index: index, target: target, cursor: cursor, events: &events)
 
@@ -232,6 +242,26 @@ struct GameSession: Sendable {
             case .lit: events.append(.braiseLit(sequence: targets[index].sequence))
             case .cooled: events.append(.braiseCooled(sequence: targets[index].sequence))
             case .flared: events.append(.braiseFlared(sequence: targets[index].sequence))
+            case .none: break
+            }
+        }
+    }
+
+    /// Chapter VII: links or parts each pair of twins from the distance between them at the start of the tick.
+    /// Both twins of a pair share the same state; the event carries the lower sequence, once per pair.
+    private mutating func updateTwins(positions: [Vector2], events: inout [GameEvent]) {
+        for index in environment.twins.keys.sorted() {
+            guard var twin = environment.twins[index], index < twin.partner, positions.indices.contains(twin.partner) else { continue }
+            let distance = positions[index].distance(to: positions[twin.partner])
+            let change = twin.update(distance: distance)
+            environment.twins[index] = twin
+            if var partner = environment.twins[twin.partner], partner.partner == index {
+                _ = partner.update(distance: distance)
+                environment.twins[twin.partner] = partner
+            }
+            switch change {
+            case .linked: events.append(.twinsLinked(sequence: targets[index].sequence))
+            case .parted: events.append(.twinsParted(sequence: targets[index].sequence))
             case .none: break
             }
         }

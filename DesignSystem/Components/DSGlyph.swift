@@ -7,6 +7,8 @@ import SwiftUI
 struct DSGlyph: View {
     enum Kind: Hashable, Sendable {
         case lueur, iris, ecran, temperaments, ordre, cascade, courant, voile, veilleuse, irisMouvant, inconnu
+        // Expansion
+        case jumelles
     }
 
     let kind: Kind
@@ -81,6 +83,13 @@ struct DSGlyph: View {
                 context.stroke(arrows, with: .color(tint), style: stroke)
             case .inconnu:
                 context.stroke(circle(c, s * 0.36), with: .color(tint.opacity(0.4)), style: StrokeStyle(lineWidth: stroke.lineWidth, dash: [2, 4]))
+            case .jumelles:
+                var thread = Path()
+                thread.move(to: CGPoint(x: c.x - s * 0.26, y: c.y))
+                thread.addLine(to: CGPoint(x: c.x + s * 0.26, y: c.y))
+                context.stroke(thread, with: .color(tint.opacity(0.6)), style: stroke)
+                context.fill(circle(CGPoint(x: c.x - s * 0.28, y: c.y), s * 0.15), with: .color(tint))
+                context.fill(circle(CGPoint(x: c.x + s * 0.28, y: c.y), s * 0.15), with: .color(tint))
             }
         }
         .accessibilityHidden(true)
@@ -88,7 +97,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

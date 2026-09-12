@@ -33,6 +33,11 @@ enum DSColor {
     static let maree = Color("ds.maree")
     static let veil = Color("ds.veil")
 
+    // Chapter identities (expansion): accent, glow, ground wash
+    static let themeJumellesAccent = Color("ds.theme.jumelles.accent")
+    static let themeJumellesGlow = Color("ds.theme.jumelles.glow")
+    static let themeJumellesWash = Color("ds.theme.jumelles.wash")
+
     /// Rank colours (sable, givre, orchidée), 1-based, wrapping after three. Never the only carrier of rank:
     /// rank is always drawn as pips too.
     static func rank(_ sequence: Int) -> Color {

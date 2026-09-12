@@ -138,6 +138,8 @@ enum HistoricalCampaignDump {
         case .braiseLit: "braiseLit"
         case .braiseCooled: "braiseCooled"
         case .braiseFlared: "braiseFlared"
+        case .twinsLinked: "twinsLinked"
+        case .twinsParted: "twinsParted"
         }
     }
 

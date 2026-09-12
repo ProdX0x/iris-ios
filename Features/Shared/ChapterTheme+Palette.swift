@@ -8,6 +8,7 @@ extension ChapterTheme {
     var palette: DSThemePalette {
         switch self {
         case .chambreNoire: .chambreNoire
+        case .jumelles: .jumelles
         }
     }
 }

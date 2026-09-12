@@ -157,10 +157,26 @@ private struct Brain {
 
     private func pushAim(session: GameSession) -> Vector2? {
         let targets = session.targets
-        let candidates = targets.indices.filter { routeIndex[$0] < resolved.routes[$0].count && !targets[$0].isValidated }
+        let candidates = targets.indices.filter { index in
+            guard !targets[index].isValidated else { return false }
+            // Chapter VII: linked twins finish the rendez-vous by themselves; an unlinked twin whose route is exhausted
+            // keeps being pushed toward its partner.
+            if let twin = session.twins[index] {
+                if twin.isLinked { return false }
+                return true
+            }
+            return routeIndex[index] < resolved.routes[index].count
+        }
         guard let index = candidates.min(by: { targets[$0].sequence < targets[$1].sequence }) else { return nil }
         let target = targets[index]
-        let waypoint = resolved.routes[index][routeIndex[index]]
+        let waypoint: Vector2
+        if routeIndex[index] < resolved.routes[index].count {
+            waypoint = resolved.routes[index][routeIndex[index]]
+        } else if let twin = session.twins[index], targets.indices.contains(twin.partner) {
+            waypoint = targets[twin.partner].position
+        } else {
+            return nil
+        }
         let delta = waypoint - target.position
         let length = delta.length
         guard length > 1e-6 else { return nil }

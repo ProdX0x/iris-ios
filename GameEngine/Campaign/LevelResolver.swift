@@ -15,6 +15,10 @@ enum LevelResolver {
     static let gazeJumpThreshold = 300.0
     /// R-23 tolerance as a fraction of the short side.
     static let fieldTolerance = 0.06
+    /// Chapter VII: distance (fraction of the short side) under which twins see each other, and beyond which linked
+    /// twins lose each other. Wide on purpose: the player only has to bring them near, never to aim.
+    static let twinReach = 0.24
+    static let twinRelease = 0.30
 
     static func resolve(_ definition: LevelDefinition, in bounds: PlayfieldBounds) -> ResolvedLevel {
         let shortSide = min(bounds.width, bounds.height)
@@ -42,12 +46,17 @@ enum LevelResolver {
 
         var paths: [Int: IrisPath] = [:]
         var braises: [Int: BraiseState] = [:]
+        var twins: [Int: TwinState] = [:]
         for (index, lueur) in definition.lueurs.enumerated() {
             if case let .oscillate(to, period) = lueur.irisMotion {
                 paths[index] = IrisPath(from: lueur.iris.absolute(in: bounds), to: to.absolute(in: bounds), period: period)
             }
             if let braise = lueur.braise {
                 braises[index] = BraiseState(definition: braise, shortSide: shortSide)
+            }
+            if let partner = lueur.twin, definition.lueurs.indices.contains(partner - 1), partner - 1 != index {
+                twins[index] = TwinState(partner: partner - 1, poste: lueur.iris.absolute(in: bounds),
+                                         reach: twinReach * shortSide, release: twinRelease * shortSide)
             }
         }
         let environment = LevelEnvironment(
@@ -65,6 +74,7 @@ enum LevelResolver {
             },
             irisPaths: paths,
             braises: braises,
+            twins: twins,
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)

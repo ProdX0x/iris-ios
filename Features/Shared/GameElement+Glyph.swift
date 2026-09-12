@@ -17,6 +17,7 @@ extension GameElement {
         case .voile: .voile
         case .veilleuse: .veilleuse
         case .irisMouvant: .irisMouvant
+        case .jumelles: .jumelles
         }
     }
 }

@@ -8,4 +8,6 @@ import Foundation
 enum ChapterTheme: String, Hashable, Sendable, CaseIterable {
     /// Chapters I to VI: ink ground, amber attention, no wash. Rendering is exactly the historical one.
     case chambreNoire
+    /// Chapter VII, jumelles: rose attention over a plum ground.
+    case jumelles
 }

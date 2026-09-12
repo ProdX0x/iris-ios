@@ -1,6 +1,7 @@
 // GameSceneRenderer.swift
 // Layer: Presentation
-// Purpose: Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics
+// Purpose: Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics,
+// and the expansion elements in their chapter palette (VII: postes, threads and the shared iris of twins)
 
 import SwiftUI
 
@@ -9,17 +10,27 @@ struct GameSceneRenderer {
 
     func draw(_ snapshot: GameSceneSnapshot, in context: inout GraphicsContext, size: CGSize, reduceMotion: Bool) {
         let scale = snapshot.scale
+        let palette = snapshot.theme.palette
         drawCurrents(snapshot, in: &context, reduceMotion: reduceMotion)
         drawVeils(snapshot, in: &context)
         drawRoutes(snapshot, in: &context, scale: scale)
-        for lueur in snapshot.lueurs {
+        for lueur in snapshot.lueurs where !lueur.isTwin {
             drawIris(lueur, sequential: snapshot.isSequential, in: &context, scale: scale)
+        }
+        for lueur in snapshot.lueurs where lueur.isTwin {
+            drawPoste(lueur, in: &context, scale: scale, palette: palette)
+        }
+        for pair in snapshot.pairs {
+            drawTwinPair(pair, sequential: snapshot.isSequential, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
         }
         for veilleuse in snapshot.veilleuses {
             drawVeilleuse(veilleuse, time: snapshot.time, in: &context, scale: scale, reduceMotion: reduceMotion)
         }
         for lueur in snapshot.lueurs {
             drawLueur(lueur, sequential: snapshot.isSequential, time: snapshot.time, in: &context, reduceMotion: reduceMotion)
+            if let partner = lueur.partner {
+                drawTwinCrescent(lueur, toward: partner, in: &context, palette: palette)
+            }
         }
         if let diagnostics = snapshot.diagnostics {
             drawDiagnostics(diagnostics, in: &context)
@@ -126,6 +137,64 @@ struct GameSceneRenderer {
                 context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: y), pipRadius), with: .color(DSColor.rank(lueur.sequence)))
             }
         }
+    }
+
+    // MARK: Twins (chapter VII): poste, thread, shared iris at the midpoint, crescent facing the partner
+
+    private func drawPoste(_ lueur: LueurSnapshot, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
+        guard let poste = lueur.poste else { return }
+        let center = CGPoint(x: poste.x, y: poste.y)
+        let radius = lueur.irisRadius * 0.7
+        context.stroke(circle(center, radius), with: .color(palette.accent.opacity(lueur.isLinked ? 0.1 : 0.22)),
+                       style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 5 * scale]))
+        context.fill(circle(center, 1.6 * scale), with: .color(palette.accent.opacity(0.35)))
+    }
+
+    private func drawTwinPair(_ pair: TwinPairSnapshot, sequential: Bool, time: TimeInterval, in context: inout GraphicsContext,
+                              scale: Double, palette: DSThemePalette, reduceMotion: Bool) {
+        let a = CGPoint(x: pair.a.x, y: pair.a.y)
+        let b = CGPoint(x: pair.b.x, y: pair.b.y)
+        let sight = pair.reach * 2.6
+        let closeness = max(0, 1 - pair.distance / max(sight, 1))
+        if closeness > 0 {
+            var thread = Path()
+            thread.move(to: a)
+            thread.addLine(to: b)
+            let opacity = pair.isLinked ? 0.75 : 0.12 + 0.4 * closeness
+            context.stroke(thread, with: .color(palette.accent.opacity(opacity)),
+                           style: StrokeStyle(lineWidth: (pair.isLinked ? 1.8 : 1.1) * scale, lineCap: .round, dash: pair.isLinked ? [] : [3 * scale, 6 * scale]))
+        }
+        let center = CGPoint(x: pair.midpoint.x, y: pair.midpoint.y)
+        let radius = pair.reach * 0.18
+        if pair.isValidated {
+            var glow = context
+            glow.blendMode = .plusLighter
+            glow.fill(circle(center, radius * 2.4), with: .radialGradient(Gradient(colors: [DSColor.statusSuccess.opacity(0.32), DSColor.statusSuccess.opacity(0)]),
+                                                                          center: center, startRadius: 0, endRadius: radius * 2.4))
+            context.fill(circle(center, radius * 0.5), with: .color(DSColor.statusSuccess.opacity(0.85)))
+            return
+        }
+        guard pair.isLinked else { return }
+        let breath = reduceMotion ? 1 : 0.94 + 0.06 * sin(time * 3)
+        let ringRadius = radius * breath
+        context.stroke(circle(center, ringRadius), with: .color(palette.accent.opacity(pair.isIrisOpen ? 0.55 : 0.2)), lineWidth: 1.2 * scale)
+        let closure = 0.12 + 0.78 * pair.progress
+        let bladesRect = CGRect(x: center.x - ringRadius * 0.86, y: center.y - ringRadius * 0.86, width: ringRadius * 1.72, height: ringRadius * 1.72)
+        let blades = DSApertureBlades(closure: closure, rotation: pair.progress * 40).path(in: bladesRect)
+        let bladeColor = pair.isIrisOpen ? (pair.progress > 0 ? palette.accent : palette.accent.opacity(0.7)) : DSColor.textTertiary.opacity(0.35)
+        context.stroke(blades, with: .color(bladeColor), style: StrokeStyle(lineWidth: 2 * scale, lineCap: .round))
+    }
+
+    private func drawTwinCrescent(_ lueur: LueurSnapshot, toward partner: Vector2, in context: inout GraphicsContext, palette: DSThemePalette) {
+        let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
+        let delta = partner - lueur.position
+        let length = delta.length
+        guard length > 1e-6 else { return }
+        let angle = atan2(delta.y, delta.x)
+        var arc = Path()
+        arc.addArc(center: center, radius: lueur.radius + 3.5 * lueur.radius / 20, startAngle: .radians(angle - 0.75), endAngle: .radians(angle + 0.75), clockwise: false)
+        let color = lueur.isValidated ? DSColor.statusSuccess : palette.accent
+        context.stroke(arc, with: .color(color.opacity(lueur.isLinked ? 0.95 : 0.6)), style: StrokeStyle(lineWidth: 1.8 * lueur.radius / 20, lineCap: .round))
     }
 
     // MARK: Veilleuse: flame and charge ring

@@ -15,6 +15,8 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case voile
     case veilleuse
     case irisMouvant
+    // Expansion (chapter VII and beyond)
+    case jumelles
 
     var name: String {
         switch self {
@@ -28,6 +30,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .voile: "voile"
         case .veilleuse: "veilleuse"
         case .irisMouvant: "iris mouvant"
+        case .jumelles: "jumelles"
         }
     }
 
@@ -43,6 +46,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .voile: "Les lueurs ne le traversent pas. Poussez-les autour."
         case .veilleuse: "Regardez la flamme pour la raviver. Éteinte, elle ferme ses iris."
         case .irisMouvant: "L'iris glisse. Anticipez sans le fixer."
+        case .jumelles: "Elles n'ont pas d'iris : chacune est l'iris de l'autre. Réunissez-les."
         }
     }
 }

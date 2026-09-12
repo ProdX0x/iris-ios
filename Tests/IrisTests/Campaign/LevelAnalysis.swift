@@ -71,6 +71,7 @@ struct LevelAnalysis {
             + ((definition.veils.isEmpty && definition.currents.isEmpty) ? 0 : 1)
             + Double(definition.veilleuses.count)
             + 0.8 * Double(definition.lueurs.filter { $0.irisMotion.isMoving }.count)
+            + 0.5 * Double(definition.lueurs.filter(\.isTwin).count) / 2
             + botTime / 20
     }
 
@@ -124,6 +125,7 @@ extension LevelAnalysis {
         if definition.requiresPushing && !definition.veils.isEmpty { skills.insert("contourner") }
         if !definition.veilleuses.isEmpty { skills.insert("vigilance") }
         if definition.lueurs.contains(where: { $0.irisMotion.isMoving }) { skills.insert("anticiper") }
+        if definition.hasTwins { skills.insert("réunir") }
         return skills
     }
 

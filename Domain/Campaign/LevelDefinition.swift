@@ -58,6 +58,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         if !veils.isEmpty { kinds.insert(.voile) }
         if !veilleuses.isEmpty { kinds.insert(.veilleuse) }
         if lueurs.contains(where: { $0.irisMotion.isMoving }) { kinds.insert(.irisMouvant) }
+        if hasTwins { kinds.insert(.jumelles) }
         return kinds
     }
 
@@ -65,5 +66,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     /// Chapter 0 is reserved for experiments (prototype levels): never part of the campaign, never recorded in the progress.
     var isExperimental: Bool { chapter == 0 }
     var hasBraises: Bool { lueurs.contains { $0.braise != nil } }
+    /// Chapter VII: at least one pair of twins.
+    var hasTwins: Bool { lueurs.contains(where: \.isTwin) }
     var requiresPushing: Bool { lueurs.contains { !$0.route.isEmpty } }
 }
