@@ -2,7 +2,7 @@
 // Layer: Presentation
 // Purpose: Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics,
 // and the expansion elements in their chapter palette (VII: postes, threads and the shared iris of twins;
-// VIII: gust tracks, travelling gusts and the lift of a carried lueur)
+// VIII: gust tracks, travelling gusts and the lift of a carried lueur; IX: echo reach, rings, sleeping lueurs)
 
 import SwiftUI
 
@@ -25,6 +25,12 @@ struct GameSceneRenderer {
         for pair in snapshot.pairs {
             drawTwinPair(pair, sequential: snapshot.isSequential, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
         }
+        if let reach = snapshot.echoReach {
+            drawEchoReach(snapshot, reach: reach, in: &context, scale: scale, palette: palette)
+        }
+        for wave in snapshot.waves {
+            drawEchoWave(wave, in: &context, scale: scale, palette: palette)
+        }
         for veilleuse in snapshot.veilleuses {
             drawVeilleuse(veilleuse, time: snapshot.time, in: &context, scale: scale, reduceMotion: reduceMotion)
         }
@@ -34,6 +40,10 @@ struct GameSceneRenderer {
         for lueur in snapshot.lueurs {
             if lueur.isCarried {
                 drawLift(lueur, time: snapshot.time, in: &context, palette: palette, reduceMotion: reduceMotion)
+            }
+            if lueur.isAsleep {
+                drawSleeper(lueur, sequential: snapshot.isSequential, time: snapshot.time, in: &context, palette: palette, reduceMotion: reduceMotion)
+                continue
             }
             drawLueur(lueur, sequential: snapshot.isSequential, time: snapshot.time, in: &context, reduceMotion: reduceMotion)
             if let partner = lueur.partner {
@@ -276,6 +286,59 @@ struct GameSceneRenderer {
         glow.fill(circle(center, radius), with: .radialGradient(Gradient(colors: [palette.accent.opacity(0.3), palette.accent.opacity(0)]),
                                                                 center: center, startRadius: lueur.radius * 0.5, endRadius: radius))
         context.stroke(circle(center, lueur.radius * 1.35), with: .color(palette.accent.opacity(0.6)), lineWidth: 1.2 * lueur.radius / 20)
+    }
+
+    // MARK: Échos (chapter IX): reach of every echo source, rings in flight, sleeping lueurs
+
+    private func drawEchoReach(_ snapshot: GameSceneSnapshot, reach: Double, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
+        for lueur in snapshot.lueurs where lueur.echoes {
+            let center = CGPoint(x: lueur.arrival.x, y: lueur.arrival.y)
+            context.stroke(circle(center, reach), with: .color(palette.accent.opacity(lueur.isValidated ? 0.16 : 0.09)),
+                           style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+        }
+    }
+
+    private func drawEchoWave(_ wave: EchoWaveSnapshot, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
+        guard wave.front > 0, wave.reach > 0 else { return }
+        let progress = min(1, wave.front / wave.reach)
+        let center = CGPoint(x: wave.origin.x, y: wave.origin.y)
+        let opacity = 0.7 * (1 - progress * progress)
+        guard opacity > 0.01 else { return }
+        var glow = context
+        glow.blendMode = .plusLighter
+        glow.stroke(circle(center, wave.front), with: .color(palette.glow.opacity(opacity * 0.5)), lineWidth: 10 * scale * (1 - progress) + 2 * scale)
+        context.stroke(circle(center, wave.front), with: .color(palette.accent.opacity(opacity)), lineWidth: 1.6 * scale)
+    }
+
+    private func drawSleeper(_ lueur: LueurSnapshot, sequential: Bool, time: TimeInterval, in context: inout GraphicsContext,
+                             palette: DSThemePalette, reduceMotion: Bool) {
+        let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
+        let radius = lueur.radius
+        let breath = reduceMotion ? 1 : 0.92 + 0.08 * sin(time * 1.4 + Double(lueur.sequence))
+        var glow = context
+        glow.blendMode = .plusLighter
+        glow.fill(circle(center, radius * 1.9 * breath), with: .radialGradient(Gradient(colors: [palette.accent.opacity(0.14), palette.accent.opacity(0)]),
+                                                                                center: center, startRadius: radius * 0.5, endRadius: radius * 1.9 * breath))
+        context.fill(circle(center, radius), with: .color(DSColor.fieldAbyss))
+        context.fill(circle(center, radius), with: .color(DSColor.lueurGlow.opacity(0.22)))
+        context.stroke(circle(center, radius), with: .color(palette.accent.opacity(0.75)), lineWidth: 1.4 * radius / 20)
+        // A closed lid across the body.
+        var lid = Path()
+        lid.move(to: CGPoint(x: center.x - radius * 0.5, y: center.y - radius * 0.05))
+        lid.addQuadCurve(to: CGPoint(x: center.x + radius * 0.5, y: center.y - radius * 0.05), control: CGPoint(x: center.x, y: center.y + radius * 0.4))
+        context.stroke(lid, with: .color(palette.accent.opacity(0.9)), style: StrokeStyle(lineWidth: 1.6 * radius / 20, lineCap: .round))
+
+        if sequential {
+            let pip = radius * 0.11
+            let spacing = radius * 0.36
+            let startX = center.x - Double(lueur.sequence - 1) * spacing / 2
+            for index in 0..<lueur.sequence {
+                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: center.y - radius * 0.45), pip), with: .color(palette.accent.opacity(0.8)))
+            }
+        }
+        if lueur.disturbance > 0.02 {
+            context.stroke(circle(center, radius * 1.4), with: .color(DSColor.statusDanger.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
+        }
     }
 
     // MARK: Veilleuse: flame and charge ring

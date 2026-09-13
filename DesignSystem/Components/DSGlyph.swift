@@ -8,7 +8,7 @@ struct DSGlyph: View {
     enum Kind: Hashable, Sendable {
         case lueur, iris, ecran, temperaments, ordre, cascade, courant, voile, veilleuse, irisMouvant, inconnu
         // Expansion
-        case jumelles, souffle
+        case jumelles, souffle, dormeuse, echo
     }
 
     let kind: Kind
@@ -102,6 +102,20 @@ struct DSGlyph: View {
                 gust.addLine(to: CGPoint(x: c.x + s * 0.44, y: c.y))
                 gust.addLine(to: CGPoint(x: c.x + s * 0.28, y: c.y + s * 0.16))
                 context.stroke(gust, with: .color(tint), style: stroke)
+            case .dormeuse:
+                context.fill(circle(c, s * 0.3), with: .color(tint.opacity(0.25)))
+                context.stroke(circle(c, s * 0.3), with: .color(tint), style: stroke)
+                var lid = Path()
+                lid.move(to: CGPoint(x: c.x - s * 0.14, y: c.y - s * 0.02))
+                lid.addQuadCurve(to: CGPoint(x: c.x + s * 0.14, y: c.y - s * 0.02), control: CGPoint(x: c.x, y: c.y + s * 0.12))
+                context.stroke(lid, with: .color(tint), style: stroke)
+            case .echo:
+                context.fill(circle(c, s * 0.08), with: .color(tint))
+                for ring in 1...3 {
+                    var arc = Path()
+                    arc.addArc(center: c, radius: s * 0.14 * CGFloat(ring), startAngle: .degrees(-50), endAngle: .degrees(50), clockwise: false)
+                    context.stroke(arc, with: .color(tint.opacity(1 - Double(ring) * 0.22)), style: stroke)
+                }
             }
         }
         .accessibilityHidden(true)
@@ -109,7 +123,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

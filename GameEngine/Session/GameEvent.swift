@@ -37,4 +37,7 @@ enum GameEvent: Hashable, Sendable {
     /// Chapter VIII: a gust picked the lueur up, or let it go (end of the track, spill by the gaze).
     case lueurCarried(sequence: Int)
     case lueurDropped(sequence: Int)
+    /// Chapter IX: an iris emitted its echo (at closing, then at every breath), or an echo woke a sleeping lueur.
+    case echoEmitted(sequence: Int)
+    case lueurWoken(sequence: Int)
 }

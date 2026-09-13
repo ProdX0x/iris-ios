@@ -24,10 +24,14 @@ struct LueurSnapshot: Hashable, Sendable {
     let isLinked: Bool
     /// Chapter VIII: inside a gust, flying over the veils.
     let isCarried: Bool
+    /// Chapter IX: a sleeper not woken yet; and whether this lueur's iris is an echo source (any awake lueur's iris is).
+    let isAsleep: Bool
+    let echoes: Bool
 
     init(sequence: Int, position: Vector2, radius: Double, arrival: Vector2, irisRadius: Double, progress: Double,
          isValidated: Bool, isIrisOpen: Bool, disturbance: Double, temperament: Temperament, heat: Double? = nil, isFlaring: Bool = false,
-         poste: Vector2? = nil, partner: Vector2? = nil, isLinked: Bool = false, isCarried: Bool = false) {
+         poste: Vector2? = nil, partner: Vector2? = nil, isLinked: Bool = false, isCarried: Bool = false,
+         isAsleep: Bool = false, echoes: Bool = false) {
         self.sequence = sequence
         self.position = position
         self.radius = radius
@@ -44,9 +48,18 @@ struct LueurSnapshot: Hashable, Sendable {
         self.partner = partner
         self.isLinked = isLinked
         self.isCarried = isCarried
+        self.isAsleep = isAsleep
+        self.echoes = echoes
     }
 
     var isTwin: Bool { poste != nil }
+}
+
+/// Chapter IX: one ring in flight.
+struct EchoWaveSnapshot: Hashable, Sendable {
+    let origin: Vector2
+    let front: Double
+    let reach: Double
 }
 
 /// Chapter VIII: a gust and its track; `position` is nil while the gust is absent.
@@ -103,6 +116,9 @@ struct GameSceneSnapshot: Hashable, Sendable {
     var pairs: [TwinPairSnapshot]
     /// Chapter VIII: gusts.
     var souffles: [SouffleSnapshot]
+    /// Chapter IX: rings in flight and the reach of an echo (nil when irises are silent).
+    var waves: [EchoWaveSnapshot]
+    var echoReach: Double?
     /// Designer routes (help), empty until the help delay elapsed.
     var routes: [[Vector2]]
     var isSequential: Bool
@@ -123,6 +139,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
         veilleuses = []
         pairs = []
         souffles = []
+        waves = []
+        echoReach = nil
         routes = []
         isSequential = false
         time = 0
@@ -152,8 +170,14 @@ struct GameSceneSnapshot: Hashable, Sendable {
                           poste: session.twins[index]?.poste,
                           partner: session.twins[index].flatMap { session.targets.indices.contains($0.partner) ? session.targets[$0.partner].position : nil },
                           isLinked: session.twins[index]?.isLinked ?? false,
-                          isCarried: session.isCarried(targetAt: index))
+                          isCarried: session.isCarried(targetAt: index),
+                          isAsleep: session.isAsleep(targetAt: index),
+                          echoes: session.echo != nil && !session.isAsleep(targetAt: index) && session.twins[index] == nil)
         }
+        echoReach = session.echo?.radius
+        waves = session.echo.map { echo in
+            session.waves.map { EchoWaveSnapshot(origin: $0.origin, front: $0.front(at: session.elapsed, speed: echo.speed), reach: echo.radius) }
+        } ?? []
         souffles = session.souffles.map { souffle in
             let state = souffle.state(at: session.elapsed)
             return SouffleSnapshot(path: souffle.path, radius: souffle.radius, position: state?.position,

@@ -66,6 +66,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Clairvoyance.swift | - | Domain | Chapter VI, Clairvoyance: gliding irises, then every idea combined | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
+| Domain/Campaign/Campaign+Echos.swift | - | Domain | Chapter IX, Échos: sleeping lueurs wake only when the echo of a closing iris reaches them; bring them within | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Jumelles.swift | - | Domain | Chapter VII, Jumelles: twin lueurs have no iris, each is the iris of the other; bring them within reach | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Partage.swift | - | Domain | Chapter II, Partage: order, crossing, guard, cascade, three lueurs | Claude (mission Iris) |
@@ -76,6 +77,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/ChapterDefinition.swift | struct | Domain | A campaign chapter: numeral, name, principle, ambient tone, visual theme and its levels | Claude (mission Iris) |
 | Domain/Campaign/ChapterTheme.swift | enum | Domain | The visual identity a chapter asks for: the historical chapters keep the chambre noire untouched, | Claude (mission Iris) |
 | Domain/Campaign/CurrentDefinition.swift | struct | Domain | R-24 a band where lueurs are carried in one direction | Claude (mission Iris) |
+| Domain/Campaign/EchoDefinition.swift | struct | Domain | Chapter IX: the echo of a closing iris, a ring that wakes the sleeping lueurs it reaches and launches them; | Claude (mission Iris) |
 | Domain/Campaign/GameElement.swift | enum | Domain | The ideas a player meets along the campaign (level intro "nouveau" chip and the Carnet) | Claude (mission Iris) |
 | Domain/Campaign/IrisMotion.swift | enum | Domain | R-27 whether an iris stays still or glides back and forth | Claude (mission Iris) |
 | Domain/Campaign/LevelDefinition.swift | struct | Domain | One authored campaign level: intention, lueurs, elements, tuning, hints and par | Claude (mission Iris) |
@@ -152,6 +154,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Clock/ManualGameClock.swift | class | GameEngine | Deterministic clock driven by tests and previews | Claude (mission Iris) |
 | GameEngine/Environment/BraiseState.swift | struct | GameEngine | EXPERIMENTAL (prototype B1): resolved braise and its heat; lit with hysteresis, flaring above a threshold | Claude (mission Iris) |
 | GameEngine/Environment/CurrentField.swift | struct | GameEngine | R-24 resolved current: an axis-aligned band applying a constant impulse | Claude (mission Iris) |
+| GameEngine/Environment/EchoField.swift | struct | GameEngine | Chapter IX resolved echo: the reach, speed, breathing interval and launch of the rings that closing irises | Claude (mission Iris) |
 | GameEngine/Environment/IrisPath.swift | struct | GameEngine | R-27 resolved gliding iris: cosine ease between two points | Claude (mission Iris) |
 | GameEngine/Environment/LevelEnvironment.swift | struct | GameEngine | Everything a campaign level adds around the historical engine (empty for prototype levels) | Claude (mission Iris) |
 | GameEngine/Environment/SouffleField.swift | struct | GameEngine | Chapter VIII resolved gust: a disc travelling its track at constant speed, present during the duty share of | Claude (mission Iris) |
@@ -190,6 +193,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/CampaignBot.swift | struct | Tests | Simulated players used to prove each level feasible (guided) and each element necessary (limited policies); | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignMeasurements.swift | struct | Tests | One shared, lazily computed simulation of every level (reused by all campaign validation tests) | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignValidationTests.swift | struct | Tests | LEVEL_DESIGN_SYSTEM.md section 6: structure, validity, feasibility, necessity, par, difference, mastery | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/EchosTests.swift | struct | Tests | Chapter IX, échos: sleepers stay still with a closed iris, the ring of a closing iris wakes and launches them | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignDump.swift | enum | Tests | Canonical text of the 34 historical levels: every authored field, their resolution on the reference phone, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignFingerprintTests.swift | struct | Tests | Protection of the historical campaign (chapters I to VI, 34 levels) and of the frozen engine: the canonical | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/JumellesTests.swift | struct | Tests | Chapter VII, jumelles: twin rules in the engine (reach hysteresis, mutual iris, poste, validation), | Claude (mission Iris) |

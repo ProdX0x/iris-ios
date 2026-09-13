@@ -188,6 +188,11 @@ private struct Brain {
         for index in ordered {
             let target = targets[index]
             if session.isCarried(targetAt: index) { continue }
+            // Chapter IX: a sleeper is brought within reach of another lueur's iris, then left to the echo.
+            if session.isAsleep(targetAt: index) {
+                if let aim = sleeperAim(session: session, index: index) { return aim }
+                continue
+            }
             if needsFerry(target) {
                 if let aim = ferryAim(session: session, index: index) { return aim }
                 continue
@@ -217,6 +222,21 @@ private struct Brain {
 
     private func clamp(_ raw: Vector2) -> Vector2 {
         Vector2(x: min(max(raw.x, 4), resolved.bounds.width - 4), y: min(max(raw.y, 4), resolved.bounds.height - 4))
+    }
+
+    // MARK: Chapter IX: sleepers
+
+    /// Pushes the sleeper toward the nearest iris of an awake lueur (asleep lueurs excluded) until it lies well inside
+    /// the echo's reach; nil once it is there (the closing or breathing iris will wake it).
+    private func sleeperAim(session: GameSession, index: Int) -> Vector2? {
+        guard let echo = session.echo else { return nil }
+        let target = session.targets[index]
+        let sources = session.targets.indices.filter { $0 != index && !session.isAsleep(targetAt: $0) && session.twins[$0] == nil }
+        guard let source = sources.min(by: { session.targets[$0].arrival.distance(to: target.position) < session.targets[$1].arrival.distance(to: target.position) }) else { return nil }
+        let iris = session.targets[source].arrival
+        let distance = target.position.distance(to: iris)
+        guard distance > echo.radius * 0.72 else { return nil }
+        return pushPoint(from: target, toward: iris, distance: target.attentionZone * 0.35)
     }
 
     // MARK: Chapter VIII: the ferry

@@ -145,7 +145,7 @@ struct SoufflesTests {
 
     @Test("structure: chapter VIII has six levels of gusts, every level needs a gust, tuning within the historical bounds")
     func structure() {
-        #expect(Campaign.expansionChapters.map(\.number) == [7, 8])
+        #expect(Array(Campaign.expansionChapters.map(\.number).prefix(2)) == [7, 8])
         #expect(chapter.name == "souffles" && chapter.theme == .brume && chapter.numeral == "VIII")
         #expect(chapter.levels.map(\.id) == ["8-1", "8-2", "8-3", "8-4", "8-5", "8-6"])
         #expect(chapter.levels[0].introduces == [.souffle] && chapter.levels[0].lueurs.count == 1)

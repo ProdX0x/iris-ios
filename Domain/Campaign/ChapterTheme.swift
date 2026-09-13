@@ -12,4 +12,6 @@ enum ChapterTheme: String, Hashable, Sendable, CaseIterable {
     case jumelles
     /// Chapter VIII, souffles: pale cyan over a teal ink (brume).
     case brume
+    /// Chapter IX, échos: chartreuse over a moss ink.
+    case echo
 }

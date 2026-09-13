@@ -142,6 +142,8 @@ enum HistoricalCampaignDump {
         case .twinsParted: "twinsParted"
         case .lueurCarried: "carried"
         case .lueurDropped: "dropped"
+        case .echoEmitted: "echo"
+        case .lueurWoken: "woken"
         }
     }
 

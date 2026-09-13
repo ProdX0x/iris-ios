@@ -99,8 +99,8 @@ struct HistoricalCampaignFingerprintTests {
         #expect(Campaign.historicalChapters.allSatisfy { $0.theme == .chambreNoire && $0.isHistorical })
         for level in Campaign.historicalLevels {
             #expect(!level.hasBraises && !level.isExperimental, "\(level.id)")
-            #expect(level.lueurs.allSatisfy { $0.braise == nil && $0.twin == nil }, "\(level.id)")
-            #expect(!level.hasTwins && level.souffles.isEmpty, "\(level.id)")
+            #expect(level.lueurs.allSatisfy { $0.braise == nil && $0.twin == nil && !$0.asleep }, "\(level.id)")
+            #expect(!level.hasTwins && level.souffles.isEmpty && level.echo == nil && !level.hasSleepers, "\(level.id)")
         }
         #expect(Campaign.chapters.dropFirst(6).allSatisfy { !$0.isHistorical })
     }

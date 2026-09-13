@@ -40,11 +40,12 @@ struct AudioCuePolicy: Hashable, Sendable {
                 lossRequested = true
             case .levelCompleted:
                 cues.append(.levelComplete)
-            case .veilleuseLow, .braiseLit, .twinsLinked, .lueurCarried:
-                // A braise that lights, twins that see each other and a gust that picks a lueur up reuse the soft pulse.
+            case .veilleuseLow, .braiseLit, .twinsLinked, .lueurCarried, .lueurWoken:
+                // A braise that lights, twins that see each other, a gust that picks a lueur up and an echo that wakes one
+                // reuse the soft pulse: one idea, one sound.
                 pulseRequested = true
             case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseRelit, .braiseCooled, .braiseFlared, .twinsParted,
-                 .lueurDropped:
+                 .lueurDropped, .echoEmitted:
                 break
             }
         }

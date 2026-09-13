@@ -16,6 +16,10 @@ struct LevelEnvironment: Hashable, Sendable {
     var twins: [Int: TwinState]
     /// Chapter VIII: gusts; empty in the historical campaign.
     var souffles: [SouffleField]
+    /// Chapter IX: the echo of closing irises, the rings in flight, and the sleepers keyed by target index.
+    var echo: EchoField?
+    var waves: [EchoWave]
+    var sleepers: [Int: SleeperState]
     /// Physical radius of each lueur (collisions with veils); empty uses the physics target radius.
     var lueurRadii: [Double]
     /// R-23: irises close while the gaze is off the playfield.
@@ -25,8 +29,8 @@ struct LevelEnvironment: Hashable, Sendable {
 
     init(currents: [CurrentField] = [], veils: [VeilSegment] = [], veilleuses: [VeilleuseState] = [],
          irisPaths: [Int: IrisPath] = [:], braises: [Int: BraiseState] = [:], twins: [Int: TwinState] = [:],
-         souffles: [SouffleField] = [], lueurRadii: [Double] = [], requiresAttentionOnField: Bool = false,
-         fieldTolerance: Double = 0) {
+         souffles: [SouffleField] = [], echo: EchoField? = nil, sleepers: [Int: SleeperState] = [:], lueurRadii: [Double] = [],
+         requiresAttentionOnField: Bool = false, fieldTolerance: Double = 0) {
         self.currents = currents
         self.veils = veils
         self.veilleuses = veilleuses
@@ -34,6 +38,9 @@ struct LevelEnvironment: Hashable, Sendable {
         self.braises = braises
         self.twins = twins
         self.souffles = souffles
+        self.echo = echo
+        self.waves = []
+        self.sleepers = sleepers
         self.lueurRadii = lueurRadii
         self.requiresAttentionOnField = requiresAttentionOnField
         self.fieldTolerance = fieldTolerance

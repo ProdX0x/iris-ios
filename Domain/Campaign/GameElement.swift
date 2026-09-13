@@ -18,6 +18,8 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     // Expansion (chapter VII and beyond)
     case jumelles
     case souffle
+    case dormeuse
+    case echo
 
     var name: String {
         switch self {
@@ -33,6 +35,8 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .irisMouvant: "iris mouvant"
         case .jumelles: "jumelles"
         case .souffle: "souffle"
+        case .dormeuse: "dormeuse"
+        case .echo: "écho"
         }
     }
 
@@ -50,6 +54,8 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .irisMouvant: "L'iris glisse. Anticipez sans le fixer."
         case .jumelles: "Elles n'ont pas d'iris : chacune est l'iris de l'autre. Réunissez-les."
         case .souffle: "Il passe et repasse sur son chemin. Ce qu'il traverse, il l'emporte par-dessus les voiles."
+        case .dormeuse: "Elle dort : elle ne bouge pas et son iris reste fermé. Seul un écho la réveille."
+        case .echo: "Un iris qui se ferme respire un écho. Il réveille les dormeuses à portée et les lance."
         }
     }
 }

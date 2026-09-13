@@ -25,6 +25,8 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     let veilleuses: [VeilleuseDefinition]
     /// Chapter VIII: gusts carrying lueurs along their tracks.
     let souffles: [SouffleDefinition]
+    /// Chapter IX: the echo of closing irises; nil means irises are silent and no lueur can be asleep.
+    let echo: EchoDefinition?
     let hints: [LevelHint]
     let par: LevelPar
 
@@ -32,7 +34,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
          ordered: Bool = false, zone: Double = 0.48, repulsionForce: Double = 2.4, attraction: Double = 0.5,
          noise: Double = 0.15, hold: TimeInterval = 0.75, lueurs: [LueurDefinition], currents: [CurrentDefinition] = [],
          veils: [VeilDefinition] = [], veilleuses: [VeilleuseDefinition] = [], souffles: [SouffleDefinition] = [],
-         hints: [LevelHint] = [], par: LevelPar) {
+         echo: EchoDefinition? = nil, hints: [LevelHint] = [], par: LevelPar) {
         self.chapter = chapter
         self.index = index
         self.title = title
@@ -49,6 +51,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         self.veils = veils
         self.veilleuses = veilleuses
         self.souffles = souffles
+        self.echo = echo
         self.hints = hints
         self.par = par
     }
@@ -64,6 +67,8 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         if lueurs.contains(where: { $0.irisMotion.isMoving }) { kinds.insert(.irisMouvant) }
         if hasTwins { kinds.insert(.jumelles) }
         if !souffles.isEmpty { kinds.insert(.souffle) }
+        if echo != nil { kinds.insert(.echo) }
+        if hasSleepers { kinds.insert(.dormeuse) }
         return kinds
     }
 
@@ -73,5 +78,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     var hasBraises: Bool { lueurs.contains { $0.braise != nil } }
     /// Chapter VII: at least one pair of twins.
     var hasTwins: Bool { lueurs.contains(where: \.isTwin) }
+    /// Chapter IX: at least one sleeping lueur.
+    var hasSleepers: Bool { lueurs.contains(where: \.asleep) }
     var requiresPushing: Bool { lueurs.contains { !$0.route.isEmpty } }
 }

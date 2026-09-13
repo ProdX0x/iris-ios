@@ -47,7 +47,12 @@ enum LevelResolver {
         var paths: [Int: IrisPath] = [:]
         var braises: [Int: BraiseState] = [:]
         var twins: [Int: TwinState] = [:]
+        var sleepers: [Int: SleeperState] = [:]
         for (index, lueur) in definition.lueurs.enumerated() {
+            if lueur.asleep {
+                // Asleep regardless of the echo: without echoes (silent irises) a sleeper never wakes.
+                sleepers[index] = SleeperState()
+            }
             if case let .oscillate(to, period) = lueur.irisMotion {
                 paths[index] = IrisPath(from: lueur.iris.absolute(in: bounds), to: to.absolute(in: bounds), period: period)
             }
@@ -79,6 +84,8 @@ enum LevelResolver {
                 SouffleField(path: souffle.path.map { $0.absolute(in: bounds) }, period: souffle.period, duty: souffle.duty,
                              radius: souffle.radius * shortSide, strength: souffle.strength * scale, phase: souffle.phase)
             },
+            echo: definition.echo.map { EchoField(definition: $0, shortSide: shortSide, scale: scale) },
+            sleepers: sleepers,
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)

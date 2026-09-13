@@ -10,6 +10,7 @@ extension ChapterTheme {
         case .chambreNoire: .chambreNoire
         case .jumelles: .jumelles
         case .brume: .brume
+        case .echo: .echo
         }
     }
 }

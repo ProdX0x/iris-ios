@@ -35,6 +35,8 @@ struct GameSession: Sendable {
     private var wasCarried: [Bool]
     private var uncarriedSteps: [Int]
     private static let dropDebounceSteps = 6
+    /// Chapter IX: when each validated iris last breathed its echo.
+    private var lastBreath: [Int: TimeInterval] = [:]
 
     init(level: Level,
          bounds: PlayfieldBounds,
@@ -80,6 +82,22 @@ struct GameSession: Sendable {
         targets.indices.contains(index) && environment.souffle(carrying: targets[index].position, at: elapsed) != nil
     }
 
+    /// Chapter IX: sleepers keyed by target index, and the rings in flight.
+    var sleepers: [Int: SleeperState] { environment.sleepers }
+    var waves: [EchoWave] { environment.waves }
+    var echo: EchoField? { environment.echo }
+
+    func isAsleep(targetAt index: Int) -> Bool {
+        environment.sleepers[index].map { !$0.isAwake } ?? false
+    }
+
+    /// How the target departs from a normal lueur: a braise by its heat, a sleeper by its sleep; neutral otherwise.
+    private func behaviour(forTargetAt index: Int) -> BehaviourScale {
+        if let braise = environment.braises[index] { return braise.behaviour }
+        if let sleeper = environment.sleepers[index] { return sleeper.behaviour }
+        return .neutral
+    }
+
     func radius(ofTargetAt index: Int) -> Double {
         environment.lueurRadii.indices.contains(index) ? environment.lueurRadii[index] : physics.targetRadius
     }
@@ -91,6 +109,7 @@ struct GameSession: Sendable {
             && environment.veilleuses.allSatisfy { !$0.lights(sequence: target.sequence) || $0.isLit }
             && (environment.braises[target.sequence - 1]?.isLit ?? true)
             && (environment.twins[target.sequence - 1]?.isLinked ?? true)
+            && (environment.sleepers[target.sequence - 1]?.isAwake ?? true)
     }
 
     /// Smoothed gaze input (what the reference engine's gaze listener did).
@@ -148,6 +167,7 @@ struct GameSession: Sendable {
         updateBraises(seconds: seconds, cursor: cursor, events: &events)
         let positions = targets.map(\.position)
         updateTwins(positions: positions, events: &events)
+        updateEchoes(positions: positions, events: &events)
 
         var everyTargetValidated = true
         let lowestUnvalidated = level.isSequential ? TurnRule.lowestUnvalidatedSequence(in: targets) : nil
@@ -176,7 +196,7 @@ struct GameSession: Sendable {
             }
             integrator.integrate(&target, gaze: cursor, noise: { noise.value(at: $0) }, frameTime: frameTime,
                                  frameFraction: frameFraction, externalImpulse: externalImpulse,
-                                 behaviour: environment.braises[index]?.behaviour ?? .neutral)
+                                 behaviour: behaviour(forTargetAt: index))
             if carrier == nil {
                 for veil in environment.veils {
                     veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)
@@ -236,11 +256,57 @@ struct GameSession: Sendable {
             if !cascaded.isEmpty { everyTargetValidated = false }
         }
 
+        emitEchoes(events: &events)
+
         if everyTargetValidated {
             isComplete = true
             events.append(.levelCompleted)
         }
         return events
+    }
+
+    /// Chapter IX: a ring leaves every iris that closed during this tick; a closed iris breathes another one every
+    /// `interval` seconds; a lost iris stops breathing.
+    private mutating func emitEchoes(events: inout [GameEvent]) {
+        guard let echo = environment.echo else { return }
+        for index in targets.indices {
+            let target = targets[index]
+            guard target.isValidated else {
+                lastBreath[index] = nil
+                continue
+            }
+            let closedNow = events.contains(.targetValidated(sequence: target.sequence))
+            let due = lastBreath[index].map { elapsed - $0 >= echo.interval } ?? true
+            guard closedNow || due else { continue }
+            environment.waves.append(EchoWave(source: index, origin: target.arrival, startTime: elapsed))
+            lastBreath[index] = elapsed
+            events.append(.echoEmitted(sequence: target.sequence))
+        }
+    }
+
+    /// Chapter IX: advances the rings; a front reaching a sleeping lueur within reach wakes it and launches it away
+    /// from the iris. Rings past their reach vanish.
+    private mutating func updateEchoes(positions: [Vector2], events: inout [GameEvent]) {
+        guard let echo = environment.echo, !environment.waves.isEmpty else { return }
+        var remaining: [EchoWave] = []
+        for var wave in environment.waves {
+            let front = wave.front(at: elapsed, speed: echo.speed)
+            for index in positions.indices where !wave.reached.contains(index) && index != wave.source {
+                let distance = wave.origin.distance(to: positions[index])
+                guard front >= distance else { continue }
+                wave.reached.insert(index)
+                guard distance <= echo.radius, var sleeper = environment.sleepers[index], !sleeper.isAwake else { continue }
+                sleeper.wake(at: elapsed)
+                environment.sleepers[index] = sleeper
+                let away = positions[index] - wave.origin
+                let length = away.length
+                let direction = length > 1e-6 ? away / length : Vector2(x: 0, y: -1)
+                pendingImpulses[index] += direction * (echo.burst * (1 - 0.5 * distance / echo.radius))
+                events.append(.lueurWoken(sequence: targets[index].sequence))
+            }
+            if front <= echo.radius + 60 { remaining.append(wave) }
+        }
+        environment.waves = remaining
     }
 
     private mutating func updateAttention(cursor: Vector2, events: inout [GameEvent]) {
