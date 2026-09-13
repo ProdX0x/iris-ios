@@ -46,6 +46,7 @@
 		23791663624A85BBF7772F00 /* SimulatedGazeTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0876AF61255786B54E6B7CA1 /* SimulatedGazeTrackingService.swift */; };
 		24385E12016E14C53C04D618 /* AudioCue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63669236D77A269D0C392E57 /* AudioCue.swift */; };
 		26AFB81A350DAE8EA509AAFF /* ChaptersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F579BD2430AB6DD15CFA21C3 /* ChaptersView.swift */; };
+		2AFEA850000E0D670B035896 /* SouffleDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB1B9AED8676D5EFAB09D22 /* SouffleDefinition.swift */; };
 		2F8BFDF34D09FF4FAE7BDAAB /* Campaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503F9C3502EF31E0B3FDA77B /* Campaign.swift */; };
 		2FD7353EF8AB677D48AA3880 /* historical_campaign.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1D5ADFCCBDA6A92D1EDFB354 /* historical_campaign.txt */; };
 		30F847E0F6B356F5BDC56A9C /* HapticCuePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA82F71251B83A114D5CDAE /* HapticCuePolicy.swift */; };
@@ -76,6 +77,7 @@
 		50C1BB4EF45180B21955972D /* TargetPhysicsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158F8C196F79391A2DDA0DCA /* TargetPhysicsTests.swift */; };
 		524FD07945F4260D79663313 /* TargetPhysics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139C1641A7411F9D4F9F590F /* TargetPhysics.swift */; };
 		52BFC3776C49136EA493A9A5 /* LevelOutcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6C363E6D1A68E9819BE535 /* LevelOutcome.swift */; };
+		5331510F03BF0A2203DA88A2 /* SoufflesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4900229A2D127497A80827 /* SoufflesTests.swift */; };
 		536EA8DFF2E61684AB1D6805 /* CameraAccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8342C32E0848D650DFC63B /* CameraAccessViewModel.swift */; };
 		54F3AF75ABE2439CB078F310 /* GazeSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D3544C9CEA112B675A5477 /* GazeSetupViewModel.swift */; };
 		55DA3F86D27C09C63BD65723 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5768A9C8DB006EE16A20C9A /* RootView.swift */; };
@@ -94,6 +96,7 @@
 		61C97E1EB62CA5D90E388225 /* FixationSequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18756B7B93381F8C60E98CDA /* FixationSequenceTests.swift */; };
 		61E0A53D39EE75BCB37A1F04 /* LevelEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */; };
 		6266836DB1BC1C40FC2AAEA4 /* ManualGameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D242A860A1DDC94DA38992 /* ManualGameClock.swift */; };
+		6428D0B985B00FED7D1A4552 /* SouffleField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5355DB86A48BD6074C04EC /* SouffleField.swift */; };
 		67B105C8AE8C920CAF549F43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 636694E9043AC8362E68025D /* Assets.xcassets */; };
 		67C74CBD5868678813B7A51C /* VeilDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B2ABCFEA818E92CC86A7EC /* VeilDefinition.swift */; };
 		69C6467DBC6B4E7A5B3AD355 /* BraisesPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */; };
@@ -149,6 +152,7 @@
 		9D914AE3CFD470F2D6C2642F /* CameraAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0051F77DFB87391146F0FBD3 /* CameraAccessView.swift */; };
 		9F93EBD7F1C437096AD3897B /* ValidationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3831048F60D51B2C372E34 /* ValidationTransition.swift */; };
 		9FFB45F06F8CCA74858F7E6B /* DSBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3328E37D3304076752C05 /* DSBackground.swift */; };
+		A0EEED4C9F5A28A5C4A3086B /* Campaign+Souffles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD476A1C7BB5980BAF8164CD /* Campaign+Souffles.swift */; };
 		A1EFFC4881B453FBEF3ACA94 /* Campaign+Partage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369344EED837F50F922FA21E /* Campaign+Partage.swift */; };
 		A22A507BBE4504DA69406C1F /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB4CB551E8D2024BD74FCDF /* GameClock.swift */; };
 		A2E4A71C45D05FA0B0515E49 /* GazeReadinessEvaluatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5083A2A803CDB5F9B814A9B /* GazeReadinessEvaluatorTests.swift */; };
@@ -266,6 +270,7 @@
 		18ABDF9A8FDA336DCA7ABFBF /* IrisMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrisMotion.swift; sourceTree = "<group>"; };
 		18FE0D5280B10AB864D751F2 /* LevelLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLabTests.swift; sourceTree = "<group>"; };
 		194D2FA928060E55713CF584 /* DSMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSMotion.swift; sourceTree = "<group>"; };
+		1AB1B9AED8676D5EFAB09D22 /* SouffleDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SouffleDefinition.swift; sourceTree = "<group>"; };
 		1ACA812F6559EBBAE7486C88 /* ARKitGazeTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKitGazeTrackingService.swift; sourceTree = "<group>"; };
 		1B27768B77AD73DF8F94051C /* LevelDifficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDifficulty.swift; sourceTree = "<group>"; };
 		1B95B7C01AA3030FBC1C6779 /* TurnRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnRule.swift; sourceTree = "<group>"; };
@@ -390,11 +395,13 @@
 		AA83F5A055F5EAF728EA344F /* DeviceCapabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCapabilities.swift; sourceTree = "<group>"; };
 		AAA8A3EBFC406F28A58A915A /* GameSceneSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSnapshot.swift; sourceTree = "<group>"; };
 		AB1B81D2F724067717A73CFE /* DSCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCard.swift; sourceTree = "<group>"; };
+		AD476A1C7BB5980BAF8164CD /* Campaign+Souffles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Souffles.swift"; sourceTree = "<group>"; };
 		ADA87ADA525EF1C50F514A53 /* CalibrationGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationGrid.swift; sourceTree = "<group>"; };
 		ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelAnalysis.swift; sourceTree = "<group>"; };
 		AE1572AD8AD958A319467FFA /* BraiseStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseStateTests.swift; sourceTree = "<group>"; };
 		AE46076AAECA1EF108B5C091 /* NominalDisplayGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NominalDisplayGeometry.swift; sourceTree = "<group>"; };
 		AF1585AF6D44A5E92F30099E /* DSEyebrowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEyebrowStyle.swift; sourceTree = "<group>"; };
+		AF4900229A2D127497A80827 /* SoufflesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoufflesTests.swift; sourceTree = "<group>"; };
 		B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAxis.swift; sourceTree = "<group>"; };
 		B01FAB2C654C989222A35C68 /* LevelPar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelPar.swift; sourceTree = "<group>"; };
 		B2B684C040916705C28F9C07 /* DSStatusRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSStatusRow.swift; sourceTree = "<group>"; };
@@ -445,6 +452,7 @@
 		EA7185D56A5AC8E9F4C724AB /* GazeMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeMapper.swift; sourceTree = "<group>"; };
 		EB6C363E6D1A68E9819BE535 /* LevelOutcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelOutcome.swift; sourceTree = "<group>"; };
 		EC86C859F466557ECCA36EC1 /* GameElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameElement.swift; sourceTree = "<group>"; };
+		EE5355DB86A48BD6074C04EC /* SouffleField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SouffleField.swift; sourceTree = "<group>"; };
 		F240F98DB0B0B86BAFEEB1FE /* AudioCuePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCuePolicyTests.swift; sourceTree = "<group>"; };
 		F49CC73B85FA7FC7C172463C /* CameraAccessNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessNavigating.swift; sourceTree = "<group>"; };
 		F52589D35D1DE8732E3C4656 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -846,6 +854,7 @@
 				53A0BC98410BFF04096B11A5 /* JumellesTests.swift */,
 				ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */,
 				18FE0D5280B10AB864D751F2 /* LevelLabTests.swift */,
+				AF4900229A2D127497A80827 /* SoufflesTests.swift */,
 			);
 			path = Campaign;
 			sourceTree = "<group>";
@@ -960,6 +969,7 @@
 				D193ED9955EC8AC01E8BFD47 /* CurrentField.swift */,
 				2A19970A39C36C9149697807 /* IrisPath.swift */,
 				00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */,
+				EE5355DB86A48BD6074C04EC /* SouffleField.swift */,
 				97597A52D9148578572188ED /* TwinState.swift */,
 				755489124F79C400F5875902 /* VeilleuseState.swift */,
 				70372433F8E409BEE34D3F85 /* VeilSegment.swift */,
@@ -1085,6 +1095,7 @@
 				B30BE49103058FBD72F88D3F /* Campaign+Eveil.swift */,
 				7FC2EFA463992FCEABE705A9 /* Campaign+Jumelles.swift */,
 				369344EED837F50F922FA21E /* Campaign+Partage.swift */,
+				AD476A1C7BB5980BAF8164CD /* Campaign+Souffles.swift */,
 				A7334D66F403CCED5EEFC84E /* Campaign+Veilleuses.swift */,
 				42738B44E0ABA6B64F11E28B /* Campaign+Voiles.swift */,
 				C06EA7A52462EA5A9FB4ABF6 /* ChapterDefinition.swift */,
@@ -1096,6 +1107,7 @@
 				03BA17B940F074D716DFE9C6 /* LevelHint.swift */,
 				B01FAB2C654C989222A35C68 /* LevelPar.swift */,
 				7789511E574CA0B962FD89FF /* LueurDefinition.swift */,
+				1AB1B9AED8676D5EFAB09D22 /* SouffleDefinition.swift */,
 				F8D2BE518F2A9E6465F98B1B /* Temperament.swift */,
 				67B2ABCFEA818E92CC86A7EC /* VeilDefinition.swift */,
 				96E1DEFDE85E15D98ECD1A87 /* VeilleuseDefinition.swift */,
@@ -1375,6 +1387,7 @@
 				5DF6C98C80CA871137E21684 /* SequenceOrderTests.swift in Sources */,
 				EF10D2A788A01E2F8CB6FC2B /* SessionFixture.swift in Sources */,
 				413A29DD38E2D0272D436542 /* SineSynthTests.swift in Sources */,
+				5331510F03BF0A2203DA88A2 /* SoufflesTests.swift in Sources */,
 				50C1BB4EF45180B21955972D /* TargetPhysicsTests.swift in Sources */,
 				898041F19E44A82D690E853B /* ValidationRuleTests.swift in Sources */,
 				C2F19F8ED6C85829DE9AEAC1 /* ValueNoise1DTests.swift in Sources */,
@@ -1414,6 +1427,7 @@
 				88A9960936912990185C845E /* Campaign+Eveil.swift in Sources */,
 				211A9EFA87977B4BFA94CEB7 /* Campaign+Jumelles.swift in Sources */,
 				A1EFFC4881B453FBEF3ACA94 /* Campaign+Partage.swift in Sources */,
+				A0EEED4C9F5A28A5C4A3086B /* Campaign+Souffles.swift in Sources */,
 				1F8F6F9D936991ECCD088729 /* Campaign+Veilleuses.swift in Sources */,
 				3873CF7CFFEBBC15679C7AEC /* Campaign+Voiles.swift in Sources */,
 				2F8BFDF34D09FF4FAE7BDAAB /* Campaign.swift in Sources */,
@@ -1534,6 +1548,8 @@
 				D2A6A169B9D8C424EE94716B /* SilentNoise.swift in Sources */,
 				23791663624A85BBF7772F00 /* SimulatedGazeTrackingService.swift in Sources */,
 				4D46D81B0727948928D6458C /* SineSynth.swift in Sources */,
+				2AFEA850000E0D670B035896 /* SouffleDefinition.swift in Sources */,
+				6428D0B985B00FED7D1A4552 /* SouffleField.swift in Sources */,
 				BCF44144872EAA8A9102D385 /* SystemLinks.swift in Sources */,
 				071A0F494D75F747195D3BE3 /* Target.swift in Sources */,
 				EF271235E5D8A284A370EC35 /* TargetBlueprint.swift in Sources */,

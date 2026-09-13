@@ -34,4 +34,7 @@ enum GameEvent: Hashable, Sendable {
     /// Chapter VII: the twins of `sequence` (the lower of the pair) came within reach, or lost each other.
     case twinsLinked(sequence: Int)
     case twinsParted(sequence: Int)
+    /// Chapter VIII: a gust picked the lueur up, or let it go (end of the track, spill by the gaze).
+    case lueurCarried(sequence: Int)
+    case lueurDropped(sequence: Int)
 }

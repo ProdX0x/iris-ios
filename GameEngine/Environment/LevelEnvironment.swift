@@ -14,6 +14,8 @@ struct LevelEnvironment: Hashable, Sendable {
     var braises: [Int: BraiseState]
     /// Chapter VII: twins keyed by target index (both twins of a pair are present); empty in the historical campaign.
     var twins: [Int: TwinState]
+    /// Chapter VIII: gusts; empty in the historical campaign.
+    var souffles: [SouffleField]
     /// Physical radius of each lueur (collisions with veils); empty uses the physics target radius.
     var lueurRadii: [Double]
     /// R-23: irises close while the gaze is off the playfield.
@@ -23,13 +25,15 @@ struct LevelEnvironment: Hashable, Sendable {
 
     init(currents: [CurrentField] = [], veils: [VeilSegment] = [], veilleuses: [VeilleuseState] = [],
          irisPaths: [Int: IrisPath] = [:], braises: [Int: BraiseState] = [:], twins: [Int: TwinState] = [:],
-         lueurRadii: [Double] = [], requiresAttentionOnField: Bool = false, fieldTolerance: Double = 0) {
+         souffles: [SouffleField] = [], lueurRadii: [Double] = [], requiresAttentionOnField: Bool = false,
+         fieldTolerance: Double = 0) {
         self.currents = currents
         self.veils = veils
         self.veilleuses = veilleuses
         self.irisPaths = irisPaths
         self.braises = braises
         self.twins = twins
+        self.souffles = souffles
         self.lueurRadii = lueurRadii
         self.requiresAttentionOnField = requiresAttentionOnField
         self.fieldTolerance = fieldTolerance
@@ -39,6 +43,11 @@ struct LevelEnvironment: Hashable, Sendable {
 
     func impulse(at point: Vector2) -> Vector2 {
         currents.reduce(Vector2.zero) { $1.contains(point) ? $0 + $1.impulse : $0 }
+    }
+
+    /// Chapter VIII: the gust carrying a lueur at `point`, if any.
+    func souffle(carrying point: Vector2, at time: TimeInterval) -> SouffleField? {
+        souffles.first { $0.contains(point, at: time) }
     }
 
     func isOnField(_ point: Vector2, bounds: PlayfieldBounds) -> Bool {

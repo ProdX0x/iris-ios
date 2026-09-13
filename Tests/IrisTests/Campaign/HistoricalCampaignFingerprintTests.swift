@@ -100,7 +100,7 @@ struct HistoricalCampaignFingerprintTests {
         for level in Campaign.historicalLevels {
             #expect(!level.hasBraises && !level.isExperimental, "\(level.id)")
             #expect(level.lueurs.allSatisfy { $0.braise == nil && $0.twin == nil }, "\(level.id)")
-            #expect(!level.hasTwins, "\(level.id)")
+            #expect(!level.hasTwins && level.souffles.isEmpty, "\(level.id)")
         }
         #expect(Campaign.chapters.dropFirst(6).allSatisfy { !$0.isHistorical })
     }

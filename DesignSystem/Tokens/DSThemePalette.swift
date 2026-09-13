@@ -23,4 +23,6 @@ struct DSThemePalette: Hashable, Sendable {
     static let chambreNoire = DSThemePalette(accent: DSColor.accent, glow: DSColor.lueurGlow, wash: nil)
     /// Chapter VII, jumelles: rose over plum.
     static let jumelles = DSThemePalette(accent: DSColor.themeJumellesAccent, glow: DSColor.themeJumellesGlow, wash: DSColor.themeJumellesWash)
+    /// Chapter VIII, souffles: pale cyan over teal ink.
+    static let brume = DSThemePalette(accent: DSColor.themeBrumeAccent, glow: DSColor.themeBrumeGlow, wash: DSColor.themeBrumeWash)
 }

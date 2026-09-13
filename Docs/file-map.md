@@ -69,6 +69,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Jumelles.swift | - | Domain | Chapter VII, Jumelles: twin lueurs have no iris, each is the iris of the other; bring them within reach | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Partage.swift | - | Domain | Chapter II, Partage: order, crossing, guard, cascade, three lueurs | Claude (mission Iris) |
+| Domain/Campaign/Campaign+Souffles.swift | - | Domain | Chapter VIII, Souffles: a gust travels its track periodically and carries what it crosses over the veils; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Veilleuses.swift | - | Domain | Chapter V, Veilleuses: look at something without disturbing the rest | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Voiles.swift | - | Domain | Chapter IV, Voiles: push around what the lueur cannot cross | Claude (mission Iris) |
 | Domain/Campaign/Campaign.swift | enum | Domain | The authored campaign: the six historical chapters (34 levels, frozen; see Design/LEVEL_DESIGN_SYSTEM.md) | Claude (mission Iris) |
@@ -81,6 +82,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/LevelHint.swift | enum | Domain | Contextual instruction shown once when the player does (or fails to do) something | Claude (mission Iris) |
 | Domain/Campaign/LevelPar.swift | struct | Domain | Reference time and intrusion count behind the "fluide" and "serein" éclats | Claude (mission Iris) |
 | Domain/Campaign/LueurDefinition.swift | struct | Domain | One authored lueur: start, iris, temperament, iris motion, the designer's intended route, an | Claude (mission Iris) |
+| Domain/Campaign/SouffleDefinition.swift | struct | Domain | Chapter VIII: a gust that travels a track periodically and carries the lueurs it crosses, over veils | Claude (mission Iris) |
 | Domain/Campaign/Temperament.swift | enum | Domain | R-28 how strongly a lueur reacts to the gaze and to its iris | Claude (mission Iris) |
 | Domain/Campaign/VeilDefinition.swift | struct | Domain | R-25 an impenetrable segment | Claude (mission Iris) |
 | Domain/Campaign/VeilleuseDefinition.swift | struct | Domain | R-26 a flame that dies unless looked at; while dark it closes the irises it lights | Claude (mission Iris) |
@@ -152,6 +154,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Environment/CurrentField.swift | struct | GameEngine | R-24 resolved current: an axis-aligned band applying a constant impulse | Claude (mission Iris) |
 | GameEngine/Environment/IrisPath.swift | struct | GameEngine | R-27 resolved gliding iris: cosine ease between two points | Claude (mission Iris) |
 | GameEngine/Environment/LevelEnvironment.swift | struct | GameEngine | Everything a campaign level adds around the historical engine (empty for prototype levels) | Claude (mission Iris) |
+| GameEngine/Environment/SouffleField.swift | struct | GameEngine | Chapter VIII resolved gust: a disc travelling its track at constant speed, present during the duty share of | Claude (mission Iris) |
 | GameEngine/Environment/TwinState.swift | struct | GameEngine | Chapter VII resolved twin: its partner, the poste where it waits, and the reach hysteresis of the link | Claude (mission Iris) |
 | GameEngine/Environment/VeilSegment.swift | struct | GameEngine | R-25 resolved veil and its circle-segment collision response | Claude (mission Iris) |
 | GameEngine/Environment/VeilleuseState.swift | struct | GameEngine | R-26 resolved veilleuse and its charge | Claude (mission Iris) |
@@ -192,6 +195,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/JumellesTests.swift | struct | Tests | Chapter VII, jumelles: twin rules in the engine (reach hysteresis, mutual iris, poste, validation), | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelLabTests.swift | struct | Tests | Prints the measured table of every campaign level (design tool; always passes) | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CampaignProgressTests.swift | struct | Tests | Éclats, records and unlock rules of the campaign | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CascadeRuleTests.swift | struct | Tests | R-11 losing a validation invalidates every higher rank, never a lower one | Claude (mission Iris) |
 | Tests/IrisTests/Domain/LinearCongruentialGeneratorTests.swift | struct | Tests | The generator reproduces the reference JavaScript sequence exactly | Claude (mission Iris) |

@@ -22,10 +22,12 @@ struct LueurSnapshot: Hashable, Sendable {
     let poste: Vector2?
     let partner: Vector2?
     let isLinked: Bool
+    /// Chapter VIII: inside a gust, flying over the veils.
+    let isCarried: Bool
 
     init(sequence: Int, position: Vector2, radius: Double, arrival: Vector2, irisRadius: Double, progress: Double,
          isValidated: Bool, isIrisOpen: Bool, disturbance: Double, temperament: Temperament, heat: Double? = nil, isFlaring: Bool = false,
-         poste: Vector2? = nil, partner: Vector2? = nil, isLinked: Bool = false) {
+         poste: Vector2? = nil, partner: Vector2? = nil, isLinked: Bool = false, isCarried: Bool = false) {
         self.sequence = sequence
         self.position = position
         self.radius = radius
@@ -41,9 +43,20 @@ struct LueurSnapshot: Hashable, Sendable {
         self.poste = poste
         self.partner = partner
         self.isLinked = isLinked
+        self.isCarried = isCarried
     }
 
     var isTwin: Bool { poste != nil }
+}
+
+/// Chapter VIII: a gust and its track; `position` is nil while the gust is absent.
+struct SouffleSnapshot: Hashable, Sendable {
+    let path: [Vector2]
+    let radius: Double
+    let position: Vector2?
+    let direction: Vector2
+    /// 0...1 fade of the gust at the ends of its life.
+    let presence: Double
 }
 
 /// Chapter VII: one pair of twins, drawn as a thread and a shared iris at their midpoint.
@@ -88,6 +101,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
     var veilleuses: [VeilleuseSnapshot]
     /// Chapter VII: pairs of twins.
     var pairs: [TwinPairSnapshot]
+    /// Chapter VIII: gusts.
+    var souffles: [SouffleSnapshot]
     /// Designer routes (help), empty until the help delay elapsed.
     var routes: [[Vector2]]
     var isSequential: Bool
@@ -107,6 +122,7 @@ struct GameSceneSnapshot: Hashable, Sendable {
         veils = []
         veilleuses = []
         pairs = []
+        souffles = []
         routes = []
         isSequential = false
         time = 0
@@ -135,7 +151,13 @@ struct GameSceneSnapshot: Hashable, Sendable {
                           isFlaring: session.braises[index]?.isFlaring ?? false,
                           poste: session.twins[index]?.poste,
                           partner: session.twins[index].flatMap { session.targets.indices.contains($0.partner) ? session.targets[$0.partner].position : nil },
-                          isLinked: session.twins[index]?.isLinked ?? false)
+                          isLinked: session.twins[index]?.isLinked ?? false,
+                          isCarried: session.isCarried(targetAt: index))
+        }
+        souffles = session.souffles.map { souffle in
+            let state = souffle.state(at: session.elapsed)
+            return SouffleSnapshot(path: souffle.path, radius: souffle.radius, position: state?.position,
+                                   direction: state?.direction ?? .zero, presence: state?.presence ?? 0)
         }
         pairs = session.twins.keys.sorted().compactMap { index in
             guard let twin = session.twins[index], index < twin.partner, session.targets.indices.contains(twin.partner) else { return nil }

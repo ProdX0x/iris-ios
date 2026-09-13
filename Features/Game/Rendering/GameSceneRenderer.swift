@@ -1,7 +1,8 @@
 // GameSceneRenderer.swift
 // Layer: Presentation
 // Purpose: Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics,
-// and the expansion elements in their chapter palette (VII: postes, threads and the shared iris of twins)
+// and the expansion elements in their chapter palette (VII: postes, threads and the shared iris of twins;
+// VIII: gust tracks, travelling gusts and the lift of a carried lueur)
 
 import SwiftUI
 
@@ -12,6 +13,7 @@ struct GameSceneRenderer {
         let scale = snapshot.scale
         let palette = snapshot.theme.palette
         drawCurrents(snapshot, in: &context, reduceMotion: reduceMotion)
+        drawSouffleTracks(snapshot, in: &context, scale: scale, palette: palette)
         drawVeils(snapshot, in: &context)
         drawRoutes(snapshot, in: &context, scale: scale)
         for lueur in snapshot.lueurs where !lueur.isTwin {
@@ -26,7 +28,13 @@ struct GameSceneRenderer {
         for veilleuse in snapshot.veilleuses {
             drawVeilleuse(veilleuse, time: snapshot.time, in: &context, scale: scale, reduceMotion: reduceMotion)
         }
+        for souffle in snapshot.souffles {
+            drawSouffle(souffle, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+        }
         for lueur in snapshot.lueurs {
+            if lueur.isCarried {
+                drawLift(lueur, time: snapshot.time, in: &context, palette: palette, reduceMotion: reduceMotion)
+            }
             drawLueur(lueur, sequential: snapshot.isSequential, time: snapshot.time, in: &context, reduceMotion: reduceMotion)
             if let partner = lueur.partner {
                 drawTwinCrescent(lueur, toward: partner, in: &context, palette: palette)
@@ -195,6 +203,79 @@ struct GameSceneRenderer {
         arc.addArc(center: center, radius: lueur.radius + 3.5 * lueur.radius / 20, startAngle: .radians(angle - 0.75), endAngle: .radians(angle + 0.75), clockwise: false)
         let color = lueur.isValidated ? DSColor.statusSuccess : palette.accent
         context.stroke(arc, with: .color(color.opacity(lueur.isLinked ? 0.95 : 0.6)), style: StrokeStyle(lineWidth: 1.8 * lueur.radius / 20, lineCap: .round))
+    }
+
+    // MARK: Souffles (chapter VIII): track, travelling gust, lift of a carried lueur
+
+    private func drawSouffleTracks(_ snapshot: GameSceneSnapshot, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
+        guard !snapshot.souffles.isEmpty else { return }
+        var path = Path()
+        for souffle in snapshot.souffles {
+            guard let first = souffle.path.first else { continue }
+            path.move(to: CGPoint(x: first.x, y: first.y))
+            for point in souffle.path.dropFirst() {
+                path.addLine(to: CGPoint(x: point.x, y: point.y))
+            }
+        }
+        context.stroke(path, with: .color(palette.accent.opacity(0.14)),
+                       style: StrokeStyle(lineWidth: 1.2 * scale, lineCap: .round, lineJoin: .round, dash: [2 * scale, 7 * scale]))
+        for souffle in snapshot.souffles {
+            guard let last = souffle.path.last, souffle.path.count >= 2 else { continue }
+            let before = souffle.path[souffle.path.count - 2]
+            let delta = last - before
+            let length = delta.length
+            guard length > 1e-6 else { continue }
+            let direction = delta / length
+            let tip = CGPoint(x: last.x, y: last.y)
+            let size = 6 * scale
+            var arrow = Path()
+            arrow.move(to: CGPoint(x: tip.x - direction.x * size - direction.y * size * 0.6, y: tip.y - direction.y * size + direction.x * size * 0.6))
+            arrow.addLine(to: tip)
+            arrow.addLine(to: CGPoint(x: tip.x - direction.x * size + direction.y * size * 0.6, y: tip.y - direction.y * size - direction.x * size * 0.6))
+            context.stroke(arrow, with: .color(palette.accent.opacity(0.3)), style: StrokeStyle(lineWidth: 1.2 * scale, lineCap: .round, lineJoin: .round))
+        }
+    }
+
+    private func drawSouffle(_ souffle: SouffleSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
+                             palette: DSThemePalette, reduceMotion: Bool) {
+        guard let position = souffle.position, souffle.presence > 0 else { return }
+        let center = CGPoint(x: position.x, y: position.y)
+        let radius = souffle.radius
+        let presence = souffle.presence
+        var glow = context
+        glow.blendMode = .plusLighter
+        glow.fill(circle(center, radius * 1.15), with: .radialGradient(Gradient(colors: [palette.glow.opacity(0.22 * presence), palette.accent.opacity(0.08 * presence), palette.accent.opacity(0)]),
+                                                                      center: center, startRadius: 0, endRadius: radius * 1.15))
+        context.stroke(circle(center, radius), with: .color(palette.accent.opacity(0.28 * presence)), lineWidth: 1 * scale)
+        // Filaments drifting along the direction of travel, wrapping inside the disc.
+        let direction = souffle.direction
+        let normal = Vector2(x: -direction.y, y: direction.x)
+        let travel = reduceMotion ? 0 : time * 1.6
+        var filaments = Path()
+        for index in 0..<9 {
+            let seedA = fract(sin(Double(index) * 12.9898 + 4.1) * 43758.5453)
+            let seedB = fract(sin(Double(index) * 78.233 + 1.7) * 12543.853)
+            let across = (seedA * 2 - 1) * radius * 0.7
+            let along = (fract(seedB + travel * 0.5) * 2 - 1) * radius * 0.8
+            let limit = (radius * radius * 0.85 - across * across).squareRoot()
+            guard abs(along) < limit else { continue }
+            let mid = Vector2(x: position.x + direction.x * along + normal.x * across, y: position.y + direction.y * along + normal.y * across)
+            let half = 7 * scale
+            filaments.move(to: CGPoint(x: mid.x - direction.x * half, y: mid.y - direction.y * half))
+            filaments.addLine(to: CGPoint(x: mid.x + direction.x * half, y: mid.y + direction.y * half))
+        }
+        context.stroke(filaments, with: .color(palette.glow.opacity(0.45 * presence)), style: StrokeStyle(lineWidth: 1.2 * scale, lineCap: .round))
+    }
+
+    private func drawLift(_ lueur: LueurSnapshot, time: TimeInterval, in context: inout GraphicsContext, palette: DSThemePalette, reduceMotion: Bool) {
+        let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
+        let breath = reduceMotion ? 1 : 0.9 + 0.1 * sin(time * 6)
+        let radius = lueur.radius * 2.2 * breath
+        var glow = context
+        glow.blendMode = .plusLighter
+        glow.fill(circle(center, radius), with: .radialGradient(Gradient(colors: [palette.accent.opacity(0.3), palette.accent.opacity(0)]),
+                                                                center: center, startRadius: lueur.radius * 0.5, endRadius: radius))
+        context.stroke(circle(center, lueur.radius * 1.35), with: .color(palette.accent.opacity(0.6)), lineWidth: 1.2 * lueur.radius / 20)
     }
 
     // MARK: Veilleuse: flame and charge ring

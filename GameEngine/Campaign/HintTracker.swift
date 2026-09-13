@@ -77,6 +77,8 @@ struct HintTracker: Hashable, Sendable {
             return events.contains { if case .braiseFlared = $0 { return true } else { return false } }
         case .twinsLinked:
             return events.contains { if case .twinsLinked = $0 { return true } else { return false } }
+        case .firstCarried:
+            return events.contains { if case .lueurCarried = $0 { return true } else { return false } }
         }
     }
 }

@@ -8,7 +8,7 @@ struct DSGlyph: View {
     enum Kind: Hashable, Sendable {
         case lueur, iris, ecran, temperaments, ordre, cascade, courant, voile, veilleuse, irisMouvant, inconnu
         // Expansion
-        case jumelles
+        case jumelles, souffle
     }
 
     let kind: Kind
@@ -90,6 +90,18 @@ struct DSGlyph: View {
                 context.stroke(thread, with: .color(tint.opacity(0.6)), style: stroke)
                 context.fill(circle(CGPoint(x: c.x - s * 0.28, y: c.y), s * 0.15), with: .color(tint))
                 context.fill(circle(CGPoint(x: c.x + s * 0.28, y: c.y), s * 0.15), with: .color(tint))
+            case .souffle:
+                context.fill(circle(c, s * 0.3), with: .color(tint.opacity(0.18)))
+                var gust = Path()
+                for row in 0..<3 {
+                    let y = c.y + CGFloat(row - 1) * s * 0.18
+                    gust.move(to: CGPoint(x: c.x - s * 0.42 + CGFloat(row) * s * 0.06, y: y))
+                    gust.addLine(to: CGPoint(x: c.x + s * 0.2 + CGFloat(row) * s * 0.06, y: y))
+                }
+                gust.move(to: CGPoint(x: c.x + s * 0.28, y: c.y - s * 0.16))
+                gust.addLine(to: CGPoint(x: c.x + s * 0.44, y: c.y))
+                gust.addLine(to: CGPoint(x: c.x + s * 0.28, y: c.y + s * 0.16))
+                context.stroke(gust, with: .color(tint), style: stroke)
             }
         }
         .accessibilityHidden(true)
@@ -97,7 +109,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

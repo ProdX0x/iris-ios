@@ -23,13 +23,16 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     let currents: [CurrentDefinition]
     let veils: [VeilDefinition]
     let veilleuses: [VeilleuseDefinition]
+    /// Chapter VIII: gusts carrying lueurs along their tracks.
+    let souffles: [SouffleDefinition]
     let hints: [LevelHint]
     let par: LevelPar
 
     init(chapter: Int, index: Int, title: String, principle: String, introduces: [GameElement] = [],
          ordered: Bool = false, zone: Double = 0.48, repulsionForce: Double = 2.4, attraction: Double = 0.5,
          noise: Double = 0.15, hold: TimeInterval = 0.75, lueurs: [LueurDefinition], currents: [CurrentDefinition] = [],
-         veils: [VeilDefinition] = [], veilleuses: [VeilleuseDefinition] = [], hints: [LevelHint] = [], par: LevelPar) {
+         veils: [VeilDefinition] = [], veilleuses: [VeilleuseDefinition] = [], souffles: [SouffleDefinition] = [],
+         hints: [LevelHint] = [], par: LevelPar) {
         self.chapter = chapter
         self.index = index
         self.title = title
@@ -45,6 +48,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         self.currents = currents
         self.veils = veils
         self.veilleuses = veilleuses
+        self.souffles = souffles
         self.hints = hints
         self.par = par
     }
@@ -59,6 +63,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         if !veilleuses.isEmpty { kinds.insert(.veilleuse) }
         if lueurs.contains(where: { $0.irisMotion.isMoving }) { kinds.insert(.irisMouvant) }
         if hasTwins { kinds.insert(.jumelles) }
+        if !souffles.isEmpty { kinds.insert(.souffle) }
         return kinds
     }
 

@@ -41,7 +41,7 @@ struct HapticCuePolicy: Hashable, Sendable {
             case .validationProgressStopped:
                 stopped = true
             case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseLow, .veilleuseRelit,
-                 .braiseLit, .braiseCooled, .braiseFlared, .twinsLinked, .twinsParted:
+                 .braiseLit, .braiseCooled, .braiseFlared, .twinsLinked, .twinsParted, .lueurCarried, .lueurDropped:
                 break
             }
         }

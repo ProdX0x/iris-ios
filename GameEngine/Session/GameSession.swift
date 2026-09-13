@@ -30,6 +30,11 @@ struct GameSession: Sendable {
     /// Impulses queued for the next integration step by the expansion mechanics (one per target). Always zero in the
     /// historical chapters, whose step therefore stays bit-for-bit the reference step (a zero queue is never added).
     private var pendingImpulses: [Vector2]
+    /// Chapter VIII: whether each target is reported as carried, and for how many steps it has been outside every gust
+    /// (a lueur grazing the rim is not dropped and picked up again every other frame: the drop is reported after 0.1 s).
+    private var wasCarried: [Bool]
+    private var uncarriedSteps: [Int]
+    private static let dropDebounceSteps = 6
 
     init(level: Level,
          bounds: PlayfieldBounds,
@@ -56,6 +61,8 @@ struct GameSession: Sendable {
         self.validationRule = ValidationRule(rules: rules)
         self.wasInZone = Array(repeating: false, count: targets.count)
         self.pendingImpulses = Array(repeating: .zero, count: targets.count)
+        self.wasCarried = Array(repeating: false, count: targets.count)
+        self.uncarriedSteps = Array(repeating: 0, count: targets.count)
         self.isAttentionOnField = true
     }
 
@@ -65,6 +72,13 @@ struct GameSession: Sendable {
     var braises: [Int: BraiseState] { environment.braises }
     /// Chapter VII: twins keyed by target index.
     var twins: [Int: TwinState] { environment.twins }
+    /// Chapter VIII: gusts.
+    var souffles: [SouffleField] { environment.souffles }
+
+    /// Chapter VIII: whether the target is inside a gust right now.
+    func isCarried(targetAt index: Int) -> Bool {
+        targets.indices.contains(index) && environment.souffle(carrying: targets[index].position, at: elapsed) != nil
+    }
 
     func radius(ofTargetAt index: Int) -> Double {
         environment.lueurRadii.indices.contains(index) ? environment.lueurRadii[index] : physics.targetRadius
@@ -94,6 +108,8 @@ struct GameSession: Sendable {
         targets = newTargets
         wasInZone = Array(repeating: false, count: newTargets.count)
         pendingImpulses = Array(repeating: .zero, count: newTargets.count)
+        wasCarried = Array(repeating: false, count: newTargets.count)
+        uncarriedSteps = Array(repeating: 0, count: newTargets.count)
         isComplete = false
     }
 
@@ -152,12 +168,32 @@ struct GameSession: Sendable {
             let queued = pendingImpulses[index]
             pendingImpulses[index] = .zero
             let fieldImpulse = environment.impulse(at: target.position)
-            let externalImpulse = queued == .zero ? fieldImpulse : fieldImpulse + queued
+            var externalImpulse = queued == .zero ? fieldImpulse : fieldImpulse + queued
+            // Chapter VIII: a gust carries the lueur along its track and lifts it over the veils.
+            let carrier = environment.souffle(carrying: target.position, at: elapsed)
+            if let carrier {
+                externalImpulse += carrier.impulse(at: target.position, time: elapsed)
+            }
             integrator.integrate(&target, gaze: cursor, noise: { noise.value(at: $0) }, frameTime: frameTime,
                                  frameFraction: frameFraction, externalImpulse: externalImpulse,
                                  behaviour: environment.braises[index]?.behaviour ?? .neutral)
-            for veil in environment.veils {
-                veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)
+            if carrier == nil {
+                for veil in environment.veils {
+                    veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)
+                }
+            }
+            if carrier != nil {
+                uncarriedSteps[index] = 0
+                if !wasCarried[index] {
+                    wasCarried[index] = true
+                    events.append(.lueurCarried(sequence: target.sequence))
+                }
+            } else if wasCarried[index] {
+                uncarriedSteps[index] += 1
+                if uncarriedSteps[index] >= Self.dropDebounceSteps {
+                    wasCarried[index] = false
+                    events.append(.lueurDropped(sequence: target.sequence))
+                }
             }
 
             let irisOpen = isIrisOpen(for: target)

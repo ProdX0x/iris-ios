@@ -75,6 +75,10 @@ enum LevelResolver {
             irisPaths: paths,
             braises: braises,
             twins: twins,
+            souffles: definition.souffles.map { souffle in
+                SouffleField(path: souffle.path.map { $0.absolute(in: bounds) }, period: souffle.period, duty: souffle.duty,
+                             radius: souffle.radius * shortSide, strength: souffle.strength * scale, phase: souffle.phase)
+            },
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)

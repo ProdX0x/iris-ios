@@ -9,6 +9,7 @@ extension ChapterTheme {
         switch self {
         case .chambreNoire: .chambreNoire
         case .jumelles: .jumelles
+        case .brume: .brume
         }
     }
 }

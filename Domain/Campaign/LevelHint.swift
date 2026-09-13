@@ -18,6 +18,8 @@ enum HintTrigger: Hashable, Sendable {
     case braiseFlared
     /// Chapter VII: the first time two twins come within reach of each other.
     case twinsLinked
+    /// Chapter VIII: the first time a gust carries a lueur.
+    case firstCarried
 }
 
 struct LevelHint: Hashable, Sendable {

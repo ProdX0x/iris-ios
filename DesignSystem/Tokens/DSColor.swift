@@ -37,6 +37,9 @@ enum DSColor {
     static let themeJumellesAccent = Color("ds.theme.jumelles.accent")
     static let themeJumellesGlow = Color("ds.theme.jumelles.glow")
     static let themeJumellesWash = Color("ds.theme.jumelles.wash")
+    static let themeBrumeAccent = Color("ds.theme.brume.accent")
+    static let themeBrumeGlow = Color("ds.theme.brume.glow")
+    static let themeBrumeWash = Color("ds.theme.brume.wash")
 
     /// Rank colours (sable, givre, orchidée), 1-based, wrapping after three. Never the only carrier of rank:
     /// rank is always drawn as pips too.
