@@ -73,6 +73,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         if echo != nil { kinds.insert(.echo) }
         if hasSleepers { kinds.insert(.dormeuse) }
         if !gouffres.isEmpty { kinds.insert(.gouffre) }
+        if hasBraises { kinds.insert(.braise) }
         return kinds
     }
 

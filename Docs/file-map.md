@@ -64,6 +64,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Tokens/DSThemePalette.swift | struct | DesignSystem | The few colours a chapter identity adds to the chambre noire: its attention accent, its glow, and the | Claude (mission Iris) |
 | Domain/Campaign/BraiseDefinition.swift | struct | Domain | EXPERIMENTAL (prototype B1, not in the campaign): tuning of a braise, a cold lueur that the gaze warms and | Claude (mission Iris) |
 | Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
+| Domain/Campaign/Campaign+Braises.swift | - | Domain | Chapter XI, Braises: the cold lueur that a brief gaze wakes (tuning A, human-validated and frozen), met | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Clairvoyance.swift | - | Domain | Chapter VI, Clairvoyance: gliding irises, then every idea combined | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Echos.swift | - | Domain | Chapter IX, Échos: sleeping lueurs wake only when the echo of a closing iris reaches them; bring them within | Claude (mission Iris) |
@@ -192,6 +193,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/AR/RobustAggregatorTests.swift | struct | Tests | Median-based aggregation with outlier rejection | Claude (mission Iris) |
 | Tests/IrisTests/Audio/AudioCuePolicyTests.swift | struct | Tests | Sound policy: crescendo per target, chime on validation, one loss tone per cascade | Claude (mission Iris) |
 | Tests/IrisTests/Audio/SineSynthTests.swift | struct | Tests | The synthesizer renders the crescendo, chime and loss tones with bounded amplitude and expected pitch | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/BraisesChapterTests.swift | struct | Tests | Chapter XI, braises: every braise of the campaign carries the frozen, human-validated tuning A; the chapter's | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/BraisesPrototypeTests.swift | struct | Tests | EXPERIMENTAL Braises A (human-validated, frozen): the braise level behaves as designed, is feasible when fed | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignBot.swift | struct | Tests | Simulated players used to prove each level feasible (guided) and each element necessary (limited policies); | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignMeasurements.swift | struct | Tests | One shared, lazily computed simulation of every level (reused by all campaign validation tests) | Claude (mission Iris) |

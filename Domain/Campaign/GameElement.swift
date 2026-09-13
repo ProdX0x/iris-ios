@@ -21,6 +21,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case dormeuse
     case echo
     case gouffre
+    case braise
 
     var name: String {
         switch self {
@@ -39,6 +40,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .dormeuse: "dormeuse"
         case .echo: "écho"
         case .gouffre: "gouffre"
+        case .braise: "braise"
         }
     }
 
@@ -59,6 +61,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .dormeuse: "Elle dort : elle ne bouge pas et son iris reste fermé. Seul un écho la réveille."
         case .echo: "Un iris qui se ferme respire un écho. Il réveille les dormeuses à portée et les lance."
         case .gouffre: "Il aspire ce qui s'approche. Ce qu'il avale revient à son départ."
+        case .braise: "Froide, elle dort. Un regard bref la réveille et elle fuit ; un regard long l'affole."
         }
     }
 }

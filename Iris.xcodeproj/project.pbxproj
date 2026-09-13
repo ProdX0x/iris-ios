@@ -171,6 +171,7 @@
 		AF9F1FDA8215DA2B27A5AD5A /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678CF42FC0763D61792DB66A /* GamePhase.swift */; };
 		AFF4A970BA293855C39E764C /* ChapterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845FA0A2286891FCB6AA43F1 /* ChapterCard.swift */; };
 		B01B731958431D5B6BBC29CE /* LevelDifficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B27768B77AD73DF8F94051C /* LevelDifficulty.swift */; };
+		B0241A0B462B074B78989FF2 /* Campaign+Braises.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055D5C738167FF3F278B8FCC /* Campaign+Braises.swift */; };
 		B034077B0DEE687597DAD6D2 /* HintTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0840221723714CD4C49A3903 /* HintTrackerTests.swift */; };
 		B34BE855F05185DDBC26F3E0 /* DSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5475244795788D1DC0B6380F /* DSButton.swift */; };
 		B3F1D55A2798F05D635778B6 /* GameHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EC3AAB0C88BBD113DF08D0 /* GameHUDView.swift */; };
@@ -186,6 +187,7 @@
 		BD8B02607C5B7BD96BD8144D /* CameraAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05108E912AA61A75A8C03718 /* CameraAuthorizationService.swift */; };
 		BF7C448EACA8BCD7EE6331D7 /* EchosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0E9AA581484A2D2EEE6A2 /* EchosTests.swift */; };
 		C08E69FB668DB35B80C89AEF /* NormalizedCoordinatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250F3A8E08643A58456E9E21 /* NormalizedCoordinatesTests.swift */; };
+		C16FBF8B2991993EFC0C4F63 /* BraisesChapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B014AB35FAB6D3D2359656C /* BraisesChapterTests.swift */; };
 		C2F19F8ED6C85829DE9AEAC1 /* ValueNoise1DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13148145B6DC04089A15C179 /* ValueNoise1DTests.swift */; };
 		C305DD983671F9B578093C05 /* DSMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D2FA928060E55713CF584 /* DSMotion.swift */; };
 		C4E27A7CFDC2AE847293DA28 /* GameSettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */; };
@@ -256,6 +258,7 @@
 		00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelEnvironment.swift; sourceTree = "<group>"; };
 		03BA17B940F074D716DFE9C6 /* LevelHint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHint.swift; sourceTree = "<group>"; };
 		05108E912AA61A75A8C03718 /* CameraAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAuthorizationService.swift; sourceTree = "<group>"; };
+		055D5C738167FF3F278B8FCC /* Campaign+Braises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Braises.swift"; sourceTree = "<group>"; };
 		0570071023A0432DA481FBB4 /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
 		0684F2CB40B511B7EEB19A9E /* NotificationObserverBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationObserverBag.swift; sourceTree = "<group>"; };
 		0840221723714CD4C49A3903 /* HintTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintTrackerTests.swift; sourceTree = "<group>"; };
@@ -342,6 +345,7 @@
 		67B2ABCFEA818E92CC86A7EC /* VeilDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilDefinition.swift; sourceTree = "<group>"; };
 		684AB828B7DC11DF78F6CE18 /* LaunchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchOptions.swift; sourceTree = "<group>"; };
 		69FCD26CB51345086425106F /* CascadeRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeRuleTests.swift; sourceTree = "<group>"; };
+		6B014AB35FAB6D3D2359656C /* BraisesChapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraisesChapterTests.swift; sourceTree = "<group>"; };
 		6B9177E8AB3CDA6C63662C56 /* HomeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSummary.swift; sourceTree = "<group>"; };
 		6E8B1378882AC71D9A1FE390 /* GazeVerdictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeVerdictView.swift; sourceTree = "<group>"; };
 		70372433F8E409BEE34D3F85 /* VeilSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilSegment.swift; sourceTree = "<group>"; };
@@ -861,6 +865,7 @@
 		8213C6D2EB53ECF8F2B9BACB /* Campaign */ = {
 			isa = PBXGroup;
 			children = (
+				6B014AB35FAB6D3D2359656C /* BraisesChapterTests.swift */,
 				4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */,
 				621EE5D15ABA6251FC1752DE /* CampaignBot.swift */,
 				764880C619F51A22B56FF194 /* CampaignMeasurements.swift */,
@@ -1110,6 +1115,7 @@
 				9DF77AE1F41D398E8C51E742 /* BraiseDefinition.swift */,
 				18258373507964A5C012E825 /* BraisesPrototype.swift */,
 				503F9C3502EF31E0B3FDA77B /* Campaign.swift */,
+				055D5C738167FF3F278B8FCC /* Campaign+Braises.swift */,
 				D1560C44E3EA509640C54D77 /* Campaign+Clairvoyance.swift */,
 				F888AF8EFFC2A1C549E4C75E /* Campaign+Courants.swift */,
 				7B4B98802AAE50E44934AAEF /* Campaign+Echos.swift */,
@@ -1374,6 +1380,7 @@
 				D6FB76E356CE058E251024A5 /* AudioCuePolicyTests.swift in Sources */,
 				1728812802F3A935D50C6777 /* AxisMappingTests.swift in Sources */,
 				0C4424A093630F7C4516EE55 /* BraiseStateTests.swift in Sources */,
+				C16FBF8B2991993EFC0C4F63 /* BraisesChapterTests.swift in Sources */,
 				69C6467DBC6B4E7A5B3AD355 /* BraisesPrototypeTests.swift in Sources */,
 				0EB6BF41499EFA900443D559 /* CalibrationProfileTests.swift in Sources */,
 				1053BCD7045784A7AFB2A02F /* CameraAccessViewModelTests.swift in Sources */,
@@ -1448,6 +1455,7 @@
 				9D914AE3CFD470F2D6C2642F /* CameraAccessView.swift in Sources */,
 				536EA8DFF2E61684AB1D6805 /* CameraAccessViewModel.swift in Sources */,
 				BD8B02607C5B7BD96BD8144D /* CameraAuthorizationService.swift in Sources */,
+				B0241A0B462B074B78989FF2 /* Campaign+Braises.swift in Sources */,
 				7EF0F4A8E56A3B32299D8E82 /* Campaign+Clairvoyance.swift in Sources */,
 				83CDAE28674BC59569E46E8F /* Campaign+Courants.swift in Sources */,
 				E4556BF3DE266AF3790359D2 /* Campaign+Echos.swift in Sources */,
