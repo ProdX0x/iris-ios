@@ -573,3 +573,18 @@ Résultats réels, mesurés sur l'arbre du HEAD final juste avant le commit docu
 | Release simulateur | BUILD SUCCEEDED |
 | Audit | C1, C2, C8, C9, C10, C12 pass, 205 fichiers |
 | Appareil | build Debug signé (`net.steve-s.iris`, `G4U9RG5GL7`), installation et lancement réussis sur l'iPhone 14 Pro, processus vivant après 8 s ; l'accès Braises A et les deux réglages audio sont ceux du code compilé, aucune validation humaine n'a été refaite |
+
+## 19. Expansion intégrale — chapitres VII à XII (branche `feature/iris-full-expansion`, 13 septembre 2026)
+
+Six nouveaux chapitres jouables dans la campagne normale, à la suite de VI, chacun avec sa mécanique, son identité visuelle et ses six niveaux : **VII jumelles** (l'une est l'iris de l'autre), **VIII souffles** (un souffle emporte par-dessus les voiles), **IX échos** (l'iris qui se ferme réveille les dormeuses), **X gouffres** (ce qu'il avale revient au départ), **XI braises** (la braise validée humainement, réglage gelé), **XII constellation** (la synthèse, jusqu'au dernier iris). Rapport : `Design/IRIS_FULL_EXPANSION_REPORT.md`.
+
+Statut : **TECHNIQUEMENT VALIDÉ / À JOUER HUMAINEMENT**. Chapitres 1 à 6 / 34 niveaux : **INCHANGÉS**, protégés par une empreinte octet pour octet (`Tests/IrisTests/Fixtures/historical_campaign.txt`) et par les SHA-256 des sources gelées (chapitres historiques, Gaze Engine, filtre de regard, intégrateur physique).
+
+| Étape | Résultat |
+|---|---|
+| Campagne | 12 chapitres, 66 niveaux, 198 éclats |
+| Commits | infrastructure partagée puis un commit par chapitre (`19f2b1c`, `6d17731`, `ae0ef43`, `393a566`, `31ed0f7`, `d90f117`, `8282ffd`) |
+| Tests | 298 exécutés, 298 réussis (simulateur iPhone 17 Pro) |
+| Audit | C1, C2, C8, C9, C10, C12 pass |
+| Debug simulateur / Release iOS signé | BUILD SUCCEEDED |
+| `main`, `baseline/iris-expansion-validated`, `baseline-expansion-v1` | intacts |
