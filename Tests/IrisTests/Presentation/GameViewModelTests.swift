@@ -240,7 +240,8 @@ struct GameViewModelTests {
     @Test("the last level of a chapter proposes the next chapter and changes the drone when the ambience is on")
     func chapterEnd() {
         settings.ambienceEnabled = true
-        let sut = makeSUT(level: restingLevel(chapter: 1, index: 5))
+        // PROTOTYPE branch: chapter I ends on the optional level 6; chapter II ends on 2-5 as before.
+        let sut = makeSUT(level: restingLevel(chapter: 2, index: 5))
         startPlaying(sut)
         clock.tick(frames: 50)
 
@@ -250,8 +251,8 @@ struct GameViewModelTests {
         }
         #expect(result.isChapterEnd && result.primaryTitle == "Chapitre suivant")
         sut.primaryAction()
-        #expect(sut.level.id == "2-1")
-        #expect(audio.cues.contains(.ambient(frequency: 123.47)))
+        #expect(sut.level.id == "3-1")
+        #expect(audio.cues.contains(.ambient(frequency: 98)))
     }
 
     @Test("pause stops the loop, resume continues, chapters leaves the game")

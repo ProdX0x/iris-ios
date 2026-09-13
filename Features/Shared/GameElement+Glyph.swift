@@ -23,6 +23,7 @@ extension GameElement {
         case .echo: .echo
         case .gouffre: .gouffre
         case .braise: .braise
+        case .balise: .balise
         }
     }
 }

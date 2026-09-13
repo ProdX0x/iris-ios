@@ -96,7 +96,11 @@ struct GameHUDHost: View {
         case .interrupted: sound = "son : interrompu"
         case .unavailable: sound = "son : indisponible"
         }
-        return [gaze, sound]
+        var labels = [gaze, sound]
+        #if DEBUG
+        if let oculo = viewModel.oculoStatus { labels.append(oculo) }
+        #endif
+        return labels
     }
 }
 

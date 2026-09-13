@@ -76,6 +76,7 @@ struct LevelAnalysis {
             + 0.6 * Double(definition.lueurs.filter(\.asleep).count)
             + 0.7 * Double(definition.gouffres.count)
             + 0.5 * Double(definition.lueurs.filter { $0.braise != nil }.count)
+            + 0.15 * Double(definition.balises?.steps.count ?? 0)
             + botTime / 20
     }
 
@@ -134,6 +135,7 @@ extension LevelAnalysis {
         if definition.hasSleepers { skills.insert("réveiller") }
         if !definition.gouffres.isEmpty { skills.insert("esquiver") }
         if definition.hasBraises { skills.insert("réveiller au regard") }
+        if definition.hasBalises { skills.insert("fixer") }
         return skills
     }
 

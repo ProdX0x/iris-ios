@@ -29,6 +29,10 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     let echo: EchoDefinition?
     /// Chapter X: wells.
     let gouffres: [GouffreDefinition]
+    /// PROTOTYPE (chapter I level 6): balises to wake along a thread before the irises open.
+    let balises: BaliseSequenceDefinition?
+    /// False for an optional level: the level after it unlocks from the last gating level before it.
+    let gatesProgression: Bool
     let hints: [LevelHint]
     let par: LevelPar
 
@@ -36,7 +40,8 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
          ordered: Bool = false, zone: Double = 0.48, repulsionForce: Double = 2.4, attraction: Double = 0.5,
          noise: Double = 0.15, hold: TimeInterval = 0.75, lueurs: [LueurDefinition], currents: [CurrentDefinition] = [],
          veils: [VeilDefinition] = [], veilleuses: [VeilleuseDefinition] = [], souffles: [SouffleDefinition] = [],
-         echo: EchoDefinition? = nil, gouffres: [GouffreDefinition] = [], hints: [LevelHint] = [], par: LevelPar) {
+         echo: EchoDefinition? = nil, gouffres: [GouffreDefinition] = [], balises: BaliseSequenceDefinition? = nil,
+         gatesProgression: Bool = true, hints: [LevelHint] = [], par: LevelPar) {
         self.chapter = chapter
         self.index = index
         self.title = title
@@ -55,6 +60,8 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         self.souffles = souffles
         self.echo = echo
         self.gouffres = gouffres
+        self.balises = balises
+        self.gatesProgression = gatesProgression
         self.hints = hints
         self.par = par
     }
@@ -74,6 +81,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         if hasSleepers { kinds.insert(.dormeuse) }
         if !gouffres.isEmpty { kinds.insert(.gouffre) }
         if hasBraises { kinds.insert(.braise) }
+        if balises != nil { kinds.insert(.balise) }
         return kinds
     }
 
@@ -85,5 +93,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     var hasTwins: Bool { lueurs.contains(where: \.isTwin) }
     /// Chapter IX: at least one sleeping lueur.
     var hasSleepers: Bool { lueurs.contains(where: \.asleep) }
+    /// PROTOTYPE: the level opens with a thread of balises.
+    var hasBalises: Bool { balises != nil }
     var requiresPushing: Bool { lueurs.contains { !$0.route.isEmpty } }
 }

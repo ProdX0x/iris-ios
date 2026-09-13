@@ -40,6 +40,8 @@ struct GameSession: Sendable {
     /// Chapter X: lueurs held inside a well, and when each was last sent back to its start (for the presentation).
     private(set) var swallows: [Int: SwallowState] = [:]
     private(set) var returns: [Int: TimeInterval] = [:]
+    /// PROTOTYPE: when the latent lueurs appeared (thread of balises complete), for the presentation.
+    private(set) var releasedAt: TimeInterval?
 
     init(level: Level,
          bounds: PlayfieldBounds,
@@ -97,6 +99,13 @@ struct GameSession: Sendable {
     /// Chapter X: wells, and whether the target is inside one right now.
     var gouffres: [GouffreField] { environment.gouffres }
 
+    /// PROTOTYPE: the thread of balises, and whether the lueurs are still latent (thread incomplete).
+    var balises: BaliseSequenceState? { environment.balises }
+
+    var areLueursLatent: Bool {
+        environment.balises.map { !$0.isComplete } ?? false
+    }
+
     func isSwallowed(targetAt index: Int) -> Bool {
         swallows[index] != nil
     }
@@ -121,6 +130,7 @@ struct GameSession: Sendable {
             && (environment.twins[target.sequence - 1]?.isLinked ?? true)
             && (environment.sleepers[target.sequence - 1]?.isAwake ?? true)
             && swallows[target.sequence - 1] == nil
+            && !areLueursLatent
     }
 
     /// Smoothed gaze input (what the reference engine's gaze listener did).
@@ -176,6 +186,8 @@ struct GameSession: Sendable {
         updateAttention(cursor: cursor, events: &events)
         updateVeilleuses(seconds: seconds, cursor: cursor, events: &events)
         updateBraises(seconds: seconds, cursor: cursor, events: &events)
+        updateBalises(seconds: seconds, cursor: cursor, events: &events)
+        let latent = areLueursLatent
         let positions = targets.map(\.position)
         updateTwins(positions: positions, events: &events)
         updateEchoes(positions: positions, events: &events)
@@ -186,6 +198,11 @@ struct GameSession: Sendable {
         for index in targets.indices {
             var target = targets[index]
             let wasHolding = target.isHolding
+            // PROTOTYPE: latent lueurs wait, unseen and still, until the thread of balises is complete.
+            if latent {
+                everyTargetValidated = false
+                continue
+            }
             if let path = environment.irisPaths[index] {
                 target.arrival = path.position(at: elapsed)
             }
@@ -415,6 +432,27 @@ struct GameSession: Sendable {
             case .parted: events.append(.twinsParted(sequence: targets[index].sequence))
             case .none: break
             }
+        }
+    }
+
+    /// PROTOTYPE (chapter I level 6): the balise the thread designates wakes under a steady gaze; when the thread is
+    /// complete the latent lueurs appear at their start.
+    private mutating func updateBalises(seconds: TimeInterval, cursor: Vector2, events: inout [GameEvent]) {
+        guard var sequence = environment.balises, !sequence.isComplete else { return }
+        let change = sequence.update(seconds: seconds, gaze: cursor, gazeActive: gaze.isActive, elapsed: elapsed)
+        environment.balises = sequence
+        switch change {
+        case let .lit(balise, step):
+            events.append(.baliseLit(balise: balise, step: step))
+        case let .completed(balise):
+            events.append(.baliseLit(balise: balise, step: sequence.steps.count - 1))
+            events.append(.balisesCompleted)
+            releasedAt = elapsed
+            for target in targets {
+                events.append(.lueurReleased(sequence: target.sequence))
+            }
+        case .none:
+            break
         }
     }
 

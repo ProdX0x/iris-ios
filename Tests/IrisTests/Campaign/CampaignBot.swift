@@ -111,6 +111,11 @@ private struct Brain {
             return
         }
         advanceRoutes(session: session)
+        // PROTOTYPE: every playing policy but avoidance rests its gaze on the balise the thread designates.
+        if policy != .avoidance, let thread = session.balises, let active = thread.activeBalise {
+            aim = thread.positions[active]
+            return
+        }
         if policy == .guided || policy == .straight, let flame = veilleuseToServe(session: session) {
             aim = session.veilleuses[flame].position
             return

@@ -13,8 +13,14 @@ struct CampaignStructureTests {
         #expect(Campaign.historicalChapters.map(\.levels.count) == [5, 5, 6, 6, 6, 6])
         #expect(Campaign.historicalLevels.count == 34)
         #expect(Campaign.historicalChapters.map(\.numeral) == ["I", "II", "III", "IV", "V", "VI"])
-        #expect(Array(Campaign.chapters.prefix(6)) == Campaign.historicalChapters)
-        #expect(Array(Campaign.levels.prefix(34)) == Campaign.historicalLevels)
+        // PROTOTYPE branch: chapter I carries an optional sixth level after its five frozen ones; II to VI are the frozen chapters.
+        for (historical, played) in zip(Campaign.historicalChapters, Campaign.chapters) {
+            #expect(played.number == historical.number && played.name == historical.name && played.principle == historical.principle)
+            #expect(played.ambientFrequency == historical.ambientFrequency && played.theme == historical.theme)
+            #expect(Array(played.levels.prefix(historical.levels.count)) == historical.levels, "chapter \(historical.number)")
+            #expect(played.levels.dropFirst(historical.levels.count).allSatisfy { $0.hasBalises && !$0.gatesProgression }, "chapter \(historical.number)")
+        }
+        #expect(Campaign.levels.filter { !$0.hasBalises }.prefix(34).elementsEqual(Campaign.historicalLevels))
         #expect(Campaign.chapters.map(\.number) == Array(1...Campaign.chapters.count))
         #expect(Set(Campaign.levels.map(\.id)).count == Campaign.levels.count)
         #expect(Set(Campaign.levels.map(\.title)).count == Campaign.levels.count)
@@ -104,10 +110,12 @@ struct CampaignStructureTests {
     @Test("navigation helpers")
     func helpers() {
         #expect(Campaign.level(id: "3-2")?.title == "la brèche")
-        #expect(Campaign.next(after: Campaign.levels[4])?.id == "2-1")
+        // PROTOTYPE branch: the optional level 1-6 sits between 1-5 and 2-1.
+        #expect(Campaign.next(after: Campaign.levels[4])?.id == "1-6")
+        #expect(Campaign.next(after: Campaign.levels[5])?.id == "2-1")
         #expect(Campaign.next(after: Campaign.historicalLevels[33])?.id == Campaign.expansionChapters.first?.levels.first?.id)
         #expect(Campaign.next(after: Campaign.levels[Campaign.levels.count - 1]) == nil)
-        #expect(Campaign.isLastInChapter(Campaign.levels[4]))
+        #expect(Campaign.isLastInChapter(Campaign.levels[5]) && !Campaign.isLastInChapter(Campaign.levels[4]))
         #expect(!Campaign.isLastInChapter(Campaign.levels[0]))
     }
 }
@@ -127,7 +135,7 @@ struct CampaignSimulationTests {
     func pushingNecessity() {
         for level in Campaign.levels {
             let measurement = CampaignMeasurements.of(level)
-            if level.chapter <= 2 {
+            if level.chapter <= 2 && !level.hasBalises {
                 #expect(measurement.avoidance.completed, "\(level.id) should be solvable by avoidance")
             }
             if level.requiresPushing {

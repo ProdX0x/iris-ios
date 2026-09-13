@@ -3,7 +3,7 @@
 // Purpose: Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics,
 // and the expansion elements in their chapter palette (VII: postes, threads and the shared iris of twins;
 // VIII: gust tracks, travelling gusts and the lift of a carried lueur; IX: echo reach, rings, sleeping lueurs;
-// X: wells, swallowed and reborn lueurs)
+// X: wells, swallowed and reborn lueurs; PROTOTYPE chapter I level 6: the thread of balises and the shut iris waking)
 
 import SwiftUI
 
@@ -20,6 +20,7 @@ struct GameSceneRenderer {
         drawSouffleTracks(snapshot, in: &context, scale: scale, palette: palette)
         drawVeils(snapshot, in: &context)
         drawRoutes(snapshot, in: &context, scale: scale)
+        drawBaliseThreads(snapshot, in: &context, scale: scale)
         for lueur in snapshot.lueurs where !lueur.isTwin {
             drawIris(lueur, sequential: snapshot.isSequential, in: &context, scale: scale)
         }
@@ -41,7 +42,16 @@ struct GameSceneRenderer {
         for souffle in snapshot.souffles {
             drawSouffle(souffle, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
         }
+        for balise in snapshot.balises {
+            drawBalise(balise, time: snapshot.time, in: &context, scale: scale, reduceMotion: reduceMotion)
+        }
         for lueur in snapshot.lueurs {
+            if lueur.isLatent {
+                if let rebirth = lueur.rebirth {
+                    drawRebirth(lueur, progress: rebirth, in: &context, palette: palette)
+                }
+                continue
+            }
             if lueur.isCarried {
                 drawLift(lueur, time: snapshot.time, in: &context, palette: palette, reduceMotion: reduceMotion)
             }
@@ -149,6 +159,12 @@ struct GameSceneRenderer {
             glow.fill(circle(center, radius * 1.7), with: .radialGradient(Gradient(colors: [DSColor.statusSuccess.opacity(0.32), DSColor.statusSuccess.opacity(0)]),
                                                                           center: center, startRadius: 0, endRadius: radius * 1.7))
             context.fill(circle(center, radius * 0.42), with: .color(DSColor.statusSuccess.opacity(0.85)))
+        } else if lueur.isLatent, let awakening = lueur.awakening {
+            // PROTOTYPE: shut, the iris opens a little with every balise of the thread.
+            let closure = 0.92 - 0.72 * awakening
+            let bladesRect = CGRect(x: center.x - radius * 0.86, y: center.y - radius * 0.86, width: radius * 1.72, height: radius * 1.72)
+            let blades = DSApertureBlades(closure: closure, rotation: awakening * 30).path(in: bladesRect)
+            context.stroke(blades, with: .color(DSColor.accent.opacity(0.25 + 0.65 * awakening)), style: StrokeStyle(lineWidth: 2.2 * scale, lineCap: .round))
         } else {
             let closure = 0.12 + 0.78 * lueur.progress
             let bladesRect = CGRect(x: center.x - radius * 0.86, y: center.y - radius * 0.86, width: radius * 1.72, height: radius * 1.72)
@@ -504,6 +520,48 @@ struct GameSceneRenderer {
         }
     }
 
+    // MARK: Balises (PROTOTYPE): the thread, each balise (asleep, designated, awake)
+
+    private func drawBaliseThreads(_ snapshot: GameSceneSnapshot, in context: inout GraphicsContext, scale: Double) {
+        for thread in snapshot.baliseThreads {
+            let growth = min(1, thread.age / 0.35)
+            let end = thread.from + (thread.to - thread.from) * growth
+            var path = Path()
+            path.move(to: CGPoint(x: thread.from.x, y: thread.from.y))
+            path.addLine(to: CGPoint(x: end.x, y: end.y))
+            let opacity = thread.isComplete ? 0.16 : 0.55
+            context.stroke(path, with: .color(DSColor.accent.opacity(opacity)),
+                           style: StrokeStyle(lineWidth: (thread.isComplete ? 1 : 1.6) * scale, lineCap: .round, dash: thread.isComplete ? [2 * scale, 6 * scale] : []))
+        }
+    }
+
+    private func drawBalise(_ balise: BaliseSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double, reduceMotion: Bool) {
+        let center = CGPoint(x: balise.position.x, y: balise.position.y)
+        let ring = 7 * scale
+        if balise.isActive {
+            context.stroke(circle(center, balise.radius), with: .color(DSColor.accent.opacity(0.1)),
+                           style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+            let breath = reduceMotion ? 1 : 1 + 0.18 * sin(time * 3.2)
+            var glow = context
+            glow.blendMode = .plusLighter
+            glow.fill(circle(center, 30 * scale * breath), with: .radialGradient(Gradient(colors: [DSColor.accent.opacity(0.32), DSColor.accent.opacity(0)]),
+                                                                                  center: center, startRadius: ring * 0.5, endRadius: 30 * scale * breath))
+            context.stroke(circle(center, ring * 1.9 * breath), with: .color(DSColor.accent.opacity(0.7)), lineWidth: 1.4 * scale)
+        }
+        let fresh = balise.litAge.map { max(0, 1 - $0 / 1.2) } ?? 0
+        if balise.isLit {
+            var glow = context
+            glow.blendMode = .plusLighter
+            glow.fill(circle(center, ring * (2.2 + 2.5 * fresh)), with: .radialGradient(Gradient(colors: [DSColor.lueurGlow.opacity(0.18 + 0.5 * fresh), DSColor.lueurGlow.opacity(0)]),
+                                                                                          center: center, startRadius: 0, endRadius: ring * (2.2 + 2.5 * fresh)))
+            context.fill(circle(center, ring * 0.7), with: .color(DSColor.lueurCore.opacity(0.7 + 0.3 * fresh)))
+            context.stroke(circle(center, ring), with: .color(DSColor.accent.opacity(0.8)), lineWidth: 1.4 * scale)
+        } else {
+            context.stroke(circle(center, ring), with: .color(DSColor.textTertiary.opacity(balise.isActive ? 0.9 : 0.5)), lineWidth: 1.2 * scale)
+            context.fill(circle(center, 1.8 * scale), with: .color(DSColor.textTertiary.opacity(0.7)))
+        }
+    }
+
     // MARK: Diagnostics
 
     private func drawDiagnostics(_ diagnostics: GazeDiagnostics, in context: inout GraphicsContext) {
@@ -513,6 +571,41 @@ struct GameSceneRenderer {
         if let calibrated = diagnostics.calibrated {
             context.fill(circle(CGPoint(x: calibrated.x, y: calibrated.y), 4), with: .color(DSColor.statusSuccess.opacity(0.9)))
         }
+        if let edge = diagnostics.edge {
+            drawEdgeIndicator(edge, in: &context)
+        }
+    }
+
+    /// PROTOTYPE DEBUG: a chevron on the edge of the last observable direction. It complements the historical warning
+    /// and never claims to know where the gaze is beyond the screen.
+    private func drawEdgeIndicator(_ edge: GazeDiagnostics.Edge, in context: inout GraphicsContext) {
+        let bounds = context.clipBoundingRect
+        let size: CGFloat = 12
+        let inset: CGFloat = 10
+        var chevron = Path()
+        switch edge {
+        case .right:
+            let tip = CGPoint(x: bounds.maxX - inset, y: bounds.midY)
+            chevron.move(to: CGPoint(x: tip.x - size, y: tip.y - size))
+            chevron.addLine(to: tip)
+            chevron.addLine(to: CGPoint(x: tip.x - size, y: tip.y + size))
+        case .left:
+            let tip = CGPoint(x: bounds.minX + inset, y: bounds.midY)
+            chevron.move(to: CGPoint(x: tip.x + size, y: tip.y - size))
+            chevron.addLine(to: tip)
+            chevron.addLine(to: CGPoint(x: tip.x + size, y: tip.y + size))
+        case .top:
+            let tip = CGPoint(x: bounds.midX, y: bounds.minY + inset)
+            chevron.move(to: CGPoint(x: tip.x - size, y: tip.y + size))
+            chevron.addLine(to: tip)
+            chevron.addLine(to: CGPoint(x: tip.x + size, y: tip.y + size))
+        case .bottom:
+            let tip = CGPoint(x: bounds.midX, y: bounds.maxY - inset)
+            chevron.move(to: CGPoint(x: tip.x - size, y: tip.y - size))
+            chevron.addLine(to: tip)
+            chevron.addLine(to: CGPoint(x: tip.x + size, y: tip.y - size))
+        }
+        context.stroke(chevron, with: .color(DSColor.statusDanger.opacity(0.85)), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
     }
 
     private func drawCursor(at gaze: Vector2, in context: inout GraphicsContext) {

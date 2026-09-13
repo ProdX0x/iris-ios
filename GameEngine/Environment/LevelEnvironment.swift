@@ -22,6 +22,8 @@ struct LevelEnvironment: Hashable, Sendable {
     var sleepers: [Int: SleeperState]
     /// Chapter X: wells.
     var gouffres: [GouffreField]
+    /// PROTOTYPE (chapter I level 6): the thread of balises; nil everywhere else.
+    var balises: BaliseSequenceState?
     /// Physical radius of each lueur (collisions with veils); empty uses the physics target radius.
     var lueurRadii: [Double]
     /// R-23: irises close while the gaze is off the playfield.
@@ -32,8 +34,8 @@ struct LevelEnvironment: Hashable, Sendable {
     init(currents: [CurrentField] = [], veils: [VeilSegment] = [], veilleuses: [VeilleuseState] = [],
          irisPaths: [Int: IrisPath] = [:], braises: [Int: BraiseState] = [:], twins: [Int: TwinState] = [:],
          souffles: [SouffleField] = [], echo: EchoField? = nil, sleepers: [Int: SleeperState] = [:],
-         gouffres: [GouffreField] = [], lueurRadii: [Double] = [], requiresAttentionOnField: Bool = false,
-         fieldTolerance: Double = 0) {
+         gouffres: [GouffreField] = [], balises: BaliseSequenceState? = nil, lueurRadii: [Double] = [],
+         requiresAttentionOnField: Bool = false, fieldTolerance: Double = 0) {
         self.currents = currents
         self.veils = veils
         self.veilleuses = veilleuses
@@ -45,6 +47,7 @@ struct LevelEnvironment: Hashable, Sendable {
         self.waves = []
         self.sleepers = sleepers
         self.gouffres = gouffres
+        self.balises = balises
         self.lueurRadii = lueurRadii
         self.requiresAttentionOnField = requiresAttentionOnField
         self.fieldTolerance = fieldTolerance

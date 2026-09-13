@@ -45,4 +45,8 @@ enum GameEvent: Hashable, Sendable {
     /// Chapter X: a well swallowed the lueur; the well sent it back to its start.
     case lueurSwallowed(sequence: Int)
     case lueurReturned(sequence: Int)
+    /// PROTOTYPE (chapter I level 6): a balise woke (step index in the thread); the thread is complete; a latent lueur appeared.
+    case baliseLit(balise: Int, step: Int)
+    case balisesCompleted
+    case lueurReleased(sequence: Int)
 }

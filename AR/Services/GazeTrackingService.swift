@@ -38,10 +38,12 @@ struct RawGazeSample: Hashable, Sendable {
     let blinkLeft: Double
     let blinkRight: Double
     let hasBlendShapes: Bool
+    /// PROTOTYPE observation (head pose, eye geometry) for DEBUG traces; nil from the simulator and in tests. Not read by the mapping.
+    let observation: GazeObservation?
 
     init(timestamp: TimeInterval, planeHit: SIMD2<Double>?, eyeOrigin: SIMD3<Double>, eyeSeparation: Double,
          userRight: SIMD2<Double>, deviceUp: SIMD2<Double>, faceUp: SIMD2<Double>,
-         blinkLeft: Double, blinkRight: Double, hasBlendShapes: Bool) {
+         blinkLeft: Double, blinkRight: Double, hasBlendShapes: Bool, observation: GazeObservation? = nil) {
         self.timestamp = timestamp
         self.planeHit = planeHit
         self.eyeOrigin = eyeOrigin
@@ -52,6 +54,7 @@ struct RawGazeSample: Hashable, Sendable {
         self.blinkLeft = blinkLeft
         self.blinkRight = blinkRight
         self.hasBlendShapes = hasBlendShapes
+        self.observation = observation
     }
 
     var faceDistance: Double { simd_length(eyeOrigin) }

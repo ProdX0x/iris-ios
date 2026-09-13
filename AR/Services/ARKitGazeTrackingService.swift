@@ -131,7 +131,8 @@ final class ARKitGazeTrackingService: NSObject, GazeTrackingService {
                                    faceUp: faceUp,
                                    blinkLeft: blinkLeft,
                                    blinkRight: blinkRight,
-                                   hasBlendShapes: !blendShapes.isEmpty)
+                                   hasBlendShapes: !blendShapes.isEmpty,
+                                   observation: Self.observation(anchorToView: anchorToView, leftEye: leftEye, rightEye: rightEye, lookAt: lookAtView))
         latestSample = sample
         state = .tracking(faceVisible: true)
         onSample?(sample)

@@ -20,6 +20,9 @@ struct HistoricalCampaignFingerprintTests {
 
     /// SHA-256 of the sources that the expansion must never change: the six historical chapters, the Gaze Engine,
     /// the gaze filter and the physics integrator. Any legitimate change must be deliberate and update this table.
+    /// PROTOTYPE branch (chapter I level 6): `GazeTrackingService.swift` and `ARKitGazeTrackingService.swift` were
+    /// re-hashed after one additive change each, an optional `observation` (head pose, eye geometry) that nothing in
+    /// the gaze computation reads; no threshold, filter, mapping or state behaviour changed (README, prototype section).
     static let frozenSources: [String: String] = [
         "AR/Calibration/AffineTransform2D.swift": "358b3235b9d2601a0057da899d2fb670d89befc5e41156fe961137c8b166ffe9",
         "AR/Calibration/AxisMapping.swift": "4aafc40399ebfaaef2213f5f43185e052cefcd2b461dad03cc0079fbc775e9f7",
@@ -37,10 +40,10 @@ struct HistoricalCampaignFingerprintTests {
         "AR/Calibration/NormalizedCoordinates.swift": "23d95ae7c14de0e91142e69e330a82c90006a4aca0cd4c9784d37abadfb444d9",
         "AR/Calibration/RobustAggregator.swift": "a7b66f5ed18601dd18845acfae0ec4c27cc1938d79f2c6248a3fb78983e3e7df",
         "AR/Projection/GazeRay.swift": "7e10dbfc01f549c18ae0e4575fb85e499b65fd5fb952acdf619cf69afe1d30f7",
-        "AR/Services/ARKitGazeTrackingService.swift": "4bc25f3aeb44ca144391d5ddeabd49a79a09850695ef9a1f43a04589dd1893da",
+        "AR/Services/ARKitGazeTrackingService.swift": "05f2d7f2f364c48da0b115ed55e6b15ea2b2f983cf67f0cc703a4be610fa45cc",
         "AR/Services/CameraAuthorizationService.swift": "84337ff6957b8decd5e703be995386467cc34a3310ccba4b66a8dcdf78c1f3f4",
         "AR/Services/DeviceCapabilities.swift": "aaf35bcce665d7e6cedba423948898b5994218b4f0172301f9680ff11863c3bb",
-        "AR/Services/GazeTrackingService.swift": "1ba149093186bc9f1e1c5460ff2a9ae90046b2ae1ee01db6f1c57b2e4cd1b868",
+        "AR/Services/GazeTrackingService.swift": "bb319fd4e4340e51462e99045ed0b38fa54a5f7d72e93b27c8138a2b30236432",
         "AR/Services/InterfaceOrientationProvider.swift": "ca7e8439fa236446e9d3af74e66fd4a11f06868c0d108d8810f3b88c45816766",
         "AR/Services/SimulatedGazeTrackingService.swift": "d16b5dd7d0ee423ce85addf40aef0f0d21143b45daf82d05a7283a0653aa98a7",
         "Domain/Campaign/Campaign+Clairvoyance.swift": "2d9f0f2b3b4680bd1b3313667ae23b2b65504018001ca75c2bf3856ff654868d",
@@ -101,6 +104,7 @@ struct HistoricalCampaignFingerprintTests {
             #expect(!level.hasBraises && !level.isExperimental, "\(level.id)")
             #expect(level.lueurs.allSatisfy { $0.braise == nil && $0.twin == nil && !$0.asleep }, "\(level.id)")
             #expect(!level.hasTwins && level.souffles.isEmpty && level.echo == nil && !level.hasSleepers && level.gouffres.isEmpty, "\(level.id)")
+            #expect(level.balises == nil && level.gatesProgression, "\(level.id)")
         }
         #expect(Campaign.chapters.dropFirst(6).allSatisfy { !$0.isHistorical })
     }

@@ -35,7 +35,8 @@ struct LaunchOptionsTests {
         let through = LaunchOptions.progress(for: .through("2-1"))
         let all = LaunchOptions.progress(for: .all)
 
-        #expect(through.completedCount(in: Campaign.levels) == 6)
+        // PROTOTYPE branch: the optional level 1-6 precedes 2-1, so seven levels are completed.
+        #expect(through.completedCount(in: Campaign.levels) == 7)
         #expect(through.nextLevel(in: Campaign.levels)?.id == "2-2")
         #expect(all.nextLevel(in: Campaign.levels) == nil)
         let counts = Set(Campaign.levels.map { all.record(for: $0).eclats.count })

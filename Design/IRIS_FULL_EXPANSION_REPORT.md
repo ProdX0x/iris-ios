@@ -53,7 +53,7 @@ Les pars suivent la formule historique (`temps = arrondi(1,8 × bot + 6)`, `intr
 
 ## 4. Infrastructure partagée (commit `19f2b1c`)
 
-`Campaign.historicalChapters` + `Campaign.expansionChapters` ; `ChapterTheme` et `DSThemePalette` (lavis de fond, accent, halo ; `chambreNoire` rend exactement comme avant) ; file d'impulsions par cible dans `GameSession` ; numéraux jusqu'à XX ; fin de parcours et éclats dynamiques (66 niveaux, 198 éclats) ; tests d'empreinte et de sources gelées.
+`Campaign.historicalChapters` + `Campaign.expansionChapters` ; `ChapterTheme` et `DSThemePalette` (lavis de fond, accent, halo ; `chambreNoire` rend exactement comme avant) ; file d'impulsions par cible dans `GameSession` ; numéraux jusqu'à XX ; fin de parcours et éclats dynamiques (70 niveaux, 210 éclats ; les chiffres 66 / 198 des versions taguées étaient une erreur d'addition) ; tests d'empreinte et de sources gelées.
 
 ## 5. Le simulateur de joueur
 

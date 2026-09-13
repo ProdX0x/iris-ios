@@ -24,6 +24,9 @@ enum HintTrigger: Hashable, Sendable {
     case firstWake
     /// Chapter X: the first time a well swallows a lueur.
     case firstSwallow
+    /// PROTOTYPE: the first balise woke; the whole thread is complete.
+    case firstBalise
+    case balisesCompleted
 }
 
 struct LevelHint: Hashable, Sendable {

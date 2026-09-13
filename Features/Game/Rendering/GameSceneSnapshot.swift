@@ -30,11 +30,16 @@ struct LueurSnapshot: Hashable, Sendable {
     /// Chapter X: 0...1 progress of the swallow while held in a well; 0...1 progress of the reappearance at the start.
     let swallow: Double?
     let rebirth: Double?
+    /// PROTOTYPE: latent (unseen, still) while the thread of balises is incomplete; `awakening` is the thread's progress
+    /// that opens the shut iris little by little.
+    let isLatent: Bool
+    let awakening: Double?
 
     init(sequence: Int, position: Vector2, radius: Double, arrival: Vector2, irisRadius: Double, progress: Double,
          isValidated: Bool, isIrisOpen: Bool, disturbance: Double, temperament: Temperament, heat: Double? = nil, isFlaring: Bool = false,
          poste: Vector2? = nil, partner: Vector2? = nil, isLinked: Bool = false, isCarried: Bool = false,
-         isAsleep: Bool = false, echoes: Bool = false, swallow: Double? = nil, rebirth: Double? = nil) {
+         isAsleep: Bool = false, echoes: Bool = false, swallow: Double? = nil, rebirth: Double? = nil,
+         isLatent: Bool = false, awakening: Double? = nil) {
         self.sequence = sequence
         self.position = position
         self.radius = radius
@@ -55,9 +60,32 @@ struct LueurSnapshot: Hashable, Sendable {
         self.echoes = echoes
         self.swallow = swallow
         self.rebirth = rebirth
+        self.isLatent = isLatent
+        self.awakening = awakening
     }
 
     var isTwin: Bool { poste != nil }
+}
+
+/// PROTOTYPE: one balise of the thread.
+struct BaliseSnapshot: Hashable, Sendable {
+    let position: Vector2
+    /// Gaze distance that counts as looking at it.
+    let radius: Double
+    let isActive: Bool
+    let isLit: Bool
+    /// Seconds since it last woke, nil if never.
+    let litAge: TimeInterval?
+}
+
+/// PROTOTYPE: one segment of the thread, growing from the previous balise to the designated one.
+struct BaliseThreadSnapshot: Hashable, Sendable {
+    let from: Vector2
+    let to: Vector2
+    /// Seconds since the segment started growing.
+    let age: TimeInterval
+    /// True once the balise at `to` woke.
+    let isComplete: Bool
 }
 
 /// Chapter X: a well.
@@ -106,14 +134,21 @@ struct VeilleuseSnapshot: Hashable, Sendable {
     let isLow: Bool
 }
 
-/// Diagnostic gaze points: uncalibrated (nominal) and calibrated but unfiltered positions.
+/// Diagnostic gaze points: uncalibrated (nominal) and calibrated but unfiltered positions; PROTOTYPE: the edge of the
+/// last observable direction while the gaze is outside the viewport or invalid (DEBUG indicator, never the warning).
 struct GazeDiagnostics: Hashable, Sendable {
+    enum Edge: String, Hashable, Sendable {
+        case left, right, top, bottom
+    }
+
     var raw: Vector2?
     var calibrated: Vector2?
+    var edge: Edge?
 
-    init(raw: Vector2? = nil, calibrated: Vector2? = nil) {
+    init(raw: Vector2? = nil, calibrated: Vector2? = nil, edge: Edge? = nil) {
         self.raw = raw
         self.calibrated = calibrated
+        self.edge = edge
     }
 }
 
@@ -133,6 +168,9 @@ struct GameSceneSnapshot: Hashable, Sendable {
     var echoReach: Double?
     /// Chapter X: wells.
     var gouffres: [GouffreSnapshot]
+    /// PROTOTYPE: the thread of balises.
+    var balises: [BaliseSnapshot]
+    var baliseThreads: [BaliseThreadSnapshot]
     /// Designer routes (help), empty until the help delay elapsed.
     var routes: [[Vector2]]
     var isSequential: Bool
@@ -156,6 +194,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
         waves = []
         echoReach = nil
         gouffres = []
+        balises = []
+        baliseThreads = []
         routes = []
         isSequential = false
         time = 0
@@ -189,7 +229,23 @@ struct GameSceneSnapshot: Hashable, Sendable {
                           isAsleep: session.isAsleep(targetAt: index),
                           echoes: session.echo != nil && !session.isAsleep(targetAt: index) && session.twins[index] == nil,
                           swallow: session.swallows[index]?.progress(at: session.elapsed),
-                          rebirth: session.returns[index].flatMap { session.elapsed - $0 < 0.5 ? (session.elapsed - $0) / 0.5 : nil })
+                          rebirth: Self.rebirth(session: session, index: index),
+                          isLatent: session.areLueursLatent,
+                          awakening: session.balises.map(\.progress))
+        }
+        balises = []
+        baliseThreads = []
+        if let thread = session.balises {
+            balises = thread.positions.indices.map { index in
+                BaliseSnapshot(position: thread.positions[index], radius: thread.radius, isActive: thread.activeBalise == index,
+                               isLit: thread.litAt[index] != nil, litAge: thread.litAt[index].map { session.elapsed - $0 })
+            }
+            let lastStep = thread.isComplete ? thread.steps.count - 1 : thread.currentStep
+            baliseThreads = (1...max(1, lastStep)).compactMap { step in
+                guard step <= lastStep, step < thread.steps.count, step - 1 < thread.stepTimes.count else { return nil }
+                return BaliseThreadSnapshot(from: thread.positions[thread.steps[step - 1]], to: thread.positions[thread.steps[step]],
+                                            age: session.elapsed - thread.stepTimes[step - 1], isComplete: step < thread.currentStep)
+            }
         }
         gouffres = session.gouffres.map { GouffreSnapshot(center: $0.center, radius: $0.radius, pullRadius: $0.pullRadius) }
         echoReach = session.echo?.radius
@@ -233,5 +289,12 @@ struct GameSceneSnapshot: Hashable, Sendable {
         self.theme = theme
         gaze = showsGaze ? session.gaze.position : nil
         self.diagnostics = showsGaze ? diagnostics : nil
+    }
+
+    /// Chapter X return to the start, or PROTOTYPE release from latency: a 0...1 bloom during half a second.
+    private static func rebirth(session: GameSession, index: Int) -> Double? {
+        let moments = [session.returns[index], session.releasedAt].compactMap { $0 }
+        guard let last = moments.max(), session.elapsed - last < 0.5 else { return nil }
+        return (session.elapsed - last) / 0.5
     }
 }

@@ -27,10 +27,12 @@ struct CampaignProgress: Codable, Hashable, Sendable {
         record(for: level).isCompleted
     }
 
-    /// The first level is always open; any other opens once the level before it (campaign order) is completed.
+    /// The first level is always open; any other opens once the last gating level before it (campaign order) is
+    /// completed. An optional level (`gatesProgression == false`) never holds the levels after it.
     func isUnlocked(_ level: LevelDefinition, in campaign: [LevelDefinition]) -> Bool {
         guard let index = campaign.firstIndex(where: { $0.id == level.id }) else { return false }
-        return index == 0 || isCompleted(campaign[index - 1])
+        guard let gate = campaign[..<index].last(where: \.gatesProgression) else { return true }
+        return isCompleted(gate)
     }
 
     func isUnlocked(_ chapter: ChapterDefinition, in campaign: [LevelDefinition]) -> Bool {

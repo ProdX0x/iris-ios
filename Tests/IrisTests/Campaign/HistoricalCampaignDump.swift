@@ -146,6 +146,9 @@ enum HistoricalCampaignDump {
         case .lueurWoken: "woken"
         case .lueurSwallowed: "swallowed"
         case .lueurReturned: "returned"
+        case .baliseLit: "baliseLit"
+        case .balisesCompleted: "balisesCompleted"
+        case .lueurReleased: "released"
         }
     }
 

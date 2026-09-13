@@ -582,9 +582,15 @@ Statut : **TECHNIQUEMENT VALIDÉ / À JOUER HUMAINEMENT**. Chapitres 1 à 6 / 34
 
 | Étape | Résultat |
 |---|---|
-| Campagne | 12 chapitres, 66 niveaux, 198 éclats |
+| Campagne | 12 chapitres, 70 niveaux, 210 éclats (les chiffres 66 / 198 figurant dans les versions taguées étaient une erreur d'addition) |
 | Commits | infrastructure partagée puis un commit par chapitre (`19f2b1c`, `6d17731`, `ae0ef43`, `393a566`, `31ed0f7`, `d90f117`, `8282ffd`) |
 | Tests | 298 exécutés, 298 réussis (simulateur iPhone 17 Pro) |
 | Audit | C1, C2, C8, C9, C10, C12 pass |
 | Debug simulateur / Release iOS signé | BUILD SUCCEEDED |
 | `main`, `baseline/iris-expansion-validated`, `baseline-expansion-v1` | intacts |
+
+## 20. Prototype oculomoteur — chapitre I, niveau 6 (branche `prototype/ch1-oculomotor-level6`, 14 septembre 2026)
+
+Depuis le tag `iris-expansion-human-validated-v1` : un seul niveau optionnel ajouté au chapitre I, « le fil des balises » (centre, droite, gauche, centre, haut, bas, centre, puis droite/gauche ×2, haut/bas ×2, centre ; dwell 0,25 s ; zone 0,2 du petit côté). Instrumentation DEBUG seule (`OculomotorTrace`) : états VALID_INSIDE / VALID_OUTSIDE / INVALID tels que le mapper les fournit, sorties de viewport sans position inventée, transitions (acquisition, dwell, yaw/pitch de tête), indicateur de bord qui complète l'avertissement historique sans le remplacer. Détails et protocole du test humain : `Design/OCULOMOTOR_LEVEL6_PROTOTYPE.md`.
+
+Gaze Engine : aucun calcul modifié ; deux fichiers `AR/` reçoivent un champ optionnel d'observation (pose de tête, géométrie oculaire) et leurs SHA-256 gelés sont mis à jour délibérément pour cette seule raison. Niveaux 1–5, chapitres II–XII, calibration, avertissement de décrochage : inchangés et testés. Statut : **PROTOTYPE, À TESTER HUMAINEMENT**.

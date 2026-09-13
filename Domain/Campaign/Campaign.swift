@@ -12,7 +12,8 @@ enum Campaign {
     /// Chapters VII and beyond, played after the historical campaign in the same progression.
     static let expansionChapters: [ChapterDefinition] = [jumelles, souffles, echos, gouffres, braises, constellation]
 
-    static let chapters: [ChapterDefinition] = historicalChapters + expansionChapters
+    /// PROTOTYPE branch: chapter I is played with its sixth, optional level; the frozen `historicalChapters` are untouched.
+    static let chapters: [ChapterDefinition] = [eveilAvecPrototype] + historicalChapters.dropFirst() + expansionChapters
 
     static let historicalLevels: [LevelDefinition] = historicalChapters.flatMap(\.levels)
 

@@ -20,9 +20,11 @@ Registry of every source file in the project. One row per file. Updated by every
 | AR/Calibration/NormalizedCoordinates.swift | enum | AR | Conversions between viewport points and resolution-independent 0...1 coordinates | Claude (mission Iris) |
 | AR/Calibration/RobustAggregator.swift | enum | AR | Median-based fixation estimate with MAD outlier rejection, so a blink or a glance never skews a point | Claude (mission Iris) |
 | AR/Projection/GazeRay.swift | enum | AR | Intersection of the eye-to-lookAtPoint ray with the device plane (z = 0 of the interface-oriented camera | Claude (mission Iris) |
+| AR/Services/ARKitGazeTrackingService+Observation.swift | - | AR | PROTOTYPE observation only: derives head yaw, pitch and roll from the face anchor's rotation in the view | Claude (mission Iris) |
 | AR/Services/ARKitGazeTrackingService.swift | class | AR | ARFaceTrackingConfiguration session producing raw metric gaze samples in the interface-oriented | Claude (mission Iris) |
 | AR/Services/CameraAuthorizationService.swift | enum | AR | Camera permission status and request, abstracted from AVFoundation | Claude (mission Iris) |
 | AR/Services/DeviceCapabilities.swift | protocol | AR | Hardware capability probe (TrueDepth face tracking) behind a protocol for tests and previews | Claude (mission Iris) |
+| AR/Services/GazeObservation.swift | struct | AR | PROTOTYPE observation only: head orientation and eye geometry ARKit already provides for every frame, | Claude (mission Iris) |
 | AR/Services/GazeTrackingService.swift | enum | AR | Abstraction over gaze acquisition. Produces raw, metric samples; calibration and mapping happen downstream. | Claude (mission Iris) |
 | AR/Services/InterfaceOrientationProvider.swift | protocol | AR | The interface orientation actually used by the foreground window scene, never a hard-coded value | Claude (mission Iris) |
 | AR/Services/SimulatedGazeTrackingService.swift | class | AR | Pointer-driven or scripted gaze for the simulator, previews and tests (no camera involved) | Claude (mission Iris) |
@@ -62,6 +64,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Tokens/DSRadius.swift | enum | DesignSystem | Corner radius scale | Claude (mission Iris) |
 | DesignSystem/Tokens/DSSpacing.swift | enum | DesignSystem | Spacing scale on a 4 pt grid | Claude (mission Iris) |
 | DesignSystem/Tokens/DSThemePalette.swift | struct | DesignSystem | The few colours a chapter identity adds to the chambre noire: its attention accent, its glow, and the | Claude (mission Iris) |
+| Domain/Campaign/BaliseSequenceDefinition.swift | struct | Domain | PROTOTYPE (chapter I level 6): balises wake under a brief, steady gaze, one after the other along a | Claude (mission Iris) |
 | Domain/Campaign/BraiseDefinition.swift | struct | Domain | EXPERIMENTAL (prototype B1, not in the campaign): tuning of a braise, a cold lueur that the gaze warms and | Claude (mission Iris) |
 | Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Braises.swift | - | Domain | Chapter XI, Braises: the cold lueur that a brief gaze wakes (tuning A, human-validated and frozen), met | Claude (mission Iris) |
@@ -72,6 +75,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Gouffres.swift | - | Domain | Chapter X, Gouffres: wells pull what comes near and send what they swallow back to its start; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Jumelles.swift | - | Domain | Chapter VII, Jumelles: twin lueurs have no iris, each is the iris of the other; bring them within reach | Claude (mission Iris) |
+| Domain/Campaign/Campaign+Oculomoteur.swift | - | Domain | PROTOTYPE, branch prototype/ch1-oculomotor-level6 only: chapter I level 6, a thread of balises around a | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Partage.swift | - | Domain | Chapter II, Partage: order, crossing, guard, cascade, three lueurs | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Souffles.swift | - | Domain | Chapter VIII, Souffles: a gust travels its track periodically and carries what it crosses over the veils; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Veilleuses.swift | - | Domain | Chapter V, Veilleuses: look at something without disturbing the rest | Claude (mission Iris) |
@@ -123,6 +127,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Chapters/ChapterCard.swift | struct | Presentation | One chapter on the map: numeral, name, principle, level nodes, progress; locked state | Claude (mission Iris) |
 | Features/Chapters/ChaptersView.swift | struct | Presentation | The map: every chapter, its levels and éclats; choose a level to play | Claude (mission Iris) |
 | Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed | Claude (mission Iris) |
+| Features/Game/Diagnostics/OculomotorTrace.swift | class | Presentation | PROTOTYPE (chapter I level 6): observes, never steers. Classifies every gaze sample (VALID_INSIDE, | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneRenderer.swift | struct | Presentation | Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics, | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneSnapshot.swift | struct | Presentation | Plain values copied from the session once per frame; the only thing the canvas reads | Claude (mission Iris) |
 | Features/Game/ViewModels/GameNavigating.swift | protocol | Presentation | Intents and progress reports emitted by the game screen | Claude (mission Iris) |
@@ -156,6 +161,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Campaign/ResolvedLevel.swift | struct | GameEngine | A campaign level turned into engine values for one playfield size | Claude (mission Iris) |
 | GameEngine/Clock/GameClock.swift | protocol | GameEngine | Frame source abstraction: delivers deltaTime ticks to the game loop | Claude (mission Iris) |
 | GameEngine/Clock/ManualGameClock.swift | class | GameEngine | Deterministic clock driven by tests and previews | Claude (mission Iris) |
+| GameEngine/Environment/BaliseSequenceState.swift | struct | GameEngine | PROTOTYPE (chapter I level 6) resolved thread of balises: only the balise the thread designates can wake, | Claude (mission Iris) |
 | GameEngine/Environment/BraiseState.swift | struct | GameEngine | EXPERIMENTAL (prototype B1): resolved braise and its heat; lit with hysteresis, flaring above a threshold | Claude (mission Iris) |
 | GameEngine/Environment/CurrentField.swift | struct | GameEngine | R-24 resolved current: an axis-aligned band applying a constant impulse | Claude (mission Iris) |
 | GameEngine/Environment/EchoField.swift | struct | GameEngine | Chapter IX resolved echo: the reach, speed, breathing interval and launch of the rings that closing irises | Claude (mission Iris) |
@@ -207,6 +213,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/JumellesTests.swift | struct | Tests | Chapter VII, jumelles: twin rules in the engine (reach hysteresis, mutual iris, poste, validation), | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelLabTests.swift | struct | Tests | Prints the measured table of every campaign level (design tool; always passes) | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CampaignProgressTests.swift | struct | Tests | Éclats, records and unlock rules of the campaign | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CascadeRuleTests.swift | struct | Tests | R-11 losing a validation invalidates every higher rank, never a lower one | Claude (mission Iris) |
@@ -234,3 +241,4 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |

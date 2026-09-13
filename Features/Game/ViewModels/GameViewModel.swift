@@ -67,6 +67,12 @@ final class GameViewModel {
     @ObservationIgnored private let autoplay: Bool
     @ObservationIgnored private weak var navigator: (any GameNavigating)?
     @ObservationIgnored private let logger = Logger(subsystem: "net.steve-s.iris", category: "game")
+    #if DEBUG
+    /// PROTOTYPE (chapter I level 6): observation-only trace; nil for every other level. Never steers the game.
+    @ObservationIgnored private(set) var oculoTrace: OculomotorTrace?
+    /// One DEBUG line for the HUD diagnostics (shown only with the gaze indicator).
+    private(set) var oculoStatus: String?
+    #endif
 
     init(level: LevelDefinition,
          gaze: any GazeTrackingService,
@@ -295,6 +301,9 @@ final class GameViewModel {
             faceLostDuration = 0
         }
         let events = session.advance(by: deltaTime)
+        #if DEBUG
+        oculoTrace?.observeTick(session: session, events: events)
+        #endif
         if settings.soundEffectsEnabled {
             for cue in cuePolicy.cues(for: events, at: session.elapsed) {
                 audio.apply(cue)
@@ -370,6 +379,10 @@ final class GameViewModel {
         hapticPolicy.reset()
         faceLostDuration = 0
         levelInProgress = false
+        #if DEBUG
+        oculoTrace = definition.balises.map { OculomotorTrace(names: $0.balises.map(\.name)) }
+        oculoStatus = nil
+        #endif
         refreshSnapshot()
         navigator?.gameDidStart(level: definition)
     }
@@ -439,14 +452,25 @@ final class GameViewModel {
 
     private func handleGazeSample(_ sample: RawGazeSample) {
         guard let mapper else { return }
+        let mapped = mapper.screenPoint(sample)
+        #if DEBUG
+        if let oculoTrace {
+            oculoTrace.observeSample(mapped: mapped, sample: sample, bounds: bounds)
+            if settings.showsGazeIndicator { oculoStatus = oculoTrace.statusLine }
+        }
+        #endif
         if settings.showsGazeIndicator {
-            diagnostics = GazeDiagnostics(raw: mapper.rawScreenPoint(sample), calibrated: mapper.screenPoint(sample))
+            var edge: GazeDiagnostics.Edge?
+            #if DEBUG
+            edge = oculoTrace?.lastEdge.flatMap { GazeDiagnostics.Edge(rawValue: $0.rawValue.lowercased()) }
+            #endif
+            diagnostics = GazeDiagnostics(raw: mapper.rawScreenPoint(sample), calibrated: mapped, edge: edge)
             sampleCounter += 1
             if phase != .playing, sampleCounter.isMultiple(of: 3) {
                 refreshSnapshot()
             }
         }
-        guard phase == .playing, let point = mapper.screenPoint(sample) else { return }
+        guard phase == .playing, let point = mapped else { return }
         session.ingestGaze(point)
     }
 
@@ -454,6 +478,10 @@ final class GameViewModel {
         gazeState = state
         switch state {
         case let .tracking(faceVisible):
+            #if DEBUG
+            oculoTrace?.observeFaceVisible(faceVisible)
+            if settings.showsGazeIndicator, let oculoTrace { oculoStatus = oculoTrace.statusLine }
+            #endif
             if faceVisible {
                 trackingBecameAvailable()
             }

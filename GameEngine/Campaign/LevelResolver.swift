@@ -90,6 +90,10 @@ enum LevelResolver {
                 GouffreField(center: $0.center.absolute(in: bounds), radius: $0.radius * shortSide, pullRadius: $0.pull * shortSide,
                              strength: $0.strength * scale)
             },
+            balises: definition.balises.map {
+                BaliseSequenceState(positions: $0.balises.map { $0.position.absolute(in: bounds) }, steps: $0.steps,
+                                    radius: $0.radius * shortSide, releaseRadius: $0.releaseRadius * shortSide, dwell: $0.dwell)
+            },
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)
