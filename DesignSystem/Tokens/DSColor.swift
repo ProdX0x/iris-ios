@@ -49,6 +49,9 @@ enum DSColor {
     static let themeBraisesAccent = Color("ds.theme.braises.accent")
     static let themeBraisesGlow = Color("ds.theme.braises.glow")
     static let themeBraisesWash = Color("ds.theme.braises.wash")
+    static let themeConstellationAccent = Color("ds.theme.constellation.accent")
+    static let themeConstellationGlow = Color("ds.theme.constellation.glow")
+    static let themeConstellationWash = Color("ds.theme.constellation.wash")
 
     /// Rank colours (sable, givre, orchidée), 1-based, wrapping after three. Never the only carrier of rank:
     /// rank is always drawn as pips too.

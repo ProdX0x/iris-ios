@@ -13,6 +13,7 @@ extension ChapterTheme {
         case .echo: .echo
         case .gouffres: .gouffres
         case .braises: .braises
+        case .constellation: .constellation
         }
     }
 }

@@ -66,6 +66,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Braises.swift | - | Domain | Chapter XI, Braises: the cold lueur that a brief gaze wakes (tuning A, human-validated and frozen), met | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Clairvoyance.swift | - | Domain | Chapter VI, Clairvoyance: gliding irises, then every idea combined | Claude (mission Iris) |
+| Domain/Campaign/Campaign+Constellation.swift | - | Domain | Chapter XII, Constellation: the finale weaves the ideas of chapters VII to XI together, up to the last iris, | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Echos.swift | - | Domain | Chapter IX, Échos: sleeping lueurs wake only when the echo of a closing iris reaches them; bring them within | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
@@ -198,6 +199,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/CampaignBot.swift | struct | Tests | Simulated players used to prove each level feasible (guided) and each element necessary (limited policies); | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignMeasurements.swift | struct | Tests | One shared, lazily computed simulation of every level (reused by all campaign validation tests) | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/CampaignValidationTests.swift | struct | Tests | LEVEL_DESIGN_SYSTEM.md section 6: structure, validity, feasibility, necessity, par, difference, mastery | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/ConstellationTests.swift | struct | Tests | Chapter XII, constellation: the finale combines at least two expansion ideas per level, ends the campaign on | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/EchosTests.swift | struct | Tests | Chapter IX, échos: sleepers stay still with a closed iris, the ring of a closing iris wakes and launches them | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/GouffresTests.swift | struct | Tests | Chapter X, gouffres: the pull, the swallow (held, then sent back to the start), the loss of a validated lueur, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignDump.swift | enum | Tests | Canonical text of the 34 historical levels: every authored field, their resolution on the reference phone, | Claude (mission Iris) |

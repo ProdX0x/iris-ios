@@ -18,4 +18,6 @@ enum ChapterTheme: String, Hashable, Sendable, CaseIterable {
     case gouffres
     /// Chapter XI, braises: ember orange over a burnt ink.
     case braises
+    /// Chapter XII, constellation: silver over the deepest night.
+    case constellation
 }

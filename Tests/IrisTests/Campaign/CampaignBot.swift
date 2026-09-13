@@ -190,8 +190,12 @@ private struct Brain {
         for index in ordered {
             let target = targets[index]
             if session.isCarried(targetAt: index) { continue }
-            // Chapter IX: a sleeper is brought within reach of another lueur's iris, then left to the echo.
+            // Chapter IX: a sleeper follows its route if it has one, is brought within reach of another lueur's iris,
+            // then left to the echo.
             if session.isAsleep(targetAt: index) {
+                if routeIndex[index] < resolved.routes[index].count {
+                    return pushPoint(from: target, toward: resolved.routes[index][routeIndex[index]], distance: target.attentionZone * 0.35)
+                }
                 if let aim = sleeperAim(session: session, index: index) { return aim }
                 continue
             }
@@ -238,9 +242,16 @@ private struct Brain {
     private func sleeperAim(session: GameSession, index: Int) -> Vector2? {
         guard let echo = session.echo else { return nil }
         let target = session.targets[index]
-        let sources = session.targets.indices.filter { $0 != index && !session.isAsleep(targetAt: $0) && session.twins[$0] == nil }
-        guard let source = sources.min(by: { session.targets[$0].arrival.distance(to: target.position) < session.targets[$1].arrival.distance(to: target.position) }) else { return nil }
-        let iris = session.targets[source].arrival
+        // Echo sources: the iris of every awake lueur; for twins, their rendez-vous once they are linked.
+        let sources: [Vector2] = session.targets.indices.compactMap { other in
+            guard other != index, !session.isAsleep(targetAt: other) else { return nil }
+            if let twin = session.twins[other] {
+                guard twin.isLinked, session.targets.indices.contains(twin.partner) else { return nil }
+                return (session.targets[other].position + session.targets[twin.partner].position) / 2
+            }
+            return session.targets[other].arrival
+        }
+        guard let iris = sources.min(by: { $0.distance(to: target.position) < $1.distance(to: target.position) }) else { return nil }
         let distance = target.position.distance(to: iris)
         guard distance > echo.radius * 0.72 else { return nil }
         return pushPoint(from: target, toward: iris, distance: target.attentionZone * 0.35)

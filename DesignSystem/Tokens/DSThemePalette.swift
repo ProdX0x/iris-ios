@@ -31,4 +31,6 @@ struct DSThemePalette: Hashable, Sendable {
     static let gouffres = DSThemePalette(accent: DSColor.themeGouffresAccent, glow: DSColor.themeGouffresGlow, wash: DSColor.themeGouffresWash)
     /// Chapter XI, braises: ember orange over burnt ink.
     static let braises = DSThemePalette(accent: DSColor.themeBraisesAccent, glow: DSColor.themeBraisesGlow, wash: DSColor.themeBraisesWash)
+    /// Chapter XII, constellation: silver over the deepest night.
+    static let constellation = DSThemePalette(accent: DSColor.themeConstellationAccent, glow: DSColor.themeConstellationGlow, wash: DSColor.themeConstellationWash)
 }

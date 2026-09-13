@@ -31,6 +31,7 @@ struct BraisesChapterTests {
     @Test("structure: chapter XI has six levels, each with at least one braise, the discovery level alone with one")
     func structure() {
         #expect(Array(Campaign.expansionChapters.map(\.number).prefix(5)) == [7, 8, 9, 10, 11])
+        #expect(Campaign.expansionChapters.count >= 5)
         #expect(chapter.name == "braises" && chapter.theme == .braises && chapter.numeral == "XI")
         #expect(chapter.levels.map(\.id) == ["11-1", "11-2", "11-3", "11-4", "11-5", "11-6"])
         #expect(chapter.levels[0].introduces == [.braise] && chapter.levels[0].lueurs.count == 1)
