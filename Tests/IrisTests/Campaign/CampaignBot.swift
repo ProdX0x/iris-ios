@@ -16,6 +16,8 @@ struct CampaignBot {
         case ignoresVeilleuses
         /// Looks above the phone the whole time.
         case offScreen
+        /// Chapter X: guided, but blind to the designer routes: pushes every lueur straight toward its iris.
+        case straight
     }
 
     struct Result: Hashable {
@@ -109,15 +111,15 @@ private struct Brain {
             return
         }
         advanceRoutes(session: session)
-        if policy == .guided, let flame = veilleuseToServe(session: session) {
+        if policy == .guided || policy == .straight, let flame = veilleuseToServe(session: session) {
             aim = session.veilleuses[flame].position
             return
         }
-        if policy == .guided || policy == .ignoresVeilleuses, let feed = feedAim(session: session) {
+        if policy == .guided || policy == .ignoresVeilleuses || policy == .straight, let feed = feedAim(session: session) {
             aim = feed
             return
         }
-        if policy == .guided || policy == .ignoresVeilleuses, let push = pushAim(session: session) {
+        if policy == .guided || policy == .ignoresVeilleuses || policy == .straight, let push = pushAim(session: session) {
             aim = push
             return
         }
@@ -198,6 +200,11 @@ private struct Brain {
                 continue
             }
             if let twin = session.twins[index], twin.isLinked { continue }
+            if policy == .straight {
+                // Blind to the routes: straight at the iris until close.
+                if target.distanceToArrival > 60 { return pushPoint(from: target, toward: target.arrival, distance: target.attentionZone * 0.35) }
+                continue
+            }
             if routeIndex[index] < resolved.routes[index].count {
                 return pushPoint(from: target, toward: resolved.routes[index][routeIndex[index]], distance: target.attentionZone * 0.35)
             }

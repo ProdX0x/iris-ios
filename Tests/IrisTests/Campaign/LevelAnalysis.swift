@@ -74,6 +74,7 @@ struct LevelAnalysis {
             + 0.5 * Double(definition.lueurs.filter(\.isTwin).count) / 2
             + 0.8 * Double(definition.souffles.count)
             + 0.6 * Double(definition.lueurs.filter(\.asleep).count)
+            + 0.7 * Double(definition.gouffres.count)
             + botTime / 20
     }
 
@@ -130,6 +131,7 @@ extension LevelAnalysis {
         if definition.hasTwins { skills.insert("réunir") }
         if !definition.souffles.isEmpty { skills.insert("porter") }
         if definition.hasSleepers { skills.insert("réveiller") }
+        if !definition.gouffres.isEmpty { skills.insert("esquiver") }
         return skills
     }
 
@@ -149,7 +151,7 @@ extension LevelAnalysis {
             "garde": "\(guardPressure)",
             "compétences": skills.sorted().joined(separator: "+"),
             "temps": band(botTime, 6, 10),
-            "instances": "\(definition.currents.count)-\(definition.veils.count)-\(definition.veilleuses.count)-\(definition.souffles.count)-\(definition.lueurs.filter(\.asleep).count)",
+            "instances": "\(definition.currents.count)-\(definition.veils.count)-\(definition.veilleuses.count)-\(definition.souffles.count)-\(definition.lueurs.filter(\.asleep).count)-\(definition.gouffres.count)",
             "détour": band(turning, 30, 120),
             "trajet": band(longestRoute, 1.0, 1.6),
             "iris central": hasCentralIris ? "oui" : "non",

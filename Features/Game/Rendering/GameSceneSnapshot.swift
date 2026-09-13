@@ -27,11 +27,14 @@ struct LueurSnapshot: Hashable, Sendable {
     /// Chapter IX: a sleeper not woken yet; and whether this lueur's iris is an echo source (any awake lueur's iris is).
     let isAsleep: Bool
     let echoes: Bool
+    /// Chapter X: 0...1 progress of the swallow while held in a well; 0...1 progress of the reappearance at the start.
+    let swallow: Double?
+    let rebirth: Double?
 
     init(sequence: Int, position: Vector2, radius: Double, arrival: Vector2, irisRadius: Double, progress: Double,
          isValidated: Bool, isIrisOpen: Bool, disturbance: Double, temperament: Temperament, heat: Double? = nil, isFlaring: Bool = false,
          poste: Vector2? = nil, partner: Vector2? = nil, isLinked: Bool = false, isCarried: Bool = false,
-         isAsleep: Bool = false, echoes: Bool = false) {
+         isAsleep: Bool = false, echoes: Bool = false, swallow: Double? = nil, rebirth: Double? = nil) {
         self.sequence = sequence
         self.position = position
         self.radius = radius
@@ -50,9 +53,18 @@ struct LueurSnapshot: Hashable, Sendable {
         self.isCarried = isCarried
         self.isAsleep = isAsleep
         self.echoes = echoes
+        self.swallow = swallow
+        self.rebirth = rebirth
     }
 
     var isTwin: Bool { poste != nil }
+}
+
+/// Chapter X: a well.
+struct GouffreSnapshot: Hashable, Sendable {
+    let center: Vector2
+    let radius: Double
+    let pullRadius: Double
 }
 
 /// Chapter IX: one ring in flight.
@@ -119,6 +131,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
     /// Chapter IX: rings in flight and the reach of an echo (nil when irises are silent).
     var waves: [EchoWaveSnapshot]
     var echoReach: Double?
+    /// Chapter X: wells.
+    var gouffres: [GouffreSnapshot]
     /// Designer routes (help), empty until the help delay elapsed.
     var routes: [[Vector2]]
     var isSequential: Bool
@@ -141,6 +155,7 @@ struct GameSceneSnapshot: Hashable, Sendable {
         souffles = []
         waves = []
         echoReach = nil
+        gouffres = []
         routes = []
         isSequential = false
         time = 0
@@ -172,8 +187,11 @@ struct GameSceneSnapshot: Hashable, Sendable {
                           isLinked: session.twins[index]?.isLinked ?? false,
                           isCarried: session.isCarried(targetAt: index),
                           isAsleep: session.isAsleep(targetAt: index),
-                          echoes: session.echo != nil && !session.isAsleep(targetAt: index) && session.twins[index] == nil)
+                          echoes: session.echo != nil && !session.isAsleep(targetAt: index) && session.twins[index] == nil,
+                          swallow: session.swallows[index]?.progress(at: session.elapsed),
+                          rebirth: session.returns[index].flatMap { session.elapsed - $0 < 0.5 ? (session.elapsed - $0) / 0.5 : nil })
         }
+        gouffres = session.gouffres.map { GouffreSnapshot(center: $0.center, radius: $0.radius, pullRadius: $0.pullRadius) }
         echoReach = session.echo?.radius
         waves = session.echo.map { echo in
             session.waves.map { EchoWaveSnapshot(origin: $0.origin, front: $0.front(at: session.elapsed, speed: echo.speed), reach: echo.radius) }

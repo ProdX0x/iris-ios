@@ -22,6 +22,8 @@ enum HintTrigger: Hashable, Sendable {
     case firstCarried
     /// Chapter IX: the first time an echo wakes a sleeping lueur.
     case firstWake
+    /// Chapter X: the first time a well swallows a lueur.
+    case firstSwallow
 }
 
 struct LevelHint: Hashable, Sendable {

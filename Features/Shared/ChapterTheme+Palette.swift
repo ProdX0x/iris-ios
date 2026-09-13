@@ -11,6 +11,7 @@ extension ChapterTheme {
         case .jumelles: .jumelles
         case .brume: .brume
         case .echo: .echo
+        case .gouffres: .gouffres
         }
     }
 }

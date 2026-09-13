@@ -36,7 +36,8 @@ struct AudioCuePolicy: Hashable, Sendable {
                 cues.append(.stopProgress(voice: sequence - 1))
             case .targetValidated:
                 if !completes { cues.append(.validation) }
-            case .targetLost, .veilleuseOut:
+            case .targetLost, .veilleuseOut, .lueurSwallowed:
+                // A well swallowing a lueur is a setback of the same weight as a loss: the same tone.
                 lossRequested = true
             case .levelCompleted:
                 cues.append(.levelComplete)
@@ -45,7 +46,7 @@ struct AudioCuePolicy: Hashable, Sendable {
                 // reuse the soft pulse: one idea, one sound.
                 pulseRequested = true
             case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseRelit, .braiseCooled, .braiseFlared, .twinsParted,
-                 .lueurDropped, .echoEmitted:
+                 .lueurDropped, .echoEmitted, .lueurReturned:
                 break
             }
         }

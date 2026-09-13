@@ -81,6 +81,8 @@ struct HintTracker: Hashable, Sendable {
             return events.contains { if case .lueurCarried = $0 { return true } else { return false } }
         case .firstWake:
             return events.contains { if case .lueurWoken = $0 { return true } else { return false } }
+        case .firstSwallow:
+            return events.contains { if case .lueurSwallowed = $0 { return true } else { return false } }
         }
     }
 }

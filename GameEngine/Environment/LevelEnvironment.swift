@@ -20,6 +20,8 @@ struct LevelEnvironment: Hashable, Sendable {
     var echo: EchoField?
     var waves: [EchoWave]
     var sleepers: [Int: SleeperState]
+    /// Chapter X: wells.
+    var gouffres: [GouffreField]
     /// Physical radius of each lueur (collisions with veils); empty uses the physics target radius.
     var lueurRadii: [Double]
     /// R-23: irises close while the gaze is off the playfield.
@@ -29,8 +31,9 @@ struct LevelEnvironment: Hashable, Sendable {
 
     init(currents: [CurrentField] = [], veils: [VeilSegment] = [], veilleuses: [VeilleuseState] = [],
          irisPaths: [Int: IrisPath] = [:], braises: [Int: BraiseState] = [:], twins: [Int: TwinState] = [:],
-         souffles: [SouffleField] = [], echo: EchoField? = nil, sleepers: [Int: SleeperState] = [:], lueurRadii: [Double] = [],
-         requiresAttentionOnField: Bool = false, fieldTolerance: Double = 0) {
+         souffles: [SouffleField] = [], echo: EchoField? = nil, sleepers: [Int: SleeperState] = [:],
+         gouffres: [GouffreField] = [], lueurRadii: [Double] = [], requiresAttentionOnField: Bool = false,
+         fieldTolerance: Double = 0) {
         self.currents = currents
         self.veils = veils
         self.veilleuses = veilleuses
@@ -41,6 +44,7 @@ struct LevelEnvironment: Hashable, Sendable {
         self.echo = echo
         self.waves = []
         self.sleepers = sleepers
+        self.gouffres = gouffres
         self.lueurRadii = lueurRadii
         self.requiresAttentionOnField = requiresAttentionOnField
         self.fieldTolerance = fieldTolerance
@@ -50,6 +54,16 @@ struct LevelEnvironment: Hashable, Sendable {
 
     func impulse(at point: Vector2) -> Vector2 {
         currents.reduce(Vector2.zero) { $1.contains(point) ? $0 + $1.impulse : $0 }
+    }
+
+    /// Chapter X: the pull of every well at `point` (zero for the historical chapters, which have none).
+    func pull(at point: Vector2) -> Vector2 {
+        gouffres.reduce(Vector2.zero) { $0 + $1.impulse(at: point) }
+    }
+
+    /// Chapter X: the well whose mouth holds `point`, if any.
+    func gouffre(swallowing point: Vector2) -> GouffreField? {
+        gouffres.first { $0.swallows(point) }
     }
 
     /// Chapter VIII: the gust carrying a lueur at `point`, if any.

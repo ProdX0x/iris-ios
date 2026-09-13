@@ -10,7 +10,7 @@ enum Campaign {
     static let historicalChapters: [ChapterDefinition] = [eveil, partage, courants, voiles, veilleuses, clairvoyance]
 
     /// Chapters VII and beyond, played after the historical campaign in the same progression.
-    static let expansionChapters: [ChapterDefinition] = [jumelles, souffles, echos]
+    static let expansionChapters: [ChapterDefinition] = [jumelles, souffles, echos, gouffres]
 
     static let chapters: [ChapterDefinition] = historicalChapters + expansionChapters
 

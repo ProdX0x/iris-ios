@@ -37,6 +37,9 @@ struct GameSession: Sendable {
     private static let dropDebounceSteps = 6
     /// Chapter IX: when each validated iris last breathed its echo.
     private var lastBreath: [Int: TimeInterval] = [:]
+    /// Chapter X: lueurs held inside a well, and when each was last sent back to its start (for the presentation).
+    private(set) var swallows: [Int: SwallowState] = [:]
+    private(set) var returns: [Int: TimeInterval] = [:]
 
     init(level: Level,
          bounds: PlayfieldBounds,
@@ -91,6 +94,13 @@ struct GameSession: Sendable {
         environment.sleepers[index].map { !$0.isAwake } ?? false
     }
 
+    /// Chapter X: wells, and whether the target is inside one right now.
+    var gouffres: [GouffreField] { environment.gouffres }
+
+    func isSwallowed(targetAt index: Int) -> Bool {
+        swallows[index] != nil
+    }
+
     /// How the target departs from a normal lueur: a braise by its heat, a sleeper by its sleep; neutral otherwise.
     private func behaviour(forTargetAt index: Int) -> BehaviourScale {
         if let braise = environment.braises[index] { return braise.behaviour }
@@ -110,6 +120,7 @@ struct GameSession: Sendable {
             && (environment.braises[target.sequence - 1]?.isLit ?? true)
             && (environment.twins[target.sequence - 1]?.isLinked ?? true)
             && (environment.sleepers[target.sequence - 1]?.isAwake ?? true)
+            && swallows[target.sequence - 1] == nil
     }
 
     /// Smoothed gaze input (what the reference engine's gaze listener did).
@@ -184,11 +195,33 @@ struct GameSession: Sendable {
             }
             detectIntrusion(index: index, target: target, cursor: cursor, events: &events)
 
+            // Chapter X: inside a well the lueur is held at the mouth, then sent back to its start.
+            if let swallow = swallows[index] {
+                if swallow.isOver(at: elapsed) {
+                    swallows[index] = nil
+                    returns[index] = elapsed
+                    target.position = level.targets[index].start.absolute(in: bounds)
+                    target.velocity = .zero
+                    target.holdTime = 0
+                    events.append(.lueurReturned(sequence: target.sequence))
+                } else {
+                    target.position = swallow.center
+                    target.velocity = .zero
+                    target.holdTime = 0
+                }
+                if !target.isValidated { everyTargetValidated = false }
+                targets[index] = target
+                continue
+            }
+
             let noise = noiseSources[index]
             let queued = pendingImpulses[index]
             pendingImpulses[index] = .zero
             let fieldImpulse = environment.impulse(at: target.position)
             var externalImpulse = queued == .zero ? fieldImpulse : fieldImpulse + queued
+            if !environment.gouffres.isEmpty {
+                externalImpulse += environment.pull(at: target.position)
+            }
             // Chapter VIII: a gust carries the lueur along its track and lifts it over the veils.
             let carrier = environment.souffle(carrying: target.position, at: elapsed)
             if let carrier {
@@ -201,6 +234,22 @@ struct GameSession: Sendable {
                 for veil in environment.veils {
                     veil.resolve(&target, radius: radius(ofTargetAt: index), bounceLoss: physics.bounceLoss)
                 }
+            }
+            if let well = environment.gouffre(swallowing: target.position) {
+                swallows[index] = SwallowState(center: well.center, since: elapsed)
+                target.position = well.center
+                target.velocity = .zero
+                if target.isValidated {
+                    target.isValidated = false
+                    events.append(.targetLost(sequence: target.sequence, cause: .gouffre))
+                    metrics.losses += 1
+                }
+                target.holdTime = 0
+                events.append(.lueurSwallowed(sequence: target.sequence))
+                if wasHolding { events.append(.validationProgressStopped(sequence: target.sequence)) }
+                everyTargetValidated = false
+                targets[index] = target
+                continue
             }
             if carrier != nil {
                 uncarriedSteps[index] = 0

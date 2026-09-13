@@ -2,7 +2,8 @@
 // Layer: Presentation
 // Purpose: Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics,
 // and the expansion elements in their chapter palette (VII: postes, threads and the shared iris of twins;
-// VIII: gust tracks, travelling gusts and the lift of a carried lueur; IX: echo reach, rings, sleeping lueurs)
+// VIII: gust tracks, travelling gusts and the lift of a carried lueur; IX: echo reach, rings, sleeping lueurs;
+// X: wells, swallowed and reborn lueurs)
 
 import SwiftUI
 
@@ -13,6 +14,9 @@ struct GameSceneRenderer {
         let scale = snapshot.scale
         let palette = snapshot.theme.palette
         drawCurrents(snapshot, in: &context, reduceMotion: reduceMotion)
+        for well in snapshot.gouffres {
+            drawGouffre(well, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+        }
         drawSouffleTracks(snapshot, in: &context, scale: scale, palette: palette)
         drawVeils(snapshot, in: &context)
         drawRoutes(snapshot, in: &context, scale: scale)
@@ -44,6 +48,13 @@ struct GameSceneRenderer {
             if lueur.isAsleep {
                 drawSleeper(lueur, sequential: snapshot.isSequential, time: snapshot.time, in: &context, palette: palette, reduceMotion: reduceMotion)
                 continue
+            }
+            if let swallow = lueur.swallow {
+                drawSwallowed(lueur, progress: swallow, in: &context, palette: palette)
+                continue
+            }
+            if let rebirth = lueur.rebirth {
+                drawRebirth(lueur, progress: rebirth, in: &context, palette: palette)
             }
             drawLueur(lueur, sequential: snapshot.isSequential, time: snapshot.time, in: &context, reduceMotion: reduceMotion)
             if let partner = lueur.partner {
@@ -339,6 +350,46 @@ struct GameSceneRenderer {
         if lueur.disturbance > 0.02 {
             context.stroke(circle(center, radius * 1.4), with: .color(DSColor.statusDanger.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
         }
+    }
+
+    // MARK: Gouffres (chapter X): the pull, the mouth, a swallowed lueur, a reborn lueur
+
+    private func drawGouffre(_ well: GouffreSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
+                             palette: DSThemePalette, reduceMotion: Bool) {
+        let center = CGPoint(x: well.center.x, y: well.center.y)
+        context.fill(circle(center, well.pullRadius), with: .radialGradient(Gradient(colors: [DSColor.fieldAbyss.opacity(0.9), DSColor.fieldAbyss.opacity(0)]),
+                                                                            center: center, startRadius: well.radius * 0.8, endRadius: well.pullRadius))
+        context.stroke(circle(center, well.pullRadius), with: .color(palette.accent.opacity(0.1)),
+                       style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 6 * scale]))
+        context.fill(circle(center, well.radius), with: .color(DSColor.fieldAbyss))
+        context.fill(circle(center, well.radius), with: .radialGradient(Gradient(colors: [DSColor.fieldInk.opacity(0), palette.accent.opacity(0.22)]),
+                                                                        center: center, startRadius: well.radius * 0.3, endRadius: well.radius))
+        let spin = reduceMotion ? 0 : time * 0.9
+        for ring in 0..<2 {
+            var swirl = Path()
+            let radius = well.radius * (0.55 + 0.35 * Double(ring))
+            let start = Angle.radians(spin * (ring == 0 ? 1 : -0.7) + Double(ring) * 2.1)
+            swirl.addArc(center: center, radius: radius, startAngle: start, endAngle: start + .degrees(150), clockwise: false)
+            context.stroke(swirl, with: .color(palette.accent.opacity(0.35 - 0.1 * Double(ring))), style: StrokeStyle(lineWidth: 1.2 * scale, lineCap: .round))
+        }
+        context.stroke(circle(center, well.radius), with: .color(palette.accent.opacity(0.5)), lineWidth: 1.2 * scale)
+    }
+
+    private func drawSwallowed(_ lueur: LueurSnapshot, progress: Double, in context: inout GraphicsContext, palette: DSThemePalette) {
+        let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
+        let radius = lueur.radius * (1 - progress)
+        guard radius > 0.5 else { return }
+        context.fill(circle(center, radius), with: .radialGradient(Gradient(colors: [DSColor.lueurCore.opacity(1 - progress), palette.accent.opacity(0.4 * (1 - progress))]),
+                                                                   center: center, startRadius: 0, endRadius: radius))
+    }
+
+    private func drawRebirth(_ lueur: LueurSnapshot, progress: Double, in context: inout GraphicsContext, palette: DSThemePalette) {
+        let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
+        let radius = lueur.radius * (3.2 - 2.2 * progress)
+        var glow = context
+        glow.blendMode = .plusLighter
+        glow.fill(circle(center, radius), with: .radialGradient(Gradient(colors: [palette.glow.opacity(0.35 * (1 - progress)), palette.glow.opacity(0)]),
+                                                                center: center, startRadius: 0, endRadius: radius))
     }
 
     // MARK: Veilleuse: flame and charge ring

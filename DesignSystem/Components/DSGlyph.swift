@@ -8,7 +8,7 @@ struct DSGlyph: View {
     enum Kind: Hashable, Sendable {
         case lueur, iris, ecran, temperaments, ordre, cascade, courant, voile, veilleuse, irisMouvant, inconnu
         // Expansion
-        case jumelles, souffle, dormeuse, echo
+        case jumelles, souffle, dormeuse, echo, gouffre
     }
 
     let kind: Kind
@@ -116,6 +116,15 @@ struct DSGlyph: View {
                     arc.addArc(center: c, radius: s * 0.14 * CGFloat(ring), startAngle: .degrees(-50), endAngle: .degrees(50), clockwise: false)
                     context.stroke(arc, with: .color(tint.opacity(1 - Double(ring) * 0.22)), style: stroke)
                 }
+            case .gouffre:
+                context.fill(circle(c, s * 0.42), with: .color(tint.opacity(0.12)))
+                context.fill(circle(c, s * 0.22), with: .color(tint.opacity(0.9)))
+                var swirl = Path()
+                swirl.addArc(center: c, radius: s * 0.32, startAngle: .degrees(200), endAngle: .degrees(330), clockwise: false)
+                context.stroke(swirl, with: .color(tint), style: stroke)
+                var swirl2 = Path()
+                swirl2.addArc(center: c, radius: s * 0.32, startAngle: .degrees(20), endAngle: .degrees(150), clockwise: false)
+                context.stroke(swirl2, with: .color(tint), style: stroke)
             }
         }
         .accessibilityHidden(true)
@@ -123,7 +132,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

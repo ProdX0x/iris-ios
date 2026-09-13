@@ -144,6 +144,8 @@ enum HistoricalCampaignDump {
         case .lueurDropped: "dropped"
         case .echoEmitted: "echo"
         case .lueurWoken: "woken"
+        case .lueurSwallowed: "swallowed"
+        case .lueurReturned: "returned"
         }
     }
 

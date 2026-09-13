@@ -11,6 +11,8 @@ enum LossCause: Hashable, Sendable {
     case cascade
     /// The veilleuse lighting its iris went out (R-26).
     case veilleuse
+    /// Chapter X: a well swallowed the validated lueur.
+    case gouffre
 }
 
 enum GameEvent: Hashable, Sendable {
@@ -40,4 +42,7 @@ enum GameEvent: Hashable, Sendable {
     /// Chapter IX: an iris emitted its echo (at closing, then at every breath), or an echo woke a sleeping lueur.
     case echoEmitted(sequence: Int)
     case lueurWoken(sequence: Int)
+    /// Chapter X: a well swallowed the lueur; the well sent it back to its start.
+    case lueurSwallowed(sequence: Int)
+    case lueurReturned(sequence: Int)
 }

@@ -86,6 +86,10 @@ enum LevelResolver {
             },
             echo: definition.echo.map { EchoField(definition: $0, shortSide: shortSide, scale: scale) },
             sleepers: sleepers,
+            gouffres: definition.gouffres.map {
+                GouffreField(center: $0.center.absolute(in: bounds), radius: $0.radius * shortSide, pullRadius: $0.pull * shortSide,
+                             strength: $0.strength * scale)
+            },
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)

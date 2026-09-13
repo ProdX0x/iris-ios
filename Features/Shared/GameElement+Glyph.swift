@@ -21,6 +21,7 @@ extension GameElement {
         case .souffle: .souffle
         case .dormeuse: .dormeuse
         case .echo: .echo
+        case .gouffre: .gouffre
         }
     }
 }

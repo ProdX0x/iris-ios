@@ -96,6 +96,7 @@
 		614DEA9141C58B9BD4D38395 /* HapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE54E8D7790C5496D64A180 /* HapticFeedbackService.swift */; };
 		61C97E1EB62CA5D90E388225 /* FixationSequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18756B7B93381F8C60E98CDA /* FixationSequenceTests.swift */; };
 		61E0A53D39EE75BCB37A1F04 /* LevelEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */; };
+		6263714232B5572E268A54C4 /* GouffreDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1B4022BC0498F021C11C9F /* GouffreDefinition.swift */; };
 		6266836DB1BC1C40FC2AAEA4 /* ManualGameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D242A860A1DDC94DA38992 /* ManualGameClock.swift */; };
 		6428D0B985B00FED7D1A4552 /* SouffleField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5355DB86A48BD6074C04EC /* SouffleField.swift */; };
 		67B105C8AE8C920CAF549F43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 636694E9043AC8362E68025D /* Assets.xcassets */; };
@@ -152,6 +153,7 @@
 		9CB34104705E561CEA9F5F2B /* DSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9E4FD0BD7CE4E6BB7BBF79 /* DSColor.swift */; };
 		9D6AF35F8C4B870D0BF39D0E /* AffineTransform2DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3EA6296DB64CBC82A728AD /* AffineTransform2DTests.swift */; };
 		9D914AE3CFD470F2D6C2642F /* CameraAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0051F77DFB87391146F0FBD3 /* CameraAccessView.swift */; };
+		9F14DAFF942F7136A41770B6 /* GouffreField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8765C67309C58F38118479 /* GouffreField.swift */; };
 		9F93EBD7F1C437096AD3897B /* ValidationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3831048F60D51B2C372E34 /* ValidationTransition.swift */; };
 		9FFB45F06F8CCA74858F7E6B /* DSBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3328E37D3304076752C05 /* DSBackground.swift */; };
 		A0EEED4C9F5A28A5C4A3086B /* Campaign+Souffles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD476A1C7BB5980BAF8164CD /* Campaign+Souffles.swift */; };
@@ -164,6 +166,7 @@
 		A6BD4D687B285DA80AD62AA3 /* CalibrationGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA87ADA525EF1C50F514A53 /* CalibrationGrid.swift */; };
 		A8D209598845BD95D120A68A /* LevelAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */; };
 		A905454F3E74AE290F8FC9B4 /* AVAudioEngineAudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21869BC18CBE46050B07449D /* AVAudioEngineAudioService.swift */; };
+		AE0298AECCD23734B02AB036 /* GouffresTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65998E94EF78548D5509622F /* GouffresTests.swift */; };
 		AE6CF845E898D1DA9203CA80 /* CalibrationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3408C688DE466CF6BA50D8 /* CalibrationResult.swift */; };
 		AF9F1FDA8215DA2B27A5AD5A /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678CF42FC0763D61792DB66A /* GamePhase.swift */; };
 		AFF4A970BA293855C39E764C /* ChapterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845FA0A2286891FCB6AA43F1 /* ChapterCard.swift */; };
@@ -222,6 +225,7 @@
 		EF271235E5D8A284A370EC35 /* TargetBlueprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F9EFA1251797938463FF3 /* TargetBlueprint.swift */; };
 		EF59A40D8F641231516B4F71 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9BA9D9521F318195AF37F /* GameViewModel.swift */; };
 		F061ACAD1B4536E7A15ECA36 /* GazeReadinessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD67321E82EA13C8FB030E /* GazeReadinessView.swift */; };
+		F0F844A7FAB0CBB043DFD4B8 /* Campaign+Gouffres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B14C3644D1CC0BD40FDA5A /* Campaign+Gouffres.swift */; };
 		F27A01E18C785FF02398C0AC /* ChapterDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA7A52462EA5A9FB4ABF6 /* ChapterDefinition.swift */; };
 		F28CD0767B2F07770FFCCA89 /* golden_generator.js in Resources */ = {isa = PBXBuildFile; fileRef = 9F337E175FB7D36A09AC4FE2 /* golden_generator.js */; };
 		F67BA6FF0AA1824B95510070 /* RobustAggregatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78A0A846AA1335E8897C739 /* RobustAggregatorTests.swift */; };
@@ -309,6 +313,7 @@
 		4482E9A01E77169651A8BFBF /* DSSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSSpacing.swift; sourceTree = "<group>"; };
 		44AAB1AD7637B02F6DC1DB75 /* NormalizedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedPoint.swift; sourceTree = "<group>"; };
 		454638A0938238D75DBD36A1 /* ValueNoise1D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueNoise1D.swift; sourceTree = "<group>"; };
+		46B14C3644D1CC0BD40FDA5A /* Campaign+Gouffres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Gouffres.swift"; sourceTree = "<group>"; };
 		48979C2D7ABD521591659B54 /* DSEclats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEclats.swift; sourceTree = "<group>"; };
 		48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeCalibrationStatus.swift; sourceTree = "<group>"; };
 		490735E24BFA02393F0D0DDD /* CascadeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeRule.swift; sourceTree = "<group>"; };
@@ -332,6 +337,7 @@
 		636694E9043AC8362E68025D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		642E2FC20AE137F5F1C7C8BB /* LevelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelNode.swift; sourceTree = "<group>"; };
 		6549C79EA0DA6095E4DA535C /* GazeSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupView.swift; sourceTree = "<group>"; };
+		65998E94EF78548D5509622F /* GouffresTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GouffresTests.swift; sourceTree = "<group>"; };
 		678CF42FC0763D61792DB66A /* GamePhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePhase.swift; sourceTree = "<group>"; };
 		67B2ABCFEA818E92CC86A7EC /* VeilDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilDefinition.swift; sourceTree = "<group>"; };
 		684AB828B7DC11DF78F6CE18 /* LaunchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchOptions.swift; sourceTree = "<group>"; };
@@ -447,6 +453,7 @@
 		D7BC02F89C47E8DB96F852E1 /* GazeSetupNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupNavigating.swift; sourceTree = "<group>"; };
 		D95ADD54A9E6D7BF0E893EAB /* LevelEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelEnvironmentTests.swift; sourceTree = "<group>"; };
 		DA3EA6296DB64CBC82A728AD /* AffineTransform2DTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransform2DTests.swift; sourceTree = "<group>"; };
+		DF8765C67309C58F38118479 /* GouffreField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GouffreField.swift; sourceTree = "<group>"; };
 		DF9F9EFA1251797938463FF3 /* TargetBlueprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetBlueprint.swift; sourceTree = "<group>"; };
 		DFBCA2F738EEE7481EA16C0F /* AxisMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisMapping.swift; sourceTree = "<group>"; };
 		E0B30308D08E575D6B0B7371 /* Iris.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Iris.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -472,6 +479,7 @@
 		F8D3544C9CEA112B675A5477 /* GazeSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupViewModel.swift; sourceTree = "<group>"; };
 		FA8FAC594F2F2A9AB6AE1B6B /* GazeSetupIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupIntent.swift; sourceTree = "<group>"; };
 		FBF18F3F2BCB068A2D84B1BA /* AudioCuePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCuePolicy.swift; sourceTree = "<group>"; };
+		FC1B4022BC0498F021C11C9F /* GouffreDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GouffreDefinition.swift; sourceTree = "<group>"; };
 		FD55078A574DA50FE6E06EF3 /* MockHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHapticFeedbackService.swift; sourceTree = "<group>"; };
 		FE13F17112C85D17E1AA1186 /* CarnetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarnetView.swift; sourceTree = "<group>"; };
 		FED686B31A28E49F4E7D21B7 /* NormalizedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedRect.swift; sourceTree = "<group>"; };
@@ -858,6 +866,7 @@
 				764880C619F51A22B56FF194 /* CampaignMeasurements.swift */,
 				21F4691736CD5299B0A55EC1 /* CampaignValidationTests.swift */,
 				8AC0E9AA581484A2D2EEE6A2 /* EchosTests.swift */,
+				65998E94EF78548D5509622F /* GouffresTests.swift */,
 				40FA363A9BA19D1671A16932 /* HistoricalCampaignDump.swift */,
 				49456847B3BA1C184F35F7CB /* HistoricalCampaignFingerprintTests.swift */,
 				53A0BC98410BFF04096B11A5 /* JumellesTests.swift */,
@@ -977,6 +986,7 @@
 				2C9CE1C80EBCEA72FBA91A69 /* BraiseState.swift */,
 				D193ED9955EC8AC01E8BFD47 /* CurrentField.swift */,
 				0F54241A5B401B86942BD776 /* EchoField.swift */,
+				DF8765C67309C58F38118479 /* GouffreField.swift */,
 				2A19970A39C36C9149697807 /* IrisPath.swift */,
 				00C31E58EFC736D400A95D34 /* LevelEnvironment.swift */,
 				EE5355DB86A48BD6074C04EC /* SouffleField.swift */,
@@ -1104,6 +1114,7 @@
 				F888AF8EFFC2A1C549E4C75E /* Campaign+Courants.swift */,
 				7B4B98802AAE50E44934AAEF /* Campaign+Echos.swift */,
 				B30BE49103058FBD72F88D3F /* Campaign+Eveil.swift */,
+				46B14C3644D1CC0BD40FDA5A /* Campaign+Gouffres.swift */,
 				7FC2EFA463992FCEABE705A9 /* Campaign+Jumelles.swift */,
 				369344EED837F50F922FA21E /* Campaign+Partage.swift */,
 				AD476A1C7BB5980BAF8164CD /* Campaign+Souffles.swift */,
@@ -1114,6 +1125,7 @@
 				FF953CB6D44416DA9BE1C841 /* CurrentDefinition.swift */,
 				101909F27E8BE550C7047A66 /* EchoDefinition.swift */,
 				EC86C859F466557ECCA36EC1 /* GameElement.swift */,
+				FC1B4022BC0498F021C11C9F /* GouffreDefinition.swift */,
 				18ABDF9A8FDA336DCA7ABFBF /* IrisMotion.swift */,
 				E2E34840236DEDE1EBF17AA4 /* LevelDefinition.swift */,
 				03BA17B940F074D716DFE9C6 /* LevelHint.swift */,
@@ -1381,6 +1393,7 @@
 				A2E4A71C45D05FA0B0515E49 /* GazeReadinessEvaluatorTests.swift in Sources */,
 				08C06F6328901159489B17A5 /* GazeSetupViewModelTests.swift in Sources */,
 				344026FFF7A1B09C0D52BF9E /* GoldenTrace.swift in Sources */,
+				AE0298AECCD23734B02AB036 /* GouffresTests.swift in Sources */,
 				6F7959463CC8E2A8389A2144 /* HapticCuePolicyTests.swift in Sources */,
 				B034077B0DEE687597DAD6D2 /* HintTrackerTests.swift in Sources */,
 				0ECAB898E66FE482731D2ECF /* HistoricalCampaignDump.swift in Sources */,
@@ -1439,6 +1452,7 @@
 				83CDAE28674BC59569E46E8F /* Campaign+Courants.swift in Sources */,
 				E4556BF3DE266AF3790359D2 /* Campaign+Echos.swift in Sources */,
 				88A9960936912990185C845E /* Campaign+Eveil.swift in Sources */,
+				F0F844A7FAB0CBB043DFD4B8 /* Campaign+Gouffres.swift in Sources */,
 				211A9EFA87977B4BFA94CEB7 /* Campaign+Jumelles.swift in Sources */,
 				A1EFFC4881B453FBEF3ACA94 /* Campaign+Partage.swift in Sources */,
 				A0EEED4C9F5A28A5C4A3086B /* Campaign+Souffles.swift in Sources */,
@@ -1514,6 +1528,8 @@
 				54F3AF75ABE2439CB078F310 /* GazeSetupViewModel.swift in Sources */,
 				932A363070348BD86ED50526 /* GazeTrackingService.swift in Sources */,
 				1A230293B64B2CA2CBA407C6 /* GazeVerdictView.swift in Sources */,
+				6263714232B5572E268A54C4 /* GouffreDefinition.swift in Sources */,
+				9F14DAFF942F7136A41770B6 /* GouffreField.swift in Sources */,
 				FBA819E319FE018819EE3761 /* HapticCue.swift in Sources */,
 				30F847E0F6B356F5BDC56A9C /* HapticCuePolicy.swift in Sources */,
 				614DEA9141C58B9BD4D38395 /* HapticFeedbackService.swift in Sources */,

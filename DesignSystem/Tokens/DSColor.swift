@@ -43,6 +43,9 @@ enum DSColor {
     static let themeEchoAccent = Color("ds.theme.echo.accent")
     static let themeEchoGlow = Color("ds.theme.echo.glow")
     static let themeEchoWash = Color("ds.theme.echo.wash")
+    static let themeGouffresAccent = Color("ds.theme.gouffres.accent")
+    static let themeGouffresGlow = Color("ds.theme.gouffres.glow")
+    static let themeGouffresWash = Color("ds.theme.gouffres.wash")
 
     /// Rank colours (sable, givre, orchidée), 1-based, wrapping after three. Never the only carrier of rank:
     /// rank is always drawn as pips too.

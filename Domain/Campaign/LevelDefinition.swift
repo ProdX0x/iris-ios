@@ -27,6 +27,8 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
     let souffles: [SouffleDefinition]
     /// Chapter IX: the echo of closing irises; nil means irises are silent and no lueur can be asleep.
     let echo: EchoDefinition?
+    /// Chapter X: wells.
+    let gouffres: [GouffreDefinition]
     let hints: [LevelHint]
     let par: LevelPar
 
@@ -34,7 +36,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
          ordered: Bool = false, zone: Double = 0.48, repulsionForce: Double = 2.4, attraction: Double = 0.5,
          noise: Double = 0.15, hold: TimeInterval = 0.75, lueurs: [LueurDefinition], currents: [CurrentDefinition] = [],
          veils: [VeilDefinition] = [], veilleuses: [VeilleuseDefinition] = [], souffles: [SouffleDefinition] = [],
-         echo: EchoDefinition? = nil, hints: [LevelHint] = [], par: LevelPar) {
+         echo: EchoDefinition? = nil, gouffres: [GouffreDefinition] = [], hints: [LevelHint] = [], par: LevelPar) {
         self.chapter = chapter
         self.index = index
         self.title = title
@@ -52,6 +54,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         self.veilleuses = veilleuses
         self.souffles = souffles
         self.echo = echo
+        self.gouffres = gouffres
         self.hints = hints
         self.par = par
     }
@@ -69,6 +72,7 @@ struct LevelDefinition: Hashable, Sendable, Identifiable {
         if !souffles.isEmpty { kinds.insert(.souffle) }
         if echo != nil { kinds.insert(.echo) }
         if hasSleepers { kinds.insert(.dormeuse) }
+        if !gouffres.isEmpty { kinds.insert(.gouffre) }
         return kinds
     }
 

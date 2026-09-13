@@ -32,7 +32,7 @@ struct HapticCuePolicy: Hashable, Sendable {
             switch event {
             case .targetValidated:
                 validated = true
-            case .targetLost, .veilleuseOut:
+            case .targetLost, .veilleuseOut, .lueurSwallowed:
                 lost = true
             case .levelCompleted:
                 completed = true
@@ -42,7 +42,7 @@ struct HapticCuePolicy: Hashable, Sendable {
                 stopped = true
             case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseLow, .veilleuseRelit,
                  .braiseLit, .braiseCooled, .braiseFlared, .twinsLinked, .twinsParted, .lueurCarried, .lueurDropped,
-                 .echoEmitted, .lueurWoken:
+                 .echoEmitted, .lueurWoken, .lueurReturned:
                 break
             }
         }
