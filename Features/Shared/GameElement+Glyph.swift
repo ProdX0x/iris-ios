@@ -24,6 +24,7 @@ extension GameElement {
         case .gouffre: .gouffre
         case .braise: .braise
         case .balise: .balise
+        case .coeur: .coeur
         }
     }
 }

@@ -24,6 +24,8 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case braise
     /// PROTOTYPE (chapter I level 6).
     case balise
+    // Oculomotor finals (chapters II to XII)
+    case coeur
 
     var name: String {
         switch self {
@@ -44,6 +46,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .gouffre: "gouffre"
         case .braise: "braise"
         case .balise: "balise"
+        case .coeur: "cœur de verre"
         }
     }
 
@@ -66,6 +69,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .gouffre: "Il aspire ce qui s'approche. Ce qu'il avale revient à son départ."
         case .braise: "Froide, elle dort. Un regard bref la réveille et elle fuit ; un regard long l'affole."
         case .balise: "Elle s'éveille sous un regard posé, puis tend un fil vers la suivante. Le fil complet ouvre l'iris."
+        case .coeur: "Froid, il se réchauffe sous un regard qui reste. Les étincelles autour n'attendent que votre regard pour le refroidir."
         }
     }
 }

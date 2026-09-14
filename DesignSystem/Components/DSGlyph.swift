@@ -9,6 +9,8 @@ struct DSGlyph: View {
         case lueur, iris, ecran, temperaments, ordre, cascade, courant, voile, veilleuse, irisMouvant, inconnu
         // Expansion
         case jumelles, souffle, dormeuse, echo, gouffre, braise, balise
+        // Oculomotor finals
+        case coeur
     }
 
     let kind: Kind
@@ -136,6 +138,17 @@ struct DSGlyph: View {
                 context.stroke(thread, with: .color(tint.opacity(0.55)), style: stroke)
                 context.stroke(circle(CGPoint(x: c.x + s * 0.12, y: c.y - s * 0.12), s * 0.22), with: .color(tint), style: stroke)
                 context.fill(circle(CGPoint(x: c.x + s * 0.12, y: c.y - s * 0.12), s * 0.08), with: .color(tint))
+            case .coeur:
+                var prism = Path()
+                prism.move(to: CGPoint(x: c.x, y: c.y - s * 0.4))
+                prism.addLine(to: CGPoint(x: c.x + s * 0.34, y: c.y - s * 0.1))
+                prism.addLine(to: CGPoint(x: c.x + s * 0.2, y: c.y + s * 0.38))
+                prism.addLine(to: CGPoint(x: c.x - s * 0.2, y: c.y + s * 0.38))
+                prism.addLine(to: CGPoint(x: c.x - s * 0.34, y: c.y - s * 0.1))
+                prism.closeSubpath()
+                context.fill(prism, with: .color(tint.opacity(0.2)))
+                context.stroke(prism, with: .color(tint), style: stroke)
+                context.fill(circle(c, s * 0.08), with: .color(tint))
             }
         }
         .accessibilityHidden(true)
@@ -143,7 +156,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

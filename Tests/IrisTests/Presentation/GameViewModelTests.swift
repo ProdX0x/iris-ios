@@ -240,8 +240,8 @@ struct GameViewModelTests {
     @Test("the last level of a chapter proposes the next chapter and changes the drone when the ambience is on")
     func chapterEnd() {
         settings.ambienceEnabled = true
-        // PROTOTYPE branch: chapter I ends on the optional level 6; chapter II ends on 2-5 as before.
-        let sut = makeSUT(level: restingLevel(chapter: 2, index: 5))
+        // Oculomotor expansion: every chapter ends on its optional final; chapter II ends on 2-6.
+        let sut = makeSUT(level: restingLevel(chapter: 2, index: 6))
         startPlaying(sut)
         clock.tick(frames: 50)
 

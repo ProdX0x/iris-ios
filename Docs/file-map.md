@@ -73,6 +73,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Echos.swift | - | Domain | Chapter IX, Échos: sleeping lueurs wake only when the echo of a closing iris reaches them; bring them within | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
+| Domain/Campaign/Campaign+FinalPartage.swift | - | Domain | OCULOMOTOR EXPANSION, chapter II final « le cœur de verre » (fixation stability, distractor inhibition): | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Gouffres.swift | - | Domain | Chapter X, Gouffres: wells pull what comes near and send what they swallow back to its start; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Jumelles.swift | - | Domain | Chapter VII, Jumelles: twin lueurs have no iris, each is the iris of the other; bring them within reach | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Oculomoteur.swift | - | Domain | PROTOTYPE, branch prototype/ch1-oculomotor-level6 only: chapter I level 6, a thread of balises around a | Claude (mission Iris) |
@@ -181,6 +182,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Noise/NoiseSource.swift | protocol | GameEngine | One-dimensional organic noise abstraction so the engine can be driven by deterministic or silent noise | Claude (mission Iris) |
 | GameEngine/Noise/SilentNoise.swift | struct | GameEngine | Zero noise, used by tests and previews that need fully predictable motion | Claude (mission Iris) |
 | GameEngine/Noise/ValueNoise1D.swift | struct | GameEngine | Port of `makeNoise1D`: 256 random values, smoothstep interpolation (Perlin-like value noise) | Claude (mission Iris) |
+| GameEngine/Oculo/CoeurStageState.swift | struct | GameEngine | Chapter II final: the heart warms while the gaze rests on it (hysteresis), cools while it is away; sparks | Claude (mission Iris) |
 | GameEngine/Oculo/OculoStageState.swift | struct | GameEngine | OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a | Claude (mission Iris) |
 | GameEngine/Physics/TargetPhysics.swift | struct | GameEngine | R-01...R-07 frame-rate independent integration of one target, equivalent to the reference engine at 60 Hz | Claude (mission Iris) |
 | GameEngine/Session/GameEvent.swift | enum | GameEngine | Facts produced by one engine tick, consumed by audio, haptics, hints and presentation | Claude (mission Iris) |
@@ -221,6 +223,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/JumellesTests.swift | struct | Tests | Chapter VII, jumelles: twin rules in the engine (reach hysteresis, mutual iris, poste, validation), | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelLabTests.swift | struct | Tests | Prints the measured table of every campaign level (design tool; always passes) | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoCoeurTests.swift | struct | Tests | Chapter II final « le cœur de verre »: the heart warms only under a gaze that stays, cools when it leaves, | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoStageTestSupport.swift | enum | Tests | OCULOMOTOR EXPANSION: scripted gaze runs over a level's session (a policy chooses the gaze, and the head, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CampaignProgressTests.swift | struct | Tests | Éclats, records and unlock rules of the campaign | Claude (mission Iris) |

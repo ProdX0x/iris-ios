@@ -127,6 +127,17 @@ enum OculoSceneBuilder {
 
     static func scene(for stage: OculoStageState, elapsed: TimeInterval, head: HeadPose?) -> Scene {
         switch stage {
+        case let .coeur(state):
+            var scene = Scene()
+            scene.elements.append(OculoElementSnapshot(role: .target, position: state.position, radius: state.radius, intensity: state.progress, isActive: true))
+            scene.arcs.append(OculoArcSnapshot(center: state.position, radius: state.radius * 0.55, start: -.pi / 2, end: -.pi / 2 + 2 * .pi * state.progress,
+                                               intensity: state.progress, isActive: true))
+            if let spark = state.activeDistractor(at: elapsed) {
+                let fade = max(0, 1 - spark.age / state.distractorDuration)
+                scene.elements.append(OculoElementSnapshot(role: .distractor, position: spark.position, radius: state.distractorRadius,
+                                                           intensity: fade, phase: spark.age / state.distractorDuration, index: spark.ordinal))
+            }
+            return scene
         }
     }
 }

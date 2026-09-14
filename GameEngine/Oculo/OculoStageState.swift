@@ -42,40 +42,50 @@ struct OculoImpulse: Hashable, Sendable {
 
 /// One resolved stage. Cases are added chapter by chapter; each delegates to its own state.
 enum OculoStageState: Hashable, Sendable {
+    case coeur(CoeurStageState)
 }
 
 extension OculoStageState {
     /// Resolves an authored stage on the playfield.
     init(definition: OculoStageDefinition, bounds: PlayfieldBounds, shortSide: Double, scale: Double) {
         switch definition {
+        case let .coeur(coeur): self = .coeur(CoeurStageState(definition: coeur, bounds: bounds, shortSide: shortSide))
         }
     }
 
     mutating func update(_ input: OculoInput, targets: [Target], braisesLit: [Int]) -> OculoOutcome {
         switch self {
+        case var .coeur(state):
+            let outcome = state.update(input)
+            self = .coeur(state)
+            return outcome
         }
     }
 
     var isComplete: Bool {
         switch self {
+        case let .coeur(state): state.isComplete
         }
     }
 
     /// 0...1 progress of the stage.
     var progress: Double {
         switch self {
+        case let .coeur(state): state.progress
         }
     }
 
     /// Where the ideal player looks now (nil: anywhere), for the simulated player only.
     func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
         switch self {
+        case let .coeur(state): state.position
         }
     }
 
     /// The head orientation the ideal player adopts now (nil: no preference).
     var suggestedHead: HeadPose? {
         switch self {
+        case .coeur: nil
         }
     }
 }
