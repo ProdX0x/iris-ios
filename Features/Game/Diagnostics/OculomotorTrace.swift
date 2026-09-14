@@ -211,6 +211,21 @@ final class OculomotorTrace {
             current = transition
         }
         lastTickTime = now
+        // OCULOMOTOR EXPANSION: stage successes, misses and completions, with the head pose at that moment.
+        for event in events {
+            switch event {
+            case let .oculoSuccess(stage):
+                log(String(format: "stage=%d success gazeState=%@ yaw=%@ pitch=%@", stage + 1, state.rawValue, degrees(headYaw), degrees(headPitch)))
+            case let .oculoMiss(stage):
+                log(String(format: "stage=%d miss gazeState=%@ yaw=%@ pitch=%@", stage + 1, state.rawValue, degrees(headYaw), degrees(headPitch)))
+            case let .oculoStageCompleted(stage):
+                log(String(format: "stage=%d complete at %.2fs excursions=%d", stage + 1, now, excursions.count))
+            case .oculoCompleted:
+                log(String(format: "sequence complete at %.2fs excursions=%d", now, excursions.count))
+            default:
+                break
+            }
+        }
         guard let balises = session.balises else { return }
 
         for event in events {

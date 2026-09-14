@@ -171,6 +171,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
     /// PROTOTYPE: the thread of balises.
     var balises: [BaliseSnapshot]
     var baliseThreads: [BaliseThreadSnapshot]
+    /// OCULOMOTOR EXPANSION: the current gaze stage of the level.
+    var oculo: OculoSnapshot?
     /// Designer routes (help), empty until the help delay elapsed.
     var routes: [[Vector2]]
     var isSequential: Bool
@@ -196,6 +198,7 @@ struct GameSceneSnapshot: Hashable, Sendable {
         gouffres = []
         balises = []
         baliseThreads = []
+        oculo = nil
         routes = []
         isSequential = false
         time = 0
@@ -235,6 +238,7 @@ struct GameSceneSnapshot: Hashable, Sendable {
         }
         balises = []
         baliseThreads = []
+        oculo = session.oculo.map { OculoSnapshot(sequence: $0, elapsed: session.elapsed, head: session.headPose) }
         if let thread = session.balises {
             balises = thread.positions.indices.map { index in
                 BaliseSnapshot(position: thread.positions[index], radius: thread.radius, isActive: thread.activeBalise == index,

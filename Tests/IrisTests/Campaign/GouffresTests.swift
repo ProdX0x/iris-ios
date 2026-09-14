@@ -14,7 +14,8 @@ struct GouffresTests {
 
     private var chapter: ChapterDefinition {
         guard let chapter = Campaign.chapter(number: 10) else { preconditionFailure("chapter X missing") }
-        return chapter
+        return ChapterDefinition(number: chapter.number, name: chapter.name, principle: chapter.principle, ambientFrequency: chapter.ambientFrequency,
+                                 theme: chapter.theme, levels: chapter.levels.filter(\.gatesProgression))
     }
 
     /// One lueur above a well, its iris below it, no noise: left alone it drifts straight into the mouth.

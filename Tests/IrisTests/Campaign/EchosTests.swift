@@ -14,7 +14,8 @@ struct EchosTests {
 
     private var chapter: ChapterDefinition {
         guard let chapter = Campaign.chapter(number: 9) else { preconditionFailure("chapter IX missing") }
-        return chapter
+        return ChapterDefinition(number: chapter.number, name: chapter.name, principle: chapter.principle, ambientFrequency: chapter.ambientFrequency,
+                                 theme: chapter.theme, levels: chapter.levels.filter(\.gatesProgression))
     }
 
     /// An awake lueur resting on its iris and a sleeper `apart` points away from that iris; no noise.

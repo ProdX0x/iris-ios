@@ -52,6 +52,14 @@ struct HistoricalCampaignFingerprintTests {
         "Domain/Campaign/Campaign+Partage.swift": "13e7102e71722994256bc0f8a4cbdc507316f868b508b9e43cbf31222b9f9e71",
         "Domain/Campaign/Campaign+Veilleuses.swift": "fdb63a4e6948521543e79d6033aff37bf011a50a169f885db53bbf4a2ffa57fa",
         "Domain/Campaign/Campaign+Voiles.swift": "800f7005d9338f3cdb3885049cb1f9614f4164cdf15eec3571849af7773a02b0",
+        // Human-validated chapters VII to XII and chapter I level 6 (oculomotor expansion branch): frozen as well.
+        "Domain/Campaign/Campaign+Jumelles.swift": "5fae102a59f4eded604b10b9d4eb73f29ac423c57a3991a3e4ce1579f61d03e9",
+        "Domain/Campaign/Campaign+Souffles.swift": "08551e3452bd051428927704889910df712d9ea8f2f0e1d5bab7bead707bb361",
+        "Domain/Campaign/Campaign+Echos.swift": "4df729bf64d83c8976db098ea483e0cd3e6bc09535b27edfc8a250bf202b1c7e",
+        "Domain/Campaign/Campaign+Gouffres.swift": "7b63ee242f5e9c1f57b49e3760a59e27978eb692e555beb76105a68da8bc4854",
+        "Domain/Campaign/Campaign+Braises.swift": "f11acafdbb93ca18d4a5d6248aee30287781943ee00500bb3712c7d8e2e050d4",
+        "Domain/Campaign/Campaign+Constellation.swift": "e343c0c7d44550310a293e8da1ffce4a9c6ef7b6c8376b863c5cbcbc3bc26281",
+        "Domain/Campaign/Campaign+Oculomoteur.swift": "0c257f7899f7cc161be637305bb72a49d2161b27088fbe56f211d32efb989b10",
         "GameEngine/Gaze/GazeFilter.swift": "e2b8f50ec196e3013229370c5343cc117649cf39cfed291d1bb9e38f39557693",
         "GameEngine/Physics/TargetPhysics.swift": "99e15cc5116499c7bfa443742f9b9733fda80c82b457eadb56f9b2f774ca6639",
     ]
@@ -104,7 +112,7 @@ struct HistoricalCampaignFingerprintTests {
             #expect(!level.hasBraises && !level.isExperimental, "\(level.id)")
             #expect(level.lueurs.allSatisfy { $0.braise == nil && $0.twin == nil && !$0.asleep }, "\(level.id)")
             #expect(!level.hasTwins && level.souffles.isEmpty && level.echo == nil && !level.hasSleepers && level.gouffres.isEmpty, "\(level.id)")
-            #expect(level.balises == nil && level.gatesProgression, "\(level.id)")
+            #expect(level.balises == nil && level.oculo == nil && level.gatesProgression, "\(level.id)")
         }
         #expect(Campaign.chapters.dropFirst(6).allSatisfy { !$0.isHistorical })
     }

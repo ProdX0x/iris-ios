@@ -26,6 +26,11 @@ struct ChapterDefinition: Hashable, Sendable, Identifiable {
 
     var id: Int { number }
 
+    /// The same chapter with one more level after the existing ones (the added level keeps its own index).
+    func appending(_ level: LevelDefinition) -> ChapterDefinition {
+        ChapterDefinition(number: number, name: name, principle: principle, ambientFrequency: ambientFrequency, theme: theme, levels: levels + [level])
+    }
+
     var numeral: String {
         let numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
                         "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]

@@ -14,7 +14,8 @@ struct JumellesTests {
 
     private var chapter: ChapterDefinition {
         guard let chapter = Campaign.chapter(number: 7) else { preconditionFailure("chapter VII missing") }
-        return chapter
+        return ChapterDefinition(number: chapter.number, name: chapter.name, principle: chapter.principle, ambientFrequency: chapter.ambientFrequency,
+                                 theme: chapter.theme, levels: chapter.levels.filter(\.gatesProgression))
     }
 
     /// Two twins alone on an open field, no noise, gaze parked far away.

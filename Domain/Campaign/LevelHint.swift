@@ -27,6 +27,10 @@ enum HintTrigger: Hashable, Sendable {
     /// PROTOTYPE: the first balise woke; the whole thread is complete.
     case firstBalise
     case balisesCompleted
+    /// OCULOMOTOR EXPANSION: first success of a stage, first miss, the whole sequence complete.
+    case firstOculoSuccess
+    case firstOculoMiss
+    case oculoCompleted
 }
 
 struct LevelHint: Hashable, Sendable {

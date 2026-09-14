@@ -54,6 +54,7 @@ struct CampaignBot {
         for index in 0..<frames {
             if index % 6 == 0 { brain.decide(session: session) }
             session.ingestGaze(brain.gazeSample())
+            session.ingestHeadPose(brain.head)
             let events = session.advance(by: frame)
             observe?(session, brain.aim, events)
             if session.isComplete {
@@ -73,6 +74,8 @@ private struct Brain {
     var jitter = Vector2.zero
     var routeIndex: [Int]
     var servingVeilleuse: Int?
+    /// OCULOMOTOR EXPANSION: the head the ideal player adopts (the stage's oracle), nil for every other policy.
+    var head: HeadPose?
     /// Chapter VIII: where each gust track crosses a veil (the pickup point of the ferry), by gust index.
     let crossings: [(souffle: Int, veil: Int, point: Vector2, tangent: Vector2)]
 
@@ -115,6 +118,16 @@ private struct Brain {
         if policy != .avoidance, let thread = session.balises, let active = thread.activeBalise {
             aim = thread.positions[active]
             return
+        }
+        // OCULOMOTOR EXPANSION: the ideal player follows the stage's oracle, gaze and head.
+        if policy != .avoidance, let oculo = session.oculo, !oculo.isComplete {
+            head = oculo.suggestedHead
+            if let suggested = oculo.suggestedGaze(at: session.elapsed) {
+                aim = suggested
+                return
+            }
+        } else {
+            head = nil
         }
         if policy == .guided || policy == .straight, let flame = veilleuseToServe(session: session) {
             aim = session.veilleuses[flame].position

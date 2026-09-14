@@ -45,6 +45,9 @@ struct GameSceneRenderer {
         for balise in snapshot.balises {
             drawBalise(balise, time: snapshot.time, in: &context, scale: scale, reduceMotion: reduceMotion)
         }
+        if let oculo = snapshot.oculo, !oculo.isComplete {
+            drawOculo(oculo, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+        }
         for lueur in snapshot.lueurs {
             if lueur.isLatent {
                 if let rebirth = lueur.rebirth {

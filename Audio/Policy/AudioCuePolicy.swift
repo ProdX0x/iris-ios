@@ -34,20 +34,20 @@ struct AudioCuePolicy: Hashable, Sendable {
                 cues.append(.progress(voice: sequence - 1, progress: progress))
             case let .validationProgressStopped(sequence):
                 cues.append(.stopProgress(voice: sequence - 1))
-            case .targetValidated, .balisesCompleted:
-                // PROTOTYPE: the thread of balises completing is a closing of the same weight as a validation.
+            case .targetValidated, .balisesCompleted, .oculoStageCompleted, .oculoCompleted:
+                // A thread of balises or a gaze stage completing is a closing of the same weight as a validation.
                 if !completes { cues.append(.validation) }
             case .targetLost, .veilleuseOut, .lueurSwallowed:
                 // A well swallowing a lueur is a setback of the same weight as a loss: the same tone.
                 lossRequested = true
             case .levelCompleted:
                 cues.append(.levelComplete)
-            case .veilleuseLow, .braiseLit, .twinsLinked, .lueurCarried, .lueurWoken, .baliseLit:
+            case .veilleuseLow, .braiseLit, .twinsLinked, .lueurCarried, .lueurWoken, .baliseLit, .oculoSuccess:
                 // A braise that lights, twins that see each other, a gust that picks a lueur up and an echo that wakes one
                 // reuse the soft pulse: one idea, one sound.
                 pulseRequested = true
             case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseRelit, .braiseCooled, .braiseFlared, .twinsParted,
-                 .lueurDropped, .echoEmitted, .lueurReturned, .lueurReleased:
+                 .lueurDropped, .echoEmitted, .lueurReturned, .lueurReleased, .oculoMiss:
                 break
             }
         }

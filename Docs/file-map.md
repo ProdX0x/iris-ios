@@ -76,6 +76,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Gouffres.swift | - | Domain | Chapter X, Gouffres: wells pull what comes near and send what they swallow back to its start; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Jumelles.swift | - | Domain | Chapter VII, Jumelles: twin lueurs have no iris, each is the iris of the other; bring them within reach | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Oculomoteur.swift | - | Domain | PROTOTYPE, branch prototype/ch1-oculomotor-level6 only: chapter I level 6, a thread of balises around a | Claude (mission Iris) |
+| Domain/Campaign/Campaign+OculomotorFinals.swift | - | Domain | OCULOMOTOR EXPANSION: the optional final level of each chapter II to XII, one gaze paradigm each, | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Partage.swift | - | Domain | Chapter II, Partage: order, crossing, guard, cascade, three lueurs | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Souffles.swift | - | Domain | Chapter VIII, Souffles: a gust travels its track periodically and carries what it crosses over the veils; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Veilleuses.swift | - | Domain | Chapter V, Veilleuses: look at something without disturbing the rest | Claude (mission Iris) |
@@ -92,6 +93,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/LevelHint.swift | enum | Domain | Contextual instruction shown once when the player does (or fails to do) something | Claude (mission Iris) |
 | Domain/Campaign/LevelPar.swift | struct | Domain | Reference time and intrusion count behind the "fluide" and "serein" éclats | Claude (mission Iris) |
 | Domain/Campaign/LueurDefinition.swift | struct | Domain | One authored lueur: start, iris, temperament, iris motion, the designer's intended route, an | Claude (mission Iris) |
+| Domain/Campaign/OculoDefinition.swift | enum | Domain | OCULOMOTOR EXPANSION: a level may open with a sequence of gaze-contingent stages (one per paradigm), | Claude (mission Iris) |
 | Domain/Campaign/SouffleDefinition.swift | struct | Domain | Chapter VIII: a gust that travels a track periodically and carries the lueurs it crosses, over veils | Claude (mission Iris) |
 | Domain/Campaign/Temperament.swift | enum | Domain | R-28 how strongly a lueur reacts to the gaze and to its iris | Claude (mission Iris) |
 | Domain/Campaign/VeilDefinition.swift | struct | Domain | R-25 an impenetrable segment | Claude (mission Iris) |
@@ -116,6 +118,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Validation/ValidationRule.swift | struct | Domain | R-08 continuous 0.75 s presence and R-10 wobble tolerance loss, applied to one target per tick | Claude (mission Iris) |
 | Domain/Validation/ValidationRules.swift | struct | Domain | Distances governing validation and its loss (R-08, R-10) | Claude (mission Iris) |
 | Domain/Validation/ValidationTransition.swift | enum | Domain | Outcome of applying the validation rule to one target during one tick | Claude (mission Iris) |
+| Domain/ValueObjects/HeadPose.swift | struct | Domain | Head orientation the game may read (degrees, deltas only make sense within a session); provided by the | Claude (mission Iris) |
 | Domain/ValueObjects/NormalizedPoint.swift | struct | Domain | Resolution-independent position (0...1 on both axes), resolved against the playfield at load time | Claude (mission Iris) |
 | Domain/ValueObjects/NormalizedRect.swift | struct | Domain | Resolution-independent rectangle (0...1 on both axes), resolved against the playfield at load time | Claude (mission Iris) |
 | Domain/ValueObjects/PlayfieldBounds.swift | struct | Domain | Size of the game space in points; the reference engine used the browser window size | Claude (mission Iris) |
@@ -128,8 +131,10 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Chapters/ChaptersView.swift | struct | Presentation | The map: every chapter, its levels and éclats; choose a level to play | Claude (mission Iris) |
 | Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed | Claude (mission Iris) |
 | Features/Game/Diagnostics/OculomotorTrace.swift | class | Presentation | PROTOTYPE (chapter I level 6): observes, never steers. Classifies every gaze sample (VALID_INSIDE, | Claude (mission Iris) |
+| Features/Game/Rendering/GameSceneRenderer+Oculo.swift | - | Presentation | OCULOMOTOR EXPANSION: draws the current gaze stage from its scene description, by role, in the chapter | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneRenderer.swift | struct | Presentation | Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics, | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneSnapshot.swift | struct | Presentation | Plain values copied from the session once per frame; the only thing the canvas reads | Claude (mission Iris) |
+| Features/Game/Rendering/OculoSnapshot.swift | enum | Presentation | OCULOMOTOR EXPANSION: plain scene description of the current gaze stage, built from the engine state once | Claude (mission Iris) |
 | Features/Game/ViewModels/GameNavigating.swift | protocol | Presentation | Intents and progress reports emitted by the game screen | Claude (mission Iris) |
 | Features/Game/ViewModels/GamePhase.swift | enum | Presentation | Single state of the game screen; every overlay derives from it | Claude (mission Iris) |
 | Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound effects, ambience, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
@@ -176,6 +181,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Noise/NoiseSource.swift | protocol | GameEngine | One-dimensional organic noise abstraction so the engine can be driven by deterministic or silent noise | Claude (mission Iris) |
 | GameEngine/Noise/SilentNoise.swift | struct | GameEngine | Zero noise, used by tests and previews that need fully predictable motion | Claude (mission Iris) |
 | GameEngine/Noise/ValueNoise1D.swift | struct | GameEngine | Port of `makeNoise1D`: 256 random values, smoothstep interpolation (Perlin-like value noise) | Claude (mission Iris) |
+| GameEngine/Oculo/OculoStageState.swift | struct | GameEngine | OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a | Claude (mission Iris) |
 | GameEngine/Physics/TargetPhysics.swift | struct | GameEngine | R-01...R-07 frame-rate independent integration of one target, equivalent to the reference engine at 60 Hz | Claude (mission Iris) |
 | GameEngine/Session/GameEvent.swift | enum | GameEngine | Facts produced by one engine tick, consumed by audio, haptics, hints and presentation | Claude (mission Iris) |
 | GameEngine/Session/GameSession.swift | struct | GameEngine | Deterministic per-level simulation: physics, environment, validation, cascade, metrics and events | Claude (mission Iris) |
@@ -207,6 +213,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/CampaignValidationTests.swift | struct | Tests | LEVEL_DESIGN_SYSTEM.md section 6: structure, validity, feasibility, necessity, par, difference, mastery | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/ConstellationTests.swift | struct | Tests | Chapter XII, constellation: the finale combines at least two expansion ideas per level, ends the campaign on | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/EchosTests.swift | struct | Tests | Chapter IX, échos: sleepers stay still with a closed iris, the ring of a closing iris wakes and launches them | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/ExpansionCampaignDump.swift | enum | Tests | Canonical text of the human-validated chapters VII to XII and of chapter I level 6 (every authored field, | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/ExpansionCampaignFingerprintTests.swift | struct | Tests | Protection of the human-validated chapters VII to XII and of chapter I level 6: their canonical dump must | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/GouffresTests.swift | struct | Tests | Chapter X, gouffres: the pull, the swallow (held, then sent back to the start), the loss of a validated lueur, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignDump.swift | enum | Tests | Canonical text of the 34 historical levels: every authored field, their resolution on the reference phone, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignFingerprintTests.swift | struct | Tests | Protection of the historical campaign (chapters I to VI, 34 levels) and of the frozen engine: the canonical | Claude (mission Iris) |

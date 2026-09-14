@@ -1,0 +1,162 @@
+// OculoStageState.swift
+// Layer: GameEngine
+// Purpose: OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a
+// small deterministic machine fed with the smoothed gaze, its activity and the head pose; it reports successes,
+// misses and its completion, and can suggest the ideal gaze and head (the simulated player's oracle).
+
+import Foundation
+
+/// What a stage receives every tick.
+struct OculoInput: Hashable, Sendable {
+    let seconds: TimeInterval
+    let gaze: Vector2
+    let gazeActive: Bool
+    let head: HeadPose?
+    let elapsed: TimeInterval
+
+    init(seconds: TimeInterval, gaze: Vector2, gazeActive: Bool, head: HeadPose?, elapsed: TimeInterval) {
+        self.seconds = seconds
+        self.gaze = gaze
+        self.gazeActive = gazeActive
+        self.head = head
+        self.elapsed = elapsed
+    }
+}
+
+enum OculoChange: Hashable, Sendable {
+    case success
+    case miss
+    case completed
+}
+
+/// What a stage returns: its changes, and impulses to give lueurs (chapter XI only).
+struct OculoOutcome: Hashable, Sendable {
+    var changes: [OculoChange] = []
+    var impulses: [OculoImpulse] = []
+}
+
+struct OculoImpulse: Hashable, Sendable {
+    let target: Int
+    let impulse: Vector2
+}
+
+/// One resolved stage. Cases are added chapter by chapter; each delegates to its own state.
+enum OculoStageState: Hashable, Sendable {
+}
+
+extension OculoStageState {
+    /// Resolves an authored stage on the playfield.
+    init(definition: OculoStageDefinition, bounds: PlayfieldBounds, shortSide: Double, scale: Double) {
+        switch definition {
+        }
+    }
+
+    mutating func update(_ input: OculoInput, targets: [Target], braisesLit: [Int]) -> OculoOutcome {
+        switch self {
+        }
+    }
+
+    var isComplete: Bool {
+        switch self {
+        }
+    }
+
+    /// 0...1 progress of the stage.
+    var progress: Double {
+        switch self {
+        }
+    }
+
+    /// Where the ideal player looks now (nil: anywhere), for the simulated player only.
+    func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
+        switch self {
+        }
+    }
+
+    /// The head orientation the ideal player adopts now (nil: no preference).
+    var suggestedHead: HeadPose? {
+        switch self {
+        }
+    }
+}
+
+/// The stages of a level, played one after the other with a breath between them.
+struct OculoSequenceState: Hashable, Sendable {
+    private(set) var stages: [OculoStageState]
+    let hidesLueurs: Bool
+    let pause: TimeInterval
+    private(set) var currentIndex = 0
+    /// While a stage just completed, the breath before the next one.
+    private(set) var pauseRemaining: TimeInterval = 0
+    private(set) var completedAt: TimeInterval?
+    private(set) var successes = 0
+    private(set) var misses = 0
+
+    init(stages: [OculoStageState], hidesLueurs: Bool, pause: TimeInterval) {
+        self.stages = stages
+        self.hidesLueurs = hidesLueurs
+        self.pause = pause
+        if stages.isEmpty { completedAt = 0 }
+    }
+
+    var isComplete: Bool { completedAt != nil }
+    var isBreathing: Bool { pauseRemaining > 0 }
+    var current: OculoStageState? { stages.indices.contains(currentIndex) ? stages[currentIndex] : nil }
+    var stageCount: Int { stages.count }
+
+    var progress: Double {
+        guard !stages.isEmpty else { return 1 }
+        if isComplete { return 1 }
+        return (Double(currentIndex) + (current?.progress ?? 0)) / Double(stages.count)
+    }
+
+    enum Change: Hashable, Sendable {
+        case success(stage: Int)
+        case miss(stage: Int)
+        case stageCompleted(stage: Int)
+        case completed
+    }
+
+    mutating func update(_ input: OculoInput, targets: [Target], braisesLit: [Int]) -> (changes: [Change], impulses: [OculoImpulse]) {
+        guard !isComplete, stages.indices.contains(currentIndex) else { return ([], []) }
+        if pauseRemaining > 0 {
+            pauseRemaining = max(0, pauseRemaining - input.seconds)
+            return ([], [])
+        }
+        let outcome = stages[currentIndex].update(input, targets: targets, braisesLit: braisesLit)
+        var changes: [Change] = []
+        for change in outcome.changes {
+            switch change {
+            case .success:
+                successes += 1
+                changes.append(.success(stage: currentIndex))
+            case .miss:
+                misses += 1
+                changes.append(.miss(stage: currentIndex))
+            case .completed:
+                changes.append(.stageCompleted(stage: currentIndex))
+            }
+        }
+        if stages[currentIndex].isComplete {
+            if !changes.contains(.stageCompleted(stage: currentIndex)) { changes.append(.stageCompleted(stage: currentIndex)) }
+            currentIndex += 1
+            if currentIndex >= stages.count {
+                completedAt = input.elapsed
+                changes.append(.completed)
+            } else {
+                pauseRemaining = pause
+            }
+        }
+        return (changes, outcome.impulses)
+    }
+
+    func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
+        guard !isComplete, pauseRemaining <= 0 else { return nil }
+        return current?.suggestedGaze(at: elapsed)
+    }
+
+    var suggestedHead: HeadPose? {
+        guard !isComplete, pauseRemaining <= 0 else { return nil }
+        return current?.suggestedHead
+    }
+}

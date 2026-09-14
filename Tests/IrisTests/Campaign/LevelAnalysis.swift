@@ -64,20 +64,22 @@ struct LevelAnalysis {
     }
 
     func difficulty(botTime: Double) -> Double {
-        Double(definition.lueurs.count)
-            + 1.5 * (1 - freeArea)
-            + 0.6 * Double(crossings)
-            + 0.5 * Double(guardPressure)
-            + ((definition.veils.isEmpty && definition.currents.isEmpty) ? 0 : 1)
-            + Double(definition.veilleuses.count)
-            + 0.8 * Double(definition.lueurs.filter { $0.irisMotion.isMoving }.count)
-            + 0.5 * Double(definition.lueurs.filter(\.isTwin).count) / 2
-            + 0.8 * Double(definition.souffles.count)
-            + 0.6 * Double(definition.lueurs.filter(\.asleep).count)
-            + 0.7 * Double(definition.gouffres.count)
-            + 0.5 * Double(definition.lueurs.filter { $0.braise != nil }.count)
-            + 0.15 * Double(definition.balises?.steps.count ?? 0)
-            + botTime / 20
+        var estimate = Double(definition.lueurs.count)
+        estimate += 1.5 * (1 - freeArea)
+        estimate += 0.6 * Double(crossings)
+        estimate += 0.5 * Double(guardPressure)
+        estimate += (definition.veils.isEmpty && definition.currents.isEmpty) ? 0 : 1
+        estimate += Double(definition.veilleuses.count)
+        estimate += 0.8 * Double(definition.lueurs.filter { $0.irisMotion.isMoving }.count)
+        estimate += 0.5 * Double(definition.lueurs.filter(\.isTwin).count) / 2
+        estimate += 0.8 * Double(definition.souffles.count)
+        estimate += 0.6 * Double(definition.lueurs.filter(\.asleep).count)
+        estimate += 0.7 * Double(definition.gouffres.count)
+        estimate += 0.5 * Double(definition.lueurs.filter { $0.braise != nil }.count)
+        estimate += 0.15 * Double(definition.balises?.steps.count ?? 0)
+        estimate += 1.5 * Double(definition.oculo?.stages.count ?? 0)
+        estimate += botTime / 20
+        return estimate
     }
 
     static func intersects(_ p1: Vector2, _ p2: Vector2, _ p3: Vector2, _ p4: Vector2) -> Bool {
@@ -136,6 +138,7 @@ extension LevelAnalysis {
         if !definition.gouffres.isEmpty { skills.insert("esquiver") }
         if definition.hasBraises { skills.insert("réveiller au regard") }
         if definition.hasBalises { skills.insert("fixer") }
+        if let oculo = definition.oculo { skills.insert("oculo:\(oculo.element.rawValue)") }
         return skills
     }
 

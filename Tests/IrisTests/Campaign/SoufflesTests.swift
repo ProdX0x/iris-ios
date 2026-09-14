@@ -14,7 +14,8 @@ struct SoufflesTests {
 
     private var chapter: ChapterDefinition {
         guard let chapter = Campaign.chapter(number: 8) else { preconditionFailure("chapter VIII missing") }
-        return chapter
+        return ChapterDefinition(number: chapter.number, name: chapter.name, principle: chapter.principle, ambientFrequency: chapter.ambientFrequency,
+                                 theme: chapter.theme, levels: chapter.levels.filter(\.gatesProgression))
     }
 
     /// One lueur above a full-width veil, its iris below, a gust crossing the veil at x = 0.5; no noise.

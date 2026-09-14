@@ -1,0 +1,693 @@
+expansion campaign fingerprint v1 (reference phone 393 x 852, 60 Hz, scripted gaze)
+chapter 7 VII name=jumelles principle=Chacune est l'iris de l'autre. ambient=92.5 theme=jumelles levels=7-1,7-2,7-3,7-4,7-5,7-6
+chapter 8 VIII name=souffles principle=Ce qu'il traverse, il l'emporte. ambient=87.31 theme=brume levels=8-1,8-2,8-3,8-4,8-5,8-6
+chapter 9 IX name=échos principle=Un iris qui se ferme réveille ce qui dort à portée. ambient=138.59 theme=echo levels=9-1,9-2,9-3,9-4,9-5,9-6
+chapter 10 X name=gouffres principle=Ce qu'il avale revient au départ. ambient=82.41 theme=gouffres levels=10-1,10-2,10-3,10-4,10-5,10-6
+chapter 11 XI name=braises principle=Un regard bref la réveille. Un regard long l'affole. ambient=103.83 theme=braises levels=11-1,11-2,11-3,11-4,11-5,11-6
+chapter 12 XII name=constellation principle=Tout ce que vous savez regarder, ensemble. ambient=110 theme=constellation levels=12-1,12-2,12-3,12-4,12-5,12-6
+level 1-6 title=le fil des balises principle=L'iris est éteint. Éveillez chaque balise que le fil désigne ; le fil complet l'ouvrira. introduces=balise ordered=false zone=0.5 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=26/2 kinds=balise gates=false
+  lueur 1 start=(0.18,0.12) iris=(0.5,0.5) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  balises CENTER@(0.5,0.5);RIGHT@(0.82,0.5);LEFT@(0.18,0.5);TOP@(0.5,0.16);BOTTOM@(0.5,0.84) steps=0,1,2,0,3,4,0,1,2,1,2,3,4,3,4,0 dwell=0.25 radius=0.2 release=0.27
+  hint start text=Une balise respire au centre. Posez-y le regard.
+  hint firstBalise text=Elle tend un fil. Suivez-le du regard, balise après balise.
+  hint balisesCompleted text=Le fil est complet : l'iris s'ouvre et une lueur s'éveille. Laissez-la venir.
+  hint afterSeconds(40.0) text=Seule la balise qui respire peut s'éveiller. Restez posé dessus un instant.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=0 braises=0 balises=16 echo=nil
+  target 1 zone=196.5 gain=0.01221374046 attraction=0.5 noise=0.15
+  t=60 complete=false (70.74,102.24) hold=0 ok=false
+  t=120 complete=false (70.74,102.24) hold=0 ok=false
+  t=180 complete=false (70.74,102.24) hold=0 ok=false
+  t=240 complete=false (70.74,102.24) hold=0 ok=false
+  t=300 complete=false (70.74,102.24) hold=0 ok=false
+  t=360 complete=false (70.74,102.24) hold=0 ok=false
+  t=420 complete=false (70.74,102.24) hold=0 ok=false
+  t=480 complete=false (70.74,102.24) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,baliseLit=1 intrusions=0 losses=0 elapsed=8
+level 7-1 title=l'une l'autre principle=Deux lueurs, aucun iris. Amenez l'une à portée de l'autre. introduces=jumelles ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=15/4 kinds=jumelles gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.3) temperament=normale motion=fixed route=(0.5,0.47);(0.5,0.6) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.5,0.9) iris=(0.5,0.7) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  hint start text=Elles n'ont pas d'iris. Chacune est l'iris de l'autre.
+  hint firstIntrusion text=Poussez l'une vers l'autre, par le regard.
+  hint twinsLinked text=Elles se sont vues. Laissez-les se rejoindre.
+  hint firstHold text=Tenez : elles se ferment l'une sur l'autre.
+  hint afterSeconds(30.0) text=Regardez au-dessus de celle du haut pour la pousser vers le bas.
+  resolved scale=1 targets=2 sequential=false twins=2 souffles=0 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (193.8522518,205.0734693) hold=0 ok=false | (185.6752359,649.1523251) hold=0 ok=false
+  t=120 complete=false (196.9682507,255.5145175) hold=0 ok=false | (156.6661836,614.0786807) hold=0 ok=false
+  t=180 complete=false (197.2569319,255.9510112) hold=0 ok=false | (45.98325537,586.2075642) hold=0 ok=false
+  t=240 complete=false (192.4577923,258.5511544) hold=0 ok=false | (143.6628433,580.7753193) hold=0 ok=false
+  t=300 complete=false (196.7033776,255.7479658) hold=0 ok=false | (213.1802844,594.1062098) hold=0 ok=false
+  t=360 complete=false (196.8815865,255.283288) hold=0 ok=false | (326.7589753,553.8360501) hold=0 ok=false
+  t=420 complete=false (170.3807496,224.17438) hold=0 ok=false | (287.9375119,604.0647069) hold=0 ok=false
+  t=480 complete=false (189.2536333,257.2412885) hold=0 ok=false | (197.3417512,597.4213602) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=9 intrusions=9 losses=0 elapsed=8
+level 7-2 title=le fil principle=Un voile entre elles. Le fil trouve le passage. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=16/4 kinds=jumelles,voile gates=true
+  lueur 1 start=(0.12,0.12) iris=(0.28,0.3) temperament=normale motion=fixed route=(0.55,0.36);(0.82,0.5);(0.78,0.6) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.88,0.88) iris=(0.72,0.68) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  veil a=(0.15,0.5) b=(0.7,0.5)
+  hint start text=Le voile les sépare. Contournez-le par la droite.
+  hint twinsLinked text=À portée. Laissez faire.
+  resolved scale=1 targets=2 sequential=false twins=2 souffles=0 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (87.48348023,214.5289423) hold=0 ok=false | (289.7837229,645.4221632) hold=0 ok=false
+  t=120 complete=false (108.9344293,256.6493152) hold=0 ok=false | (300.7027494,608.1087858) hold=0 ok=false
+  t=180 complete=false (110.9323734,254.2396897) hold=0 ok=false | (282.8550741,579.2078287) hold=0 ok=false
+  t=240 complete=false (112.2074695,259.8004857) hold=0 ok=false | (281.6094641,579.1453737) hold=0 ok=false
+  t=300 complete=false (109.7733718,256.0884431) hold=0 ok=false | (300.9558434,571.1096245) hold=0 ok=false
+  t=360 complete=false (109.8855816,255.3815568) hold=0 ok=false | (349,463.9076442) hold=0 ok=false
+  t=420 complete=false (109.1411765,256.1111712) hold=0 ok=false | (349,388.7237407) hold=0 ok=false
+  t=480 complete=false (103.9810202,249.3157767) hold=0 ok=false | (314.1452745,503.7178264) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=5 intrusions=5 losses=0 elapsed=8
+level 7-3 title=la solitaire principle=Une paire, et une lueur ordinaire dont l'iris est au centre. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=22/6 kinds=jumelles gates=true
+  lueur 1 start=(0.1,0.1) iris=(0.2,0.22) temperament=normale motion=fixed route=(0.36,0.5);(0.62,0.52);(0.78,0.3) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.9,0.1) iris=(0.8,0.22) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  lueur 3 start=(0.5,0.88) iris=(0.5,0.3) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  hint start text=La solitaire rejoint son iris seule. Contournez-la avec la jumelle.
+  hint firstLoss text=Votre regard a chassé la solitaire. Elle reviendra.
+  resolved scale=1 targets=3 sequential=false twins=2 souffles=0 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (77.09821046,185.8851911) hold=0 ok=false | (313.6376346,192.9598376) hold=0 ok=false | (190.0126131,629.4859077) hold=0 ok=false
+  t=120 complete=false (78.30805181,187.9951766) hold=0 ok=false | (313.6830806,186.3357273) hold=0 ok=false | (233.4559614,577.1438278) hold=0 ok=false
+  t=180 complete=false (78.69024325,187.3101364) hold=0 ok=false | (314.4581002,187.8887449) hold=0 ok=false | (223.470667,453.6042251) hold=0 ok=false
+  t=240 complete=false (77.09837024,189.1895808) hold=0 ok=false | (316.6897976,186.588918) hold=0 ok=false | (233.7627595,348.063496) hold=0 ok=false
+  t=300 complete=false (78.89985356,187.4902276) hold=0 ok=false | (314.8968032,187.4474166) hold=0 ok=false | (197.5526173,259.9719637) hold=0.3333333333 ok=false
+  t=360 complete=false (78.95385614,187.5975043) hold=0 ok=false | (314.7536532,186.5675281) hold=0 ok=false | (197.6924678,255.5167924) hold=0.75 ok=true
+  t=420 complete=false (79.14726925,187.6569122) hold=0 ok=false | (319.3651021,187.0366743) hold=0 ok=false | (175.5374021,221.9568519) hold=0 ok=false
+  t=480 complete=false (44,113.4261466) hold=0 ok=false | (315.0306747,186.6417155) hold=0 ok=false | (153.7189376,107.1025781) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=12,targetLost=1,targetValidated=1,validationProgressStopped=1,validationProgressed=44 intrusions=12 losses=1 elapsed=8
+level 7-4 title=à contre-courant principle=Le courant les sépare. Traversez-le de biais. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=17/4 kinds=courant,jumelles gates=true
+  lueur 1 start=(0.5,0.08) iris=(0.5,0.24) temperament=normale motion=fixed route=(0.66,0.4);(0.5,0.66) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.5,0.92) iris=(0.5,0.76) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  current area=0,0.42,1,0.58 direction=(-1,0) strength=0.85
+  hint start text=Le courant l'emporte vers la gauche. Entrez à droite.
+  hint twinsLinked text=Hors du courant, elles se rejoignent.
+  resolved scale=1 targets=2 sequential=false twins=2 souffles=0 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (195.7151059,187.9327715) hold=0 ok=false | (188.5726415,665.9161293) hold=0 ok=false
+  t=120 complete=false (196.7498635,204.9951408) hold=0 ok=false | (218.4799976,662.3212185) hold=0 ok=false
+  t=180 complete=false (196.2504027,203.6703837) hold=0 ok=false | (329.9816859,708.959458) hold=0 ok=false
+  t=240 complete=false (198.9048108,208.1396412) hold=0 ok=false | (245.2510077,692.4474533) hold=0 ok=false
+  t=300 complete=false (196.1993606,205.127189) hold=0 ok=false | (166.7500118,640.0023236) hold=0 ok=false
+  t=360 complete=false (196.9684802,205.0993301) hold=0 ok=false | (66.7530465,620.9597002) hold=0 ok=false
+  t=420 complete=false (198.4543601,198.1800832) hold=0 ok=false | (175.1437985,651.4193185) hold=0 ok=false
+  t=480 complete=false (227.8622337,184.594661) hold=0 ok=false | (196.1770776,647.7891507) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=10 intrusions=10 losses=0 elapsed=8
+level 7-5 title=sous la veilleuse principle=La flamme éclaire leur rendez-vous. Ne l'oubliez pas. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=17/6 kinds=jumelles,veilleuse gates=true
+  lueur 1 start=(0.1,0.12) iris=(0.22,0.3) temperament=normale motion=fixed route=(0.5,0.34);(0.74,0.6) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.9,0.88) iris=(0.78,0.7) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  veilleuse position=(0.5,0.62) look=0.14 decay=9 recharge=0.8 initial=0.45 linked=
+  hint start text=Sans la flamme, elles ne se ferment pas l'une sur l'autre.
+  hint veilleuseLow text=La flamme faiblit. Regardez-la.
+  resolved scale=1 targets=2 sequential=false twins=2 souffles=0 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (61.01305154,155.1397447) hold=0 ok=false | (304.8771952,640.3516058) hold=0 ok=false
+  t=120 complete=false (87.13836199,254.6068709) hold=0 ok=false | (349,625.5526156) hold=0 ok=false
+  t=180 complete=false (86.26538711,256.0666888) hold=0 ok=false | (349,743.9998689) hold=0 ok=false
+  t=240 complete=false (86.72578143,255.6726378) hold=0 ok=false | (346.9919385,694.1016689) hold=0 ok=false
+  t=300 complete=false (86.22771207,256.2410288) hold=0 ok=false | (348.0788429,576.6235061) hold=0 ok=false
+  t=360 complete=false (86.42024545,255.2259605) hold=0 ok=false | (305.5878341,597.5611513) hold=0 ok=false
+  t=420 complete=false (91.56406524,204.9419231) hold=0 ok=false | (306.6108616,597.0697386) hold=0 ok=false
+  t=480 complete=false (135.0796525,88.95425273) hold=0 ok=false | (306.933838,596.5308627) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=7,veilleuseLow=2 intrusions=7 losses=0 elapsed=8
+level 7-6 title=la troisième principle=Les jumelles d'abord, puis la troisième. Le voile impose le détour. introduces= ordered=true zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=21/8 kinds=jumelles,voile gates=true
+  lueur 1 start=(0.1,0.1) iris=(0.22,0.28) temperament=normale motion=fixed route=(0.35,0.55);(0.62,0.5);(0.72,0.36) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.9,0.1) iris=(0.78,0.28) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  lueur 3 start=(0.5,0.9) iris=(0.5,0.62) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  veil a=(0.5,0.12) b=(0.5,0.45)
+  hint start text=Dans l'ordre : les jumelles, puis la troisième.
+  hint firstLoss text=Séparées, elles entraînent la troisième dans leur chute.
+  resolved scale=1 targets=3 sequential=true twins=2 souffles=0 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (71.88342076,201.298457) hold=0 ok=false | (315.2263695,196.1997717) hold=0 ok=false | (191.9358486,646.5448836) hold=0 ok=false
+  t=120 complete=false (87.11373249,238.0445002) hold=0 ok=false | (305.4452539,238.5091154) hold=0 ok=false | (157.5151542,578.216143) hold=0 ok=false
+  t=180 complete=false (86.39695699,238.5909891) hold=0 ok=false | (306.2204344,238.8552767) hold=0 ok=false | (196.0324918,527.3874345) hold=0 ok=false
+  t=240 complete=false (83.7481715,237.7233311) hold=0 ok=false | (302.7572693,239.2155021) hold=0 ok=false | (179.4087412,513.0055941) hold=0 ok=false
+  t=300 complete=false (86.42712308,239.0149752) hold=0 ok=false | (306.2771337,238.8962299) hold=0 ok=false | (195.685458,527.7362365) hold=0 ok=false
+  t=360 complete=false (86.89410952,238.5015467) hold=0 ok=false | (306.0977978,238.8984463) hold=0 ok=false | (231.8723935,507.3614327) hold=0 ok=false
+  t=420 complete=false (87.55697358,196.6140222) hold=0 ok=false | (306.9614823,238.289786) hold=0 ok=false | (205.2031956,518.668544) hold=0 ok=false
+  t=480 complete=false (61.42225371,187.5335662) hold=0 ok=false | (349,259.299708) hold=0 ok=false | (196.9313274,527.5928286) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=14 intrusions=14 losses=0 elapsed=8
+level 8-1 title=le souffle principle=Le voile ferme tout. Le souffle passe par-dessus. introduces=souffle ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=18/4 kinds=souffle,voile gates=true
+  lueur 1 start=(0.4,0.12) iris=(0.7,0.82) temperament=normale motion=fixed route=(0.2,0.47) braise=nil twin=nil asleep=false
+  veil a=(0,0.5) b=(1,0.5)
+  souffle path=(0.2,0.3);(0.2,0.7) period=8 duty=0.7 radius=0.2 strength=1.8 phase=0
+  hint start text=Contre le voile, elle glisse vers son iris. Le souffle passe ailleurs.
+  hint firstIntrusion text=Quand le souffle approche, amenez-la sur son chemin.
+  hint firstCarried text=Il l'emporte. Ne la regardez plus.
+  hint afterSeconds(30.0) text=Regardez loin à sa droite : elle glisse vers la gauche, jusqu'au chemin.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=1 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (175.4819955,221.0330194) hold=0 ok=false
+  t=120 complete=false (191.9979819,343.8949014) hold=0 ok=false
+  t=180 complete=false (244.2895213,403) hold=0 ok=false
+  t=240 complete=false (258.4901205,403) hold=0 ok=false
+  t=300 complete=false (260.9426293,403) hold=0 ok=false
+  t=360 complete=false (294.1277926,403) hold=0 ok=false
+  t=420 complete=false (275.7878173,403) hold=0 ok=false
+  t=480 complete=false (271.7806985,402.9696697) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=2 intrusions=2 losses=0 elapsed=8
+level 8-2 title=un souffle pour deux principle=Deux lueurs, un seul chemin. Ensemble, ou l'une après l'autre. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=29/10 kinds=souffle,voile gates=true
+  lueur 1 start=(0.3,0.12) iris=(0.12,0.82) temperament=normale motion=fixed route=(0.5,0.47) braise=nil twin=nil asleep=false
+  lueur 2 start=(0.7,0.12) iris=(0.88,0.82) temperament=normale motion=fixed route=(0.5,0.47) braise=nil twin=nil asleep=false
+  veil a=(0,0.5) b=(1,0.5)
+  souffle path=(0.5,0.3);(0.5,0.7) period=8 duty=0.7 radius=0.2 strength=1.8 phase=0
+  hint start text=Elles s'écartent vers les bords. Le souffle passe au milieu.
+  hint firstCarried text=Une de moins. Le souffle reviendra pour l'autre.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=1 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (100.6850305,221.3817302) hold=0 ok=false | (282.0656432,222.7581752) hold=0 ok=false
+  t=120 complete=false (78.84868495,343.38235) hold=0 ok=false | (284.3773846,346.8118871) hold=0 ok=false
+  t=180 complete=false (70.05749736,399.0831731) hold=0 ok=false | (307.0241582,403) hold=0 ok=false
+  t=240 complete=false (44,403) hold=0 ok=false | (346.6307561,403) hold=0 ok=false
+  t=300 complete=false (44,403) hold=0 ok=false | (333.9413157,403) hold=0 ok=false
+  t=360 complete=false (66.96357331,403) hold=0 ok=false | (332.4588479,403) hold=0 ok=false
+  t=420 complete=false (47.58082252,403) hold=0 ok=false | (317.6235351,403) hold=0 ok=false
+  t=480 complete=false (51.42568374,403) hold=0 ok=false | (313.3094443,403) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=3 intrusions=3 losses=0 elapsed=8
+level 8-3 title=la dérive principle=Le courant l'écarte du chemin. Ramenez-la quand le souffle vient. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=29/6 kinds=courant,souffle,voile gates=true
+  lueur 1 start=(0.35,0.1) iris=(0.35,0.84) temperament=normale motion=fixed route=(0.7,0.47) braise=nil twin=nil asleep=false
+  current area=0,0.34,1,0.49 direction=(-1,0) strength=0.8
+  veil a=(0,0.5) b=(1,0.5)
+  souffle path=(0.7,0.3);(0.7,0.7) period=8 duty=0.7 radius=0.2 strength=1.8 phase=0
+  hint start text=Contre le voile, le courant l'emporte vers la gauche. Le chemin est à droite.
+  hint firstCarried text=Le souffle est plus fort que le courant.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=1 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (133.6453839,205.4451651) hold=0 ok=false
+  t=120 complete=false (98.71070762,313.4121085) hold=0 ok=false
+  t=180 complete=false (44,401.0638746) hold=0 ok=false
+  t=240 complete=false (44,403) hold=0 ok=false
+  t=300 complete=false (44,403) hold=0 ok=false
+  t=360 complete=false (44,403) hold=0 ok=false
+  t=420 complete=false (44,403) hold=0 ok=false
+  t=480 complete=false (44,403) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=2 intrusions=2 losses=0 elapsed=8
+level 8-4 title=la flamme et la brume principle=La flamme éclaire l'iris d'en bas. Servez-la entre deux souffles. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=18/3 kinds=souffle,veilleuse,voile gates=true
+  lueur 1 start=(0.75,0.12) iris=(0.65,0.82) temperament=normale motion=fixed route=(0.3,0.47) braise=nil twin=nil asleep=false
+  veil a=(0,0.5) b=(1,0.5)
+  veilleuse position=(0.16,0.24) look=0.14 decay=9 recharge=0.8 initial=0.45 linked=
+  souffle path=(0.3,0.3);(0.3,0.7) period=8 duty=0.7 radius=0.2 strength=1.8 phase=0
+  hint start text=La flamme est loin du chemin. Regardez-la quand la lueur ne vole pas.
+  hint veilleuseLow text=La flamme faiblit.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=1 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (283.4288184,222.0535487) hold=0 ok=false
+  t=120 complete=false (267.9066154,345.0203927) hold=0 ok=false
+  t=180 complete=false (269.2026946,400.4278153) hold=0 ok=false
+  t=240 complete=false (235.1035978,403) hold=0 ok=false
+  t=300 complete=false (207.5436809,403) hold=0 ok=false
+  t=360 complete=false (273.312403,403) hold=0 ok=false
+  t=420 complete=false (256.9617579,403) hold=0 ok=false
+  t=480 complete=false (252.9275123,403) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=2,veilleuseLow=1,veilleuseOut=1,veilleuseRelit=1 intrusions=2 losses=0 elapsed=8
+level 8-5 title=double traversée principle=Deux voiles, deux souffles. Entre les deux, changez de chemin. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=21/5 kinds=souffle,voile gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.9) temperament=normale motion=fixed route=(0.18,0.33);(0.82,0.61) braise=nil twin=nil asleep=false
+  veil a=(0,0.36) b=(1,0.36)
+  veil a=(0,0.64) b=(1,0.64)
+  souffle path=(0.18,0.2);(0.18,0.5) period=7 duty=0.7 radius=0.18 strength=1.8 phase=0
+  souffle path=(0.82,0.5);(0.82,0.8) period=7 duty=0.7 radius=0.18 strength=1.8 phase=0.5
+  hint start text=Le premier souffle la dépose entre les voiles. Le second passe à droite.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=2 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (192.5367984,205.4448576) hold=0 ok=false
+  t=120 complete=false (178.6175868,283.72) hold=0 ok=false
+  t=180 complete=false (195.5008167,283.72) hold=0 ok=false
+  t=240 complete=false (121.6536366,283.72) hold=0 ok=false
+  t=300 complete=false (54.94071875,283.72) hold=0 ok=false
+  t=360 complete=false (107.9057455,283.72) hold=0 ok=false
+  t=420 complete=false (170.018434,283.72) hold=0 ok=false
+  t=480 complete=false (241.6373329,283.72) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=6 intrusions=6 losses=0 elapsed=8
+level 8-6 title=jumelles dans la brume principle=Le voile sépare une jumelle de son poste. Le souffle l'y conduit. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=19/8 kinds=jumelles,souffle,voile gates=true
+  lueur 1 start=(0.5,0.12) iris=(0.3,0.78) temperament=normale motion=fixed route=(0.65,0.47);(0.62,0.8) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.6,0.92) iris=(0.82,0.82) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  veil a=(0,0.5) b=(1,0.5)
+  souffle path=(0.65,0.3);(0.65,0.7) period=8 duty=0.7 radius=0.18 strength=1.8 phase=0
+  hint start text=Son poste est de l'autre côté. Le souffle l'y conduira.
+  hint twinsLinked text=À portée. Laissez-les se rejoindre.
+  resolved scale=1 targets=2 sequential=false twins=2 souffles=1 sleepers=0 gouffres=0 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (176.9918634,221.0394792) hold=0 ok=false | (337.7926607,808) hold=0 ok=false
+  t=120 complete=false (152.7627914,342.5882774) hold=0 ok=false | (349,808) hold=0 ok=false
+  t=180 complete=false (138.3712508,403) hold=0 ok=false | (336.5666728,766.3283532) hold=0 ok=false
+  t=240 complete=false (71.06316217,403) hold=0 ok=false | (323.0789101,699.3043435) hold=0 ok=false
+  t=300 complete=false (60.39584987,403) hold=0 ok=false | (322.5581449,698.6189948) hold=0 ok=false
+  t=360 complete=false (136.9918047,403) hold=0 ok=false | (321.5286317,699.0536453) hold=0 ok=false
+  t=420 complete=false (117.3466272,403) hold=0 ok=false | (322.2945235,698.3807196) hold=0 ok=false
+  t=480 complete=false (115.8834323,403) hold=0 ok=false | (323.3352356,698.2373912) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=3 intrusions=3 losses=0 elapsed=8
+level 9-1 title=l'écho principle=La seconde dort. Fermez le premier iris : son écho la réveille. introduces=dormeuse,echo ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=25/18 kinds=dormeuse,echo gates=true
+  lueur 1 start=(0.5,0.12) iris=(0.5,0.42) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  lueur 2 start=(0.5,0.62) iris=(0.5,0.86) temperament=normale motion=fixed route= braise=nil twin=nil asleep=true
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=La lueur du bas dort. Rien ne la fera bouger, sauf un écho.
+  hint firstValidation text=L'iris se ferme et respire. Regardez l'écho.
+  hint firstWake text=Réveillée, elle vit comme les autres. Laissez-la se poser.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=1 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (191.7166254,222.1773549) hold=0 ok=false | (130.1886039,561.3584148) hold=0 ok=false
+  t=120 complete=false (108.0014655,248.753541) hold=0 ok=false | (126.9067008,562.3430732) hold=0 ok=false
+  t=180 complete=false (127.5838465,308.3764933) hold=0 ok=false | (126.8265705,562.3671144) hold=0 ok=false
+  t=240 complete=false (197.217932,360.2500729) hold=0.3333333333 ok=false | (126.824614,562.3677014) hold=0 ok=false
+  t=300 complete=false (195.6192421,358.3530019) hold=0.75 ok=true | (126.8245662,562.3677157) hold=0 ok=false
+  t=360 complete=false (277.7116914,426.7069263) hold=0 ok=false | (126.2868422,563.826362) hold=0 ok=false
+  t=420 complete=false (321.4629358,368.3944593) hold=0 ok=false | (86.28714313,621.2262056) hold=0 ok=false
+  t=480 complete=false (199.5394453,360.6950581) hold=0.1 ok=false | (84.24928844,623.7076445) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,echoEmitted=1,intrusion=4,targetLost=1,targetValidated=1,validationProgressStopped=1,validationProgressed=50 intrusions=4 losses=1 elapsed=8
+level 9-2 title=hors de portée principle=L'écho ne porte pas jusqu'à elle. Rapprochez-la avant. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=16/6 kinds=dormeuse,echo gates=true
+  lueur 1 start=(0.8,0.86) iris=(0.78,0.55) temperament=normale motion=fixed route=(0.42,0.56) braise=nil twin=nil asleep=true
+  lueur 2 start=(0.2,0.12) iris=(0.25,0.4) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=Endormie, elle fuit encore votre regard. Poussez-la vers l'iris de l'autre.
+  hint firstWake text=L'écho la lance. Elle rejoint son iris seule.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=1 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (314.4,732.72) hold=0 ok=false | (77.89809515,223.2824222) hold=0 ok=false
+  t=120 complete=false (314.4,732.72) hold=0 ok=false | (44,249.8404584) hold=0 ok=false
+  t=180 complete=false (314.4,732.72) hold=0 ok=false | (90.79919204,342.598023) hold=0.08333333333 ok=false
+  t=240 complete=false (314.4,732.72) hold=0 ok=false | (97.07764433,341.1265525) hold=0.5166666667 ok=false
+  t=300 complete=false (314.4,732.72) hold=0 ok=false | (96.78171923,354.0440734) hold=0.75 ok=true
+  t=360 complete=false (314.4,732.72) hold=0 ok=false | (98.52214906,341.1619562) hold=0.75 ok=true
+  t=420 complete=false (310.9328058,752.0528897) hold=0 ok=false | (98.04059557,341.2558587) hold=0.75 ok=true
+  t=480 complete=false (335.5537618,808) hold=0 ok=false | (98.04881504,340.8075036) hold=0.75 ok=true
+  events attentionLeftField=1,attentionReturned=1,echoEmitted=1,intrusion=4,targetValidated=1,validationProgressStopped=1,validationProgressed=44 intrusions=4 losses=0 elapsed=8
+level 9-3 title=la chaîne principle=Un écho en réveille une, dont l'iris en réveille une autre. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=19/5 kinds=dormeuse,echo gates=true
+  lueur 1 start=(0.5,0.12) iris=(0.5,0.36) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  lueur 2 start=(0.2,0.56) iris=(0.5,0.64) temperament=normale motion=fixed route= braise=nil twin=nil asleep=true
+  lueur 3 start=(0.82,0.88) iris=(0.5,0.88) temperament=normale motion=fixed route=(0.62,0.74) braise=nil twin=nil asleep=true
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=Deux dormeuses. La première est à portée ; la seconde ne l'est d'aucun iris.
+  hint firstWake text=Son iris respirera à son tour.
+  resolved scale=1 targets=3 sequential=false twins=0 souffles=0 sleepers=2 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (192.7377554,222.1537629) hold=0 ok=false | (44,469.793826) hold=0 ok=false | (322.26,749.76) hold=0 ok=false
+  t=120 complete=false (226.7830412,247.312331) hold=0 ok=false | (44.00316046,536.4224646) hold=0 ok=false | (322.26,749.76) hold=0 ok=false
+  t=180 complete=false (197.9892771,306.8333891) hold=0.6 ok=false | (44.00340817,538.7416024) hold=0 ok=false | (322.26,749.76) hold=0 ok=false
+  t=240 complete=false (195.9533897,306.562421) hold=0.75 ok=true | (44.00341422,538.798226) hold=0 ok=false | (322.26,749.76) hold=0 ok=false
+  t=300 complete=false (179.1465894,322.1831181) hold=0.75 ok=true | (44.00341437,538.7996085) hold=0 ok=false | (322.26,749.76) hold=0 ok=false
+  t=360 complete=false (172.3447926,327.1890141) hold=0 ok=false | (44.00341437,538.7996423) hold=0 ok=false | (322.26,749.76) hold=0 ok=false
+  t=420 complete=false (195.4415612,305.2648841) hold=0.75 ok=true | (44.00341437,538.7996431) hold=0 ok=false | (322.94374,751.0872628) hold=0 ok=false
+  t=480 complete=false (196.4928611,306.7486635) hold=0.75 ok=true | (44.00341437,538.7996431) hold=0 ok=false | (347.1403078,783.215454) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,echoEmitted=2,intrusion=7,targetLost=1,targetValidated=2,validationProgressStopped=2,validationProgressed=88 intrusions=7 losses=1 elapsed=8
+level 9-4 title=à contre-écho principle=Le courant l'éloigne de l'iris qui doit la réveiller. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=18/7 kinds=courant,dormeuse,echo gates=true
+  lueur 1 start=(0.75,0.85) iris=(0.8,0.45) temperament=normale motion=fixed route=(0.48,0.62) braise=nil twin=nil asleep=true
+  lueur 2 start=(0.2,0.12) iris=(0.3,0.4) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  current area=0,0.55,1,0.7 direction=(1,0) strength=0.75
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=Dans le courant, la dormeuse dérive vers la droite. Tenez-la à portée.
+  hint firstWake text=Lancée par l'écho, elle sort du courant.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=1 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (294.75,724.2) hold=0 ok=false | (86.27125645,222.8917381) hold=0 ok=false
+  t=120 complete=false (294.75,724.2) hold=0 ok=false | (119.0524856,125.300916) hold=0 ok=false
+  t=180 complete=false (294.75,724.2) hold=0 ok=false | (53.8718641,47.22352037) hold=0 ok=false
+  t=240 complete=false (294.75,724.2) hold=0 ok=false | (71.723082,166.8537448) hold=0 ok=false
+  t=300 complete=false (294.75,724.2) hold=0 ok=false | (100.3866336,284.7430739) hold=0 ok=false
+  t=360 complete=false (294.75,724.2) hold=0 ok=false | (63.88896344,351.9644628) hold=0 ok=false
+  t=420 complete=false (294.75,724.2) hold=0 ok=false | (115.3698497,342.384329) hold=0.3 ok=false
+  t=480 complete=false (294.75,724.2) hold=0 ok=false | (118.5088707,340.5855973) hold=0.75 ok=true
+  events attentionLeftField=1,attentionReturned=1,echoEmitted=1,intrusion=4,targetValidated=1,validationProgressStopped=2,validationProgressed=62 intrusions=4 losses=0 elapsed=8
+level 9-5 title=la flamme et l'écho principle=La flamme éclaire l'iris qui doit se fermer. Sans elle, pas d'écho. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=25/10 kinds=dormeuse,echo,veilleuse gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.38) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  lueur 2 start=(0.15,0.85) iris=(0.5,0.86) temperament=normale motion=fixed route=(0.36,0.6) braise=nil twin=nil asleep=true
+  veilleuse position=(0.82,0.22) look=0.14 decay=9 recharge=0.8 initial=0.45 linked=1
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=La flamme ferme l'iris du haut si elle s'éteint. Servez-la, puis réveillez.
+  hint veilleuseLow text=La flamme faiblit.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=1 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (191.9996071,205.1320886) hold=0 ok=false | (58.95,724.2) hold=0 ok=false
+  t=120 complete=false (206.6136139,125.3185022) hold=0 ok=false | (58.95,724.2) hold=0 ok=false
+  t=180 complete=false (140.8012069,110.9527188) hold=0 ok=false | (58.95,724.2) hold=0 ok=false
+  t=240 complete=false (157.5051278,233.6267108) hold=0 ok=false | (58.95,724.2) hold=0 ok=false
+  t=300 complete=false (152.9305757,346.6112345) hold=0 ok=false | (58.95,724.2) hold=0 ok=false
+  t=360 complete=false (153.8703228,462.6351358) hold=0 ok=false | (58.95,724.2) hold=0 ok=false
+  t=420 complete=false (220.2065556,428.5894281) hold=0 ok=false | (60.72326027,750.9418117) hold=0 ok=false
+  t=480 complete=false (196.6229477,323.047015) hold=0.2666666667 ok=false | (44,808) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=3,validationProgressed=16,veilleuseLow=2 intrusions=3 losses=0 elapsed=8
+level 9-6 title=trois voix principle=Dans l'ordre : l'éveillée, puis chaque dormeuse que son écho atteint. Le voile impose le détour. introduces= ordered=true zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=27/8 kinds=dormeuse,echo,voile gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.34) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  lueur 2 start=(0.12,0.8) iris=(0.28,0.58) temperament=normale motion=fixed route=(0.22,0.44) braise=nil twin=nil asleep=true
+  lueur 3 start=(0.88,0.86) iris=(0.7,0.64) temperament=normale motion=fixed route=(0.62,0.42) braise=nil twin=nil asleep=true
+  veil a=(0.3,0.66) b=(0.7,0.72)
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=L'éveillée d'abord. Amenez chaque dormeuse à portée de son écho, dans l'ordre.
+  hint firstLoss text=Un iris qui se rouvre entraîne les suivants.
+  resolved scale=1 targets=3 sequential=true twins=0 souffles=0 sleepers=2 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (192.7377554,205.1137629) hold=0 ok=false | (47.16,681.6) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=120 complete=false (157.7270337,237.5343338) hold=0 ok=false | (47.16,681.6) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=180 complete=false (197.2537539,290.2794495) hold=0.6166666667 ok=false | (47.16,681.6) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=240 complete=false (195.7932793,288.8202221) hold=0.75 ok=true | (47.16,681.6) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=300 complete=false (210.2673234,340.4303315) hold=0 ok=false | (47.16,681.6) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=360 complete=false (221.4722993,316.6344293) hold=0 ok=false | (47.16,681.6) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=420 complete=false (196.3152152,289.4400892) hold=0.75 ok=true | (44,732.0901641) hold=0 ok=false | (345.84,732.72) hold=0 ok=false
+  t=480 complete=false (195.904521,288.9023486) hold=0.75 ok=true | (44.01724658,797.3703105) hold=0 ok=false | (349,783.9751813) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,echoEmitted=2,intrusion=6,targetLost=1,targetValidated=2,validationProgressStopped=2,validationProgressed=88 intrusions=6 losses=1 elapsed=8
+level 10-1 title=le gouffre principle=Le gouffre est sur le chemin direct. Contournez-le. introduces=gouffre ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=17/3 kinds=gouffre gates=true
+  lueur 1 start=(0.5,0.12) iris=(0.5,0.8) temperament=normale motion=fixed route=(0.24,0.5) braise=nil twin=nil asleep=false
+  gouffre center=(0.5,0.5) radius=0.11 pull=0.24 strength=0.9
+  hint start text=Livrée à elle-même, elle file droit vers le gouffre.
+  hint firstSwallow text=Avalée, elle revient au départ. Tout est à refaire.
+  hint afterSeconds(30.0) text=Poussez-la sur le côté avant qu'il ne l'aspire.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=1 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (146.9930769,163.1072211) hold=0 ok=false
+  t=120 complete=false (128.9685935,276.7038883) hold=0 ok=false
+  t=180 complete=false (44,285.5661757) hold=0 ok=false
+  t=240 complete=false (46.08777582,319.1417832) hold=0 ok=false
+  t=300 complete=false (83.84106936,435.4144077) hold=0 ok=false
+  t=360 complete=false (143.8674482,542.7502633) hold=0 ok=false
+  t=420 complete=false (158.5723138,594.4845791) hold=0 ok=false
+  t=480 complete=false (191.5219862,675.1264815) hold=0.06666666667 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=6,validationProgressed=4 intrusions=6 losses=0 elapsed=8
+level 10-2 title=l'aspiration principle=Deux gouffres, et leur aspiration se touche. Passez large. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=19/3 kinds=gouffre gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.9) temperament=normale motion=fixed route=(0.16,0.4);(0.24,0.72) braise=nil twin=nil asleep=false
+  gouffre center=(0.5,0.4) radius=0.11 pull=0.24 strength=0.9
+  gouffre center=(0.62,0.68) radius=0.11 pull=0.24 strength=0.9
+  hint start text=L'aspiration commence bien avant la bouche.
+  hint firstSwallow text=Trop près. Elle revient au départ.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=2 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (93.95772728,90.54518294) hold=0 ok=false
+  t=120 complete=false (44,46.11436614) hold=0 ok=false
+  t=180 complete=false (71.85495831,147.2847573) hold=0 ok=false
+  t=240 complete=false (48.34572259,218.0042209) hold=0 ok=false
+  t=300 complete=false (70.00026723,340.1685371) hold=0 ok=false
+  t=360 complete=false (116.4633298,454.0842263) hold=0 ok=false
+  t=420 complete=false (144.9226593,573.4306363) hold=0 ok=false
+  t=480 complete=false (108.4034396,650.4830913) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=4 intrusions=4 losses=0 elapsed=8
+level 10-3 title=le courant et le gouffre principle=Le courant la porte droit dans le gouffre. Sortez-la du courant avant. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=14/3 kinds=courant,gouffre gates=true
+  lueur 1 start=(0.2,0.31) iris=(0.88,0.46) temperament=normale motion=fixed route=(0.4,0.56) braise=nil twin=nil asleep=false
+  current area=0,0.25,1,0.34 direction=(1,0) strength=0.7
+  gouffre center=(0.7,0.33) radius=0.13 pull=0.24 strength=0.9
+  hint start text=Le courant l'emporte vers le gouffre. Poussez-la vers le bas.
+  hint firstSwallow text=Avalée. Elle repart dans le courant.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=1 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (180.9382463,289.1955496) hold=0 ok=false
+  t=120 complete=false (275.1,281.16) hold=0 ok=false
+  t=180 complete=false (177.3877441,264.1179674) hold=0 ok=false
+  t=240 complete=false (275.1,281.16) hold=0 ok=false
+  t=300 complete=false (182.0607246,295.6376971) hold=0 ok=false
+  t=360 complete=false (275.1,281.16) hold=0 ok=false
+  t=420 complete=false (175.5100966,280.5412689) hold=0 ok=false
+  t=480 complete=false (275.1,281.16) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=3,lueurReturned=3,lueurSwallowed=4 intrusions=3 losses=0 elapsed=8
+level 10-4 title=la flamme en haut principle=La flamme veille tout en haut, loin du gouffre. Servez-la sans perdre le détour. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=21/3 kinds=gouffre,veilleuse gates=true
+  lueur 1 start=(0.15,0.14) iris=(0.82,0.86) temperament=normale motion=fixed route=(0.82,0.3);(0.86,0.58) braise=nil twin=nil asleep=false
+  veilleuse position=(0.5,0.1) look=0.14 decay=9 recharge=0.8 initial=0.45 linked=
+  gouffre center=(0.5,0.52) radius=0.11 pull=0.24 strength=0.9
+  hint start text=La flamme est en haut, le gouffre au centre. Faites le tour par la droite.
+  hint veilleuseLow text=La flamme faiblit.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=1 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (44,173.9575225) hold=0 ok=false
+  t=120 complete=false (44,297.7647251) hold=0 ok=false
+  t=180 complete=false (52.01070701,414.1494005) hold=0 ok=false
+  t=240 complete=false (129.0945049,511.3167836) hold=0 ok=false
+  t=300 complete=false (195.5891609,608.4393596) hold=0 ok=false
+  t=360 complete=false (182.1277711,591.9688793) hold=0 ok=false
+  t=420 complete=false (181.8431304,534.5554737) hold=0 ok=false
+  t=480 complete=false (196.5,443.04) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=4,lueurSwallowed=1,veilleuseLow=1,veilleuseOut=1 intrusions=4 losses=0 elapsed=8
+level 10-5 title=de part et d'autre principle=Deux lueurs se croisent autour du gouffre. Chacune son côté. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=24/7 kinds=gouffre gates=true
+  lueur 1 start=(0.15,0.18) iris=(0.82,0.84) temperament=normale motion=fixed route=(0.2,0.56);(0.5,0.82) braise=nil twin=nil asleep=false
+  lueur 2 start=(0.85,0.18) iris=(0.18,0.84) temperament=normale motion=fixed route=(0.8,0.56);(0.5,0.84) braise=nil twin=nil asleep=false
+  gouffre center=(0.5,0.5) radius=0.12 pull=0.24 strength=0.9
+  hint start text=Leurs chemins se croisent au centre, là où le gouffre attend.
+  hint firstSwallow text=Une de perdue, pas les deux. Elle revient au départ.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=0 gouffres=1 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (44,238.2448595) hold=0 ok=false | (282.5617273,262.7295452) hold=0 ok=false
+  t=120 complete=false (79.56333081,354.7462033) hold=0 ok=false | (218.4725684,361.7043566) hold=0 ok=false
+  t=180 complete=false (196.5,426) hold=0 ok=false | (330.5051969,161.6303103) hold=0 ok=false
+  t=240 complete=false (72.82548472,197.1344847) hold=0 ok=false | (339.2912393,229.4195666) hold=0 ok=false
+  t=300 complete=false (114.3801963,314.0476896) hold=0 ok=false | (274.4415505,333.380378) hold=0 ok=false
+  t=360 complete=false (196.5,426) hold=0 ok=false | (196.5,426) hold=0 ok=false
+  t=420 complete=false (78.4148764,209.1004845) hold=0 ok=false | (297.4541016,219.444263) hold=0 ok=false
+  t=480 complete=false (126.6567887,323.2592329) hold=0 ok=false | (234.5653128,326.1622333) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=6,lueurReturned=4,lueurSwallowed=4 intrusions=6 losses=0 elapsed=8
+level 10-6 title=l'abîme principle=Deux gouffres, trois lueurs, dans l'ordre. L'iris de la première est entre les bouches. introduces= ordered=true zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=20/4 kinds=gouffre gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.52) temperament=normale motion=fixed route=(0.74,0.28);(0.72,0.5) braise=nil twin=nil asleep=false
+  lueur 2 start=(0.12,0.9) iris=(0.15,0.2) temperament=normale motion=fixed route=(0.12,0.55) braise=nil twin=nil asleep=false
+  lueur 3 start=(0.88,0.9) iris=(0.85,0.35) temperament=normale motion=fixed route=(0.9,0.62) braise=nil twin=nil asleep=false
+  gouffre center=(0.5,0.34) radius=0.11 pull=0.24 strength=0.9
+  gouffre center=(0.65,0.65) radius=0.11 pull=0.24 strength=0.9
+  hint start text=L'ordre d'abord ; puis les couloirs des bords, loin des bouches.
+  hint firstSwallow text=Avalée. Et si elle était fermée, les suivantes s'ouvrent aussi.
+  resolved scale=1 targets=3 sequential=true twins=0 souffles=0 sleepers=0 gouffres=2 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (151.4393326,44) hold=0 ok=false | (44,648.6705332) hold=0 ok=false | (337.001177,646.6584422) hold=0 ok=false
+  t=120 complete=false (111.2522903,132.555041) hold=0 ok=false | (44,524.6419997) hold=0 ok=false | (255.45,553.8) hold=0 ok=false
+  t=180 complete=false (151.2080999,249.4958595) hold=0 ok=false | (44.48465655,400.5860931) hold=0 ok=false | (347.05441,723.7764016) hold=0 ok=false
+  t=240 complete=false (195.1563144,95.71926949) hold=0 ok=false | (45.3915449,281.513172) hold=0 ok=false | (341.4327929,603.2314723) hold=0 ok=false
+  t=300 complete=false (189.0186078,219.555928) hold=0 ok=false | (60.01569724,165.6478887) hold=0 ok=false | (330.0686809,499.7999266) hold=0 ok=false
+  t=360 complete=false (197.1909802,87.71414604) hold=0 ok=false | (57.4883801,170.0787845) hold=0 ok=false | (320.2384852,376.2483325) hold=0 ok=false
+  t=420 complete=false (192.6269829,209.7319784) hold=0 ok=false | (58.10780506,170.4845202) hold=0 ok=false | (335.6652867,297.2835907) hold=0 ok=false
+  t=480 complete=false (196.5,289.68) hold=0 ok=false | (58.20975637,170.5007565) hold=0 ok=false | (333.6433142,298.5174009) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=5,lueurReturned=3,lueurSwallowed=4 intrusions=5 losses=0 elapsed=8
+level 11-1 title=la braise principle=Elle dort, froide. Votre regard la réveille, et elle fuit. introduces=braise ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=15/4 kinds=braise gates=true
+  lueur 1 start=(0.3,0.72) iris=(0.7,0.3) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  hint start text=Elle est froide. Regardez-la.
+  hint braiseLit text=Elle s'allume et fuit. Laissez-la venir.
+  hint braiseFlared text=Trop regardée, elle s'affole.
+  hint afterSeconds(30.0) text=Un regard bref suffit. Puis regardez ailleurs.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=0 braises=1 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (117.9,613.44) hold=0 ok=false
+  t=120 complete=false (116.021094,612.5035495) hold=0 ok=false
+  t=180 complete=false (92.14280821,593.0910754) hold=0 ok=false
+  t=240 complete=false (44,588.9499139) hold=0 ok=false
+  t=300 complete=false (44,464.9779601) hold=0 ok=false
+  t=360 complete=false (44,346.0997023) hold=0 ok=false
+  t=420 complete=false (126.3867746,290.4698491) hold=0 ok=false
+  t=480 complete=false (248.2406545,271.4747457) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,braiseLit=1,intrusion=3 intrusions=3 losses=0 elapsed=8
+level 11-2 title=deux braises principle=Deux braises, deux réveils. Réveillez-les du côté opposé à leur iris. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=14/5 kinds=braise gates=true
+  lueur 1 start=(0.25,0.75) iris=(0.25,0.3) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  lueur 2 start=(0.75,0.75) iris=(0.75,0.3) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  hint start text=Réveillez-les l'une après l'autre.
+  hint braiseFlared text=Affolée, elle fuit de plus loin. Regardez ailleurs.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=0 gouffres=0 braises=2 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (98.25,639) hold=0 ok=false | (299.8536365,679.1230623) hold=0 ok=false
+  t=120 complete=false (44,646.9874755) hold=0 ok=false | (347.1604022,750.2280145) hold=0 ok=false
+  t=180 complete=false (44.0045505,551.5240524) hold=0 ok=false | (345.3199297,753.7312059) hold=0 ok=false
+  t=240 complete=false (44,538.5925781) hold=0 ok=false | (345.2749931,753.8167391) hold=0 ok=false
+  t=300 complete=false (44.00142367,471.2280209) hold=0 ok=false | (345.2738959,753.8188275) hold=0 ok=false
+  t=360 complete=false (44.00636955,466.8862045) hold=0 ok=false | (345.2738692,753.8188785) hold=0 ok=false
+  t=420 complete=false (44.0064903,466.7801955) hold=0 ok=false | (345.2738685,753.8188797) hold=0 ok=false
+  t=480 complete=false (44.00649325,466.7776072) hold=0 ok=false | (345.2738685,753.8188797) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=5 intrusions=5 losses=0 elapsed=8
+level 11-3 title=la braise et le courant principle=Réveillée, elle monte dans le courant. Poussez-la au travers. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=17/3 kinds=braise,courant gates=true
+  lueur 1 start=(0.5,0.85) iris=(0.5,0.2) temperament=normale motion=fixed route=(0.64,0.62);(0.62,0.4) braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  current area=0,0.45,1,0.58 direction=(-1,0) strength=0.85
+  hint start text=Froide, elle attend sous le courant.
+  hint braiseLit text=Elle monte. Le courant va l'emporter vers la gauche.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=0 braises=1 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (196.5,724.2) hold=0 ok=false
+  t=120 complete=false (227.4333336,751.7524411) hold=0 ok=false
+  t=180 complete=false (270.9824879,755.3915676) hold=0 ok=false
+  t=240 complete=false (305.2359046,764.4940362) hold=0 ok=false
+  t=300 complete=false (348.8629342,801.853565) hold=0 ok=false
+  t=360 complete=false (347.8478625,801.158463) hold=0 ok=false
+  t=420 complete=false (347.8230787,801.1414915) hold=0 ok=false
+  t=480 complete=false (347.8224736,801.1410772) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=3 intrusions=3 losses=0 elapsed=8
+level 11-4 title=la braise et le voile principle=Son iris est derrière le voile. Réveillez-la, puis contournez. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=17/3 kinds=braise,voile gates=true
+  lueur 1 start=(0.25,0.8) iris=(0.72,0.25) temperament=normale motion=fixed route=(0.16,0.52);(0.4,0.34) braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  veil a=(0.3,0.5) b=(0.85,0.5)
+  hint start text=Le voile ferme la droite. Le passage est à gauche.
+  hint braiseLit text=Réveillée, elle vole vers le voile. Poussez-la vers la gauche.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=0 sleepers=0 gouffres=0 braises=1 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (100.8737819,689.8597646) hold=0 ok=false
+  t=120 complete=false (152.8954184,802.3278135) hold=0 ok=false
+  t=180 complete=false (265.0349906,808) hold=0 ok=false
+  t=240 complete=false (253.6968963,731.2598845) hold=0 ok=false
+  t=300 complete=false (202.3660425,711.9171844) hold=0 ok=false
+  t=360 complete=false (238.1490902,593.4968268) hold=0 ok=false
+  t=420 complete=false (247.8210938,470.8353594) hold=0 ok=false
+  t=480 complete=false (283.7800308,449) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,braiseFlared=1,braiseLit=1,intrusion=2 intrusions=2 losses=0 elapsed=8
+level 11-5 title=deux réveils principle=La braise s'éveille au regard ; son iris fermé réveille la dormeuse. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=18/6 kinds=braise,dormeuse,echo gates=true
+  lueur 1 start=(0.5,0.8) iris=(0.5,0.5) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  lueur 2 start=(0.35,0.35) iris=(0.2,0.15) temperament=normale motion=fixed route= braise=nil twin=nil asleep=true
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=Deux sommeils : l'un cède au regard, l'autre à l'écho.
+  hint firstWake text=L'écho l'a réveillée. Elle rejoint son iris.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=1 gouffres=0 braises=1 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (197.7402878,683.8941315) hold=0 ok=false | (150.5368128,229.7743826) hold=0 ok=false
+  t=120 complete=false (233.5811318,798.3782278) hold=0 ok=false | (151.3998397,227.0582274) hold=0 ok=false
+  t=180 complete=false (134.0453277,807.9872107) hold=0 ok=false | (151.4209112,226.9919103) hold=0 ok=false
+  t=240 complete=false (121.9375052,807.9781562) hold=0 ok=false | (97.4854192,237.2306851) hold=0 ok=false
+  t=300 complete=false (121.6418828,807.9779351) hold=0 ok=false | (91.47080822,238.1770902) hold=0 ok=false
+  t=360 complete=false (121.634665,807.9779297) hold=0 ok=false | (89.45860351,213.2009356) hold=0 ok=false
+  t=420 complete=false (121.6344887,807.9779296) hold=0 ok=false | (132.9162306,100.7108991) hold=0 ok=false
+  t=480 complete=false (121.6344844,807.9779296) hold=0 ok=false | (240.0242923,44) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=5 intrusions=5 losses=0 elapsed=8
+level 11-6 title=trois feux principle=Une braise, une lueur, une braise. Dans l'ordre, et le voile en travers. introduces= ordered=true zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=20/6 kinds=braise,voile gates=true
+  lueur 1 start=(0.2,0.8) iris=(0.2,0.35) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  lueur 2 start=(0.5,0.12) iris=(0.5,0.55) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  lueur 3 start=(0.8,0.82) iris=(0.8,0.3) temperament=normale motion=fixed route=(0.58,0.5);(0.62,0.34) braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  veil a=(0.66,0.6) b=(0.96,0.6)
+  hint start text=La première braise, puis la lueur, puis la braise derrière le voile.
+  hint firstLoss text=Un iris qui se rouvre entraîne les suivants.
+  resolved scale=1 targets=3 sequential=true twins=0 souffles=0 sleepers=0 gouffres=0 braises=2 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (78.6,681.6) hold=0 ok=false | (186.7086025,222.8263986) hold=0 ok=false | (314.7874361,699.7852263) hold=0 ok=false
+  t=120 complete=false (78.6,681.6) hold=0 ok=false | (167.7723964,345.3759451) hold=0 ok=false | (328.2780782,808) hold=0 ok=false
+  t=180 complete=false (78.6,681.6) hold=0 ok=false | (192.5157213,465.1671644) hold=0 ok=false | (215.8233532,808) hold=0 ok=false
+  t=240 complete=false (61.74086355,689.5575362) hold=0 ok=false | (180.666082,453.2761861) hold=0 ok=false | (213.2487053,736.3361739) hold=0 ok=false
+  t=300 complete=false (44.02694388,778.3547411) hold=0 ok=false | (213.8365509,444.1768512) hold=0 ok=false | (274.4869802,777.2709296) hold=0 ok=false
+  t=360 complete=false (44.05081439,792.7200855) hold=0 ok=false | (204.5869218,458.9100395) hold=0 ok=false | (271.2850501,653.393766) hold=0 ok=false
+  t=420 complete=false (44.0513972,793.070827) hold=0 ok=false | (196.4210475,468.4006883) hold=0 ok=false | (270.98244,534.5140603) hold=0 ok=false
+  t=480 complete=false (44.05141143,793.0793907) hold=0 ok=false | (196.9757711,468.9315772) hold=0 ok=false | (320.5451776,534.2) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,braiseFlared=2,braiseLit=1,intrusion=9 intrusions=9 losses=0 elapsed=8
+level 12-1 title=l'écho et le gouffre principle=La dormeuse est loin de l'iris qui doit la réveiller, et le gouffre est sur le chemin. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=34/4 kinds=dormeuse,echo,gouffre gates=true
+  lueur 1 start=(0.5,0.1) iris=(0.5,0.34) temperament=normale motion=fixed route= braise=nil twin=nil asleep=false
+  lueur 2 start=(0.85,0.85) iris=(0.15,0.85) temperament=normale motion=fixed route=(0.85,0.55);(0.55,0.5) braise=nil twin=nil asleep=true
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  gouffre center=(0.7,0.65) radius=0.11 pull=0.24 strength=0.9
+  hint start text=Contournez le gouffre avec la dormeuse, jusqu'à portée de l'iris du haut.
+  hint firstWake text=Lancée par l'écho, elle rejoint son iris.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=0 sleepers=1 gouffres=1 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (192.7377554,205.1137629) hold=0 ok=false | (349,808) hold=0 ok=false
+  t=120 complete=false (196.5196706,290.9323242) hold=0.45 ok=false | (348.9819409,807.9396771) hold=0 ok=false
+  t=180 complete=false (204.1467543,253.2244491) hold=0 ok=false | (348.9733289,807.9109105) hold=0 ok=false
+  t=240 complete=false (199.214919,286.6770217) hold=0.4 ok=false | (348.9731187,807.9102081) hold=0 ok=false
+  t=300 complete=false (195.6932994,290.439731) hold=0.75 ok=true | (348.9731135,807.910191) hold=0 ok=false
+  t=360 complete=false (196.9222702,289.4380879) hold=0.75 ok=true | (348.9731134,807.9101905) hold=0 ok=false
+  t=420 complete=false (175.054786,344.0291165) hold=0 ok=false | (348.9731134,807.9101905) hold=0 ok=false
+  t=480 complete=false (177.0584492,333.1765575) hold=0 ok=false | (348.9731134,807.9101905) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,echoEmitted=2,intrusion=8,targetLost=2,targetValidated=2,validationProgressStopped=2,validationProgressed=88 intrusions=8 losses=2 elapsed=8
+level 12-2 title=la braise dans la brume principle=Réveillez la braise, puis confiez-la au souffle : son iris est de l'autre côté. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=28/8 kinds=braise,souffle,voile gates=true
+  lueur 1 start=(0.7,0.8) iris=(0.5,0.2) temperament=normale motion=fixed route=(0.15,0.53) braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  veil a=(0,0.5) b=(1,0.5)
+  souffle path=(0.15,0.7);(0.15,0.3) period=8 duty=0.7 radius=0.2 strength=1.8 phase=0
+  hint start text=Froide, elle attend sous le voile. Le souffle monte à gauche.
+  hint braiseLit text=Réveillée, elle glisse contre le voile. Amenez-la sur le chemin du souffle.
+  hint firstCarried text=Il l'emporte. Ne la regardez plus.
+  resolved scale=1 targets=1 sequential=false twins=0 souffles=1 sleepers=0 gouffres=0 braises=1 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (213.3835205,641.4635763) hold=0 ok=false
+  t=120 complete=false (238.3999458,533.8877235) hold=0 ok=false
+  t=180 complete=false (316.0453148,490.08742) hold=0 ok=false
+  t=240 complete=false (226.0742725,449) hold=0 ok=false
+  t=300 complete=false (181.882519,449) hold=0 ok=false
+  t=360 complete=false (214.7721751,449) hold=0 ok=false
+  t=420 complete=false (196.104791,449) hold=0 ok=false
+  t=480 complete=false (149.5543728,483.9197968) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,braiseFlared=1,braiseLit=1,intrusion=2 intrusions=2 losses=0 elapsed=8
+level 12-3 title=jumelles et gouffre principle=Le gouffre est entre leurs postes. Le fil le contourne. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=17/4 kinds=gouffre,jumelles gates=true
+  lueur 1 start=(0.12,0.15) iris=(0.2,0.35) temperament=normale motion=fixed route=(0.3,0.68);(0.62,0.74) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.88,0.88) iris=(0.8,0.7) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  gouffre center=(0.5,0.52) radius=0.11 pull=0.24 strength=0.9
+  hint start text=Tout droit, c'est le gouffre. Passez par le bas.
+  hint twinsLinked text=À portée. Laissez-les se rejoindre, loin de la bouche.
+  resolved scale=1 targets=2 sequential=false twins=2 souffles=0 sleepers=0 gouffres=1 braises=0 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (64.70498906,246.1340093) hold=0 ok=false | (321.5787604,668.9352301) hold=0 ok=false
+  t=120 complete=false (79.63755119,297.9827816) hold=0 ok=false | (315.6548229,594.8845501) hold=0 ok=false
+  t=180 complete=false (87.29139332,258.5073204) hold=0 ok=false | (313.7694769,597.355804) hold=0 ok=false
+  t=240 complete=false (83.93667013,294.32845) hold=0 ok=false | (313.5649122,596.4765164) hold=0 ok=false
+  t=300 complete=false (78.76005635,299.1493382) hold=0 ok=false | (315.2036569,596.3146734) hold=0 ok=false
+  t=360 complete=false (79.86685376,298.2393394) hold=0 ok=false | (315.3111064,595.8144485) hold=0 ok=false
+  t=420 complete=false (77.23280537,296.8078259) hold=0 ok=false | (313.8281959,596.7048371) hold=0 ok=false
+  t=480 complete=false (44,259.170558) hold=0 ok=false | (314.9527405,596.6949786) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=4 intrusions=4 losses=0 elapsed=8
+level 12-4 title=souffle et écho principle=La dormeuse attend de l'autre côté du voile, à portée d'un iris que seul le souffle permet de fermer. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.08 hold=0.75 par=21/4 kinds=dormeuse,echo,souffle,voile gates=true
+  lueur 1 start=(0.5,0.12) iris=(0.62,0.78) temperament=normale motion=fixed route=(0.2,0.47) braise=nil twin=nil asleep=false
+  lueur 2 start=(0.85,0.62) iris=(0.85,0.88) temperament=normale motion=fixed route= braise=nil twin=nil asleep=true
+  veil a=(0,0.5) b=(1,0.5)
+  souffle path=(0.2,0.3);(0.2,0.7) period=8 duty=0.7 radius=0.2 strength=1.8 phase=0
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  hint start text=Le souffle porte l'éveillée. Son iris, une fois fermé, réveillera la dormeuse.
+  hint firstWake text=L'écho a passé le voile.
+  resolved scale=1 targets=2 sequential=false twins=0 souffles=1 sleepers=1 gouffres=0 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.08
+  t=60 complete=false (202.2072278,222.3599604) hold=0 ok=false | (348.3390451,533.3405378) hold=0 ok=false
+  t=120 complete=false (205.1455252,346.2822615) hold=0 ok=false | (348.7323476,533.4765372) hold=0 ok=false
+  t=180 complete=false (236.857569,310.7195098) hold=0 ok=false | (348.9960212,539.8345012) hold=0 ok=false
+  t=240 complete=false (234.1514721,403) hold=0 ok=false | (348.9873866,543.6371271) hold=0 ok=false
+  t=300 complete=false (232.8873413,403) hold=0 ok=false | (348.9871758,543.7299713) hold=0 ok=false
+  t=360 complete=false (262.9971845,403) hold=0 ok=false | (348.9871707,543.7322381) hold=0 ok=false
+  t=420 complete=false (241.9403664,403) hold=0 ok=false | (348.9871705,543.7322935) hold=0 ok=false
+  t=480 complete=false (241.7159887,403) hold=0 ok=false | (348.9871705,543.7322948) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=3 intrusions=3 losses=0 elapsed=8
+level 12-5 title=la flamme et les braises principle=Deux braises dans l'ordre, une flamme en haut qui éclaire leurs iris, un gouffre entre elles. introduces= ordered=true zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=21/11 kinds=braise,gouffre,veilleuse gates=true
+  lueur 1 start=(0.2,0.85) iris=(0.2,0.25) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  lueur 2 start=(0.8,0.85) iris=(0.8,0.25) temperament=normale motion=fixed route= braise=BraiseDefinition(chargeRadius: 0.22, releaseRadius: 0.28, heatDuration: 0.9, coolDuration: 30.0, acceptHeat: 0.5, releaseHeat: 0.4, flareHeat: 0.85, flareAttention: 1.5, initialHeat: 0.0) twin=nil asleep=false
+  veilleuse position=(0.5,0.1) look=0.14 decay=8 recharge=0.8 initial=0.2 linked=
+  gouffre center=(0.5,0.78) radius=0.11 pull=0.24 strength=0.9
+  hint start text=La flamme d'abord, puis réveillez la braise de gauche, puis celle de droite.
+  hint veilleuseLow text=La flamme faiblit.
+  hint braiseFlared text=Affolée. Regardez ailleurs.
+  resolved scale=1 targets=2 sequential=true twins=0 souffles=0 sleepers=0 gouffres=1 braises=2 balises=0 echo=nil
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (44,808) hold=0 ok=false | (314.4,724.2) hold=0 ok=false
+  t=120 complete=false (44,737.5502364) hold=0 ok=false | (348.0246431,752.590229) hold=0 ok=false
+  t=180 complete=false (59.11029149,614.8133357) hold=0 ok=false | (347.460137,760.777998) hold=0 ok=false
+  t=240 complete=false (46.8793157,491.4326113) hold=0 ok=false | (347.4463541,760.9779091) hold=0 ok=false
+  t=300 complete=false (55.27648347,367.7886051) hold=0 ok=false | (347.4460176,760.9827901) hold=0 ok=false
+  t=360 complete=false (82.97517108,264.7374977) hold=0 ok=false | (347.4460094,760.9829092) hold=0 ok=false
+  t=420 complete=false (99.6254089,383.5999833) hold=0 ok=false | (347.4460092,760.9829121) hold=0 ok=false
+  t=480 complete=false (135.3837336,502.2967193) hold=0 ok=false | (347.4460092,760.9829122) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,braiseFlared=1,braiseLit=1,intrusion=3,veilleuseOut=1,veilleuseRelit=1 intrusions=3 losses=0 elapsed=8
+level 12-6 title=le dernier iris principle=Réunissez les jumelles ; leur rendez-vous respire. Amenez la dormeuse à portée, autour du gouffre. introduces= ordered=false zone=0.46 force=2.4 attraction=0.5 noise=0.15 hold=0.75 par=27/8 kinds=dormeuse,echo,gouffre,jumelles gates=true
+  lueur 1 start=(0.15,0.12) iris=(0.22,0.25) temperament=normale motion=fixed route=(0.4,0.3);(0.66,0.3) braise=nil twin=2 asleep=false
+  lueur 2 start=(0.85,0.12) iris=(0.78,0.25) temperament=normale motion=fixed route= braise=nil twin=1 asleep=false
+  lueur 3 start=(0.5,0.7) iris=(0.5,0.88) temperament=normale motion=fixed route=(0.75,0.6) braise=nil twin=nil asleep=true
+  echo radius=0.45 speed=0.9 interval=4 burst=6
+  gouffre center=(0.42,0.5) radius=0.11 pull=0.24 strength=0.9
+  hint start text=Les jumelles d'abord. Réunies, elles respirent un écho.
+  hint twinsLinked text=Elles se rejoignent. Maintenant la dormeuse, par la droite du gouffre.
+  hint firstWake text=Le dernier iris l'attend, en bas.
+  resolved scale=1 targets=3 sequential=false twins=2 souffles=0 sleepers=1 gouffres=1 braises=0 balises=0 echo=176.85
+  target 1 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 2 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  target 3 zone=180.78 gain=0.01327580485 attraction=0.5 noise=0.15
+  t=60 complete=false (87.83735701,216.099534) hold=0 ok=false | (306.1318867,217.7791901) hold=0 ok=false | (221.7230719,542.4329983) hold=0 ok=false
+  t=120 complete=false (86.25308737,213.2948218) hold=0 ok=false | (305.6809839,213.0939197) hold=0 ok=false | (188.5448121,480.8374751) hold=0 ok=false
+  t=180 complete=false (85.65821556,212.9552124) hold=0 ok=false | (306.2915122,212.8809176) hold=0 ok=false | (196.5,596.4) hold=0 ok=false
+  t=240 complete=false (56.42086847,227.4194298) hold=0 ok=false | (331.6139277,229.3445708) hold=0 ok=false | (196.5,596.4) hold=0 ok=false
+  t=300 complete=false (65.52793021,273.3290463) hold=0 ok=false | (307.5630023,215.2263092) hold=0 ok=false | (196.5,596.4) hold=0 ok=false
+  t=360 complete=false (84.46397894,277.2894253) hold=0 ok=false | (306.5182064,212.839786) hold=0 ok=false | (196.5,596.4) hold=0 ok=false
+  t=420 complete=false (94.65215403,386.2467212) hold=0 ok=false | (307.9543753,212.3338207) hold=0 ok=false | (196.5,596.4) hold=0 ok=false
+  t=480 complete=false (165.06,426) hold=0 ok=false | (303.7667604,214.2769631) hold=0 ok=false | (196.5,596.4) hold=0 ok=false
+  events attentionLeftField=1,attentionReturned=1,intrusion=10,lueurReturned=1,lueurSwallowed=2 intrusions=10 losses=0 elapsed=8

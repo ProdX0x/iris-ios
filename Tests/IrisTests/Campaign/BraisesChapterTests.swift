@@ -13,7 +13,8 @@ struct BraisesChapterTests {
 
     private var chapter: ChapterDefinition {
         guard let chapter = Campaign.chapter(number: 11) else { preconditionFailure("chapter XI missing") }
-        return chapter
+        return ChapterDefinition(number: chapter.number, name: chapter.name, principle: chapter.principle, ambientFrequency: chapter.ambientFrequency,
+                                 theme: chapter.theme, levels: chapter.levels.filter(\.gatesProgression))
     }
 
     @Test("every braise of the chapter is the validated tuning A, byte for byte")

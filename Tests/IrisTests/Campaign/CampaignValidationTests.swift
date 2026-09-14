@@ -18,9 +18,9 @@ struct CampaignStructureTests {
             #expect(played.number == historical.number && played.name == historical.name && played.principle == historical.principle)
             #expect(played.ambientFrequency == historical.ambientFrequency && played.theme == historical.theme)
             #expect(Array(played.levels.prefix(historical.levels.count)) == historical.levels, "chapter \(historical.number)")
-            #expect(played.levels.dropFirst(historical.levels.count).allSatisfy { $0.hasBalises && !$0.gatesProgression }, "chapter \(historical.number)")
+            #expect(played.levels.dropFirst(historical.levels.count).allSatisfy { ($0.hasBalises || $0.hasOculo) && !$0.gatesProgression }, "chapter \(historical.number)")
         }
-        #expect(Campaign.levels.filter { !$0.hasBalises }.prefix(34).elementsEqual(Campaign.historicalLevels))
+        #expect(Campaign.levels.filter { !$0.hasBalises && !$0.hasOculo }.prefix(34).elementsEqual(Campaign.historicalLevels))
         #expect(Campaign.chapters.map(\.number) == Array(1...Campaign.chapters.count))
         #expect(Set(Campaign.levels.map(\.id)).count == Campaign.levels.count)
         #expect(Set(Campaign.levels.map(\.title)).count == Campaign.levels.count)
@@ -135,7 +135,7 @@ struct CampaignSimulationTests {
     func pushingNecessity() {
         for level in Campaign.levels {
             let measurement = CampaignMeasurements.of(level)
-            if level.chapter <= 2 && !level.hasBalises {
+            if level.chapter <= 2 && !level.hasBalises && !level.hasOculo {
                 #expect(measurement.avoidance.completed, "\(level.id) should be solvable by avoidance")
             }
             if level.requiresPushing {
@@ -181,10 +181,10 @@ struct CampaignSimulationTests {
         }
     }
 
-    @Test("mastery: the last level of each chapter has the highest difficulty estimate of its chapter")
+    @Test("mastery: the last gating level of each chapter has the highest difficulty estimate of its chapter (optional oculomotor finals aside)")
     func mastery() {
         for chapter in Campaign.chapters {
-            let estimates = chapter.levels.map { LevelAnalysis($0).difficulty(botTime: CampaignMeasurements.of($0).guidedTime) }
+            let estimates = chapter.levels.filter(\.gatesProgression).map { LevelAnalysis($0).difficulty(botTime: CampaignMeasurements.of($0).guidedTime) }
             guard let last = estimates.last else { continue }
             let dominated = estimates.dropLast().allSatisfy { $0 < last }
             #expect(dominated, "chapter \(chapter.number): \(estimates)")

@@ -247,8 +247,8 @@ struct OculomotorLevelTests {
         #expect(Campaign.historicalLevels.allSatisfy { !$0.hasBalises && $0.gatesProgression })
         let expansionIDs = Campaign.expansionChapters.flatMap(\.levels).map(\.id)
         #expect(expansionIDs.count == 36 && expansionIDs.first == "7-1" && expansionIDs.last == "12-6")
-        #expect(Campaign.levels.count == 71 && Campaign.chapters.count == 12)
-        #expect(Campaign.chapters.dropFirst().map(\.levels) == Array(Campaign.historicalChapters.dropFirst().map(\.levels)) + Campaign.expansionChapters.map(\.levels))
+        #expect(Campaign.baseChapters.flatMap(\.levels).count == 71 && Campaign.chapters.count == 12)
+        #expect(Campaign.baseChapters.dropFirst().map(\.levels) == Array(Campaign.historicalChapters.dropFirst().map(\.levels)) + Campaign.expansionChapters.map(\.levels))
     }
 
     @Test("feedback: a balise waking reuses the soft pulse, the thread completing the validation chime and pulse; nothing new")

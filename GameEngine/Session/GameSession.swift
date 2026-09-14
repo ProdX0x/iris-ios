@@ -42,6 +42,8 @@ struct GameSession: Sendable {
     private(set) var returns: [Int: TimeInterval] = [:]
     /// PROTOTYPE: when the latent lueurs appeared (thread of balises complete), for the presentation.
     private(set) var releasedAt: TimeInterval?
+    /// OCULOMOTOR EXPANSION: the last head orientation fed to the session (nil when unknown).
+    private(set) var headPose: HeadPose?
 
     init(level: Level,
          bounds: PlayfieldBounds,
@@ -101,9 +103,18 @@ struct GameSession: Sendable {
 
     /// PROTOTYPE: the thread of balises, and whether the lueurs are still latent (thread incomplete).
     var balises: BaliseSequenceState? { environment.balises }
+    /// OCULOMOTOR EXPANSION: the gaze-contingent stages.
+    var oculo: OculoSequenceState? { environment.oculo }
 
     var areLueursLatent: Bool {
-        environment.balises.map { !$0.isComplete } ?? false
+        if environment.balises.map({ !$0.isComplete }) ?? false { return true }
+        if let oculo = environment.oculo, oculo.hidesLueurs, !oculo.isComplete { return true }
+        return false
+    }
+
+    /// OCULOMOTOR EXPANSION: head orientation from the gaze observation; read only by the stages that ask for it.
+    mutating func ingestHeadPose(_ pose: HeadPose?) {
+        headPose = pose
     }
 
     func isSwallowed(targetAt index: Int) -> Bool {
@@ -187,6 +198,7 @@ struct GameSession: Sendable {
         updateVeilleuses(seconds: seconds, cursor: cursor, events: &events)
         updateBraises(seconds: seconds, cursor: cursor, events: &events)
         updateBalises(seconds: seconds, cursor: cursor, events: &events)
+        updateOculo(seconds: seconds, cursor: cursor, events: &events)
         let latent = areLueursLatent
         let positions = targets.map(\.position)
         updateTwins(positions: positions, events: &events)
@@ -453,6 +465,34 @@ struct GameSession: Sendable {
             }
         case .none:
             break
+        }
+    }
+
+    /// OCULOMOTOR EXPANSION: advances the current stage; when the sequence completes, latent lueurs appear.
+    private mutating func updateOculo(seconds: TimeInterval, cursor: Vector2, events: inout [GameEvent]) {
+        guard var sequence = environment.oculo, !sequence.isComplete else { return }
+        let braisesLit = events.compactMap { event -> Int? in
+            if case let .braiseLit(sequence) = event { return sequence - 1 }
+            return nil
+        }
+        let input = OculoInput(seconds: seconds, gaze: cursor, gazeActive: gaze.isActive, head: headPose, elapsed: elapsed)
+        let result = sequence.update(input, targets: targets, braisesLit: braisesLit)
+        environment.oculo = sequence
+        for impulse in result.impulses {
+            applyImpulse(impulse.impulse, toTargetAt: impulse.target)
+        }
+        for change in result.changes {
+            switch change {
+            case let .success(stage): events.append(.oculoSuccess(stage: stage))
+            case let .miss(stage): events.append(.oculoMiss(stage: stage))
+            case let .stageCompleted(stage): events.append(.oculoStageCompleted(stage: stage))
+            case .completed:
+                events.append(.oculoCompleted)
+                if sequence.hidesLueurs {
+                    releasedAt = elapsed
+                    for target in targets { events.append(.lueurReleased(sequence: target.sequence)) }
+                }
+            }
         }
     }
 

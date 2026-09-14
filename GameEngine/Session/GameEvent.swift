@@ -49,4 +49,9 @@ enum GameEvent: Hashable, Sendable {
     case baliseLit(balise: Int, step: Int)
     case balisesCompleted
     case lueurReleased(sequence: Int)
+    /// OCULOMOTOR EXPANSION: a stage counted a success or a miss, a stage completed, the whole sequence completed.
+    case oculoSuccess(stage: Int)
+    case oculoMiss(stage: Int)
+    case oculoStageCompleted(stage: Int)
+    case oculoCompleted
 }

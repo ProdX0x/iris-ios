@@ -149,6 +149,10 @@ enum HistoricalCampaignDump {
         case .baliseLit: "baliseLit"
         case .balisesCompleted: "balisesCompleted"
         case .lueurReleased: "released"
+        case .oculoSuccess: "oculoSuccess"
+        case .oculoMiss: "oculoMiss"
+        case .oculoStageCompleted: "oculoStage"
+        case .oculoCompleted: "oculoCompleted"
         }
     }
 

@@ -380,7 +380,13 @@ final class GameViewModel {
         faceLostDuration = 0
         levelInProgress = false
         #if DEBUG
-        oculoTrace = definition.balises.map { OculomotorTrace(names: $0.balises.map(\.name)) }
+        if let balises = definition.balises {
+            oculoTrace = OculomotorTrace(names: balises.balises.map(\.name))
+        } else if let oculo = definition.oculo {
+            oculoTrace = OculomotorTrace(names: oculo.stages.indices.map { "stage\($0 + 1)" })
+        } else {
+            oculoTrace = nil
+        }
         oculoStatus = nil
         #endif
         refreshSnapshot()
@@ -472,6 +478,8 @@ final class GameViewModel {
         }
         guard phase == .playing, let point = mapped else { return }
         session.ingestGaze(point)
+        // OCULOMOTOR EXPANSION: the stages that ask for the head read it from the same observation.
+        session.ingestHeadPose(sample.observation.map { HeadPose(yaw: $0.headYaw, pitch: $0.headPitch) })
     }
 
     private func handleGazeState(_ state: GazeTrackingState) {

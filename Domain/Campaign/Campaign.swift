@@ -12,8 +12,13 @@ enum Campaign {
     /// Chapters VII and beyond, played after the historical campaign in the same progression.
     static let expansionChapters: [ChapterDefinition] = [jumelles, souffles, echos, gouffres, braises, constellation]
 
-    /// PROTOTYPE branch: chapter I is played with its sixth, optional level; the frozen `historicalChapters` are untouched.
-    static let chapters: [ChapterDefinition] = [eveilAvecPrototype] + historicalChapters.dropFirst() + expansionChapters
+    /// The human-validated campaign: chapter I with its optional sixth level, the frozen chapters II to VI, chapters VII to XII.
+    static let baseChapters: [ChapterDefinition] = [eveilAvecPrototype] + historicalChapters.dropFirst() + expansionChapters
+
+    /// OCULOMOTOR EXPANSION: every validated chapter, plus its optional oculomotor final when it has one.
+    static let chapters: [ChapterDefinition] = baseChapters.map { chapter in
+        oculomotorFinal(forChapter: chapter.number).map { chapter.appending($0) } ?? chapter
+    }
 
     static let historicalLevels: [LevelDefinition] = historicalChapters.flatMap(\.levels)
 

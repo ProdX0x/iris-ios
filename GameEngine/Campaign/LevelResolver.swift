@@ -94,6 +94,10 @@ enum LevelResolver {
                 BaliseSequenceState(positions: $0.balises.map { $0.position.absolute(in: bounds) }, steps: $0.steps,
                                     radius: $0.radius * shortSide, releaseRadius: $0.releaseRadius * shortSide, dwell: $0.dwell)
             },
+            oculo: definition.oculo.map { oculo in
+                OculoSequenceState(stages: oculo.stages.map { OculoStageState(definition: $0, bounds: bounds, shortSide: shortSide, scale: scale) },
+                                   hidesLueurs: oculo.hidesLueurs, pause: oculo.pause)
+            },
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
             fieldTolerance: fieldTolerance * shortSide)
