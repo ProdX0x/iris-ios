@@ -73,6 +73,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Echos.swift | - | Domain | Chapter IX, Échos: sleeping lueurs wake only when the echo of a closing iris reaches them; bring them within | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
+| Domain/Campaign/Campaign+FinalBraises.swift | - | Domain | OCULOMOTOR EXPANSION, chapter XI final « d'abord les yeux » (eye-head coordination, saccade-first gaze | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalClairvoyance.swift | - | Domain | OCULOMOTOR EXPANSION, chapter VI final « le jardin caché » (visual search, systematic scanning): among | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalCourants.swift | - | Domain | OCULOMOTOR EXPANSION, chapter III final « le fil vivant » (smooth pursuit): a spark glides along a smooth | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalEchos.swift | - | Domain | OCULOMOTOR EXPANSION, chapter IX final « l'absence » (fixation disengagement, gap and overlap shifts): a | Claude (mission Iris) |
@@ -200,6 +201,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Oculo/JardinStageState.swift | struct | GameEngine | Chapter VI final: batches of breathing seeds among twinkling ones; a rest on a breathing seed sprouts it, | Claude (mission Iris) |
 | GameEngine/Oculo/MiroirStageState.swift | struct | GameEngine | Chapter IV final: cycles of a lure flashing on one side and a door open on the opposite side; a gaze that | Claude (mission Iris) |
 | GameEngine/Oculo/OculoStageState.swift | struct | GameEngine | OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a | Claude (mission Iris) |
+| GameEngine/Oculo/TournerStageState.swift | struct | GameEngine | Chapter XI final: braises light up at the edge of the field one after another; the gaze reaches each one, | Claude (mission Iris) |
 | GameEngine/Physics/TargetPhysics.swift | struct | GameEngine | R-01...R-07 frame-rate independent integration of one target, equivalent to the reference engine at 60 Hz | Claude (mission Iris) |
 | GameEngine/Session/GameEvent.swift | enum | GameEngine | Facts produced by one engine tick, consumed by audio, haptics, hints and presentation | Claude (mission Iris) |
 | GameEngine/Session/GameSession.swift | struct | GameEngine | Deterministic per-level simulation: physics, environment, validation, cascade, metrics and events | Claude (mission Iris) |
@@ -249,6 +251,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/OculoJardinTests.swift | struct | Tests | Chapter VI final « le jardin caché »: breathing seeds sprout under a rest, lingering on a twinkling seed | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoMiroirTests.swift | struct | Tests | Chapter IV final « le miroir menteur »: the door opens opposite the lure; going to the lure or letting the | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoStageTestSupport.swift | enum | Tests | OCULOMOTOR EXPANSION: scripted gaze runs over a level's session (a policy chooses the gaze, and the head, | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoTournerTests.swift | struct | Tests | Chapter XI final « d'abord les yeux »: eyes first then the head gives full warmth, the head first half, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CampaignProgressTests.swift | struct | Tests | Éclats, records and unlock rules of the campaign | Claude (mission Iris) |

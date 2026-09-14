@@ -34,6 +34,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case lanterne
     case absence
     case ancre
+    case premierRegard
 
     var name: String {
         switch self {
@@ -63,6 +64,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .lanterne: "lanterne du courant"
         case .absence: "absence"
         case .ancre: "ancre"
+        case .premierRegard: "d'abord les yeux"
         }
     }
 
@@ -94,6 +96,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .lanterne: "Le courant la porte toujours par le même chemin. Dans la brume elle disparaît : soyez là où elle ressort."
         case .absence: "Une présence tient tant que vous la regardez. Quand une autre répond, parfois après un silence, allez à elle."
         case .ancre: "Gardez les yeux posés sur elle et tournez doucement la tête : la boussole suit, jusqu'à l'arc qui s'allume."
+        case .premierRegard: "Une braise s'allume au bord. Allez-y des yeux, puis laissez la tête suivre : elle donne toute sa chaleur."
         }
     }
 }

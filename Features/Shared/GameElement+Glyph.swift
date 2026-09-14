@@ -33,6 +33,7 @@ extension GameElement {
         case .lanterne: .lanterne
         case .absence: .absence
         case .ancre: .ancre
+        case .premierRegard: .premierRegard
         }
     }
 }

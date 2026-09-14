@@ -51,6 +51,7 @@ enum OculoStageState: Hashable, Sendable {
     case courant(CourantStageState)
     case absence(AbsenceStageState)
     case ancre(AncreStageState)
+    case tourner(TournerStageState)
 }
 
 extension OculoStageState {
@@ -66,6 +67,7 @@ extension OculoStageState {
         case let .courant(courant): self = .courant(CourantStageState(definition: courant, bounds: bounds, shortSide: shortSide))
         case let .absence(absence): self = .absence(AbsenceStageState(definition: absence, bounds: bounds, shortSide: shortSide))
         case let .ancre(ancre): self = .ancre(AncreStageState(definition: ancre, bounds: bounds, shortSide: shortSide))
+        case let .tourner(tourner): self = .tourner(TournerStageState(definition: tourner, bounds: bounds, shortSide: shortSide))
         }
     }
 
@@ -107,6 +109,10 @@ extension OculoStageState {
             let outcome = state.update(input)
             self = .ancre(state)
             return outcome
+        case var .tourner(state):
+            let outcome = state.update(input)
+            self = .tourner(state)
+            return outcome
         }
     }
 
@@ -121,6 +127,7 @@ extension OculoStageState {
         case let .courant(state): state.isComplete
         case let .absence(state): state.isComplete
         case let .ancre(state): state.isComplete
+        case let .tourner(state): state.isComplete
         }
     }
 
@@ -136,6 +143,7 @@ extension OculoStageState {
         case let .courant(state): state.progress
         case let .absence(state): state.progress
         case let .ancre(state): state.progress
+        case let .tourner(state): state.progress
         }
     }
 
@@ -151,6 +159,7 @@ extension OculoStageState {
         case let .courant(state): state.position(at: elapsed)
         case let .absence(state): state.suggestedGaze(at: elapsed)
         case let .ancre(state): state.anchor
+        case let .tourner(state): state.suggestedGaze(at: elapsed)
         }
     }
 
@@ -159,6 +168,7 @@ extension OculoStageState {
         switch self {
         case .coeur, .fil, .miroir, .etoiles, .jardin, .croisement, .courant, .absence: nil
         case let .ancre(state): state.suggestedHead
+        case let .tourner(state): state.suggestedHead
         }
     }
 }

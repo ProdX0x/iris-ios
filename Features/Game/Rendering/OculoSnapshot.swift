@@ -249,6 +249,23 @@ enum OculoSceneBuilder {
                                                        intensity: min(1, (offset.x * offset.x + offset.y * offset.y).squareRoot()),
                                                        phase: atan2(offset.y, offset.x), isLit: state.inBand))
             return scene
+        case let .tourner(state):
+            var scene = Scene()
+            if let place = state.place {
+                switch state.phase {
+                case let .announce(start):
+                    scene.elements.append(OculoElementSnapshot(role: .announce, position: place, radius: state.radius,
+                                                               intensity: min(1, max(0, elapsed - start) / 0.4), isActive: true, index: state.announcement))
+                case .follow:
+                    scene.elements.append(OculoElementSnapshot(role: .announce, position: place, radius: state.radius, intensity: 1,
+                                                               isActive: true, isLit: true, index: state.announcement))
+                case .rest, .done:
+                    break
+                }
+            }
+            scene.arcs.append(OculoArcSnapshot(center: state.center, radius: state.radius * 0.5, start: -Double.pi / 2,
+                                               end: -Double.pi / 2 + 2 * Double.pi * state.progress, intensity: state.progress, isActive: true))
+            return scene
         }
     }
 }

@@ -25,6 +25,51 @@ enum OculoStageDefinition: Hashable, Sendable {
     case absence(AbsenceDefinition)
     /// Chapter X: gaze stabilisation while the head turns (VOR-inspired).
     case ancre(AncreDefinition)
+    /// Chapter XI: eye-head coordination (saccade-first gaze shift).
+    case tourner(TournerDefinition)
+}
+
+/// Chapter XI, « d'abord les yeux »: braises light at the edge one after another; reaching one with the eyes first and
+/// letting the head follow gives all its warmth, the head before the eyes half, the eyes alone a third.
+struct TournerDefinition: Hashable, Sendable {
+    let places: [NormalizedPoint]
+    /// The order in which the braises light (indices into `places`, repeated as needed).
+    let order: [Int]
+    let radius: Double
+    let releaseRadius: Double
+    /// Rest on a braise that counts as reaching it.
+    let dwell: TimeInterval
+    /// Head motion (|Δyaw| + |Δpitch|, degrees) when the eyes arrive under which the head has not moved yet.
+    let headStill: Double
+    /// Head motion, after the eyes arrived, that counts as the head following.
+    let headTurn: Double
+    let followWindow: TimeInterval
+    let announceTimeout: TimeInterval
+    let pause: TimeInterval
+    /// Warmth needed, and the warmth each coordination gives.
+    let goal: Double
+    let fullYield: Double
+    let headFirstYield: Double
+    let eyesOnlyYield: Double
+
+    init(places: [NormalizedPoint], order: [Int], radius: Double = 0.2, releaseRadius: Double = 0.27, dwell: TimeInterval = 0.2,
+         headStill: Double = 3, headTurn: Double = 5, followWindow: TimeInterval = 1.5, announceTimeout: TimeInterval = 4,
+         pause: TimeInterval = 0.6, goal: Double = 4, fullYield: Double = 1, headFirstYield: Double = 0.5, eyesOnlyYield: Double = 0.34) {
+        self.places = places
+        self.order = order.filter { places.indices.contains($0) }
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.dwell = max(dwell, 0.05)
+        self.headStill = max(headStill, 0)
+        self.headTurn = max(headTurn, self.headStill)
+        self.followWindow = max(followWindow, 0.2)
+        self.announceTimeout = max(announceTimeout, 1)
+        self.pause = max(pause, 0)
+        self.goal = max(goal, 0)
+        self.fullYield = max(fullYield, 0)
+        self.headFirstYield = max(headFirstYield, 0)
+        self.eyesOnlyYield = max(eyesOnlyYield, 0.01)
+    }
 }
 
 /// Chapter X, « l'ancre »: the gaze holds an anchor while small head turns steer a compass into designated bands.
