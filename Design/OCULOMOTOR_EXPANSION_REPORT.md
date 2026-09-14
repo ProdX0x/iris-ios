@@ -4,6 +4,8 @@ Branche `feature/iris-oculomotor-expansion`, depuis le tag `iris-ch1-oculomotor-
 
 Statut : **TECHNIQUEMENT VALIDÉ / À JOUER HUMAINEMENT**. Aucun des onze niveaux n'a été joué par un humain.
 
+Correction de 10-7 « l'ancre » sur la branche `prototype/x7-stabilisation-head-guidance` : voir `Design/X7_ANCRE_CORRECTION.md`.
+
 ## Principe
 
 Chaque chapitre II à XII reçoit un niveau final optionnel, ajouté après ses niveaux validés, sans en renuméroter aucun. Le niveau s'ouvre sur une ou plusieurs étapes « gaze-contingent » : le regard est l'interaction, le motif oculaire est la conséquence d'une règle de jeu, jamais une consigne de direction. Quand l'étape est réussie, les lueurs du niveau apparaissent et le niveau se termine avec les règles du chapitre. Un niveau optionnel ne bloque jamais le chapitre suivant.
@@ -22,7 +24,7 @@ Les termes scientifiques ci-dessous servent à la conception et aux tests. Ils n
 | 7-7 | la danse croisée | saccades diagonales d'amplitude variable | les jumelles s'appellent d'un coin à l'autre, près, puis loin, sur une diagonale puis l'autre, et finissent par se rejoindre | un seul quadrant, centre, alternance gauche-droite, regard aléatoire : jamais |
 | 8-7 | la lanterne du courant | poursuite prédictive, anticipation | un courant porte une lanterne en boucle ; dès le deuxième tour elle disparaît dans la brume ; il faut être là où elle ressort | joueur réactif (0,35 s de retard, figé dans la brume), attente à une sortie, centre, regard aléatoire : jamais |
 | 9-7 | l'absence | désengagement de la fixation (gap / overlap) | une présence tient tant qu'on la regarde ; une réponse apparaît ailleurs, parfois après un silence, parfois pendant que la présence brille encore ; il faut la rejoindre | ne jamais quitter la présence, partir trop tôt, centre, regard aléatoire : jamais |
-| 10-7 | l'ancre | stabilisation du regard, inspirée du VOR | les yeux restent sur une ancre ; de petits mouvements de tête poussent une boussole jusqu'à l'arc désigné | regard seul, tête seule, tête toujours du même côté, pas de données de tête, regard aléatoire : jamais |
+| 10-7 | l'ancre | stabilisation du regard pendant un mouvement de tête, inspirée du VOR | les yeux restent sur un point au centre d'une silhouette ; la tête dessine un cercle lent (droite, haut, gauche, bas, retour face) qui remplit un anneau, puis le cercle inverse | tête immobile, tête sans les yeux, mauvais sens, poses séparées par le centre, pas de données de tête, regard aléatoire : jamais |
 | 11-7 | d'abord les yeux | coordination œil-tête, saccade avant la tête | des braises s'allument au bord ; les yeux d'abord puis la tête donnent toute la chaleur, la tête d'abord la moitié, les yeux seuls un tiers | regard qui n'atteint pas les braises, tête sans les yeux, regard aléatoire : jamais ; la coordination est distinguée (4, 8 ou 12 braises) |
 | 12-7 | l'orchestre du regard | synthèse multimodale | sept passages courts (fixation, transfert, poursuite, recherche, mémoire, diagonales, œil-tête), chacun allume une étoile ; la constellation s'anime à la fin | centre, coin, regard aléatoire : jamais |
 
@@ -38,7 +40,7 @@ Les pars suivent la formule historique (`temps = arrondi(1,8 × bot + 6)`, `intr
 | 7-7 | 3/3 | 9,9 s | 2,0 | 24 s / 4 |
 | 8-7 | 3/3 | 23,6 s | 1,0 | 48 s / 3 |
 | 9-7 | 3/3 | 17,0 s | 9,3 | 37 s / 12 |
-| 10-7 | 3/3 | 10,4 s | 1,0 | 25 s / 3 |
+| 10-7 | 3/3 | 41,6 s | 0,0 | 81 s / 2 |
 | 11-7 | 3/3 | 9,1 s | 1,0 | 22 s / 3 |
 | 12-7 | 3/3 | 26,7 s | 2,0 | 54 s / 4 |
 
@@ -61,7 +63,7 @@ Les chapitres jouables sont `Campaign.baseChapters` (la campagne validée : chap
 
 ## Instrumentation (DEBUG)
 
-`OculomotorTrace` (créé pour le niveau 1-6) suit aussi les nouveaux niveaux : états VALID_INSIDE / VALID_OUTSIDE / INVALID, sorties de viewport sans position inventée, pose de tête, et pour chaque étape ses réussites, erreurs et achèvement avec l'état du regard et yaw / pitch au moment. Les états internes des étapes gardent les mesures propres à chaque paradigme : temps de repos et coût des distracteurs (II), pertes et reprises (III), leurres suivis et délais dépassés (IV), erreurs et répétitions (V), graines visitées et replis (VI), échanges par amplitude (VII), prises et fuites par brume (VIII), temps de transfert (IX), glissements et direction apprise par axe (X), chaleur par coordination (XI). Lecture : `log stream --predicate 'subsystem == "net.steve-s.iris" AND category == "oculotest"'`. Rien n'est affiché au joueur ni compilé en Release.
+`OculomotorTrace` (créé pour le niveau 1-6) suit aussi les nouveaux niveaux : états VALID_INSIDE / VALID_OUTSIDE / INVALID, sorties de viewport sans position inventée, pose de tête, et pour chaque étape ses réussites, erreurs et achèvement avec l'état du regard et yaw / pitch au moment. Les états internes des étapes gardent les mesures propres à chaque paradigme : temps de repos et coût des distracteurs (II), pertes et reprises (III), leurres suivis et délais dépassés (IV), erreurs et répétitions (V), graines visitées et replis (VI), échanges par amplitude (VII), prises et fuites par brume (VIII), temps de transfert (IX), phases, jalons, balayage et présence des yeux par boucle, plus la capture JSON Lines `--iris-capture` (X), chaleur par coordination (XI). Lecture : `log stream --predicate 'subsystem == "net.steve-s.iris" AND category == "oculotest"'`. Rien n'est affiché au joueur ni compilé en Release.
 
 ## Ce que le moteur ne mesure pas
 
@@ -77,6 +79,6 @@ Un point de regard 2D calibré, une pose de tête et la géométrie oculaire ARK
 - **7-7 la danse croisée** : le va-et-vient diagonal se ressent-il comme une danse ? Les coins lointains sont-ils confortables ?
 - **8-7 la lanterne du courant** : anticipe-t-on la sortie de brume après un tour ? La fenêtre de prise est-elle juste ?
 - **9-7 l'absence** : la différence silence / chevauchement se sent-elle ? Quitter une présence qui brille encore est-il naturel ?
-- **10-7 l'ancre** : les mouvements de tête sont-ils petits et confortables, sans vertige ? La boussole suit-elle la tête dans le bon sens ?
+- **10-7 l'ancre** : le cercle se comprend-il sans autre explication ? L'amplitude (environ 10° de lacet, 8° de tangage) est-elle confortable, sans vertige ? L'anneau suit-il la tête du bon côté ? La tolérance du regard n'est-elle ni punitive ni triviale ?
 - **11-7 d'abord les yeux** : la tête suit-elle naturellement après les yeux ? La différence de chaleur se perçoit-elle ?
 - **12-7 l'orchestre du regard** : les passages s'enchaînent-ils en finale plutôt qu'en examen ? La constellation vivante récompense-t-elle ?
