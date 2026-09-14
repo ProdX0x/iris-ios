@@ -181,6 +181,17 @@ enum OculoSceneBuilder {
                                                            isActive: state.isBreathing(index), isLit: state.isSprouted(index), index: index))
             }
             return scene
+        case let .croisement(state):
+            var scene = Scene()
+            let pair = state.twins(at: elapsed)
+            scene.polylines.append(OculoPolylineSnapshot(points: [pair.0, pair.1], intensity: 0.15 + 0.85 * state.progress))
+            for (index, position) in [pair.0, pair.1].enumerated() {
+                let isActive = index == state.active
+                scene.elements.append(OculoElementSnapshot(role: .cradle, position: position, radius: state.radius,
+                                                           intensity: isActive && state.isInside ? min(1, state.dwellTime / state.dwell) : 0,
+                                                           isActive: isActive, isLit: !isActive, index: index))
+            }
+            return scene
         }
     }
 }

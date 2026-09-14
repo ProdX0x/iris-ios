@@ -30,6 +30,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case miroir
     case etoileAbsente
     case jardin
+    case croisement
 
     var name: String {
         switch self {
@@ -55,6 +56,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .miroir: "miroir menteur"
         case .etoileAbsente: "étoile absente"
         case .jardin: "jardin caché"
+        case .croisement: "croisement"
         }
     }
 
@@ -82,6 +84,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .miroir: "Ce qui brille d'un côté appelle le regard ; la porte s'ouvre de l'autre. Ne suivez pas l'éclat."
         case .etoileAbsente: "Elle brille un instant puis s'efface. Retournez là où elle était : elle revient, et la constellation grandit."
         case .jardin: "Parmi les graines qui scintillent, quelques-unes respirent. Posez le regard sur celles-là : elles poussent."
+        case .croisement: "Les jumelles s'appellent d'un coin à l'autre. Répondez à celle qui respire : leur lien se resserre."
         }
     }
 }

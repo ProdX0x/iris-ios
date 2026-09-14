@@ -17,6 +17,52 @@ enum OculoStageDefinition: Hashable, Sendable {
     case etoiles(EtoilesDefinition)
     /// Chapter VI: visual search and systematic scanning.
     case jardin(JardinDefinition)
+    /// Chapter VII: diagonal saccades of variable amplitude.
+    case croisement(CroisementDefinition)
+}
+
+/// Chapter VII, « croisement »: the twins call each other from opposite corners of a diagonal; the one that breathes
+/// waits for the gaze, then calls her sister across. Legs change diagonal and amplitude; the twins glide between legs.
+struct CroisementDefinition: Hashable, Sendable {
+    enum Diagonal: Hashable, Sendable {
+        /// Top-left and bottom-right.
+        case falling
+        /// Top-right and bottom-left.
+        case rising
+    }
+
+    struct Leg: Hashable, Sendable {
+        let diagonal: Diagonal
+        /// Half-offsets of each twin from the centre (fractions of the width and height).
+        let dx: Double
+        let dy: Double
+        /// Acquisitions on this leg before the twins glide to the next one.
+        let exchanges: Int
+
+        init(_ diagonal: Diagonal, dx: Double, dy: Double, exchanges: Int = 2) {
+            self.diagonal = diagonal
+            self.dx = dx
+            self.dy = dy
+            self.exchanges = max(exchanges, 1)
+        }
+    }
+
+    let center: NormalizedPoint
+    let legs: [Leg]
+    let radius: Double
+    let releaseRadius: Double
+    let dwell: TimeInterval
+    /// Seconds the twins take to glide from one leg to the next.
+    let glide: TimeInterval
+
+    init(center: NormalizedPoint, legs: [Leg], radius: Double = 0.2, releaseRadius: Double = 0.27, dwell: TimeInterval = 0.25, glide: TimeInterval = 0.6) {
+        self.center = center
+        self.legs = legs
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.dwell = max(dwell, 0.05)
+        self.glide = max(glide, 0)
+    }
 }
 
 /// Chapter VI, « le jardin caché »: seeds all over the field; in each batch a few of them breathe slowly among seeds that

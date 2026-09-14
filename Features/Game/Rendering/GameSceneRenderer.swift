@@ -24,10 +24,11 @@ struct GameSceneRenderer {
         for lueur in snapshot.lueurs where !lueur.isTwin {
             drawIris(lueur, sequential: snapshot.isSequential, in: &context, scale: scale)
         }
-        for lueur in snapshot.lueurs where lueur.isTwin {
+        // Latent twins (an oculomotor final still in progress) show neither their postes nor their thread yet.
+        for lueur in snapshot.lueurs where lueur.isTwin && !lueur.isLatent {
             drawPoste(lueur, in: &context, scale: scale, palette: palette)
         }
-        for pair in snapshot.pairs {
+        for pair in snapshot.pairs where !(snapshot.lueurs.first?.isLatent ?? false) {
             drawTwinPair(pair, sequential: snapshot.isSequential, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
         }
         if let reach = snapshot.echoReach {
