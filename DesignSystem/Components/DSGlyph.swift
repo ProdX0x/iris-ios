@@ -10,7 +10,7 @@ struct DSGlyph: View {
         // Expansion
         case jumelles, souffle, dormeuse, echo, gouffre, braise, balise
         // Oculomotor finals
-        case coeur, filVivant, miroir, etoileAbsente, jardin, croisement, lanterne
+        case coeur, filVivant, miroir, etoileAbsente, jardin, croisement, lanterne, absence
     }
 
     let kind: Kind
@@ -199,6 +199,9 @@ struct DSGlyph: View {
                 context.stroke(Path(ellipseIn: CGRect(x: c.x - s * 0.4, y: c.y - s * 0.26, width: s * 0.8, height: s * 0.52)), with: .color(tint.opacity(0.45)), style: stroke)
                 context.fill(Path(ellipseIn: CGRect(x: c.x - s * 0.44, y: c.y - s * 0.04, width: s * 0.36, height: s * 0.22)), with: .color(tint.opacity(0.3)))
                 context.fill(circle(CGPoint(x: c.x + s * 0.34, y: c.y - s * 0.12), s * 0.12), with: .color(tint))
+            case .absence:
+                context.fill(circle(CGPoint(x: c.x - s * 0.22, y: c.y + s * 0.14), s * 0.16), with: .color(tint))
+                context.stroke(circle(CGPoint(x: c.x + s * 0.22, y: c.y - s * 0.14), s * 0.16), with: .color(tint.opacity(0.6)), style: StrokeStyle(lineWidth: stroke.lineWidth, dash: [2, 2]))
             }
         }
         .accessibilityHidden(true)
@@ -206,7 +209,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir, .etoileAbsente, .jardin, .croisement, .lanterne]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir, .etoileAbsente, .jardin, .croisement, .lanterne, .absence]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

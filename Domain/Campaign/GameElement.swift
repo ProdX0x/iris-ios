@@ -32,6 +32,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case jardin
     case croisement
     case lanterne
+    case absence
 
     var name: String {
         switch self {
@@ -59,6 +60,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .jardin: "jardin caché"
         case .croisement: "croisement"
         case .lanterne: "lanterne du courant"
+        case .absence: "absence"
         }
     }
 
@@ -88,6 +90,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .jardin: "Parmi les graines qui scintillent, quelques-unes respirent. Posez le regard sur celles-là : elles poussent."
         case .croisement: "Les jumelles s'appellent d'un coin à l'autre. Répondez à celle qui respire : leur lien se resserre."
         case .lanterne: "Le courant la porte toujours par le même chemin. Dans la brume elle disparaît : soyez là où elle ressort."
+        case .absence: "Une présence tient tant que vous la regardez. Quand une autre répond, parfois après un silence, allez à elle."
         }
     }
 }

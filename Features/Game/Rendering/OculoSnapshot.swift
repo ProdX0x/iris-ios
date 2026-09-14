@@ -213,6 +213,22 @@ enum OculoSceneBuilder {
                                                            intensity: 0.5 + 0.5 * state.progress))
             }
             return scene
+        case let .absence(state):
+            var scene = Scene()
+            let visibility = state.visibility(at: elapsed)
+            if let first = state.first, visibility.first > 0 {
+                scene.elements.append(OculoElementSnapshot(role: .presence, position: first, radius: state.radius, intensity: visibility.first,
+                                                           isActive: state.isHolding, index: 0))
+                if state.isHolding {
+                    scene.arcs.append(OculoArcSnapshot(center: first, radius: state.radius * 0.45, start: -Double.pi / 2,
+                                                       end: -Double.pi / 2 + 2 * Double.pi * min(1, state.holdTime / state.hold), intensity: 1, isActive: true))
+                }
+            }
+            if let second = state.second, visibility.second > 0 {
+                scene.elements.append(OculoElementSnapshot(role: .presence, position: second, radius: state.radius, intensity: visibility.second,
+                                                           isActive: true, index: 1))
+            }
+            return scene
         }
     }
 }

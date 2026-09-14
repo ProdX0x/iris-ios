@@ -21,6 +21,56 @@ enum OculoStageDefinition: Hashable, Sendable {
     case croisement(CroisementDefinition)
     /// Chapter VIII: predictive pursuit.
     case courant(CourantDefinition)
+    /// Chapter IX: fixation disengagement (gap and overlap shifts).
+    case absence(AbsenceDefinition)
+}
+
+/// Chapter IX, « l'absence »: a presence held by the gaze, then an answer elsewhere; in a gap trial the presence fades
+/// before the answer appears, in an overlap trial it keeps singing while the answer appears.
+struct AbsenceDefinition: Hashable, Sendable {
+    enum Mode: Hashable, Sendable {
+        case gap
+        case overlap
+    }
+
+    struct Trial: Hashable, Sendable {
+        let from: Int
+        let to: Int
+        let mode: Mode
+
+        init(_ from: Int, _ to: Int, _ mode: Mode) {
+            self.from = from
+            self.to = to
+            self.mode = mode
+        }
+    }
+
+    let places: [NormalizedPoint]
+    let trials: [Trial]
+    /// Continuous rest on the presence before the answer comes.
+    let hold: TimeInterval
+    /// Silence between the presence fading and the answer appearing (gap trials).
+    let gap: TimeInterval
+    /// Seconds the answer waits for the gaze.
+    let answerWindow: TimeInterval
+    let dwell: TimeInterval
+    let radius: Double
+    let releaseRadius: Double
+    /// Breath before a missed trial starts over.
+    let pause: TimeInterval
+
+    init(places: [NormalizedPoint], trials: [Trial], hold: TimeInterval = 0.5, gap: TimeInterval = 0.3, answerWindow: TimeInterval = 1.8,
+         dwell: TimeInterval = 0.25, radius: Double = 0.2, releaseRadius: Double = 0.27, pause: TimeInterval = 0.7) {
+        self.places = places
+        self.trials = trials.filter { places.indices.contains($0.from) && places.indices.contains($0.to) && $0.from != $0.to }
+        self.hold = max(hold, 0.1)
+        self.gap = max(gap, 0)
+        self.answerWindow = max(answerWindow, 0.5)
+        self.dwell = max(dwell, 0.05)
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.pause = max(pause, 0)
+    }
 }
 
 /// Chapter VIII, « la lanterne du courant »: a lantern carried around a closed loop by a periodic current; from the

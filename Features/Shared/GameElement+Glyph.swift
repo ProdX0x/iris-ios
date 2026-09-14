@@ -31,6 +31,7 @@ extension GameElement {
         case .jardin: .jardin
         case .croisement: .croisement
         case .lanterne: .lanterne
+        case .absence: .absence
         }
     }
 }

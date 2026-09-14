@@ -94,6 +94,7 @@
 		524FD07945F4260D79663313 /* TargetPhysics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139C1641A7411F9D4F9F590F /* TargetPhysics.swift */; };
 		52BFC3776C49136EA493A9A5 /* LevelOutcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6C363E6D1A68E9819BE535 /* LevelOutcome.swift */; };
 		5331510F03BF0A2203DA88A2 /* SoufflesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4900229A2D127497A80827 /* SoufflesTests.swift */; };
+		5335D6F3644EA4562A5505B5 /* Campaign+FinalEchos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8A16E860990286E05BEBD6 /* Campaign+FinalEchos.swift */; };
 		536EA8DFF2E61684AB1D6805 /* CameraAccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8342C32E0848D650DFC63B /* CameraAccessViewModel.swift */; };
 		54F3AF75ABE2439CB078F310 /* GazeSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D3544C9CEA112B675A5477 /* GazeSetupViewModel.swift */; };
 		55DA3F86D27C09C63BD65723 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5768A9C8DB006EE16A20C9A /* RootView.swift */; };
@@ -140,6 +141,7 @@
 		7A36EE0CA845984F54892152 /* ExpansionCampaignDump.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A49BAEBDC185967E33599 /* ExpansionCampaignDump.swift */; };
 		7A549BCFC8E23293F1B7FA65 /* GazeReadinessReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E22A056627411114A2EEA7 /* GazeReadinessReport.swift */; };
 		7A9A3BE3F24B7E157BE9A5FA /* EchoField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F54241A5B401B86942BD776 /* EchoField.swift */; };
+		7AD27DD50D75210CBFDA09B7 /* OculoAbsenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF2346F08593F8201FA94C /* OculoAbsenceTests.swift */; };
 		7CC6BC64019F774AACF315D8 /* DSCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B81D2F724067717A73CFE /* DSCard.swift */; };
 		7CD998A3B1323AF710CD78CA /* DSScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC6C35F2B3670EF05BC8871 /* DSScreen.swift */; };
 		7EC7391F5F39896E5A8F1ECB /* NotificationObserverBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0684F2CB40B511B7EEB19A9E /* NotificationObserverBag.swift */; };
@@ -221,6 +223,7 @@
 		C16FBF8B2991993EFC0C4F63 /* BraisesChapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B014AB35FAB6D3D2359656C /* BraisesChapterTests.swift */; };
 		C2F19F8ED6C85829DE9AEAC1 /* ValueNoise1DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13148145B6DC04089A15C179 /* ValueNoise1DTests.swift */; };
 		C305DD983671F9B578093C05 /* DSMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D2FA928060E55713CF584 /* DSMotion.swift */; };
+		C33933F7D4ED079C4D0762AA /* AbsenceStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E00E95370C1763A4DF1BD8 /* AbsenceStageState.swift */; };
 		C4E27A7CFDC2AE847293DA28 /* GameSettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */; };
 		C5F5C72A1FEE200D113A81AD /* TargetID.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FAD02B8EF1F88A61052749 /* TargetID.swift */; };
 		C620EF009D765DE989586AA6 /* Campaign+OculomotorFinals.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE438BA3325063A857915CEC /* Campaign+OculomotorFinals.swift */; };
@@ -361,6 +364,7 @@
 		308F25679A5A110E8EE8B174 /* GameCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCanvasView.swift; sourceTree = "<group>"; };
 		320718F4EB5AB2EBE016B5C4 /* OculoStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoStageState.swift; sourceTree = "<group>"; };
 		3413CBADB7CA3CD49D01F43D /* ChapterTheme+Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChapterTheme+Palette.swift"; sourceTree = "<group>"; };
+		34E00E95370C1763A4DF1BD8 /* AbsenceStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbsenceStageState.swift; sourceTree = "<group>"; };
 		369344EED837F50F922FA21E /* Campaign+Partage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Partage.swift"; sourceTree = "<group>"; };
 		385308503D02B747A893A04F /* MockAudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioService.swift; sourceTree = "<group>"; };
 		39B06250E3FB05DBFF96244A /* DSThemeWash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSThemeWash.swift; sourceTree = "<group>"; };
@@ -379,6 +383,7 @@
 		48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeCalibrationStatus.swift; sourceTree = "<group>"; };
 		490735E24BFA02393F0D0DDD /* CascadeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeRule.swift; sourceTree = "<group>"; };
 		49456847B3BA1C184F35F7CB /* HistoricalCampaignFingerprintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalCampaignFingerprintTests.swift; sourceTree = "<group>"; };
+		4A8A16E860990286E05BEBD6 /* Campaign+FinalEchos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalEchos.swift"; sourceTree = "<group>"; };
 		4A963E98146E928B8F6DA725 /* OculoSequenceClockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoSequenceClockTests.swift; sourceTree = "<group>"; };
 		4AA13FEF873190BE68059074 /* ValidationRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRule.swift; sourceTree = "<group>"; };
 		4B92CB552F572A3D8921D8BC /* golden_level1_scripted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = golden_level1_scripted.json; sourceTree = "<group>"; };
@@ -568,6 +573,7 @@
 		FA8FAC594F2F2A9AB6AE1B6B /* GazeSetupIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupIntent.swift; sourceTree = "<group>"; };
 		FBF18F3F2BCB068A2D84B1BA /* AudioCuePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCuePolicy.swift; sourceTree = "<group>"; };
 		FC1B4022BC0498F021C11C9F /* GouffreDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GouffreDefinition.swift; sourceTree = "<group>"; };
+		FCEF2346F08593F8201FA94C /* OculoAbsenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoAbsenceTests.swift; sourceTree = "<group>"; };
 		FD55078A574DA50FE6E06EF3 /* MockHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHapticFeedbackService.swift; sourceTree = "<group>"; };
 		FE13F17112C85D17E1AA1186 /* CarnetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarnetView.swift; sourceTree = "<group>"; };
 		FED686B31A28E49F4E7D21B7 /* NormalizedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedRect.swift; sourceTree = "<group>"; };
@@ -967,6 +973,7 @@
 				53A0BC98410BFF04096B11A5 /* JumellesTests.swift */,
 				ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */,
 				18FE0D5280B10AB864D751F2 /* LevelLabTests.swift */,
+				FCEF2346F08593F8201FA94C /* OculoAbsenceTests.swift */,
 				E20FE7A61FD6D56DC9792C96 /* OculoCoeurTests.swift */,
 				6D70F3BF31D681C58939AA81 /* OculoCourantTests.swift */,
 				1568270BC4F830F92D10A1AA /* OculoCroisementTests.swift */,
@@ -1087,6 +1094,7 @@
 		BA0601A103DCC55713D0D28E /* Oculo */ = {
 			isa = PBXGroup;
 			children = (
+				34E00E95370C1763A4DF1BD8 /* AbsenceStageState.swift */,
 				488DDA9F02F27EF2583681DA /* CoeurStageState.swift */,
 				B0CA73DC47A5094EFC21A77F /* CourantStageState.swift */,
 				C0E4C9E57097F8155671BBB5 /* CroisementStageState.swift */,
@@ -1253,6 +1261,7 @@
 				B30BE49103058FBD72F88D3F /* Campaign+Eveil.swift */,
 				39FAAA20C282D9001110907B /* Campaign+FinalClairvoyance.swift */,
 				82DD0627F96457CF9A137462 /* Campaign+FinalCourants.swift */,
+				4A8A16E860990286E05BEBD6 /* Campaign+FinalEchos.swift */,
 				570D48A5048CE93837E69F22 /* Campaign+FinalJumelles.swift */,
 				0AAE3F6E916C94BD7926A869 /* Campaign+FinalPartage.swift */,
 				42ECCBA19D9AB194C7051C3C /* Campaign+FinalSouffles.swift */,
@@ -1561,6 +1570,7 @@
 				4E79F474EF5E220C5C80D1E6 /* MockGameNavigating.swift in Sources */,
 				5CD0A2D6D3C629DB951AE847 /* MockHapticFeedbackService.swift in Sources */,
 				C08E69FB668DB35B80C89AEF /* NormalizedCoordinatesTests.swift in Sources */,
+				7AD27DD50D75210CBFDA09B7 /* OculoAbsenceTests.swift in Sources */,
 				27803E85A54612CBB306A969 /* OculoCoeurTests.swift in Sources */,
 				B13DCBB164AE43B5B97BC958 /* OculoCourantTests.swift in Sources */,
 				D5232B349FEEFCEA5A560886 /* OculoCroisementTests.swift in Sources */,
@@ -1591,6 +1601,7 @@
 				CAE67280BDAD54355AA10C2F /* ARKitGazeTrackingService+Observation.swift in Sources */,
 				5E969E6997F88532306726F7 /* ARKitGazeTrackingService.swift in Sources */,
 				A905454F3E74AE290F8FC9B4 /* AVAudioEngineAudioService.swift in Sources */,
+				C33933F7D4ED079C4D0762AA /* AbsenceStageState.swift in Sources */,
 				FF730A3F641EA91FA989FDA2 /* AffineTransform2D.swift in Sources */,
 				0C2B5B24A9B1CBE33DE030DF /* AppContainer.swift in Sources */,
 				B6A60F462EAA944F4E931633 /* AppCoordinator.swift in Sources */,
@@ -1623,6 +1634,7 @@
 				88A9960936912990185C845E /* Campaign+Eveil.swift in Sources */,
 				A6D33A22670601F1B245433B /* Campaign+FinalClairvoyance.swift in Sources */,
 				A2B35CF303A05851D5AA5448 /* Campaign+FinalCourants.swift in Sources */,
+				5335D6F3644EA4562A5505B5 /* Campaign+FinalEchos.swift in Sources */,
 				059A4EE1996510869E9150F4 /* Campaign+FinalJumelles.swift in Sources */,
 				439E7C9EBB3EA9BDBC205D4B /* Campaign+FinalPartage.swift in Sources */,
 				C88FA91057BA8DD1A222A349 /* Campaign+FinalSouffles.swift in Sources */,
