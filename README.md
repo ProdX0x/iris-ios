@@ -594,3 +594,23 @@ Statut : **TECHNIQUEMENT VALIDÉ / À JOUER HUMAINEMENT**. Chapitres 1 à 6 / 34
 Depuis le tag `iris-expansion-human-validated-v1` : un seul niveau optionnel ajouté au chapitre I, « le fil des balises » (centre, droite, gauche, centre, haut, bas, centre, puis droite/gauche ×2, haut/bas ×2, centre ; dwell 0,25 s ; zone 0,2 du petit côté). Instrumentation DEBUG seule (`OculomotorTrace`) : états VALID_INSIDE / VALID_OUTSIDE / INVALID tels que le mapper les fournit, sorties de viewport sans position inventée, transitions (acquisition, dwell, yaw/pitch de tête), indicateur de bord qui complète l'avertissement historique sans le remplacer. Détails et protocole du test humain : `Design/OCULOMOTOR_LEVEL6_PROTOTYPE.md`.
 
 Gaze Engine : aucun calcul modifié ; deux fichiers `AR/` reçoivent un champ optionnel d'observation (pose de tête, géométrie oculaire) et leurs SHA-256 gelés sont mis à jour délibérément pour cette seule raison. Niveaux 1–5, chapitres II–XII, calibration, avertissement de décrochage : inchangés et testés. Statut : **PROTOTYPE, À TESTER HUMAINEMENT**.
+
+## 21. Expansion oculomotrice — un niveau final par chapitre II à XII (branche `feature/iris-oculomotor-expansion`)
+
+Depuis le tag `iris-ch1-oculomotor-human-validated-v1` (le niveau 1-6 « le fil des balises », validé humainement) : onze niveaux finaux optionnels, un par chapitre II à XII, ajoutés après les niveaux validés sans en renuméroter aucun. Chaque niveau s'ouvre sur une étape où le regard est l'interaction et où le motif oculaire découle d'une règle de jeu ; les lueurs du chapitre apparaissent ensuite. Rapport : `Design/OCULOMOTOR_EXPANSION_REPORT.md`.
+
+| Niveau | Nom | Paradigme (interne) |
+|---|---|---|
+| 2-6 | le cœur de verre | fixation stable, distracteurs |
+| 3-7 | le fil vivant | poursuite lisse |
+| 4-7 | le miroir menteur | anti-saccade |
+| 5-7 | les étoiles absentes | saccades guidées par la mémoire |
+| 6-7 | le jardin caché | recherche visuelle, exploration |
+| 7-7 | la danse croisée | saccades diagonales, amplitude variable |
+| 8-7 | la lanterne du courant | poursuite prédictive |
+| 9-7 | l'absence | désengagement (gap / overlap) |
+| 10-7 | l'ancre | stabilisation du regard (tête) |
+| 11-7 | d'abord les yeux | coordination œil-tête |
+| 12-7 | l'orchestre du regard | synthèse |
+
+Protection : les chapitres VII à XII et le niveau 1-6 ont désormais leur empreinte octet pour octet (`Tests/IrisTests/Fixtures/expansion_campaign.txt`) et leurs sources rejoignent les SHA-256 gelés, à côté de l'empreinte historique des chapitres I à VI. Gaze Engine, calibration, filtrage, seuils, décrochage : inchangés. Aucune allégation médicale n'est affichée ; les termes scientifiques restent dans le code et la documentation. Statut : **TECHNIQUEMENT VALIDÉ / À JOUER HUMAINEMENT**.
