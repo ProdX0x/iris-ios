@@ -145,6 +145,19 @@ enum OculoSceneBuilder {
             scene.elements.append(OculoElementSnapshot(role: .spark, position: spark, radius: state.radius, intensity: 0.4 + 0.6 * state.progress,
                                                        isActive: true, isLit: state.isNear))
             return scene
+        case let .miroir(state):
+            var scene = Scene()
+            let doorOpen = state.isDoorOpen(at: elapsed)
+            for (side, position) in state.positions.sorted(by: { "\($0.key)" < "\($1.key)" }) {
+                let isDoor = state.doorSide == side
+                scene.elements.append(OculoElementSnapshot(role: .window, position: position, radius: state.radius, intensity: isDoor && doorOpen ? 1 : 0.2,
+                                                           isActive: isDoor && doorOpen, isLit: isDoor && state.isInDoor && doorOpen))
+            }
+            if let age = state.flashAge(at: elapsed), let lure = state.lureSide, let position = state.positions[lure] {
+                scene.elements.append(OculoElementSnapshot(role: .flash, position: position, radius: state.radius, intensity: 1 - age / state.flashDuration,
+                                                           phase: age / state.flashDuration))
+            }
+            return scene
         }
     }
 }

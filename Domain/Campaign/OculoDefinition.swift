@@ -11,6 +11,73 @@ enum OculoStageDefinition: Hashable, Sendable {
     case coeur(CoeurDefinition)
     /// Chapter III: smooth pursuit.
     case fil(FilDefinition)
+    /// Chapter IV: anti-saccade (inhibitory control).
+    case miroir(MiroirDefinition)
+}
+
+/// Chapter IV, « le miroir menteur »: a lure flashes on one side while the door opens on the opposite side for a
+/// while; a gaze that goes to the lure closes the door, the cycle repeats until the gaze goes to the door instead.
+struct MiroirDefinition: Hashable, Sendable {
+    enum Side: Hashable, Sendable {
+        case right, left, top, bottom
+
+        var opposite: Side {
+            switch self {
+            case .right: .left
+            case .left: .right
+            case .top: .bottom
+            case .bottom: .top
+            }
+        }
+    }
+
+    /// Where each side lies.
+    let right: NormalizedPoint
+    let left: NormalizedPoint
+    let top: NormalizedPoint
+    let bottom: NormalizedPoint
+    /// The side of each lure, in order; the door is always opposite.
+    let cycles: [Side]
+    let radius: Double
+    let releaseRadius: Double
+    let flashDuration: TimeInterval
+    /// The door opens `windowOpensAt` after the flash and stays open `windowDuration` (the first `teachingCycles` cycles longer).
+    let windowOpensAt: TimeInterval
+    let windowDuration: TimeInterval
+    let teachingCycles: Int
+    let teachingWindowDuration: TimeInterval
+    let dwell: TimeInterval
+    /// Breath after a success, and after a miss before the same cycle repeats.
+    let pause: TimeInterval
+
+    init(right: NormalizedPoint, left: NormalizedPoint, top: NormalizedPoint, bottom: NormalizedPoint, cycles: [Side],
+         radius: Double = 0.2, releaseRadius: Double = 0.27, flashDuration: TimeInterval = 0.5, windowOpensAt: TimeInterval = 0.15,
+         windowDuration: TimeInterval = 1.8, teachingCycles: Int = 1, teachingWindowDuration: TimeInterval = 3, dwell: TimeInterval = 0.2,
+         pause: TimeInterval = 0.8) {
+        self.right = right
+        self.left = left
+        self.top = top
+        self.bottom = bottom
+        self.cycles = cycles
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.flashDuration = max(flashDuration, 0.1)
+        self.windowOpensAt = max(windowOpensAt, 0)
+        self.windowDuration = max(windowDuration, 0.5)
+        self.teachingCycles = max(teachingCycles, 0)
+        self.teachingWindowDuration = max(teachingWindowDuration, self.windowDuration)
+        self.dwell = max(dwell, 0.05)
+        self.pause = max(pause, 0)
+    }
+
+    func position(of side: Side) -> NormalizedPoint {
+        switch side {
+        case .right: right
+        case .left: left
+        case .top: top
+        case .bottom: bottom
+        }
+    }
 }
 
 /// Chapter III, « le fil vivant »: a spark travels a smooth closed curve without ever stopping; the filament it leaves

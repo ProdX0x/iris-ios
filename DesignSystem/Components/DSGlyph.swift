@@ -10,11 +10,23 @@ struct DSGlyph: View {
         // Expansion
         case jumelles, souffle, dormeuse, echo, gouffre, braise, balise
         // Oculomotor finals
-        case coeur, filVivant
+        case coeur, filVivant, miroir
     }
 
     let kind: Kind
     let tint: Color
+
+    private func starPath(center: CGPoint, radius: CGFloat) -> Path {
+        var path = Path()
+        for index in 0..<8 {
+            let angle = Double(index) * .pi / 4 - .pi / 2
+            let r = index.isMultiple(of: 2) ? radius : radius * 0.45
+            let point = CGPoint(x: center.x + r * cos(angle), y: center.y + r * sin(angle))
+            if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
+        }
+        path.closeSubpath()
+        return path
+    }
 
     init(_ kind: Kind, tint: Color = DSColor.accent) {
         self.kind = kind
@@ -155,6 +167,13 @@ struct DSGlyph: View {
                 wave.addCurve(to: CGPoint(x: c.x + s * 0.2, y: c.y - s * 0.1), control1: CGPoint(x: c.x - s * 0.2, y: c.y - s * 0.4), control2: CGPoint(x: c.x, y: c.y + s * 0.3))
                 context.stroke(wave, with: .color(tint.opacity(0.6)), style: stroke)
                 context.fill(circle(CGPoint(x: c.x + s * 0.26, y: c.y - s * 0.14), s * 0.14), with: .color(tint))
+            case .miroir:
+                var axis = Path()
+                axis.move(to: CGPoint(x: c.x, y: c.y - s * 0.42))
+                axis.addLine(to: CGPoint(x: c.x, y: c.y + s * 0.42))
+                context.stroke(axis, with: .color(tint.opacity(0.5)), style: StrokeStyle(lineWidth: stroke.lineWidth, dash: [2, 3]))
+                context.fill(starPath(center: CGPoint(x: c.x + s * 0.26, y: c.y), radius: s * 0.16), with: .color(tint.opacity(0.5)))
+                context.stroke(circle(CGPoint(x: c.x - s * 0.26, y: c.y), s * 0.16), with: .color(tint), style: stroke)
             }
         }
         .accessibilityHidden(true)
@@ -162,7 +181,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

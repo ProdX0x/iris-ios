@@ -26,6 +26,7 @@ extension GameElement {
         case .balise: .balise
         case .coeur: .coeur
         case .filVivant: .filVivant
+        case .miroir: .miroir
         }
     }
 }

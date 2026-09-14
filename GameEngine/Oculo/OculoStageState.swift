@@ -44,6 +44,7 @@ struct OculoImpulse: Hashable, Sendable {
 enum OculoStageState: Hashable, Sendable {
     case coeur(CoeurStageState)
     case fil(FilStageState)
+    case miroir(MiroirStageState)
 }
 
 extension OculoStageState {
@@ -52,6 +53,7 @@ extension OculoStageState {
         switch definition {
         case let .coeur(coeur): self = .coeur(CoeurStageState(definition: coeur, bounds: bounds, shortSide: shortSide))
         case let .fil(fil): self = .fil(FilStageState(definition: fil, bounds: bounds, shortSide: shortSide))
+        case let .miroir(miroir): self = .miroir(MiroirStageState(definition: miroir, bounds: bounds, shortSide: shortSide))
         }
     }
 
@@ -65,6 +67,10 @@ extension OculoStageState {
             let outcome = state.update(input)
             self = .fil(state)
             return outcome
+        case var .miroir(state):
+            let outcome = state.update(input)
+            self = .miroir(state)
+            return outcome
         }
     }
 
@@ -72,6 +78,7 @@ extension OculoStageState {
         switch self {
         case let .coeur(state): state.isComplete
         case let .fil(state): state.isComplete
+        case let .miroir(state): state.isComplete
         }
     }
 
@@ -80,6 +87,7 @@ extension OculoStageState {
         switch self {
         case let .coeur(state): state.progress
         case let .fil(state): state.progress
+        case let .miroir(state): state.progress
         }
     }
 
@@ -88,13 +96,14 @@ extension OculoStageState {
         switch self {
         case let .coeur(state): state.position
         case let .fil(state): state.position(at: elapsed)
+        case let .miroir(state): state.suggestedGaze(at: elapsed)
         }
     }
 
     /// The head orientation the ideal player adopts now (nil: no preference).
     var suggestedHead: HeadPose? {
         switch self {
-        case .coeur, .fil: nil
+        case .coeur, .fil, .miroir: nil
         }
     }
 }

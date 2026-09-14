@@ -11,5 +11,5 @@ extension Campaign {
         oculomotorFinals[number]
     }
 
-    static let oculomotorFinals: [Int: LevelDefinition] = [2: finalPartage, 3: finalCourants]
+    static let oculomotorFinals: [Int: LevelDefinition] = [2: finalPartage, 3: finalCourants, 4: finalVoiles]
 }
