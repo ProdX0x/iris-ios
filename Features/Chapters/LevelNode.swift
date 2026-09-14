@@ -1,6 +1,7 @@
 // LevelNode.swift
 // Layer: Presentation
-// Purpose: One level on the chapter map: number, éclats arcs, locked / available / next / completed
+// Purpose: One level on the chapter map: number, éclats arcs, locked / available / next / completed; a square touch
+// target that takes the size its row offers (up to the historical 48 pt circle)
 
 import SwiftUI
 
@@ -17,6 +18,8 @@ struct LevelNode: View {
     let eclats: Set<Eclat>
     let action: () -> Void
 
+    private let style = AdaptiveLevelRowMetrics.Style.standard
+
     var body: some View {
         Button(action: action) {
             ZStack {
@@ -28,14 +31,21 @@ struct LevelNode: View {
                 if state == .next {
                     Circle()
                         .strokeBorder(DSColor.accent, lineWidth: 2)
-                        .padding(-5)
+                        .padding(-style.ringOutset)
                 }
                 Text("\(level.index)")
                     .font(DSFont.title3)
                     .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+                    .padding(DSSpacing.xs)
                     .foregroundStyle(state == .locked ? DSColor.textTertiary : DSColor.textPrimary)
             }
-            .frame(width: 48, height: 48)
+            .padding(style.circleInset)
+            // A square no larger than the historical button, as large as the row allows.
+            .frame(maxWidth: style.maximumTarget, maxHeight: style.maximumTarget)
+            .aspectRatio(1, contentMode: .fit)
+            .contentShape(Rectangle())
         }
         .buttonStyle(DSPressableButtonStyle())
         .disabled(state == .locked)

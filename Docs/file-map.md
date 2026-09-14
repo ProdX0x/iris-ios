@@ -138,9 +138,11 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/CameraAccess/CameraAccessView.swift | struct | Presentation | Explains why the TrueDepth camera is needed and handles denied and restricted states | Claude (mission Iris) |
 | Features/CameraAccess/CameraAccessViewModel.swift | class | Presentation | Camera permission flow: explanation, request, denied and restricted states | Claude (mission Iris) |
 | Features/Carnet/CarnetView.swift | struct | Presentation | The ideas met so far, one glyph and one sentence each; the others stay unknown | Claude (mission Iris) |
-| Features/Chapters/ChapterCard.swift | struct | Presentation | One chapter on the map: numeral, name, principle, level nodes, progress; locked state | Claude (mission Iris) |
+| Features/Chapters/AdaptiveLevelRow.swift | struct | Presentation | Lays a chapter's level buttons out inside exactly the width it is offered (see AdaptiveLevelRowMetrics): | Claude (mission Iris) |
+| Features/Chapters/AdaptiveLevelRowMetrics.swift | struct | Presentation | Geometry of a chapter's level buttons inside the width the card gives them: as many per row as fit with | Claude (mission Iris) |
+| Features/Chapters/ChapterCard.swift | struct | Presentation | One chapter on the map: numeral, name, principle, level nodes, progress; locked state. Everything inside | Claude (mission Iris) |
 | Features/Chapters/ChaptersView.swift | struct | Presentation | The map: every chapter, its levels and éclats; choose a level to play | Claude (mission Iris) |
-| Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed | Claude (mission Iris) |
+| Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed; a square touch | Claude (mission Iris) |
 | Features/Game/Diagnostics/OculomotorTrace.swift | class | Presentation | PROTOTYPE (chapter I level 6): observes, never steers. Classifies every gaze sample (VALID_INSIDE, | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneRenderer+Oculo.swift | - | Presentation | OCULOMOTOR EXPANSION: draws the current gaze stage from its scene description, by role, in the chapter | Claude (mission Iris) |
 | Features/Game/Rendering/GameSceneRenderer.swift | struct | Presentation | Draws the chambre noire world: currents, veils, route help, irises, veilleuses, lueurs, trouble, diagnostics, | Claude (mission Iris) |
@@ -277,8 +279,10 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Mocks/MockAudioService.swift | class | Tests | Recording mock for AudioService | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockHapticFeedbackService.swift | class | Tests | Recording mock for HapticFeedbackService | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/AdaptiveLevelRowMetricsTests.swift | struct | Tests | The level row geometry for 1 to 10 levels on every supported width: inside its width, full touch targets, | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/ChapterCardLayoutTests.swift | struct | Tests | Every chapter card of the campaign, on every supported phone width and with larger text, fits the width it | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
