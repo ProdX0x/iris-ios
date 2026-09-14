@@ -243,6 +243,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/EchosTests.swift | struct | Tests | Chapter IX, échos: sleepers stay still with a closed iris, the ring of a closing iris wakes and launches them | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/ExpansionCampaignDump.swift | enum | Tests | Canonical text of the human-validated chapters VII to XII and of chapter I level 6 (every authored field, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/ExpansionCampaignFingerprintTests.swift | struct | Tests | Protection of the human-validated chapters VII to XII and of chapter I level 6: their canonical dump must | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/GameContentFreezeTests.swift | struct | Tests | What the interface phases must never touch keeps its exact sources and values: the engine, game loop, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/GouffresTests.swift | struct | Tests | Chapter X, gouffres: the pull, the swallow (held, then sent back to the start), the loss of a validated lueur, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignDump.swift | enum | Tests | Canonical text of the 34 historical levels: every authored field, their resolution on the reference phone, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/HistoricalCampaignFingerprintTests.swift | struct | Tests | Protection of the historical campaign (chapters I to VI, 34 levels) and of the frozen engine: the canonical | Claude (mission Iris) |
@@ -289,8 +290,10 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/ChapterCardLayoutTests.swift | struct | Tests | Every chapter card of the campaign, on every supported phone width and with larger text, fits the width it | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/ColorRoleBoundaryTests.swift | struct | Tests | The colour roles stay apart and keep their values: chapters I to XII and the game's states are unchanged, | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/VisualCaptureTests.swift | struct | Tests | Deterministic images of representative screens (off screen and hosted in a window) and of every level, to | Claude (mission Iris) |
