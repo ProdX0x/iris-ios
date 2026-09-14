@@ -72,6 +72,8 @@ final class GameViewModel {
     @ObservationIgnored private(set) var oculoTrace: OculomotorTrace?
     /// One DEBUG line for the HUD diagnostics (shown only with the gaze indicator).
     private(set) var oculoStatus: String?
+    /// Chapter X final: the JSON Lines capture, only when the app was launched with `--iris-capture`.
+    @ObservationIgnored private var ancreCapture: AncreCapture?
     #endif
 
     init(level: LevelDefinition,
@@ -295,6 +297,9 @@ final class GameViewModel {
             if faceLostDuration >= Self.faceLostTimeout {
                 haltLoop()
                 phase = .faceLost
+                #if DEBUG
+                ancreCapture?.mark("faceLostWarning", session: session, phase: phase)
+                #endif
                 return
             }
         } else {
@@ -303,6 +308,7 @@ final class GameViewModel {
         let events = session.advance(by: deltaTime)
         #if DEBUG
         oculoTrace?.observeTick(session: session, events: events)
+        ancreCapture?.observeTick(session: session, phase: phase, events: events)
         #endif
         if settings.soundEffectsEnabled {
             for cue in cuePolicy.cues(for: events, at: session.elapsed) {
@@ -328,6 +334,9 @@ final class GameViewModel {
 
     private func completeLevel() {
         haltLoop()
+        #if DEBUG
+        ancreCapture?.stop(reason: "level complete")
+        #endif
         levelInProgress = false
         hint = nil
         let outcome = LevelOutcome(time: session.elapsed, intrusions: session.metrics.intrusions, losses: session.metrics.losses)
@@ -388,6 +397,8 @@ final class GameViewModel {
             oculoTrace = nil
         }
         oculoStatus = nil
+        ancreCapture?.stop(reason: "another level")
+        ancreCapture = AncreCapture(level: definition)
         #endif
         refreshSnapshot()
         navigator?.gameDidStart(level: definition)
@@ -413,6 +424,9 @@ final class GameViewModel {
 
     private func teardown() {
         haltLoop()
+        #if DEBUG
+        ancreCapture?.stop(reason: "left the game")
+        #endif
         releaseGaze()
         deactivateAudio()
     }
@@ -464,6 +478,14 @@ final class GameViewModel {
             oculoTrace.observeSample(mapped: mapped, sample: sample, bounds: bounds)
             if settings.showsGazeIndicator { oculoStatus = oculoTrace.statusLine }
         }
+        if let ancreCapture {
+            var faceTracked: Bool?
+            if case let .tracking(visible) = gazeState { faceTracked = visible }
+            ancreCapture.observeSample(session: session, phase: phase, faceTracked: faceTracked, observation: sample.observation,
+                                       screenHead: sample.observation.map { Self.screenHead($0, mapping: mapper.axisMapping) }, mapped: mapped,
+                                       gazeState: oculoTrace?.state.rawValue ?? (mapped == nil ? "INVALID" : "UNKNOWN"), bounds: bounds,
+                                       timestamp: sample.timestamp)
+        }
         #endif
         if settings.showsGazeIndicator {
             var edge: GazeDiagnostics.Edge?
@@ -497,6 +519,7 @@ final class GameViewModel {
             #if DEBUG
             oculoTrace?.observeFaceVisible(faceVisible)
             if settings.showsGazeIndicator, let oculoTrace { oculoStatus = oculoTrace.statusLine }
+            ancreCapture?.mark(faceVisible ? "faceVisible" : "faceHidden", session: session, phase: phase, faceTracked: faceVisible)
             #endif
             if faceVisible {
                 trackingBecameAvailable()

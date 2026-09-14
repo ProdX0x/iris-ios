@@ -143,6 +143,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Chapters/ChapterCard.swift | struct | Presentation | One chapter on the map: numeral, name, principle, level nodes, progress; locked state. Everything inside | Claude (mission Iris) |
 | Features/Chapters/ChaptersView.swift | struct | Presentation | The map: every chapter, its levels and éclats; choose a level to play | Claude (mission Iris) |
 | Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed; a square touch | Claude (mission Iris) |
+| Features/Game/Diagnostics/AncreCapture.swift | class | Presentation | Chapter X final « l'ancre »: a short local JSON Lines capture, started only by the `--iris-capture` launch | Claude (mission Iris) |
 | Features/Game/Diagnostics/OculomotorTrace.swift | class | Presentation | PROTOTYPE (chapter I level 6): observes, never steers. Classifies every gaze sample (VALID_INSIDE, | Claude (mission Iris) |
 | Features/Game/Rendering/AncreSceneSnapshot.swift | struct | Presentation | Chapter X final « l'ancre »: plain description of the loop scene (silhouette, segmented ring, checkpoints, | Claude (mission Iris) |
 | Features/Game/Rendering/AncreSilhouette.swift | enum | Presentation | Chapter X final « l'ancre »: the head-and-shoulders silhouette that frames the anchor, traced from the | Claude (mission Iris) |

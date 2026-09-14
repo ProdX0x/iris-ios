@@ -96,6 +96,10 @@ final class OculomotorTrace {
     private var lastTickTime: TimeInterval?
     private var wasInside = false
     private let logger = Logger(subsystem: "net.steve-s.iris", category: "oculotest")
+    /// Chapter X final: the loop and phase last seen, the start of a stretch without head data, one status line.
+    private var ancreKey: String?
+    private var ancreHeadGapStart: TimeInterval?
+    private(set) var ancreStatus: String?
 
     init(names: [String]) {
         self.names = names
@@ -105,6 +109,7 @@ final class OculomotorTrace {
         var parts = ["oculo : \(state.rawValue)"]
         if let lastEdge { parts.append(lastEdge.rawValue) }
         if let headYaw, let headPitch { parts.append(String(format: "yaw %.1f° pitch %.1f°", headYaw, headPitch)) }
+        if let ancreStatus { parts.append(ancreStatus) }
         return parts.joined(separator: " · ")
     }
 
@@ -226,6 +231,7 @@ final class OculomotorTrace {
                 break
             }
         }
+        observeAncre(session: session, events: events)
         guard let balises = session.balises else { return }
 
         for event in events {
@@ -267,6 +273,38 @@ final class OculomotorTrace {
             current = transition
         }
         wasInside = balises.isInside
+    }
+
+    // MARK: Chapter X final
+
+    /// Logs each loop's phases and checkpoints with the head offset (screen-oriented amplitudes), the eyes' presence on
+    /// the point, the gaze state and the stretches without head data. Observation only.
+    private func observeAncre(session: GameSession, events: [GameEvent]) {
+        guard let sequence = session.oculo, case let .ancre(ancre)? = sequence.current else {
+            ancreStatus = nil
+            return
+        }
+        let now = session.elapsed
+        let loop = sequence.currentIndex + 1
+        let head = ancre.headOffset.map { String(format: "(%.2f,%.2f)", $0.x, $0.y) } ?? "none"
+        let key = "\(loop)-\(ancre.phase.rawValue)"
+        if key != ancreKey {
+            ancreKey = key
+            let rest = ancre.restPose.map { String(format: "(%.1f,%.1f)", $0.yaw, $0.pitch) } ?? "none"
+            log(String(format: "ancre loop=%d phase=%@ at %.2fs sweep=%.0fdeg rest=%@ head=%@ focus=%.2f gazeState=%@ misses=%d headGap=%.0fms reach=%.2f",
+                       loop, ancre.phase.rawValue, now, ancre.sweep, rest, head, ancre.focus, state.rawValue, ancre.misses, ancre.headGap * 1000, ancre.largestReach))
+        }
+        if events.contains(where: { if case .oculoSuccess = $0 { return true } else { return false } }) {
+            log(String(format: "ancre loop=%d checkpoint=%d sweep=%.0fdeg head=%@ focus=%.2f gazeState=%@",
+                       loop, ancre.checkpointTimes.count, ancre.sweep, head, ancre.focus, state.rawValue))
+        }
+        if session.headPose == nil {
+            if ancreHeadGapStart == nil { ancreHeadGapStart = now }
+        } else if let start = ancreHeadGapStart {
+            ancreHeadGapStart = nil
+            if ancre.phase != .settling { log(String(format: "ancre loop=%d head data back after %.0fms", loop, (now - start) * 1000)) }
+        }
+        ancreStatus = String(format: "ancre %d · %@ · %.0f° · r %.2f · yeux %.2f", loop, ancre.phase.rawValue, ancre.sweep, ancre.headOffset?.length ?? 0, ancre.focus)
     }
 
     // MARK: Helpers

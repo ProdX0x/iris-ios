@@ -277,6 +277,7 @@
 		E5537C214B1224B49BD1FD3C /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1F43684A42004D2CE7A08 /* GameEvent.swift */; };
 		E59F613932A23B3AFAC1B6D1 /* GameElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86C859F466557ECCA36EC1 /* GameElement.swift */; };
 		E69E0FC6D75097FC7302A789 /* GazeMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6F2B86A70F4BF776DD9DB9 /* GazeMapperTests.swift */; };
+		EAE809D62A58ACC1CF62DD99 /* AncreCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82315916A05E59D624DCC9E3 /* AncreCapture.swift */; };
 		EC5C3045ED240A50AB745191 /* LevelEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95ADD54A9E6D7BF0E893EAB /* LevelEnvironmentTests.swift */; };
 		EDCA473EC1252D80AA8292AD /* LaunchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684AB828B7DC11DF78F6CE18 /* LaunchOptions.swift */; };
 		EE0F796B52316277AE87CEC0 /* AxisMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBCA2F738EEE7481EA16C0F /* AxisMapping.swift */; };
@@ -476,6 +477,7 @@
 		800B8B9FB162F4AE038B1DFA /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		80FF27E04C2AF8537F9D02C6 /* Campaign+FinalVoiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalVoiles.swift"; sourceTree = "<group>"; };
 		81319801731883FA33B5955D /* HintTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintTracker.swift; sourceTree = "<group>"; };
+		82315916A05E59D624DCC9E3 /* AncreCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AncreCapture.swift; sourceTree = "<group>"; };
 		8285B12BBDF5FF0FAA41F568 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
 		82DD0627F96457CF9A137462 /* Campaign+FinalCourants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalCourants.swift"; sourceTree = "<group>"; };
 		840AC50B21629B0BC2B95C81 /* ChapterTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTheme.swift; sourceTree = "<group>"; };
@@ -1043,6 +1045,7 @@
 		876C998F315F95F89F069C19 /* Diagnostics */ = {
 			isa = PBXGroup;
 			children = (
+				82315916A05E59D624DCC9E3 /* AncreCapture.swift */,
 				05F3AFEB859D1239E0F3A0D8 /* OculomotorTrace.swift */,
 			);
 			path = Diagnostics;
@@ -1659,6 +1662,7 @@
 				7B90774E3772B72DC5B979C9 /* AdaptiveLevelRow.swift in Sources */,
 				F0CF70CC656949862880DCE7 /* AdaptiveLevelRowMetrics.swift in Sources */,
 				FF730A3F641EA91FA989FDA2 /* AffineTransform2D.swift in Sources */,
+				EAE809D62A58ACC1CF62DD99 /* AncreCapture.swift in Sources */,
 				ACAB2DDA67C3DD6A7AC3FFF1 /* AncreSceneSnapshot.swift in Sources */,
 				FF659088967A414CCFCA50BD /* AncreSilhouette.swift in Sources */,
 				E284F0F7641DBA0B63613A3E /* AncreStageState.swift in Sources */,
