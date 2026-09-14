@@ -24,7 +24,7 @@ Les termes scientifiques ci-dessous servent à la conception et aux tests. Ils n
 | 7-7 | la danse croisée | saccades diagonales d'amplitude variable | les jumelles s'appellent d'un coin à l'autre, près, puis loin, sur une diagonale puis l'autre, et finissent par se rejoindre | un seul quadrant, centre, alternance gauche-droite, regard aléatoire : jamais |
 | 8-7 | la lanterne du courant | poursuite prédictive, anticipation | un courant porte une lanterne en boucle ; dès le deuxième tour elle disparaît dans la brume ; il faut être là où elle ressort | joueur réactif (0,35 s de retard, figé dans la brume), attente à une sortie, centre, regard aléatoire : jamais |
 | 9-7 | l'absence | désengagement de la fixation (gap / overlap) | une présence tient tant qu'on la regarde ; une réponse apparaît ailleurs, parfois après un silence, parfois pendant que la présence brille encore ; il faut la rejoindre | ne jamais quitter la présence, partir trop tôt, centre, regard aléatoire : jamais |
-| 10-7 | l'ancre | stabilisation du regard pendant un mouvement de tête, inspirée du VOR | les yeux restent sur un point au centre d'une silhouette ; la tête dessine un cercle lent (droite, haut, gauche, bas, retour face) qui remplit un anneau, puis le cercle inverse | tête immobile, tête sans les yeux, mauvais sens, poses séparées par le centre, pas de données de tête, regard aléatoire : jamais |
+| 10-7 | l'ancre | stabilisation du regard pendant un mouvement de tête, inspirée du VOR | les yeux fixent un point au centre d'une silhouette avant et après chaque cercle ; pendant le cercle, seule la tête compte (droite, haut, gauche, bas, retour face) et remplit un anneau, puis le cercle inverse | tête immobile, tête sans les yeux, mauvais sens, poses séparées par le centre, pas de données de tête, regard aléatoire : jamais |
 | 11-7 | d'abord les yeux | coordination œil-tête, saccade avant la tête | des braises s'allument au bord ; les yeux d'abord puis la tête donnent toute la chaleur, la tête d'abord la moitié, les yeux seuls un tiers | regard qui n'atteint pas les braises, tête sans les yeux, regard aléatoire : jamais ; la coordination est distinguée (4, 8 ou 12 braises) |
 | 12-7 | l'orchestre du regard | synthèse multimodale | sept passages courts (fixation, transfert, poursuite, recherche, mémoire, diagonales, œil-tête), chacun allume une étoile ; la constellation s'anime à la fin | centre, coin, regard aléatoire : jamais |
 
@@ -40,7 +40,7 @@ Les pars suivent la formule historique (`temps = arrondi(1,8 × bot + 6)`, `intr
 | 7-7 | 3/3 | 9,9 s | 2,0 | 24 s / 4 |
 | 8-7 | 3/3 | 23,6 s | 1,0 | 48 s / 3 |
 | 9-7 | 3/3 | 17,0 s | 9,3 | 37 s / 12 |
-| 10-7 | 3/3 | 41,6 s | 0,0 | 81 s / 2 |
+| 10-7 | 3/3 | 42,2 s | 0,0 | 82 s / 2 |
 | 11-7 | 3/3 | 9,1 s | 1,0 | 22 s / 3 |
 | 12-7 | 3/3 | 26,7 s | 2,0 | 54 s / 4 |
 
