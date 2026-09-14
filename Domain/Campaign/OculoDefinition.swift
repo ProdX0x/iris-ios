@@ -13,6 +13,36 @@ enum OculoStageDefinition: Hashable, Sendable {
     case fil(FilDefinition)
     /// Chapter IV: anti-saccade (inhibitory control).
     case miroir(MiroirDefinition)
+    /// Chapter V: memory-guided saccades.
+    case etoiles(EtoilesDefinition)
+}
+
+/// Chapter V, « les étoiles absentes »: a few stars shine briefly, vanish, and reappear only where the gaze returns
+/// to their remembered place; each round adds them to a constellation.
+struct EtoilesDefinition: Hashable, Sendable {
+    /// Every place a star can shine.
+    let candidates: [NormalizedPoint]
+    /// The stars of each round (indices into `candidates`).
+    let rounds: [[Int]]
+    let showDuration: TimeInterval
+    let blankDuration: TimeInterval
+    /// Seconds allowed to find every star of a round before it is shown again.
+    let recallLimit: TimeInterval
+    let radius: Double
+    let releaseRadius: Double
+    let dwell: TimeInterval
+
+    init(candidates: [NormalizedPoint], rounds: [[Int]], showDuration: TimeInterval = 1.4, blankDuration: TimeInterval = 0.5,
+         recallLimit: TimeInterval = 8, radius: Double = 0.2, releaseRadius: Double = 0.27, dwell: TimeInterval = 0.25) {
+        self.candidates = candidates
+        self.rounds = rounds.map { $0.filter { candidates.indices.contains($0) } }.filter { !$0.isEmpty }
+        self.showDuration = max(showDuration, 0.3)
+        self.blankDuration = max(blankDuration, 0)
+        self.recallLimit = max(recallLimit, 1)
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.dwell = max(dwell, 0.05)
+    }
 }
 
 /// Chapter IV, « le miroir menteur »: a lure flashes on one side while the door opens on the opposite side for a

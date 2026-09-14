@@ -45,6 +45,7 @@ enum OculoStageState: Hashable, Sendable {
     case coeur(CoeurStageState)
     case fil(FilStageState)
     case miroir(MiroirStageState)
+    case etoiles(EtoilesStageState)
 }
 
 extension OculoStageState {
@@ -54,6 +55,7 @@ extension OculoStageState {
         case let .coeur(coeur): self = .coeur(CoeurStageState(definition: coeur, bounds: bounds, shortSide: shortSide))
         case let .fil(fil): self = .fil(FilStageState(definition: fil, bounds: bounds, shortSide: shortSide))
         case let .miroir(miroir): self = .miroir(MiroirStageState(definition: miroir, bounds: bounds, shortSide: shortSide))
+        case let .etoiles(etoiles): self = .etoiles(EtoilesStageState(definition: etoiles, bounds: bounds, shortSide: shortSide))
         }
     }
 
@@ -71,6 +73,10 @@ extension OculoStageState {
             let outcome = state.update(input)
             self = .miroir(state)
             return outcome
+        case var .etoiles(state):
+            let outcome = state.update(input)
+            self = .etoiles(state)
+            return outcome
         }
     }
 
@@ -79,6 +85,7 @@ extension OculoStageState {
         case let .coeur(state): state.isComplete
         case let .fil(state): state.isComplete
         case let .miroir(state): state.isComplete
+        case let .etoiles(state): state.isComplete
         }
     }
 
@@ -88,6 +95,7 @@ extension OculoStageState {
         case let .coeur(state): state.progress
         case let .fil(state): state.progress
         case let .miroir(state): state.progress
+        case let .etoiles(state): state.progress
         }
     }
 
@@ -97,13 +105,14 @@ extension OculoStageState {
         case let .coeur(state): state.position
         case let .fil(state): state.position(at: elapsed)
         case let .miroir(state): state.suggestedGaze(at: elapsed)
+        case let .etoiles(state): state.suggestedGaze(at: elapsed)
         }
     }
 
     /// The head orientation the ideal player adopts now (nil: no preference).
     var suggestedHead: HeadPose? {
         switch self {
-        case .coeur, .fil, .miroir: nil
+        case .coeur, .fil, .miroir, .etoiles: nil
         }
     }
 }

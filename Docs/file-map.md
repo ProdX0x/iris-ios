@@ -75,6 +75,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalCourants.swift | - | Domain | OCULOMOTOR EXPANSION, chapter III final « le fil vivant » (smooth pursuit): a spark glides along a smooth | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalPartage.swift | - | Domain | OCULOMOTOR EXPANSION, chapter II final « le cœur de verre » (fixation stability, distractor inhibition): | Claude (mission Iris) |
+| Domain/Campaign/Campaign+FinalVeilleuses.swift | - | Domain | OCULOMOTOR EXPANSION, chapter V final « les étoiles absentes » (memory-guided saccades): stars shine | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalVoiles.swift | - | Domain | OCULOMOTOR EXPANSION, chapter IV final « le miroir menteur » (anti-saccade): a lure flashes on one side, | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Gouffres.swift | - | Domain | Chapter X, Gouffres: wells pull what comes near and send what they swallow back to its start; | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Jumelles.swift | - | Domain | Chapter VII, Jumelles: twin lueurs have no iris, each is the iris of the other; bring them within reach | Claude (mission Iris) |
@@ -185,6 +186,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Noise/SilentNoise.swift | struct | GameEngine | Zero noise, used by tests and previews that need fully predictable motion | Claude (mission Iris) |
 | GameEngine/Noise/ValueNoise1D.swift | struct | GameEngine | Port of `makeNoise1D`: 256 random values, smoothstep interpolation (Perlin-like value noise) | Claude (mission Iris) |
 | GameEngine/Oculo/CoeurStageState.swift | struct | GameEngine | Chapter II final: the heart warms while the gaze rests on it (hysteresis), cools while it is away; sparks | Claude (mission Iris) |
+| GameEngine/Oculo/EtoilesStageState.swift | struct | GameEngine | Chapter V final: rounds of stars shown, hidden, then recalled by dwelling where they were; a wrong place | Claude (mission Iris) |
 | GameEngine/Oculo/FilStageState.swift | struct | GameEngine | Chapter III final: the spark's smooth loop (two harmonics), the accompaniment account that grows while | Claude (mission Iris) |
 | GameEngine/Oculo/MiroirStageState.swift | struct | GameEngine | Chapter IV final: cycles of a lure flashing on one side and a door open on the opposite side; a gaze that | Claude (mission Iris) |
 | GameEngine/Oculo/OculoStageState.swift | struct | GameEngine | OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a | Claude (mission Iris) |
@@ -228,6 +230,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelLabTests.swift | struct | Tests | Prints the measured table of every campaign level (design tool; always passes) | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoCoeurTests.swift | struct | Tests | Chapter II final « le cœur de verre »: the heart warms only under a gaze that stays, cools when it leaves, | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoEtoilesTests.swift | struct | Tests | Chapter V final « les étoiles absentes »: stars shown then hidden come back only where the gaze dwells at | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoFilTests.swift | struct | Tests | Chapter III final « le fil vivant »: the spark never stops, the account grows only while the gaze accompanies | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoMiroirTests.swift | struct | Tests | Chapter IV final « le miroir menteur »: the door opens opposite the lure; going to the lure or letting the | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoStageTestSupport.swift | enum | Tests | OCULOMOTOR EXPANSION: scripted gaze runs over a level's session (a policy chooses the gaze, and the head, | Claude (mission Iris) |

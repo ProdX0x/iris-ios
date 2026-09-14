@@ -142,6 +142,7 @@
 		7EC7391F5F39896E5A8F1ECB /* NotificationObserverBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0684F2CB40B511B7EEB19A9E /* NotificationObserverBag.swift */; };
 		7EF0F4A8E56A3B32299D8E82 /* Campaign+Clairvoyance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1560C44E3EA509640C54D77 /* Campaign+Clairvoyance.swift */; };
 		7FA6C1375A9FCF656F3810C0 /* LevelIntroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB4C4AFC97BB1CEF1E12F67 /* LevelIntroCard.swift */; };
+		823A3B19ECE36DCBB6803636 /* EtoilesStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B56A480302FEBFDDEB968DC /* EtoilesStageState.swift */; };
 		83CDAE28674BC59569E46E8F /* Campaign+Courants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F888AF8EFFC2A1C549E4C75E /* Campaign+Courants.swift */; };
 		841583BF77B1C572479AED82 /* DSEyebrowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1585AF6D44A5E92F30099E /* DSEyebrowStyle.swift */; };
 		84883B202993ACDABF7C0DE6 /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232DBD9A17913E3A0BE306C1 /* AppCoordinatorTests.swift */; };
@@ -165,6 +166,7 @@
 		96BC5A32CD9911521A3D062A /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FF0E21DD6DE5B24C6D77E5 /* AppRoute.swift */; };
 		9894CF51C532682A5A6E2156 /* GazeCalibrationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */; };
 		9A711B9C7A79821B956497A5 /* DeviceAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */; };
+		9AAC26DB72AD6F49D3A7E608 /* Campaign+FinalVeilleuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF5190E0706C0C8E025567 /* Campaign+FinalVeilleuses.swift */; };
 		9AC4C195616DC896137DF12F /* LinearCongruentialGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272C51EEF33C3FE08A938E8E /* LinearCongruentialGenerator.swift */; };
 		9C2F2EDE1CEFD43AC4A4DFA7 /* UIKitHapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */; };
 		9CA168397570BA3C97A2169B /* BraiseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CE1C80EBCEA72FBA91A69 /* BraiseState.swift */; };
@@ -216,6 +218,7 @@
 		C620EF009D765DE989586AA6 /* Campaign+OculomotorFinals.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE438BA3325063A857915CEC /* Campaign+OculomotorFinals.swift */; };
 		C63A91C4126005614AB486CE /* Campaign+FinalVoiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF27E04C2AF8537F9D02C6 /* Campaign+FinalVoiles.swift */; };
 		C64737ADA961196BD87D0748 /* HistoricalCampaignFingerprintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49456847B3BA1C184F35F7CB /* HistoricalCampaignFingerprintTests.swift */; };
+		C77B04BF6348AB0B5A0645C6 /* OculoEtoilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43BED00D42931EF2764F82 /* OculoEtoilesTests.swift */; };
 		C793E86F10A10E74167323C2 /* LevelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642E2FC20AE137F5F1C7C8BB /* LevelNode.swift */; };
 		C8A832C53AAEC21507F58C4D /* JourneyCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F708CAA576C3EE37C2E1A181 /* JourneyCompleteView.swift */; };
 		CAE67280BDAD54355AA10C2F /* ARKitGazeTrackingService+Observation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4985532B1F3B6F52D059D8 /* ARKitGazeTrackingService+Observation.swift */; };
@@ -298,6 +301,7 @@
 		0876AF61255786B54E6B7CA1 /* SimulatedGazeTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedGazeTrackingService.swift; sourceTree = "<group>"; };
 		08B9A8A9490F67F3E264AEDE /* CalibrationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationProfile.swift; sourceTree = "<group>"; };
 		0AAE3F6E916C94BD7926A869 /* Campaign+FinalPartage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalPartage.swift"; sourceTree = "<group>"; };
+		0B56A480302FEBFDDEB968DC /* EtoilesStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtoilesStageState.swift; sourceTree = "<group>"; };
 		0B7AD342653D374AF694FE25 /* DSGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlyph.swift; sourceTree = "<group>"; };
 		0D15C5B2FC7EBC3EB88433A3 /* Campaign+Constellation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Constellation.swift"; sourceTree = "<group>"; };
 		0D3408C688DE466CF6BA50D8 /* CalibrationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationResult.swift; sourceTree = "<group>"; };
@@ -476,6 +480,7 @@
 		B2B963C8273B51A3EAAB22EA /* RobustAggregator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobustAggregator.swift; sourceTree = "<group>"; };
 		B30BE49103058FBD72F88D3F /* Campaign+Eveil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Eveil.swift"; sourceTree = "<group>"; };
 		B32A02AF64361BD90B66A9C3 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		B6AF5190E0706C0C8E025567 /* Campaign+FinalVeilleuses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalVeilleuses.swift"; sourceTree = "<group>"; };
 		B7D242A860A1DDC94DA38992 /* ManualGameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualGameClock.swift; sourceTree = "<group>"; };
 		B84D34F447B4F3C0EA253386 /* GazeObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeObservation.swift; sourceTree = "<group>"; };
 		B8BDD61E13554EDC6C8012B4 /* LevelID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelID.swift; sourceTree = "<group>"; };
@@ -510,6 +515,7 @@
 		D7BC02F89C47E8DB96F852E1 /* GazeSetupNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupNavigating.swift; sourceTree = "<group>"; };
 		D95ADD54A9E6D7BF0E893EAB /* LevelEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelEnvironmentTests.swift; sourceTree = "<group>"; };
 		DA3EA6296DB64CBC82A728AD /* AffineTransform2DTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransform2DTests.swift; sourceTree = "<group>"; };
+		DA43BED00D42931EF2764F82 /* OculoEtoilesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoEtoilesTests.swift; sourceTree = "<group>"; };
 		DA4985532B1F3B6F52D059D8 /* ARKitGazeTrackingService+Observation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARKitGazeTrackingService+Observation.swift"; sourceTree = "<group>"; };
 		DF2A5330F4339EF7D4926004 /* FilStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilStageState.swift; sourceTree = "<group>"; };
 		DF8765C67309C58F38118479 /* GouffreField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GouffreField.swift; sourceTree = "<group>"; };
@@ -942,6 +948,7 @@
 				ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */,
 				18FE0D5280B10AB864D751F2 /* LevelLabTests.swift */,
 				E20FE7A61FD6D56DC9792C96 /* OculoCoeurTests.swift */,
+				DA43BED00D42931EF2764F82 /* OculoEtoilesTests.swift */,
 				C05B51B335C41E3CF366584F /* OculoFilTests.swift */,
 				EB28C7BCEB504283D259AEF6 /* OculoMiroirTests.swift */,
 				031F8D7D83FD64AA0FCB9A55 /* OculomotorLevelTests.swift */,
@@ -1058,6 +1065,7 @@
 			isa = PBXGroup;
 			children = (
 				488DDA9F02F27EF2583681DA /* CoeurStageState.swift */,
+				0B56A480302FEBFDDEB968DC /* EtoilesStageState.swift */,
 				DF2A5330F4339EF7D4926004 /* FilStageState.swift */,
 				5F061D9D2BB0F72563AE2FAA /* MiroirStageState.swift */,
 				320718F4EB5AB2EBE016B5C4 /* OculoStageState.swift */,
@@ -1218,6 +1226,7 @@
 				B30BE49103058FBD72F88D3F /* Campaign+Eveil.swift */,
 				82DD0627F96457CF9A137462 /* Campaign+FinalCourants.swift */,
 				0AAE3F6E916C94BD7926A869 /* Campaign+FinalPartage.swift */,
+				B6AF5190E0706C0C8E025567 /* Campaign+FinalVeilleuses.swift */,
 				80FF27E04C2AF8537F9D02C6 /* Campaign+FinalVoiles.swift */,
 				46B14C3644D1CC0BD40FDA5A /* Campaign+Gouffres.swift */,
 				7FC2EFA463992FCEABE705A9 /* Campaign+Jumelles.swift */,
@@ -1523,6 +1532,7 @@
 				5CD0A2D6D3C629DB951AE847 /* MockHapticFeedbackService.swift in Sources */,
 				C08E69FB668DB35B80C89AEF /* NormalizedCoordinatesTests.swift in Sources */,
 				27803E85A54612CBB306A969 /* OculoCoeurTests.swift in Sources */,
+				C77B04BF6348AB0B5A0645C6 /* OculoEtoilesTests.swift in Sources */,
 				4968A2DA681B1E8C642A8EE6 /* OculoFilTests.swift in Sources */,
 				D1E2B3513CAA2959128B86E4 /* OculoMiroirTests.swift in Sources */,
 				6EFCBDA822BC8616C099933F /* OculoStageTestSupport.swift in Sources */,
@@ -1579,6 +1589,7 @@
 				88A9960936912990185C845E /* Campaign+Eveil.swift in Sources */,
 				A2B35CF303A05851D5AA5448 /* Campaign+FinalCourants.swift in Sources */,
 				439E7C9EBB3EA9BDBC205D4B /* Campaign+FinalPartage.swift in Sources */,
+				9AAC26DB72AD6F49D3A7E608 /* Campaign+FinalVeilleuses.swift in Sources */,
 				C63A91C4126005614AB486CE /* Campaign+FinalVoiles.swift in Sources */,
 				F0F844A7FAB0CBB043DFD4B8 /* Campaign+Gouffres.swift in Sources */,
 				211A9EFA87977B4BFA94CEB7 /* Campaign+Jumelles.swift in Sources */,
@@ -1627,6 +1638,7 @@
 				23F69C903735F44EB9F22EC6 /* EchoDefinition.swift in Sources */,
 				7A9A3BE3F24B7E157BE9A5FA /* EchoField.swift in Sources */,
 				B963F8712E899E5534C0A067 /* Eclat.swift in Sources */,
+				823A3B19ECE36DCBB6803636 /* EtoilesStageState.swift in Sources */,
 				504638E2CE5D0A9B9CDCFB94 /* FeedbackTiming.swift in Sources */,
 				45A329FD8E6538E48B05C907 /* FilStageState.swift in Sources */,
 				12577C77F80A564784FC9815 /* FixationSequence.swift in Sources */,

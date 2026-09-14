@@ -158,6 +158,21 @@ enum OculoSceneBuilder {
                                                            phase: age / state.flashDuration))
             }
             return scene
+        case let .etoiles(state):
+            var scene = Scene()
+            let showing = state.isShowing
+            for (index, position) in state.candidates.enumerated() {
+                let inRound = state.currentRound.contains(index)
+                let lit = state.constellation.contains(index) || state.found.contains(index)
+                let shining = showing && inRound
+                scene.elements.append(OculoElementSnapshot(role: .star, position: position, radius: state.radius, intensity: shining ? 1 : 0,
+                                                           isActive: false, isLit: lit, index: index))
+            }
+            let drawn = state.constellation + state.found
+            if drawn.count >= 2 {
+                scene.polylines.append(OculoPolylineSnapshot(points: drawn.map { state.candidates[$0] }, intensity: 0.5))
+            }
+            return scene
         }
     }
 }

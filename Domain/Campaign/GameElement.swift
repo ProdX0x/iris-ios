@@ -28,6 +28,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case coeur
     case filVivant
     case miroir
+    case etoileAbsente
 
     var name: String {
         switch self {
@@ -51,6 +52,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .coeur: "cœur de verre"
         case .filVivant: "fil vivant"
         case .miroir: "miroir menteur"
+        case .etoileAbsente: "étoile absente"
         }
     }
 
@@ -76,6 +78,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .coeur: "Froid, il se réchauffe sous un regard qui reste. Les étincelles autour n'attendent que votre regard pour le refroidir."
         case .filVivant: "Elle file sans jamais s'arrêter. Accompagnez-la du regard : le fil qu'elle laisse reste vivant."
         case .miroir: "Ce qui brille d'un côté appelle le regard ; la porte s'ouvre de l'autre. Ne suivez pas l'éclat."
+        case .etoileAbsente: "Elle brille un instant puis s'efface. Retournez là où elle était : elle revient, et la constellation grandit."
         }
     }
 }
