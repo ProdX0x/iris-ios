@@ -11,6 +11,9 @@ struct HintTracker: Hashable, Sendable {
     private var fired: Set<Int> = []
     private(set) var current: String?
     private var shownAt: TimeInterval = 0
+    /// Successes counted per oculomotor stage, after and before the events being observed.
+    private var stageSuccesses: [Int: Int] = [:]
+    private var stageSuccessesBefore: [Int: Int] = [:]
 
     init(hints: [LevelHint]) {
         self.hints = hints
@@ -45,6 +48,10 @@ struct HintTracker: Hashable, Sendable {
         let before = current
         if current != nil && elapsed - shownAt > Self.displayDuration {
             current = nil
+        }
+        stageSuccessesBefore = stageSuccesses
+        for event in events {
+            if case let .oculoSuccess(stage) = event { stageSuccesses[stage, default: 0] += 1 }
         }
         for (index, hint) in hints.enumerated() where !fired.contains(index) && matches(hint.trigger, events: events, elapsed: elapsed) {
             show(index: index, at: elapsed)
@@ -104,6 +111,8 @@ struct HintTracker: Hashable, Sendable {
             return events.contains(.oculoCompleted)
         case let .oculoStageCompleted(stage):
             return events.contains(.oculoStageCompleted(stage: stage))
+        case let .oculoSuccessInStage(stage, ordinal):
+            return (stageSuccessesBefore[stage] ?? 0) < ordinal && (stageSuccesses[stage] ?? 0) >= ordinal
         }
     }
 }

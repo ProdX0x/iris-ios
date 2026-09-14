@@ -33,6 +33,9 @@ enum HintTrigger: Hashable, Sendable {
     case oculoCompleted
     /// OCULOMOTOR EXPANSION: one given stage of the sequence completed (chapter X: the first loop, before the reverse one).
     case oculoStageCompleted(Int)
+    /// OCULOMOTOR EXPANSION: the n-th success (from 1) of one given stage (chapter X: the fixation that opens the second
+    /// loop, the return that asks for the closing fixation).
+    case oculoSuccessInStage(stage: Int, ordinal: Int)
 }
 
 struct LevelHint: Hashable, Sendable {

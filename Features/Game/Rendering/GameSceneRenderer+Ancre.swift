@@ -189,16 +189,17 @@ extension GameSceneRenderer {
         func halo(_ size: Double, _ strength: Double) {
             glow.fill(disc(size), with: .radialGradient(Gradient(colors: [palette.glow.opacity(strength), palette.glow.opacity(0)]), center: center, startRadius: 0, endRadius: size))
         }
-        // A look away: the point calls the eyes back with a wider, slow glow.
-        if !scene.isFocused && (scene.phase == .seeking || scene.phase == .circling) {
+        // Only during a fixation, with the eyes elsewhere, does the point call them back with a wider, slow glow. While
+        // the head draws the circle the point never reacts to the gaze.
+        if scene.gazeIsCriterion && !scene.gazeOnPoint {
             halo(30 * scale, 0.45 * (reduceMotion ? 1 : 0.75 + 0.25 * sin(time * 4)) * presence)
         }
         halo(17 * scale, 0.4 * presence)
         context.stroke(disc(7 * scale), with: .color(palette.accent.opacity(0.65 * presence)), lineWidth: 1.2 * scale)
         context.fill(disc(3.2 * scale), with: .color(DSColor.lueurCore.opacity(presence)))
-        if scene.phase == .settling && scene.settleProgress > 0.01 {
+        if scene.gazeIsCriterion && scene.fixationProgress > 0.01 {
             var arc = Path()
-            arc.addArc(center: center, radius: 11 * scale, startAngle: .radians(-Double.pi / 2), endAngle: .radians(-Double.pi / 2 + 2 * Double.pi * scene.settleProgress), clockwise: false)
+            arc.addArc(center: center, radius: 11 * scale, startAngle: .radians(-Double.pi / 2), endAngle: .radians(-Double.pi / 2 + 2 * Double.pi * scene.fixationProgress), clockwise: false)
             context.stroke(arc, with: .color(palette.accent.opacity(0.85 * presence)), style: StrokeStyle(lineWidth: 1.6 * scale, lineCap: .round))
         }
         if scene.phase == .seeking && scene.phaseTime < 0.6 && !reduceMotion {

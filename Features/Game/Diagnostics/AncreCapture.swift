@@ -1,9 +1,10 @@
 // AncreCapture.swift
 // Layer: Presentation (DEBUG instrumentation)
 // Purpose: Chapter X final « l'ancre »: a short local JSON Lines capture, started only by the `--iris-capture` launch
-// argument, that keeps apart what a head loop can mix up: the game phase (with the face-lost warning), face tracking,
-// the head pose (camera frame and screen-oriented), gaze availability and state, and the loop's phase, checkpoints,
-// sweep and the eyes' presence on the point. Observation only: no camera image, no face geometry, no blend shape, no
+// argument, that keeps apart what a head loop can mix up: the game phase (with the face-lost warning), face and head
+// tracking, the head pose (camera frame and screen-oriented), gaze availability, state and role, and the loop's phase,
+// expected sense, checkpoints and sweep. During a circle the gaze role is "ignored": a gaze outside the viewport then is
+// expected while the sweep keeps growing. Observation only: no camera image, no face geometry, no blend shape, no
 // upload; bounded in time and written off the main thread into the app's temporary directory.
 
 #if DEBUG
@@ -21,12 +22,18 @@ final class AncreCapture {
         let level: String
         let gamePhase: String
         let faceLostWarning: Bool
-        let loop: Int?
+        var loop: Int?
         let loopStart: String?
+        /// The loop's sense on screen: "anticlockwise" from the right, "clockwise" from the left.
+        let expectedDirection: String?
         let loopPhase: String?
+        /// "criterion" during a fixation, "ignored" while the head alone counts.
+        let gazeRole: String?
         let checkpoints: Int?
         let sweepDeg: Double?
-        let eyesOnPoint: Double?
+        /// Whether the eyes rest on the point, recorded only while the gaze is the criterion.
+        let gazeOnPoint: Bool?
+        var headTracked: Bool?
         var faceTracked: Bool?
         var headYawDeg: Double?
         var headPitchDeg: Double?
@@ -54,12 +61,14 @@ final class AncreCapture {
     private let queue = DispatchQueue(label: "net.steve-s.iris.ancre-capture", qos: .utility)
     private let logger = Logger(subsystem: "net.steve-s.iris", category: "oculotest")
     private var pending: [Record] = []
+    /// The last record made (tests and inspection).
+    private(set) var lastRecord: Record?
     private var lastValidTime: TimeInterval?
     private(set) var isStopped = false
 
     /// Nil unless the level is the ancre and the capture was requested.
-    init?(level: LevelDefinition) {
-        guard Self.isRequested, level.oculo?.element == .ancre else { return nil }
+    init?(level: LevelDefinition, requested: Bool = AncreCapture.isRequested) {
+        guard requested, level.oculo?.element == .ancre else { return nil }
         levelID = level.id
         let stamp = ISO8601DateFormatter().string(from: Date()).replacingOccurrences(of: ":", with: "-")
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(Self.directoryName, isDirectory: true)
@@ -78,6 +87,7 @@ final class AncreCapture {
         guard var record = record(session: session, phase: phase, kind: "sample") else { return }
         if mapped != nil && gazeState == "VALID_INSIDE" { lastValidTime = timestamp }
         record.faceTracked = faceTracked
+        record.headTracked = screenHead != nil
         record.headYawDeg = observation?.headYaw
         record.headPitchDeg = observation?.headPitch
         record.headRollDeg = observation?.headRoll
@@ -93,28 +103,43 @@ final class AncreCapture {
         append(record)
     }
 
-    /// The loop's events of one engine tick.
+    /// The loop's events of one engine tick, named after what they mean in the loop.
     func observeTick(session: GameSession, phase: GamePhase, events: [GameEvent]) {
         for event in events {
+            var loop: Int?
             let name: String
             switch event {
-            case .oculoSuccess: name = "checkpoint"
-            case .oculoMiss: name = "eyesLeftPoint"
-            case .oculoStageCompleted: name = "loopCompleted"
+            case .oculoSuccess:
+                var loopPhase: AncreStageState.Phase?
+                if case let .ancre(state)? = session.oculo?.current { loopPhase = state.phase }
+                switch loopPhase {
+                case .seeking: name = "fixationAcquired"
+                case .refixating: name = "circleClosedFixateAgain"
+                default: name = "checkpoint"
+                }
+            case let .oculoStageCompleted(stage):
+                name = "loopCompleted"
+                loop = stage + 1
             case .oculoCompleted: name = "loopsCompleted"
             case .levelCompleted: name = "levelCompleted"
             default: continue
             }
-            mark(name, session: session, phase: phase)
+            mark(name, session: session, phase: phase, loop: loop)
         }
     }
 
-    /// A moment worth its own line: the face shown or hidden, the face-lost warning, a pause.
-    func mark(_ name: String, session: GameSession, phase: GamePhase, faceTracked: Bool? = nil) {
+    /// A moment worth its own line: the face shown or hidden, the face-lost warning, a loop event.
+    func mark(_ name: String, session: GameSession, phase: GamePhase, faceTracked: Bool? = nil, loop: Int? = nil) {
         guard var record = record(session: session, phase: phase, kind: "event") else { return }
         record.event = name
         record.faceTracked = faceTracked
+        if let loop { record.loop = loop }
         append(record)
+    }
+
+    /// Waits until every line handed to the writer is on disk (tests and inspection).
+    func waitForWrites() {
+        queue.sync {}
     }
 
     func stop(reason: String) {
@@ -134,23 +159,33 @@ final class AncreCapture {
         }
         var loop: Int?
         var start: String?
+        var direction: String?
         var loopPhase: String?
+        var role: String?
         var checkpoints: Int?
         var sweep: Double?
-        var eyes: Double?
+        var onPoint: Bool?
         if let sequence = session.oculo, case let .ancre(state)? = sequence.current {
             loop = sequence.currentIndex + 1
             start = state.start.rawValue
-            loopPhase = sequence.isBreathing ? "breath" : state.phase.rawValue
+            direction = state.start == .right ? "anticlockwise" : "clockwise"
+            if sequence.isBreathing {
+                loopPhase = "breath"
+            } else {
+                loopPhase = state.phase.rawValue
+                role = state.gazeIsCriterion ? "criterion" : (state.isHeadOnly ? "ignored" : nil)
+                onPoint = state.gazeIsCriterion ? state.isOnAnchor : nil
+            }
             checkpoints = state.checkpointTimes.count
             sweep = state.sweep
-            eyes = state.focus
         } else if session.oculo?.isComplete == true {
             loopPhase = "complete"
         }
-        return Record(t: t, levelTime: session.elapsed, kind: kind, session: sessionID, level: levelID, gamePhase: Self.name(of: phase),
-                      faceLostWarning: phase == .faceLost, loop: loop, loopStart: start, loopPhase: loopPhase, checkpoints: checkpoints,
-                      sweepDeg: sweep, eyesOnPoint: eyes)
+        var record = Record(t: t, levelTime: session.elapsed, kind: kind, session: sessionID, level: levelID, gamePhase: Self.name(of: phase),
+                            faceLostWarning: phase == .faceLost, loop: loop, loopStart: start, expectedDirection: direction, loopPhase: loopPhase,
+                            gazeRole: role, checkpoints: checkpoints, sweepDeg: sweep, gazeOnPoint: onPoint)
+        record.headTracked = session.headPose != nil
+        return record
     }
 
     private static func name(of phase: GamePhase) -> String {
@@ -162,11 +197,12 @@ final class AncreCapture {
     }
 
     private func append(_ record: Record) {
+        lastRecord = record
         pending.append(record)
         if pending.count >= 30 { flush() }
     }
 
-    private func flush() {
+    func flush() {
         guard !pending.isEmpty else { return }
         let batch = pending
         pending.removeAll(keepingCapacity: true)

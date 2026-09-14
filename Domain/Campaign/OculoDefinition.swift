@@ -73,9 +73,10 @@ struct TournerDefinition: Hashable, Sendable {
 }
 
 /// Chapter X, « l'ancre »: the eyes hold a point at the centre of a silhouette while the head draws one slow circle
-/// around it (to the starting side, up, across, down, back to face), then the same circle the other way. The loop
-/// follows the head's continuous path; the gaze only has to stay near the point, since the estimate is weaker while
-/// the head turns. Head angles arrive oriented like the screen (see `HeadPose`).
+/// around it (to the starting side, up, across, down, back to face), then the same circle the other way. The gaze is the
+/// criterion only around a circle: a short fixation before it (head still and roughly facing the screen) and, after the
+/// last one, a closing fixation. While the head turns the projected gaze drifts, so only the head's continuous path
+/// counts then. Head angles arrive oriented like the screen (see `HeadPose`).
 struct AncreDefinition: Hashable, Sendable {
     /// The side a loop starts from. Every loop rises first: from the right it turns anticlockwise on screen (right, up,
     /// left, down), from the left clockwise (left, up, right, down).
@@ -86,11 +87,9 @@ struct AncreDefinition: Hashable, Sendable {
 
     let anchor: NormalizedPoint
     let start: Side
-    /// Gaze zone that counts as looking at the point while settling (fraction of the short side), and its release.
+    /// Gaze zone that counts as looking at the point during a fixation (fraction of the short side), and its release.
     let radius: Double
     let releaseRadius: Double
-    /// Wider zone while the head turns: only a clear look away counts.
-    let holdRadius: Double
     /// Radius of the segmented ring around the point (fraction of the short side).
     let ringRadius: Double
     /// Comfortable head turn (degrees from the rest pose) that draws the circle at full size.
@@ -100,38 +99,44 @@ struct AncreDefinition: Hashable, Sendable {
     let reach: Double
     /// Share of the amplitude under which the head faces the screen again.
     let rest: Double
-    /// Seconds facing the screen, eyes on the point and head still, before the loop begins.
-    let settle: TimeInterval
-    /// Largest drift of the head (degrees) that still counts as still while settling.
+    /// Seconds of fixation (eyes on the point, head still) before the circle begins.
+    let fixation: TimeInterval
+    /// Seconds of fixation after the circle, back facing the screen; nil when the loop ends at the return (the next
+    /// loop opens with its own fixation).
+    let closingFixation: TimeInterval?
+    /// Largest drift of the head (degrees) that still counts as still during a fixation.
     let stillness: Double
-    /// Seconds back facing the screen that close the loop.
+    /// Largest head angles (degrees, screen-oriented) still taken as roughly facing the screen during a fixation.
+    let neutralYaw: Double
+    let neutralPitch: Double
+    /// Seconds back facing the screen that close the circle.
     let returnHold: TimeInterval
     /// Fastest the ring fills (degrees per second): a faster head waits for it.
     let maxSweepSpeed: Double
-    /// How fast the eyes' presence on the point rises and falls (per second).
-    let focusRate: Double
     /// Pace of the ideal player (degrees per second), for the simulated player and the silhouette's demonstration.
     let guidePace: Double
 
-    init(anchor: NormalizedPoint, start: Side, radius: Double = 0.2, releaseRadius: Double = 0.27, holdRadius: Double = 0.3,
-         ringRadius: Double = 0.235, yawAmplitude: Double = 10, pitchAmplitude: Double = 8, reach: Double = 0.6, rest: Double = 0.4,
-         settle: TimeInterval = 0.8, stillness: Double = 2.5, returnHold: TimeInterval = 0.3, maxSweepSpeed: Double = 120,
-         focusRate: Double = 1.5, guidePace: Double = 45) {
+    init(anchor: NormalizedPoint, start: Side, radius: Double = 0.2, releaseRadius: Double = 0.27, ringRadius: Double = 0.235,
+         yawAmplitude: Double = 10, pitchAmplitude: Double = 8, reach: Double = 0.6, rest: Double = 0.4,
+         fixation: TimeInterval = 0.8, closingFixation: TimeInterval? = nil, stillness: Double = 2.5,
+         neutralYaw: Double = 30, neutralPitch: Double = 40, returnHold: TimeInterval = 0.3, maxSweepSpeed: Double = 120,
+         guidePace: Double = 45) {
         self.anchor = anchor
         self.start = start
         self.radius = max(radius, 0.05)
         self.releaseRadius = max(releaseRadius, self.radius)
-        self.holdRadius = max(holdRadius, self.releaseRadius)
         self.ringRadius = max(ringRadius, 0.05)
         self.yawAmplitude = max(yawAmplitude, 2)
         self.pitchAmplitude = max(pitchAmplitude, 2)
         self.reach = min(max(reach, 0.2), 1)
         self.rest = min(max(rest, 0.05), self.reach * 0.8)
-        self.settle = max(settle, 0.1)
+        self.fixation = max(fixation, 0.1)
+        self.closingFixation = closingFixation.map { max($0, 0.1) }
         self.stillness = max(stillness, 0.5)
+        self.neutralYaw = max(neutralYaw, 5)
+        self.neutralPitch = max(neutralPitch, 5)
         self.returnHold = max(returnHold, 0.05)
         self.maxSweepSpeed = max(maxSweepSpeed, 30)
-        self.focusRate = max(focusRate, 0.1)
         self.guidePace = min(max(guidePace, 10), self.maxSweepSpeed)
     }
 }
@@ -478,5 +483,16 @@ struct OculoDefinition: Hashable, Sendable {
         self.pause = max(pause, 0)
         self.showsConstellation = showsConstellation
         self.help = help
+    }
+}
+
+extension OculoDefinition {
+    /// Chapter X final: its circles follow the head alone, so the head pose is read even when a gaze sample has no
+    /// projection (the projection drifts or fails while the head is turned).
+    var readsHeadWithoutGaze: Bool {
+        stages.contains { stage in
+            if case .ancre = stage { return true }
+            return false
+        }
     }
 }

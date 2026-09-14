@@ -2,7 +2,8 @@
 // Layer: Presentation
 // Purpose: Chapter X final « l'ancre »: plain description of the loop scene (silhouette, segmented ring, checkpoints,
 // the head's direction, the point to hold, the stardust between the two loops and after the last one), built from the
-// engine state once per frame
+// engine state once per frame. Nothing in it follows the gaze while the head draws a circle: the point and the ring are
+// fixed on screen, the lit bars come from the head's path, and the eyes only show during a fixation
 
 import Foundation
 
@@ -35,10 +36,16 @@ struct AncreSceneSnapshot: Hashable, Sendable {
     /// Degrees of the loop lit on the ring, 0...360.
     let litSweep: Double
     let checkpoints: [Checkpoint]
-    let settleProgress: Double
+    /// 0...1 fixation of the point while the gaze is the criterion.
+    let fixationProgress: Double
+    /// True during a fixation, when the eyes decide; false while the head alone counts.
+    let gazeIsCriterion: Bool
+    /// Whether the eyes rest on the point during a fixation; always false otherwise, so the gaze changes nothing then.
+    let gazeOnPoint: Bool
+    /// True while the head alone counts (to the starting side, the circle, the return): no gaze mark is drawn then.
+    let isHeadOnly: Bool
     /// The head's direction on screen (x right, y down), 1 long when the head is on the circle.
     let head: Vector2?
-    let isFocused: Bool
     /// True while the silhouette shows the movement: anchored, the head not yet under way.
     let demonstrates: Bool
     /// Opacity of the current loop's ring (it fades in after the breath between loops).
@@ -84,10 +91,10 @@ struct AncreSceneSnapshot: Hashable, Sendable {
         startAngle = -state.startAngle * .pi / 180
         screenTurn = -state.turn
         switch state.phase {
-        case .settling, .seeking: litSweep = 0
+        case .fixating, .seeking: litSweep = 0
         case .circling: litSweep = state.sweep
         case .returning: litSweep = state.sweep + (360 - state.sweep) * state.returnProgress
-        case .done: litSweep = 360
+        case .refixating, .done: litSweep = 360
         }
         let reached = state.checkpointTimes.count
         let guiding = state.phase == .seeking || state.phase == .circling
@@ -95,10 +102,11 @@ struct AncreSceneSnapshot: Hashable, Sendable {
             Checkpoint(angle: -(state.startAngle + state.turn * degrees) * .pi / 180, isReached: index < reached,
                        age: index < reached ? max(0, state.clock - state.checkpointTimes[index]) : nil, isNext: guiding && index == reached)
         }
-        settleProgress = state.settleProgress
-        let active = state.phase == .seeking || state.phase == .circling || state.phase == .returning
-        head = active ? state.headOffset.map { Vector2(x: $0.x / state.reach, y: -$0.y / state.reach) } : nil
-        isFocused = state.isFocused
+        fixationProgress = state.fixationProgress
+        gazeIsCriterion = state.gazeIsCriterion
+        gazeOnPoint = state.gazeIsCriterion && state.isOnAnchor
+        isHeadOnly = state.isHeadOnly
+        head = state.isHeadOnly ? state.headOffset.map { Vector2(x: $0.x / state.reach, y: -$0.y / state.reach) } : nil
         demonstrates = state.phase == .seeking && (head?.length ?? 0) < 0.35
         self.ringOpacity = ringOpacity
         self.scatteringRingOpacity = scatteringRingOpacity

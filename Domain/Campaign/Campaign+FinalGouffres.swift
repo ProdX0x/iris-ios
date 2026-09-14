@@ -1,8 +1,9 @@
 // Campaign+FinalGouffres.swift
 // Layer: Domain
-// Purpose: OCULOMOTOR EXPANSION, chapter X final « l'ancre » (gaze stabilisation while the head moves, VOR-inspired):
-// the eyes hold a point at the centre of a silhouette while the head draws one slow circle around it, then the same
-// circle the other way; the released lueur then drifts into its iris on its own
+// Purpose: OCULOMOTOR EXPANSION, chapter X final « l'ancre » (gaze stabilisation while the head moves, VOR-inspired): a
+// fixation of the point, one slow circle of the head around it, a new fixation, the same circle the other way, a closing
+// fixation. The eyes are checked before and after each circle; the head alone draws it. The released lueur then drifts
+// into its iris on its own
 
 import Foundation
 
@@ -15,14 +16,15 @@ extension Campaign {
         lueurs: [LueurDefinition(start: pt(0.36, 0.15), iris: pt(0.64, 0.15))],
         oculo: OculoDefinition(stages: [
             .ancre(AncreDefinition(anchor: pt(0.5, 0.47), start: .right)),
-            .ancre(AncreDefinition(anchor: pt(0.5, 0.47), start: .left)),
-        ], element: .ancre, pause: 1.8, help: "C'est la tête qui dessine le cercle ; les yeux restent sur le point."),
+            .ancre(AncreDefinition(anchor: pt(0.5, 0.47), start: .left, fixation: 0.7, closingFixation: 0.7)),
+        ], element: .ancre, pause: 1.8, help: "Un petit mouvement suffit : l'anneau se remplit quand la tête suit le cercle."),
         gatesProgression: false,
-        hints: [LevelHint(.start, "Regardez le point au centre."),
-                LevelHint(.firstOculoSuccess, "Les yeux sur le point, tournez doucement la tête : à droite, puis en rond."),
-                LevelHint(.firstOculoMiss, "Gardez les yeux sur le point pendant que la tête tourne."),
-                LevelHint(.oculoStageCompleted(0), "Tour complet ! Recommencez dans l'autre sens, par la gauche."),
-                LevelHint(.oculoCompleted, "Les deux tours sont faits. La lueur s'éveille."),
-                LevelHint(.afterSeconds(30), "Un petit mouvement suffit : l'anneau se remplit quand la tête suit le cercle.")],
-        par: LevelPar(time: 81, intrusions: 2))
+        hints: [LevelHint(.start, "Gardez les yeux sur le point."),
+                LevelHint(.firstOculoSuccess, "Maintenant, dessinez le cercle avec la tête, en partant vers la droite."),
+                LevelHint(.oculoStageCompleted(0), "Tour complet ! Revenez de face, les yeux sur le point."),
+                LevelHint(.oculoSuccessInStage(stage: 1, ordinal: 1), "Maintenant, le cercle dans l'autre sens, en partant vers la gauche."),
+                LevelHint(.oculoSuccessInStage(stage: 1, ordinal: 6), "Les yeux sur le point, une dernière fois."),
+                LevelHint(.oculoCompleted, "Les deux cercles sont faits. La lueur s'éveille."),
+                LevelHint(.afterSeconds(30), "Les yeux restent sur le point ; c'est la tête qui dessine le cercle.")],
+        par: LevelPar(time: 82, intrusions: 2))
 }

@@ -78,7 +78,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+FinalConstellation.swift | - | Domain | OCULOMOTOR EXPANSION, chapter XII final « l'orchestre du regard » (multi-modal oculomotor sequencing): | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalCourants.swift | - | Domain | OCULOMOTOR EXPANSION, chapter III final « le fil vivant » (smooth pursuit): a spark glides along a smooth | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalEchos.swift | - | Domain | OCULOMOTOR EXPANSION, chapter IX final « l'absence » (fixation disengagement, gap and overlap shifts): a | Claude (mission Iris) |
-| Domain/Campaign/Campaign+FinalGouffres.swift | - | Domain | OCULOMOTOR EXPANSION, chapter X final « l'ancre » (gaze stabilisation while the head moves, VOR-inspired): | Claude (mission Iris) |
+| Domain/Campaign/Campaign+FinalGouffres.swift | - | Domain | OCULOMOTOR EXPANSION, chapter X final « l'ancre » (gaze stabilisation while the head moves, VOR-inspired): a | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalJumelles.swift | - | Domain | OCULOMOTOR EXPANSION, chapter VII final « croisement » (diagonal saccades, variable amplitude): the twins | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalPartage.swift | - | Domain | OCULOMOTOR EXPANSION, chapter II final « le cœur de verre » (fixation stability, distractor inhibition): | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalSouffles.swift | - | Domain | OCULOMOTOR EXPANSION, chapter VIII final « la lanterne du courant » (predictive pursuit, anticipation): a | Claude (mission Iris) |
@@ -199,7 +199,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Noise/SilentNoise.swift | struct | GameEngine | Zero noise, used by tests and previews that need fully predictable motion | Claude (mission Iris) |
 | GameEngine/Noise/ValueNoise1D.swift | struct | GameEngine | Port of `makeNoise1D`: 256 random values, smoothstep interpolation (Perlin-like value noise) | Claude (mission Iris) |
 | GameEngine/Oculo/AbsenceStageState.swift | struct | GameEngine | Chapter IX final: trials of a presence held by the gaze, then an answer elsewhere; in a gap trial the | Claude (mission Iris) |
-| GameEngine/Oculo/AncreStageState.swift | struct | GameEngine | Chapter X final: one loop of « l'ancre ». The player settles facing the screen with the eyes on the point, | Claude (mission Iris) |
+| GameEngine/Oculo/AncreStageState.swift | struct | GameEngine | Chapter X final: one loop of « l'ancre ». The eyes are the criterion only around the circle: the loop begins | Claude (mission Iris) |
 | GameEngine/Oculo/CoeurStageState.swift | struct | GameEngine | Chapter II final: the heart warms while the gaze rests on it (hysteresis), cools while it is away; sparks | Claude (mission Iris) |
 | GameEngine/Oculo/CourantStageState.swift | struct | GameEngine | Chapter VIII final: a lantern carried along a smooth closed loop with a gentle drift of pace; once the first | Claude (mission Iris) |
 | GameEngine/Oculo/CroisementStageState.swift | struct | GameEngine | Chapter VII final: two twins on a diagonal; the breathing one is acquired by a dwell and hands over to her | Claude (mission Iris) |
@@ -249,7 +249,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/LevelAnalysis.swift | struct | Tests | Static metrics of a level (free area, crossings, guard pressure) and the difficulty estimate | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/LevelLabTests.swift | struct | Tests | Prints the measured table of every campaign level (design tool; always passes) | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoAbsenceTests.swift | struct | Tests | Chapter IX final « l'absence »: a held presence, an answer after a gap or during an overlap; leaving for | Claude (mission Iris) |
-| Tests/IrisTests/Campaign/OculoAncreTests.swift | struct | Tests | Chapter X final « l'ancre », rebuilt as two guided head loops: settling with the eyes on the point, one | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoAncreTests.swift | struct | Tests | Chapter X final « l'ancre », option A: the eyes are checked before each circle and after the last one, the | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoCoeurTests.swift | struct | Tests | Chapter II final « le cœur de verre »: the heart warms only under a gaze that stays, cools when it leaves, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoCourantTests.swift | struct | Tests | Chapter VIII final « la lanterne du courant »: the lantern's loop is smooth and learnable; from the second | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoCroisementTests.swift | struct | Tests | Chapter VII final « croisement »: the breathing twin is acquired then hands over across the diagonal; legs | Claude (mission Iris) |
@@ -284,7 +284,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockHapticFeedbackService.swift | class | Tests | Recording mock for HapticFeedbackService | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AdaptiveLevelRowMetricsTests.swift | struct | Tests | The level row geometry for 1 to 10 levels on every supported width: inside its width, full touch targets, | Claude (mission Iris) |
-| Tests/IrisTests/Presentation/AncreSceneTests.swift | struct | Tests | Chapter X final « l'ancre », the scene: the silhouette traced from the reference image is symmetric and | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/AncreSceneTests.swift | struct | Tests | Chapter X final « l'ancre », the scene: the silhouette traced from the reference image is framed around the | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/ChapterCardLayoutTests.swift | struct | Tests | Every chapter card of the campaign, on every supported phone width and with larger text, fits the width it | Claude (mission Iris) |

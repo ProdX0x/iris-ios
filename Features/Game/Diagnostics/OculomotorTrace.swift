@@ -100,6 +100,8 @@ final class OculomotorTrace {
     private var ancreKey: String?
     private var ancreHeadGapStart: TimeInterval?
     private(set) var ancreStatus: String?
+    /// The gaze state last logged while the head alone counted.
+    private var ancreGazeState: GazeState?
 
     init(names: [String]) {
         self.names = names
@@ -220,13 +222,13 @@ final class OculomotorTrace {
         for event in events {
             switch event {
             case let .oculoSuccess(stage):
-                log(String(format: "stage=%d success gazeState=%@ yaw=%@ pitch=%@", stage + 1, state.rawValue, degrees(headYaw), degrees(headPitch)))
+                log("stage=\(stage + 1) success gazeState=\(state.rawValue) yaw=\(degrees(headYaw)) pitch=\(degrees(headPitch))")
             case let .oculoMiss(stage):
-                log(String(format: "stage=%d miss gazeState=%@ yaw=%@ pitch=%@", stage + 1, state.rawValue, degrees(headYaw), degrees(headPitch)))
+                log("stage=\(stage + 1) miss gazeState=\(state.rawValue) yaw=\(degrees(headYaw)) pitch=\(degrees(headPitch))")
             case let .oculoStageCompleted(stage):
-                log(String(format: "stage=%d complete at %.2fs excursions=%d", stage + 1, now, excursions.count))
+                log("stage=\(stage + 1) complete at \(decimal(now, 2))s excursions=\(excursions.count)")
             case .oculoCompleted:
-                log(String(format: "sequence complete at %.2fs excursions=%d", now, excursions.count))
+                log("sequence complete at \(decimal(now, 2))s excursions=\(excursions.count)")
             default:
                 break
             }
@@ -277,8 +279,10 @@ final class OculomotorTrace {
 
     // MARK: Chapter X final
 
-    /// Logs each loop's phases and checkpoints with the head offset (screen-oriented amplitudes), the eyes' presence on
-    /// the point, the gaze state and the stretches without head data. Observation only.
+    /// Logs each loop's phases and successes with the rest pose, the head offset (screen-oriented amplitudes), the gaze
+    /// state and the gaze's role: the criterion during a fixation, ignored while the head draws the circle. A gaze outside
+    /// the viewport during a circle is expected and logged as such, never as an error. Also logs the stretches without
+    /// head data. Observation only; every figure is built by interpolation, with types that match exactly.
     private func observeAncre(session: GameSession, events: [GameEvent]) {
         guard let sequence = session.oculo, case let .ancre(ancre)? = sequence.current else {
             ancreStatus = nil
@@ -286,25 +290,38 @@ final class OculomotorTrace {
         }
         let now = session.elapsed
         let loop = sequence.currentIndex + 1
-        let head = ancre.headOffset.map { String(format: "(%.2f,%.2f)", $0.x, $0.y) } ?? "none"
+        let role = ancre.gazeIsCriterion ? "criterion" : (ancre.isHeadOnly ? "ignored" : "none")
+        let sense = ancre.start == .right ? "anticlockwise" : "clockwise"
+        let head = ancre.headOffset.map { "(\(decimal($0.x, 2)),\(decimal($0.y, 2)))" } ?? "none"
         let key = "\(loop)-\(ancre.phase.rawValue)"
         if key != ancreKey {
             ancreKey = key
-            let rest = ancre.restPose.map { String(format: "(%.1f,%.1f)", $0.yaw, $0.pitch) } ?? "none"
-            log(String(format: "ancre loop=%d phase=%@ at %.2fs sweep=%.0fdeg rest=%@ head=%@ focus=%.2f gazeState=%@ misses=%d headGap=%.0fms reach=%.2f",
-                       loop, ancre.phase.rawValue, now, ancre.sweep, rest, head, ancre.focus, state.rawValue, ancre.misses, ancre.headGap * 1000, ancre.largestReach))
+            ancreGazeState = nil
+            let rest = ancre.restPose.map { "(\(decimal($0.yaw, 1)),\(decimal($0.pitch, 1)))" } ?? "none"
+            log("ancre loop=\(loop) phase=\(ancre.phase.rawValue) at \(decimal(now, 2))s sense=\(sense) sweep=\(decimal(ancre.sweep, 0))deg "
+                + "rest=\(rest) head=\(head) gaze=\(role) gazeState=\(state.rawValue) headGap=\(decimal(ancre.headGap * 1000, 0))ms reach=\(decimal(ancre.largestReach, 2))")
         }
         if events.contains(where: { if case .oculoSuccess = $0 { return true } else { return false } }) {
-            log(String(format: "ancre loop=%d checkpoint=%d sweep=%.0fdeg head=%@ focus=%.2f gazeState=%@",
-                       loop, ancre.checkpointTimes.count, ancre.sweep, head, ancre.focus, state.rawValue))
+            log("ancre loop=\(loop) success phase=\(ancre.phase.rawValue) checkpoints=\(ancre.checkpointTimes.count) sweep=\(decimal(ancre.sweep, 0))deg "
+                + "head=\(head) gaze=\(role) gazeState=\(state.rawValue)")
+        }
+        if ancre.isHeadOnly && state != ancreGazeState {
+            ancreGazeState = state
+            log("ancre loop=\(loop) \(ancre.phase.rawValue) gazeState=\(state.rawValue) gaze=ignored sweep=\(decimal(ancre.sweep, 0))deg: expected while the head turns, the circle goes on")
         }
         if session.headPose == nil {
             if ancreHeadGapStart == nil { ancreHeadGapStart = now }
         } else if let start = ancreHeadGapStart {
             ancreHeadGapStart = nil
-            if ancre.phase != .settling { log(String(format: "ancre loop=%d head data back after %.0fms", loop, (now - start) * 1000)) }
+            if ancre.isHeadOnly { log("ancre loop=\(loop) head data back after \(decimal((now - start) * 1000, 0))ms; the circle waited meanwhile") }
         }
-        ancreStatus = String(format: "ancre %d · %@ · %.0f° · r %.2f · yeux %.2f", loop, ancre.phase.rawValue, ancre.sweep, ancre.headOffset?.length ?? 0, ancre.focus)
+        let gazeWord = ancre.gazeIsCriterion ? "regard : critère" : "regard ignoré"
+        ancreStatus = "ancre \(loop) · \(ancre.phase.rawValue) · \(decimal(ancre.sweep, 0))° · r \(decimal(ancre.headOffset?.length ?? 0, 2)) · \(gazeWord)"
+    }
+
+    /// A decimal with a fixed number of digits; the argument is a Double, as the specifier expects.
+    private func decimal(_ value: Double, _ digits: Int) -> String {
+        String(format: "%.\(digits)f", value)
     }
 
     // MARK: Helpers

@@ -498,10 +498,15 @@ final class GameViewModel {
                 refreshSnapshot()
             }
         }
-        guard phase == .playing, let point = mapped else { return }
-        session.ingestGaze(point)
+        guard phase == .playing else { return }
+        if let point = mapped {
+            session.ingestGaze(point)
+        } else if level.oculo?.readsHeadWithoutGaze != true {
+            return
+        }
         // OCULOMOTOR EXPANSION: the stages that ask for the head read it from the same observation, oriented like the
         // screen by the calibration's axis mapping (the one that already places the gaze), so no axis sign is assumed.
+        // Chapter X's final reads it even when the sample has no gaze projection: its circles follow the head alone.
         session.ingestHeadPose(sample.observation.map { Self.screenHead($0, mapping: mapper.axisMapping) })
     }
 

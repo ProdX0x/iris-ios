@@ -291,8 +291,10 @@ struct GameSceneSnapshot: Hashable, Sendable {
         time = session.elapsed
         isAttentionOnField = session.isAttentionOnField
         self.theme = theme
-        gaze = showsGaze ? session.gaze.position : nil
-        self.diagnostics = showsGaze ? diagnostics : nil
+        // Chapter X final: while the head alone draws a circle, no gaze mark is drawn (the projection drifts with the head).
+        let headOnly = oculo?.ancre?.isHeadOnly == true
+        gaze = showsGaze && !headOnly ? session.gaze.position : nil
+        self.diagnostics = showsGaze && !headOnly ? diagnostics : nil
     }
 
     /// Chapter X return to the start, or PROTOTYPE release from latency: a 0...1 bloom during half a second.
