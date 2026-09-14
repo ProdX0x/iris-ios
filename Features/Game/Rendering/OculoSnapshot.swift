@@ -105,7 +105,7 @@ struct OculoSnapshot: Hashable, Sendable {
         var stageProgress = 1.0
         if let stage = sequence.current, !sequence.isComplete {
             stageProgress = stage.progress
-            let scene = OculoSceneBuilder.scene(for: stage, elapsed: elapsed, head: head)
+            let scene = OculoSceneBuilder.scene(for: stage, elapsed: sequence.stageTime(at: elapsed), head: head)
             elements = scene.elements
             polylines = scene.polylines
             arcs = scene.arcs

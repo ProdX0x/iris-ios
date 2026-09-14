@@ -168,6 +168,7 @@
 		9658C2037D3723BA84000866 /* NormalizedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB1AD7637B02F6DC1DB75 /* NormalizedPoint.swift */; };
 		96BC5A32CD9911521A3D062A /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FF0E21DD6DE5B24C6D77E5 /* AppRoute.swift */; };
 		9894CF51C532682A5A6E2156 /* GazeCalibrationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */; };
+		9896EA5F3CF8D128E8F8C011 /* OculoSequenceClockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A963E98146E928B8F6DA725 /* OculoSequenceClockTests.swift */; };
 		9A711B9C7A79821B956497A5 /* DeviceAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */; };
 		9AAC26DB72AD6F49D3A7E608 /* Campaign+FinalVeilleuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF5190E0706C0C8E025567 /* Campaign+FinalVeilleuses.swift */; };
 		9AC4C195616DC896137DF12F /* LinearCongruentialGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272C51EEF33C3FE08A938E8E /* LinearCongruentialGenerator.swift */; };
@@ -374,6 +375,7 @@
 		48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeCalibrationStatus.swift; sourceTree = "<group>"; };
 		490735E24BFA02393F0D0DDD /* CascadeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeRule.swift; sourceTree = "<group>"; };
 		49456847B3BA1C184F35F7CB /* HistoricalCampaignFingerprintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalCampaignFingerprintTests.swift; sourceTree = "<group>"; };
+		4A963E98146E928B8F6DA725 /* OculoSequenceClockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoSequenceClockTests.swift; sourceTree = "<group>"; };
 		4AA13FEF873190BE68059074 /* ValidationRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRule.swift; sourceTree = "<group>"; };
 		4B92CB552F572A3D8921D8BC /* golden_level1_scripted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = golden_level1_scripted.json; sourceTree = "<group>"; };
 		4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraisesPrototypeTests.swift; sourceTree = "<group>"; };
@@ -1150,6 +1152,7 @@
 				0024C2B4375A74F4D0C38552 /* GazeFilterTests.swift */,
 				0840221723714CD4C49A3903 /* HintTrackerTests.swift */,
 				D95ADD54A9E6D7BF0E893EAB /* LevelEnvironmentTests.swift */,
+				4A963E98146E928B8F6DA725 /* OculoSequenceClockTests.swift */,
 				158F8C196F79391A2DDA0DCA /* TargetPhysicsTests.swift */,
 				13148145B6DC04089A15C179 /* ValueNoise1DTests.swift */,
 			);
@@ -1555,6 +1558,7 @@
 				4968A2DA681B1E8C642A8EE6 /* OculoFilTests.swift in Sources */,
 				83908D09EF13EA0813D69FB8 /* OculoJardinTests.swift in Sources */,
 				D1E2B3513CAA2959128B86E4 /* OculoMiroirTests.swift in Sources */,
+				9896EA5F3CF8D128E8F8C011 /* OculoSequenceClockTests.swift in Sources */,
 				6EFCBDA822BC8616C099933F /* OculoStageTestSupport.swift in Sources */,
 				44467213204253ACB4DEA984 /* OculomotorLevelTests.swift in Sources */,
 				279D2D211B2A935D764E1C0B /* OculomotorTraceTests.swift in Sources */,

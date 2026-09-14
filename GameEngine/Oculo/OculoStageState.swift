@@ -146,6 +146,9 @@ struct OculoSequenceState: Hashable, Sendable {
     private(set) var completedAt: TimeInterval?
     private(set) var successes = 0
     private(set) var misses = 0
+    /// When the current stage started: every stage runs on its own clock (0 when it begins), so a stage placed after
+    /// others in a sequence behaves exactly as it does alone.
+    private(set) var stageStartedAt: TimeInterval = 0
 
     init(stages: [OculoStageState], hidesLueurs: Bool, pause: TimeInterval) {
         self.stages = stages
@@ -176,9 +179,12 @@ struct OculoSequenceState: Hashable, Sendable {
         guard !isComplete, stages.indices.contains(currentIndex) else { return ([], []) }
         if pauseRemaining > 0 {
             pauseRemaining = max(0, pauseRemaining - input.seconds)
+            if pauseRemaining <= 0 { stageStartedAt = input.elapsed }
             return ([], [])
         }
-        let outcome = stages[currentIndex].update(input, targets: targets, braisesLit: braisesLit)
+        let local = OculoInput(seconds: input.seconds, gaze: input.gaze, gazeActive: input.gazeActive, head: input.head,
+                               elapsed: input.elapsed - stageStartedAt)
+        let outcome = stages[currentIndex].update(local, targets: targets, braisesLit: braisesLit)
         var changes: [Change] = []
         for change in outcome.changes {
             switch change {
@@ -205,9 +211,14 @@ struct OculoSequenceState: Hashable, Sendable {
         return (changes, outcome.impulses)
     }
 
+    /// Time on the current stage's own clock.
+    func stageTime(at elapsed: TimeInterval) -> TimeInterval {
+        elapsed - stageStartedAt
+    }
+
     func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
         guard !isComplete, pauseRemaining <= 0 else { return nil }
-        return current?.suggestedGaze(at: elapsed)
+        return current?.suggestedGaze(at: stageTime(at: elapsed))
     }
 
     var suggestedHead: HeadPose? {

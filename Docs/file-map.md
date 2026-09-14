@@ -256,6 +256,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/GameEngine/GazeFilterTests.swift | struct | Tests | R-13 exponential smoothing and sustained-jump gating of the reference gaze listener | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/HintTrackerTests.swift | struct | Tests | Contextual instructions appear once, when the player does the thing, and fade after 4.5 s | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/LevelEnvironmentTests.swift | struct | Tests | R-23 to R-28: attention on field, currents, veils, veilleuses, gliding irises, temperaments, metrics | Claude (mission Iris) |
+| Tests/IrisTests/GameEngine/OculoSequenceClockTests.swift | struct | Tests | OCULOMOTOR EXPANSION: a stage placed after others starts on its own clock, after the breath, and behaves | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/TargetPhysicsTests.swift | struct | Tests | R-01...R-07 and R-14: attraction, repulsion, friction, cap, bounce and frame-rate independence | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/ValueNoise1DTests.swift | struct | Tests | R-03 organic noise port: table values, smoothstep interpolation, wrap-around, subtle range | Claude (mission Iris) |
 | Tests/IrisTests/Haptics/HapticCuePolicyTests.swift | struct | Tests | Touch policy: one pulse per logical event, one loss per cascade, shared retrigger guard, prepare hint | Claude (mission Iris) |
