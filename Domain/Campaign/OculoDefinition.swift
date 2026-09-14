@@ -72,52 +72,67 @@ struct TournerDefinition: Hashable, Sendable {
     }
 }
 
-/// Chapter X, « l'ancre »: the gaze holds an anchor while small head turns steer a compass into designated bands.
+/// Chapter X, « l'ancre »: the eyes hold a point at the centre of a silhouette while the head draws one slow circle
+/// around it (to the starting side, up, across, down, back to face), then the same circle the other way. The loop
+/// follows the head's continuous path; the gaze only has to stay near the point, since the estimate is weaker while
+/// the head turns. Head angles arrive oriented like the screen (see `HeadPose`).
 struct AncreDefinition: Hashable, Sendable {
-    enum Axis: Hashable, Sendable {
-        case yaw
-        case pitch
-    }
-
-    enum Direction: Hashable, Sendable {
-        /// The player's first turn on the axis, either way; it sets the axis's direction for the bands after it.
-        case first
-        case same
-        case opposite
-    }
-
-    struct Band: Hashable, Sendable {
-        let axis: Axis
-        let direction: Direction
-
-        init(_ axis: Axis, _ direction: Direction) {
-            self.axis = axis
-            self.direction = direction
-        }
+    /// The side a loop starts from. Every loop rises first: from the right it turns anticlockwise on screen (right, up,
+    /// left, down), from the left clockwise (left, up, right, down).
+    enum Side: String, Hashable, Sendable {
+        case right
+        case left
     }
 
     let anchor: NormalizedPoint
+    let start: Side
+    /// Gaze zone that counts as looking at the point while settling (fraction of the short side), and its release.
     let radius: Double
     let releaseRadius: Double
-    /// Radius of the compass ring around the anchor (fraction of the short side).
+    /// Wider zone while the head turns: only a clear look away counts.
+    let holdRadius: Double
+    /// Radius of the segmented ring around the point (fraction of the short side).
     let ringRadius: Double
-    let bands: [Band]
-    /// Head turn (degrees, from the rest pose) that reaches a band; the band holds down to 60 % of it.
-    let yawThreshold: Double
-    let pitchThreshold: Double
-    /// Seconds a band must hold with the gaze on the anchor.
-    let dwell: TimeInterval
+    /// Comfortable head turn (degrees from the rest pose) that draws the circle at full size.
+    let yawAmplitude: Double
+    let pitchAmplitude: Double
+    /// Share of the amplitude from which the head is on the circle (nothing fills below it).
+    let reach: Double
+    /// Share of the amplitude under which the head faces the screen again.
+    let rest: Double
+    /// Seconds facing the screen, eyes on the point and head still, before the loop begins.
+    let settle: TimeInterval
+    /// Largest drift of the head (degrees) that still counts as still while settling.
+    let stillness: Double
+    /// Seconds back facing the screen that close the loop.
+    let returnHold: TimeInterval
+    /// Fastest the ring fills (degrees per second): a faster head waits for it.
+    let maxSweepSpeed: Double
+    /// How fast the eyes' presence on the point rises and falls (per second).
+    let focusRate: Double
+    /// Pace of the ideal player (degrees per second), for the simulated player and the silhouette's demonstration.
+    let guidePace: Double
 
-    init(anchor: NormalizedPoint, radius: Double = 0.2, releaseRadius: Double = 0.27, ringRadius: Double = 0.2, bands: [Band],
-         yawThreshold: Double = 6, pitchThreshold: Double = 5, dwell: TimeInterval = 0.6) {
+    init(anchor: NormalizedPoint, start: Side, radius: Double = 0.2, releaseRadius: Double = 0.27, holdRadius: Double = 0.3,
+         ringRadius: Double = 0.235, yawAmplitude: Double = 10, pitchAmplitude: Double = 8, reach: Double = 0.6, rest: Double = 0.4,
+         settle: TimeInterval = 0.8, stillness: Double = 2.5, returnHold: TimeInterval = 0.3, maxSweepSpeed: Double = 120,
+         focusRate: Double = 1.5, guidePace: Double = 45) {
         self.anchor = anchor
+        self.start = start
         self.radius = max(radius, 0.05)
         self.releaseRadius = max(releaseRadius, self.radius)
+        self.holdRadius = max(holdRadius, self.releaseRadius)
         self.ringRadius = max(ringRadius, 0.05)
-        self.bands = bands
-        self.yawThreshold = max(yawThreshold, 1)
-        self.pitchThreshold = max(pitchThreshold, 1)
-        self.dwell = max(dwell, 0.1)
+        self.yawAmplitude = max(yawAmplitude, 2)
+        self.pitchAmplitude = max(pitchAmplitude, 2)
+        self.reach = min(max(reach, 0.2), 1)
+        self.rest = min(max(rest, 0.05), self.reach * 0.8)
+        self.settle = max(settle, 0.1)
+        self.stillness = max(stillness, 0.5)
+        self.returnHold = max(returnHold, 0.05)
+        self.maxSweepSpeed = max(maxSweepSpeed, 30)
+        self.focusRate = max(focusRate, 0.1)
+        self.guidePace = min(max(guidePace, 10), self.maxSweepSpeed)
     }
 }
 
@@ -452,12 +467,16 @@ struct OculoDefinition: Hashable, Sendable {
     let element: GameElement
     /// Each completed stage lights a star of a constellation that comes alive once the sequence is complete.
     let showsConstellation: Bool
+    /// The late help line of this sequence; nil keeps the generic oculomotor help.
+    let help: String?
 
-    init(stages: [OculoStageDefinition], element: GameElement, hidesLueurs: Bool = true, pause: TimeInterval = 0.6, showsConstellation: Bool = false) {
+    init(stages: [OculoStageDefinition], element: GameElement, hidesLueurs: Bool = true, pause: TimeInterval = 0.6, showsConstellation: Bool = false,
+         help: String? = nil) {
         self.stages = stages
         self.element = element
         self.hidesLueurs = hidesLueurs
         self.pause = max(pause, 0)
         self.showsConstellation = showsConstellation
+        self.help = help
     }
 }

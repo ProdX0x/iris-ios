@@ -83,6 +83,7 @@
 		448C53D729EB3506CC1BD216 /* MiroirStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F061D9D2BB0F72563AE2FAA /* MiroirStageState.swift */; };
 		45A329FD8E6538E48B05C907 /* FilStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2A5330F4339EF7D4926004 /* FilStageState.swift */; };
 		4630F1348E42703E785FC415 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E1853F864597AC12F94F5E /* AudioService.swift */; };
+		487AF592B1BDAC573E873ED3 /* GameSceneRenderer+Ancre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9FEEA3CF4D86613B2B2BCE /* GameSceneRenderer+Ancre.swift */; };
 		4968A2DA681B1E8C642A8EE6 /* OculoFilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B51B335C41E3CF366584F /* OculoFilTests.swift */; };
 		49AC7C52D4263EAD2867FF51 /* IrisPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A19970A39C36C9149697807 /* IrisPath.swift */; };
 		4BC9DDCA7627B2CD60477C0B /* HintTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81319801731883FA33B5955D /* HintTracker.swift */; };
@@ -104,6 +105,7 @@
 		566B2B70E88E200B089E97E3 /* HomeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9177E8AB3CDA6C63662C56 /* HomeSummary.swift */; };
 		57282605303D66B51271DF5F /* CarnetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13F17112C85D17E1AA1186 /* CarnetView.swift */; };
 		57CE900E0CB5FA94A25B9F37 /* OculoStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320718F4EB5AB2EBE016B5C4 /* OculoStageState.swift */; };
+		593B924DDA256D8D02D952F4 /* AncreSceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390CC3AAC0A9690A0E7B0BF3 /* AncreSceneTests.swift */; };
 		59C38057369509754C61D100 /* RobustAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B963C8273B51A3EAAB22EA /* RobustAggregator.swift */; };
 		5B1D9EB2D5BC00B4AF31FE47 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800B8B9FB162F4AE038B1DFA /* Level.swift */; };
 		5CB5203E5C6220A0968F129B /* LevelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC2E203D820A3187F1D4E3 /* LevelResult.swift */; };
@@ -203,6 +205,7 @@
 		A8097378F5A1835CDCC1FD95 /* ChapterCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAE144DBA42CA41CD9DD2F3 /* ChapterCardLayoutTests.swift */; };
 		A8D209598845BD95D120A68A /* LevelAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */; };
 		A905454F3E74AE290F8FC9B4 /* AVAudioEngineAudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21869BC18CBE46050B07449D /* AVAudioEngineAudioService.swift */; };
+		ACAB2DDA67C3DD6A7AC3FFF1 /* AncreSceneSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058C4F2C7D0A778A553D248 /* AncreSceneSnapshot.swift */; };
 		AE0298AECCD23734B02AB036 /* GouffresTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65998E94EF78548D5509622F /* GouffresTests.swift */; };
 		AE4BBABCCFB8D8C048234A0A /* ExpansionCampaignFingerprintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AEEFE7B90EEEA5AE99C97F /* ExpansionCampaignFingerprintTests.swift */; };
 		AE6CF845E898D1DA9203CA80 /* CalibrationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3408C688DE466CF6BA50D8 /* CalibrationResult.swift */; };
@@ -296,6 +299,7 @@
 		FBE37584D34F247D8C8A6F80 /* CampaignValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F4691736CD5299B0A55EC1 /* CampaignValidationTests.swift */; };
 		FC6E3ADB3DEF70CD71417E88 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C429251189588D65388F4B2 /* GameViewModelTests.swift */; };
 		FEA5A9DF7EC291352D07505F /* DSProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCDFCCDF659A96E9B0EFA3F /* DSProgressRing.swift */; };
+		FF659088967A414CCFCA50BD /* AncreSilhouette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C0D2400EA99EF90898F3F /* AncreSilhouette.swift */; };
 		FF730A3F641EA91FA989FDA2 /* AffineTransform2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ED755ED76F23184416DACA /* AffineTransform2D.swift */; };
 /* End PBXBuildFile section */
 
@@ -328,6 +332,7 @@
 		0AAE3F6E916C94BD7926A869 /* Campaign+FinalPartage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalPartage.swift"; sourceTree = "<group>"; };
 		0B56A480302FEBFDDEB968DC /* EtoilesStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtoilesStageState.swift; sourceTree = "<group>"; };
 		0B7AD342653D374AF694FE25 /* DSGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlyph.swift; sourceTree = "<group>"; };
+		0B9FEEA3CF4D86613B2B2BCE /* GameSceneRenderer+Ancre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameSceneRenderer+Ancre.swift"; sourceTree = "<group>"; };
 		0D15C5B2FC7EBC3EB88433A3 /* Campaign+Constellation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Constellation.swift"; sourceTree = "<group>"; };
 		0D3408C688DE466CF6BA50D8 /* CalibrationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationResult.swift; sourceTree = "<group>"; };
 		0F54241A5B401B86942BD776 /* EchoField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoField.swift; sourceTree = "<group>"; };
@@ -384,6 +389,7 @@
 		359F1157BA3A248BA0600201 /* AdaptiveLevelRowMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLevelRowMetrics.swift; sourceTree = "<group>"; };
 		369344EED837F50F922FA21E /* Campaign+Partage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Partage.swift"; sourceTree = "<group>"; };
 		385308503D02B747A893A04F /* MockAudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioService.swift; sourceTree = "<group>"; };
+		390CC3AAC0A9690A0E7B0BF3 /* AncreSceneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AncreSceneTests.swift; sourceTree = "<group>"; };
 		39B06250E3FB05DBFF96244A /* DSThemeWash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSThemeWash.swift; sourceTree = "<group>"; };
 		39FAAA20C282D9001110907B /* Campaign+FinalClairvoyance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalClairvoyance.swift"; sourceTree = "<group>"; };
 		3A6839715E0ACF181DED1477 /* OculoOrchestreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoOrchestreTests.swift; sourceTree = "<group>"; };
@@ -395,6 +401,7 @@
 		44AAB1AD7637B02F6DC1DB75 /* NormalizedPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedPoint.swift; sourceTree = "<group>"; };
 		454638A0938238D75DBD36A1 /* ValueNoise1D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueNoise1D.swift; sourceTree = "<group>"; };
 		464D09E42ECABB1A88075F82 /* Campaign+FinalBraises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalBraises.swift"; sourceTree = "<group>"; };
+		469C0D2400EA99EF90898F3F /* AncreSilhouette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AncreSilhouette.swift; sourceTree = "<group>"; };
 		46B14C3644D1CC0BD40FDA5A /* Campaign+Gouffres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Gouffres.swift"; sourceTree = "<group>"; };
 		485C1759F027CED5CD819B1D /* GameSceneRenderer+Oculo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameSceneRenderer+Oculo.swift"; sourceTree = "<group>"; };
 		488DDA9F02F27EF2583681DA /* CoeurStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoeurStageState.swift; sourceTree = "<group>"; };
@@ -532,6 +539,7 @@
 		B8BDD61E13554EDC6C8012B4 /* LevelID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelID.swift; sourceTree = "<group>"; };
 		BC7AFC7016A275147A164D9A /* ConstellationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstellationTests.swift; sourceTree = "<group>"; };
 		BD8342C32E0848D650DFC63B /* CameraAccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessViewModel.swift; sourceTree = "<group>"; };
+		C058C4F2C7D0A778A553D248 /* AncreSceneSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AncreSceneSnapshot.swift; sourceTree = "<group>"; };
 		C05B51B335C41E3CF366584F /* OculoFilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoFilTests.swift; sourceTree = "<group>"; };
 		C06EA7A52462EA5A9FB4ABF6 /* ChapterDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterDefinition.swift; sourceTree = "<group>"; };
 		C0E4C9E57097F8155671BBB5 /* CroisementStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CroisementStageState.swift; sourceTree = "<group>"; };
@@ -941,6 +949,7 @@
 			isa = PBXGroup;
 			children = (
 				F1371DCB8ADB00AECFA414ED /* AdaptiveLevelRowMetricsTests.swift */,
+				390CC3AAC0A9690A0E7B0BF3 /* AncreSceneTests.swift */,
 				232DBD9A17913E3A0BE306C1 /* AppCoordinatorTests.swift */,
 				CFFC654539094E8EF0DEF30A /* CameraAccessViewModelTests.swift */,
 				2DAE144DBA42CA41CD9DD2F3 /* ChapterCardLayoutTests.swift */,
@@ -1261,7 +1270,10 @@
 		E01821E84DFF0A0E09983975 /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				C058C4F2C7D0A778A553D248 /* AncreSceneSnapshot.swift */,
+				469C0D2400EA99EF90898F3F /* AncreSilhouette.swift */,
 				895A77572444EA0B5AFB485A /* GameSceneRenderer.swift */,
+				0B9FEEA3CF4D86613B2B2BCE /* GameSceneRenderer+Ancre.swift */,
 				485C1759F027CED5CD819B1D /* GameSceneRenderer+Oculo.swift */,
 				AAA8A3EBFC406F28A58A915A /* GameSceneSnapshot.swift */,
 				6EC43001C10532AE36DC68DB /* OculoSnapshot.swift */,
@@ -1565,6 +1577,7 @@
 			files = (
 				29C385BB488BC45FB5AE16D1 /* AdaptiveLevelRowMetricsTests.swift in Sources */,
 				9D6AF35F8C4B870D0BF39D0E /* AffineTransform2DTests.swift in Sources */,
+				593B924DDA256D8D02D952F4 /* AncreSceneTests.swift in Sources */,
 				84883B202993ACDABF7C0DE6 /* AppCoordinatorTests.swift in Sources */,
 				D6FB76E356CE058E251024A5 /* AudioCuePolicyTests.swift in Sources */,
 				1728812802F3A935D50C6777 /* AxisMappingTests.swift in Sources */,
@@ -1646,6 +1659,8 @@
 				7B90774E3772B72DC5B979C9 /* AdaptiveLevelRow.swift in Sources */,
 				F0CF70CC656949862880DCE7 /* AdaptiveLevelRowMetrics.swift in Sources */,
 				FF730A3F641EA91FA989FDA2 /* AffineTransform2D.swift in Sources */,
+				ACAB2DDA67C3DD6A7AC3FFF1 /* AncreSceneSnapshot.swift in Sources */,
+				FF659088967A414CCFCA50BD /* AncreSilhouette.swift in Sources */,
 				E284F0F7641DBA0B63613A3E /* AncreStageState.swift in Sources */,
 				0C2B5B24A9B1CBE33DE030DF /* AppContainer.swift in Sources */,
 				B6A60F462EAA944F4E931633 /* AppCoordinator.swift in Sources */,
@@ -1750,6 +1765,7 @@
 				DE618B0DF6B1DA3987B9DE4B /* GameNavigating.swift in Sources */,
 				B4424AE158060828FF78274D /* GameOverlayView.swift in Sources */,
 				AF9F1FDA8215DA2B27A5AD5A /* GamePhase.swift in Sources */,
+				487AF592B1BDAC573E873ED3 /* GameSceneRenderer+Ancre.swift in Sources */,
 				4EC030CA6170AEA112F44E51 /* GameSceneRenderer+Oculo.swift in Sources */,
 				DB1B932804E31EC05579D487 /* GameSceneRenderer.swift in Sources */,
 				959B618BD105A9420553DA18 /* GameSceneSnapshot.swift in Sources */,

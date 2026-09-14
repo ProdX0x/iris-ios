@@ -19,7 +19,9 @@ struct HintTracker: Hashable, Sendable {
     /// Adds the level's generic help after `helpDelay` seconds (route display or empty-space advice).
     static func forLevel(_ level: LevelDefinition, helpDelay: TimeInterval = 45) -> HintTracker {
         let help: String
-        if level.hasOculo {
+        if let own = level.oculo?.help {
+            help = own
+        } else if level.hasOculo {
             help = "Le jeu vous montre où poser le regard : suivez ce qui respire."
         } else if level.hasBalises {
             help = "Seule la balise qui respire s'éveille, sous un regard posé."
@@ -100,6 +102,8 @@ struct HintTracker: Hashable, Sendable {
             return events.contains { if case .oculoMiss = $0 { return true } else { return false } }
         case .oculoCompleted:
             return events.contains(.oculoCompleted)
+        case let .oculoStageCompleted(stage):
+            return events.contains(.oculoStageCompleted(stage: stage))
         }
     }
 }

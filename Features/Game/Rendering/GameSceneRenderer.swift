@@ -48,7 +48,8 @@ struct GameSceneRenderer {
         }
         if let oculo = snapshot.oculo {
             drawOculoConstellation(oculo, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
-            if !oculo.isComplete {
+            // Chapter X final: the ancre keeps its silhouette and scatters its last ring after the sequence.
+            if !oculo.isComplete || oculo.ancre != nil {
                 drawOculo(oculo, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
             }
         }

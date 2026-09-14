@@ -19,6 +19,9 @@ extension GameSceneRenderer {
 
     func drawOculo(_ oculo: OculoSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
                    palette: DSThemePalette, reduceMotion: Bool) {
+        if let ancre = oculo.ancre {
+            drawAncre(ancre, time: time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+        }
         for polyline in oculo.polylines {
             drawOculoPolyline(polyline, in: &context, scale: scale, palette: palette)
         }
@@ -65,7 +68,7 @@ extension GameSceneRenderer {
             glow.fill(disc(radius), with: .radialGradient(Gradient(colors: [color.opacity(opacity), color.opacity(0)]), center: center, startRadius: 0, endRadius: radius))
         }
         switch element.role {
-        case .target, .anchor:
+        case .target:
             if element.isActive {
                 context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.12)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             }
@@ -144,17 +147,6 @@ extension GameSceneRenderer {
             if element.isActive {
                 context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.1)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             }
-        case .compass:
-            context.stroke(disc(element.radius), with: .color(DSColor.textTertiary.opacity(0.35)), lineWidth: 1 * scale)
-            let angle = element.phase
-            // The head turn pushes the notch out from the anchor toward the ring (1 at the band threshold).
-            let reach = element.radius * min(1, max(0, element.intensity))
-            let notch = CGPoint(x: center.x + reach * cos(angle), y: center.y + reach * sin(angle))
-            var glow = context
-            glow.blendMode = .plusLighter
-            glow.fill(Path(ellipseIn: CGRect(x: notch.x - 14 * scale, y: notch.y - 14 * scale, width: 28 * scale, height: 28 * scale)),
-                      with: .radialGradient(Gradient(colors: [palette.glow.opacity(0.4), palette.glow.opacity(0)]), center: notch, startRadius: 0, endRadius: 14 * scale))
-            context.fill(Path(ellipseIn: CGRect(x: notch.x - 5 * scale, y: notch.y - 5 * scale, width: 10 * scale, height: 10 * scale)), with: .color(element.isLit ? DSColor.statusSuccess : palette.accent))
         case .announce:
             halo(element.radius * 0.6 * breath, palette.glow, 0.3 * element.intensity)
             context.stroke(disc(element.radius * 0.35 * breath), with: .color(palette.accent.opacity(0.6 * element.intensity)), style: StrokeStyle(lineWidth: 1.2 * scale, dash: [3 * scale, 4 * scale]))

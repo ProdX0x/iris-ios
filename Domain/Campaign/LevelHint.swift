@@ -31,6 +31,8 @@ enum HintTrigger: Hashable, Sendable {
     case firstOculoSuccess
     case firstOculoMiss
     case oculoCompleted
+    /// OCULOMOTOR EXPANSION: one given stage of the sequence completed (chapter X: the first loop, before the reverse one).
+    case oculoStageCompleted(Int)
 }
 
 struct LevelHint: Hashable, Sendable {

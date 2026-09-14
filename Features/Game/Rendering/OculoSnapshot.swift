@@ -27,9 +27,6 @@ enum OculoRole: Hashable, Sendable {
     case relay
     /// A presence that glows, fades, answers.
     case presence
-    /// The anchor of the gaze and the compass the head turns.
-    case anchor
-    case compass
     /// A braise the level announces.
     case announce
     /// A star of the final constellation.
@@ -98,6 +95,8 @@ struct OculoSnapshot: Hashable, Sendable {
     /// Chapter XII: one star per stage, lit once the stage is complete, and the links between the lit stars.
     let constellation: [OculoElementSnapshot]
     let constellationLinks: OculoPolylineSnapshot?
+    /// Chapter X final: the loop scene, drawn by its own renderer (nil for every other stage).
+    let ancre: AncreSceneSnapshot?
 
     init(sequence: OculoSequenceState, elapsed: TimeInterval, head: HeadPose?) {
         stageIndex = min(sequence.currentIndex, max(0, sequence.stageCount - 1))
@@ -143,6 +142,7 @@ struct OculoSnapshot: Hashable, Sendable {
         }
         self.constellation = constellation
         constellationLinks = links
+        ancre = AncreSceneSnapshot.make(sequence: sequence, elapsed: elapsed)
     }
 }
 
@@ -255,26 +255,9 @@ enum OculoSceneBuilder {
                                                            isActive: true, index: 1))
             }
             return scene
-        case let .ancre(state):
-            var scene = Scene()
-            scene.elements.append(OculoElementSnapshot(role: .anchor, position: state.anchor, radius: state.radius,
-                                                       intensity: state.dwell > 0 ? min(1, state.holdTime / state.dwell) : 0,
-                                                       isActive: true, isLit: state.isOnAnchor))
-            for index in 0..<min(state.bandIndex, state.bands.count) {
-                let angle = AncreStageState.angle(of: state.bands[index])
-                scene.arcs.append(OculoArcSnapshot(center: state.anchor, radius: state.ringRadius, start: angle - 0.22, end: angle + 0.22,
-                                                   intensity: 0.3, isActive: false))
-            }
-            if let band = state.band, !state.awaitingReturn {
-                let angle = AncreStageState.angle(of: band)
-                scene.arcs.append(OculoArcSnapshot(center: state.anchor, radius: state.ringRadius, start: angle - 0.4, end: angle + 0.4,
-                                                   intensity: state.inBand ? 1 : 0.45, isActive: true))
-            }
-            let offset = state.screenOffset()
-            scene.elements.append(OculoElementSnapshot(role: .compass, position: state.anchor, radius: state.ringRadius,
-                                                       intensity: min(1, (offset.x * offset.x + offset.y * offset.y).squareRoot()),
-                                                       phase: atan2(offset.y, offset.x), isLit: state.inBand))
-            return scene
+        case .ancre:
+            // Drawn from `OculoSnapshot.ancre`, which also covers the breath between the loops and the end.
+            return Scene()
         case let .tourner(state):
             var scene = Scene()
             if let place = state.place {

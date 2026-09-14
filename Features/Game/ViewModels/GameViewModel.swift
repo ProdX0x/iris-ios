@@ -478,8 +478,16 @@ final class GameViewModel {
         }
         guard phase == .playing, let point = mapped else { return }
         session.ingestGaze(point)
-        // OCULOMOTOR EXPANSION: the stages that ask for the head read it from the same observation.
-        session.ingestHeadPose(sample.observation.map { HeadPose(yaw: $0.headYaw, pitch: $0.headPitch) })
+        // OCULOMOTOR EXPANSION: the stages that ask for the head read it from the same observation, oriented like the
+        // screen by the calibration's axis mapping (the one that already places the gaze), so no axis sign is assumed.
+        session.ingestHeadPose(sample.observation.map { Self.screenHead($0, mapping: mapper.axisMapping) })
+    }
+
+    /// View-frame head angles in screen terms: yaw toward the screen's right as the player sees it, pitch toward its top.
+    /// The mapping only swaps or flips the two in-plane axes, so the size of a head turn is unchanged.
+    nonisolated static func screenHead(_ observation: GazeObservation, mapping: AxisMapping) -> HeadPose {
+        let screen = mapping.screenCoordinates(of: SIMD2(observation.headYaw, observation.headPitch))
+        return HeadPose(yaw: screen.x, pitch: screen.y)
     }
 
     private func handleGazeState(_ state: GazeTrackingState) {
