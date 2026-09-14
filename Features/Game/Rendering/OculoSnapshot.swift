@@ -173,6 +173,14 @@ enum OculoSceneBuilder {
                 scene.polylines.append(OculoPolylineSnapshot(points: drawn.map { state.candidates[$0] }, intensity: 0.5))
             }
             return scene
+        case let .jardin(state):
+            var scene = Scene()
+            for (index, position) in state.seeds.enumerated() {
+                scene.elements.append(OculoElementSnapshot(role: .seed, position: position, radius: state.radius,
+                                                           intensity: state.isSprouted(index) ? 1 : (state.dwellingOn == index ? min(1, state.dwellTime / state.dwell) : 0),
+                                                           isActive: state.isBreathing(index), isLit: state.isSprouted(index), index: index))
+            }
+            return scene
         }
     }
 }

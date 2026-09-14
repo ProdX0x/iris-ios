@@ -142,7 +142,7 @@ struct JumellesTests {
         #expect(chapter.levels.count == 6)
         #expect(chapter.levels.map(\.id) == ["7-1", "7-2", "7-3", "7-4", "7-5", "7-6"])
         #expect(chapter.levels[0].introduces == [.jumelles] && chapter.levels[0].lueurs.count == 2 && chapter.levels[0].elementKinds == [.jumelles])
-        #expect(Campaign.next(after: Campaign.historicalLevels[33])?.id == "7-1")
+        #expect(Campaign.next(after: Campaign.chapter(number: 6)?.levels.last ?? Campaign.historicalLevels[33])?.id == "7-1")
         for level in chapter.levels {
             #expect(level.hasTwins && level.requiresPushing, "\(level.id)")
             #expect((2...3).contains(level.lueurs.count), "\(level.id)")

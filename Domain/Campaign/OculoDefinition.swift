@@ -15,6 +15,33 @@ enum OculoStageDefinition: Hashable, Sendable {
     case miroir(MiroirDefinition)
     /// Chapter V: memory-guided saccades.
     case etoiles(EtoilesDefinition)
+    /// Chapter VI: visual search and systematic scanning.
+    case jardin(JardinDefinition)
+}
+
+/// Chapter VI, « le jardin caché »: seeds all over the field; in each batch a few of them breathe slowly among seeds that
+/// only twinkle. A gaze that rests on a breathing seed makes it sprout; lingering on a seed that only twinkles folds the
+/// sprouts of the current batch back (a local retry). Sprouts stay once their batch is complete.
+struct JardinDefinition: Hashable, Sendable {
+    let seeds: [NormalizedPoint]
+    /// The breathing seeds of each batch (indices into `seeds`).
+    let batches: [[Int]]
+    let radius: Double
+    let releaseRadius: Double
+    /// Rest on a breathing seed that makes it sprout.
+    let dwell: TimeInterval
+    /// Lingering on a twinkling seed that folds the batch back (longer than `dwell`: a passing glance costs nothing).
+    let lingerDwell: TimeInterval
+
+    init(seeds: [NormalizedPoint], batches: [[Int]], radius: Double = 0.18, releaseRadius: Double = 0.24, dwell: TimeInterval = 0.3,
+         lingerDwell: TimeInterval = 0.5) {
+        self.seeds = seeds
+        self.batches = batches.map { $0.filter { seeds.indices.contains($0) } }.filter { !$0.isEmpty }
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.dwell = max(dwell, 0.05)
+        self.lingerDwell = max(lingerDwell, self.dwell)
+    }
 }
 
 /// Chapter V, « les étoiles absentes »: a few stars shine briefly, vanish, and reappear only where the gaze returns

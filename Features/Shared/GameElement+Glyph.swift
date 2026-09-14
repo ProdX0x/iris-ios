@@ -28,6 +28,7 @@ extension GameElement {
         case .filVivant: .filVivant
         case .miroir: .miroir
         case .etoileAbsente: .etoileAbsente
+        case .jardin: .jardin
         }
     }
 }

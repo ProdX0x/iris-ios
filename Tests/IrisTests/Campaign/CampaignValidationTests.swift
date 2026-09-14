@@ -113,7 +113,9 @@ struct CampaignStructureTests {
         // PROTOTYPE branch: the optional level 1-6 sits between 1-5 and 2-1.
         #expect(Campaign.next(after: Campaign.levels[4])?.id == "1-6")
         #expect(Campaign.next(after: Campaign.levels[5])?.id == "2-1")
-        #expect(Campaign.next(after: Campaign.historicalLevels[33])?.id == Campaign.expansionChapters.first?.levels.first?.id)
+        // Oculomotor expansion: chapter VI ends on its optional final, then chapter VII begins.
+        #expect(Campaign.next(after: Campaign.historicalLevels[33])?.id == Campaign.chapter(number: 6)?.levels.last?.id)
+        #expect(Campaign.next(after: Campaign.chapter(number: 6)?.levels.last ?? Campaign.historicalLevels[33])?.id == Campaign.expansionChapters.first?.levels.first?.id)
         #expect(Campaign.next(after: Campaign.levels[Campaign.levels.count - 1]) == nil)
         #expect(Campaign.isLastInChapter(Campaign.levels[5]) && !Campaign.isLastInChapter(Campaign.levels[4]))
         #expect(!Campaign.isLastInChapter(Campaign.levels[0]))

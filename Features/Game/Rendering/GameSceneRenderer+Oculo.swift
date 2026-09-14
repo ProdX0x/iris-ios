@@ -90,9 +90,20 @@ extension GameSceneRenderer {
                 halo(14 * scale, palette.glow, 0.4)
                 context.fill(Path(ellipseIn: CGRect(x: bloom.x - 5 * scale, y: bloom.y - 5 * scale, width: 10 * scale, height: 10 * scale)), with: .color(DSColor.lueurCore))
             } else {
-                let pulse = element.isActive ? breath : 1
-                context.fill(disc(4 * scale * pulse), with: .color(palette.accent.opacity(element.isActive ? 0.85 : 0.5)))
-                context.stroke(disc(7 * scale * pulse), with: .color(palette.accent.opacity(element.isActive ? 0.5 : 0.25)), lineWidth: 1 * scale)
+                // Breathing seeds swell slowly; the others only twinkle, quick and small.
+                let pulse: CGFloat
+                if reduceMotion {
+                    pulse = element.isActive ? 1.2 : 1
+                } else if element.isActive {
+                    pulse = 1 + 0.38 * sin(time * 2.3 + Double(element.index))
+                } else {
+                    pulse = 0.9 + 0.1 * sin(time * 9 + Double(element.index) * 1.7)
+                }
+                context.fill(disc(4 * scale * pulse), with: .color(palette.accent.opacity(0.7)))
+                context.stroke(disc(7 * scale * pulse), with: .color(palette.accent.opacity(0.35)), lineWidth: 1 * scale)
+                if element.intensity > 0 {
+                    context.stroke(disc(11 * scale), with: .color(palette.glow.opacity(0.5 * element.intensity)), lineWidth: 1.2 * scale)
+                }
             }
         case .cradle:
             context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.12 : 0.04)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))

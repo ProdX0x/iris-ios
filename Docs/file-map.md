@@ -73,6 +73,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Courants.swift | - | Domain | Chapter III, Courants: the gaze becomes a force that pushes | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Echos.swift | - | Domain | Chapter IX, Échos: sleeping lueurs wake only when the echo of a closing iris reaches them; bring them within | Claude (mission Iris) |
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
+| Domain/Campaign/Campaign+FinalClairvoyance.swift | - | Domain | OCULOMOTOR EXPANSION, chapter VI final « le jardin caché » (visual search, systematic scanning): among | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalCourants.swift | - | Domain | OCULOMOTOR EXPANSION, chapter III final « le fil vivant » (smooth pursuit): a spark glides along a smooth | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalPartage.swift | - | Domain | OCULOMOTOR EXPANSION, chapter II final « le cœur de verre » (fixation stability, distractor inhibition): | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalVeilleuses.swift | - | Domain | OCULOMOTOR EXPANSION, chapter V final « les étoiles absentes » (memory-guided saccades): stars shine | Claude (mission Iris) |
@@ -188,6 +189,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | GameEngine/Oculo/CoeurStageState.swift | struct | GameEngine | Chapter II final: the heart warms while the gaze rests on it (hysteresis), cools while it is away; sparks | Claude (mission Iris) |
 | GameEngine/Oculo/EtoilesStageState.swift | struct | GameEngine | Chapter V final: rounds of stars shown, hidden, then recalled by dwelling where they were; a wrong place | Claude (mission Iris) |
 | GameEngine/Oculo/FilStageState.swift | struct | GameEngine | Chapter III final: the spark's smooth loop (two harmonics), the accompaniment account that grows while | Claude (mission Iris) |
+| GameEngine/Oculo/JardinStageState.swift | struct | GameEngine | Chapter VI final: batches of breathing seeds among twinkling ones; a rest on a breathing seed sprouts it, | Claude (mission Iris) |
 | GameEngine/Oculo/MiroirStageState.swift | struct | GameEngine | Chapter IV final: cycles of a lure flashing on one side and a door open on the opposite side; a gaze that | Claude (mission Iris) |
 | GameEngine/Oculo/OculoStageState.swift | struct | GameEngine | OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a | Claude (mission Iris) |
 | GameEngine/Physics/TargetPhysics.swift | struct | GameEngine | R-01...R-07 frame-rate independent integration of one target, equivalent to the reference engine at 60 Hz | Claude (mission Iris) |
@@ -232,6 +234,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/OculoCoeurTests.swift | struct | Tests | Chapter II final « le cœur de verre »: the heart warms only under a gaze that stays, cools when it leaves, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoEtoilesTests.swift | struct | Tests | Chapter V final « les étoiles absentes »: stars shown then hidden come back only where the gaze dwells at | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoFilTests.swift | struct | Tests | Chapter III final « le fil vivant »: the spark never stops, the account grows only while the gaze accompanies | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoJardinTests.swift | struct | Tests | Chapter VI final « le jardin caché »: breathing seeds sprout under a rest, lingering on a twinkling seed | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoMiroirTests.swift | struct | Tests | Chapter IV final « le miroir menteur »: the door opens opposite the lure; going to the lure or letting the | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoStageTestSupport.swift | enum | Tests | OCULOMOTOR EXPANSION: scripted gaze runs over a level's session (a policy chooses the gaze, and the head, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |
