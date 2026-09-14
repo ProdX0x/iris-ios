@@ -234,7 +234,7 @@ struct GameSceneSnapshot: Hashable, Sendable {
                           swallow: session.swallows[index]?.progress(at: session.elapsed),
                           rebirth: Self.rebirth(session: session, index: index),
                           isLatent: session.areLueursLatent,
-                          awakening: session.balises.map(\.progress))
+                          awakening: session.balises?.progress ?? session.oculo?.progress)
         }
         balises = []
         baliseThreads = []

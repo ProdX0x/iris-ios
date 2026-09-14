@@ -138,6 +138,13 @@ enum OculoSceneBuilder {
                                                            intensity: fade, phase: spark.age / state.distractorDuration, index: spark.ordinal))
             }
             return scene
+        case let .fil(state):
+            var scene = Scene()
+            let spark = state.position(at: elapsed)
+            scene.polylines.append(OculoPolylineSnapshot(points: state.trail + [spark], intensity: 0.15 + 0.85 * state.progress))
+            scene.elements.append(OculoElementSnapshot(role: .spark, position: spark, radius: state.radius, intensity: 0.4 + 0.6 * state.progress,
+                                                       isActive: true, isLit: state.isNear))
+            return scene
         }
     }
 }

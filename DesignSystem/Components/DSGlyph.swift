@@ -10,7 +10,7 @@ struct DSGlyph: View {
         // Expansion
         case jumelles, souffle, dormeuse, echo, gouffre, braise, balise
         // Oculomotor finals
-        case coeur
+        case coeur, filVivant
     }
 
     let kind: Kind
@@ -149,6 +149,12 @@ struct DSGlyph: View {
                 context.fill(prism, with: .color(tint.opacity(0.2)))
                 context.stroke(prism, with: .color(tint), style: stroke)
                 context.fill(circle(c, s * 0.08), with: .color(tint))
+            case .filVivant:
+                var wave = Path()
+                wave.move(to: CGPoint(x: c.x - s * 0.44, y: c.y + s * 0.2))
+                wave.addCurve(to: CGPoint(x: c.x + s * 0.2, y: c.y - s * 0.1), control1: CGPoint(x: c.x - s * 0.2, y: c.y - s * 0.4), control2: CGPoint(x: c.x, y: c.y + s * 0.3))
+                context.stroke(wave, with: .color(tint.opacity(0.6)), style: stroke)
+                context.fill(circle(CGPoint(x: c.x + s * 0.26, y: c.y - s * 0.14), s * 0.14), with: .color(tint))
             }
         }
         .accessibilityHidden(true)
@@ -156,7 +162,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

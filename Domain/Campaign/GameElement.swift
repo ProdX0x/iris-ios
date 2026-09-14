@@ -26,6 +26,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case balise
     // Oculomotor finals (chapters II to XII)
     case coeur
+    case filVivant
 
     var name: String {
         switch self {
@@ -47,6 +48,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .braise: "braise"
         case .balise: "balise"
         case .coeur: "cœur de verre"
+        case .filVivant: "fil vivant"
         }
     }
 
@@ -70,6 +72,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .braise: "Froide, elle dort. Un regard bref la réveille et elle fuit ; un regard long l'affole."
         case .balise: "Elle s'éveille sous un regard posé, puis tend un fil vers la suivante. Le fil complet ouvre l'iris."
         case .coeur: "Froid, il se réchauffe sous un regard qui reste. Les étincelles autour n'attendent que votre regard pour le refroidir."
+        case .filVivant: "Elle file sans jamais s'arrêter. Accompagnez-la du regard : le fil qu'elle laisse reste vivant."
         }
     }
 }

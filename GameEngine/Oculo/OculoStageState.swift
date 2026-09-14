@@ -43,6 +43,7 @@ struct OculoImpulse: Hashable, Sendable {
 /// One resolved stage. Cases are added chapter by chapter; each delegates to its own state.
 enum OculoStageState: Hashable, Sendable {
     case coeur(CoeurStageState)
+    case fil(FilStageState)
 }
 
 extension OculoStageState {
@@ -50,6 +51,7 @@ extension OculoStageState {
     init(definition: OculoStageDefinition, bounds: PlayfieldBounds, shortSide: Double, scale: Double) {
         switch definition {
         case let .coeur(coeur): self = .coeur(CoeurStageState(definition: coeur, bounds: bounds, shortSide: shortSide))
+        case let .fil(fil): self = .fil(FilStageState(definition: fil, bounds: bounds, shortSide: shortSide))
         }
     }
 
@@ -59,12 +61,17 @@ extension OculoStageState {
             let outcome = state.update(input)
             self = .coeur(state)
             return outcome
+        case var .fil(state):
+            let outcome = state.update(input)
+            self = .fil(state)
+            return outcome
         }
     }
 
     var isComplete: Bool {
         switch self {
         case let .coeur(state): state.isComplete
+        case let .fil(state): state.isComplete
         }
     }
 
@@ -72,6 +79,7 @@ extension OculoStageState {
     var progress: Double {
         switch self {
         case let .coeur(state): state.progress
+        case let .fil(state): state.progress
         }
     }
 
@@ -79,13 +87,14 @@ extension OculoStageState {
     func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
         switch self {
         case let .coeur(state): state.position
+        case let .fil(state): state.position(at: elapsed)
         }
     }
 
     /// The head orientation the ideal player adopts now (nil: no preference).
     var suggestedHead: HeadPose? {
         switch self {
-        case .coeur: nil
+        case .coeur, .fil: nil
         }
     }
 }

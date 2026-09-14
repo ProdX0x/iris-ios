@@ -9,6 +9,41 @@ import Foundation
 enum OculoStageDefinition: Hashable, Sendable {
     /// Chapter II: fixation stability with distractor inhibition.
     case coeur(CoeurDefinition)
+    /// Chapter III: smooth pursuit.
+    case fil(FilDefinition)
+}
+
+/// Chapter III, « le fil vivant »: a spark travels a smooth closed curve without ever stopping; the filament it leaves
+/// stays alive while the gaze accompanies it and frays while the gaze is away.
+struct FilDefinition: Hashable, Sendable {
+    let center: NormalizedPoint
+    /// Half-amplitudes of the curve (fractions of the width and height): x = cx + ax·sin(ωt), y = cy + ay·sin(ωt + phase) + wobble·sin(3ωt).
+    let amplitudeX: Double
+    let amplitudeY: Double
+    let phase: Double
+    let wobble: Double
+    /// Seconds per lap.
+    let period: TimeInterval
+    /// Gaze distance (fraction of the short side) that counts as accompanying; release beyond `releaseRadius`.
+    let radius: Double
+    let releaseRadius: Double
+    /// Seconds of accompaniment needed; the account frays at `decay` per second while the gaze is away.
+    let requirement: TimeInterval
+    let decay: Double
+
+    init(center: NormalizedPoint, amplitudeX: Double = 0.3, amplitudeY: Double = 0.28, phase: Double = .pi / 3, wobble: Double = 0.05,
+         period: TimeInterval = 10, radius: Double = 0.2, releaseRadius: Double = 0.27, requirement: TimeInterval = 8, decay: Double = 1) {
+        self.center = center
+        self.amplitudeX = amplitudeX
+        self.amplitudeY = amplitudeY
+        self.phase = phase
+        self.wobble = wobble
+        self.period = max(period, 2)
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.requirement = max(requirement, 0.5)
+        self.decay = max(decay, 0)
+    }
 }
 
 /// Chapter II, « le cœur de verre »: a cold heart warms while the gaze rests on it; sparks flare around it and steal
