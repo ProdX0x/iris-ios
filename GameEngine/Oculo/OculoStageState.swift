@@ -50,6 +50,7 @@ enum OculoStageState: Hashable, Sendable {
     case croisement(CroisementStageState)
     case courant(CourantStageState)
     case absence(AbsenceStageState)
+    case ancre(AncreStageState)
 }
 
 extension OculoStageState {
@@ -64,6 +65,7 @@ extension OculoStageState {
         case let .croisement(croisement): self = .croisement(CroisementStageState(definition: croisement, bounds: bounds, shortSide: shortSide))
         case let .courant(courant): self = .courant(CourantStageState(definition: courant, bounds: bounds, shortSide: shortSide))
         case let .absence(absence): self = .absence(AbsenceStageState(definition: absence, bounds: bounds, shortSide: shortSide))
+        case let .ancre(ancre): self = .ancre(AncreStageState(definition: ancre, bounds: bounds, shortSide: shortSide))
         }
     }
 
@@ -101,6 +103,10 @@ extension OculoStageState {
             let outcome = state.update(input)
             self = .absence(state)
             return outcome
+        case var .ancre(state):
+            let outcome = state.update(input)
+            self = .ancre(state)
+            return outcome
         }
     }
 
@@ -114,6 +120,7 @@ extension OculoStageState {
         case let .croisement(state): state.isComplete
         case let .courant(state): state.isComplete
         case let .absence(state): state.isComplete
+        case let .ancre(state): state.isComplete
         }
     }
 
@@ -128,6 +135,7 @@ extension OculoStageState {
         case let .croisement(state): state.progress
         case let .courant(state): state.progress
         case let .absence(state): state.progress
+        case let .ancre(state): state.progress
         }
     }
 
@@ -142,6 +150,7 @@ extension OculoStageState {
         case let .croisement(state): state.activePosition(at: elapsed)
         case let .courant(state): state.position(at: elapsed)
         case let .absence(state): state.suggestedGaze(at: elapsed)
+        case let .ancre(state): state.anchor
         }
     }
 
@@ -149,6 +158,7 @@ extension OculoStageState {
     var suggestedHead: HeadPose? {
         switch self {
         case .coeur, .fil, .miroir, .etoiles, .jardin, .croisement, .courant, .absence: nil
+        case let .ancre(state): state.suggestedHead
         }
     }
 }

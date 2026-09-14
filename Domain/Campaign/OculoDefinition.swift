@@ -23,6 +23,57 @@ enum OculoStageDefinition: Hashable, Sendable {
     case courant(CourantDefinition)
     /// Chapter IX: fixation disengagement (gap and overlap shifts).
     case absence(AbsenceDefinition)
+    /// Chapter X: gaze stabilisation while the head turns (VOR-inspired).
+    case ancre(AncreDefinition)
+}
+
+/// Chapter X, « l'ancre »: the gaze holds an anchor while small head turns steer a compass into designated bands.
+struct AncreDefinition: Hashable, Sendable {
+    enum Axis: Hashable, Sendable {
+        case yaw
+        case pitch
+    }
+
+    enum Direction: Hashable, Sendable {
+        /// The player's first turn on the axis, either way; it sets the axis's direction for the bands after it.
+        case first
+        case same
+        case opposite
+    }
+
+    struct Band: Hashable, Sendable {
+        let axis: Axis
+        let direction: Direction
+
+        init(_ axis: Axis, _ direction: Direction) {
+            self.axis = axis
+            self.direction = direction
+        }
+    }
+
+    let anchor: NormalizedPoint
+    let radius: Double
+    let releaseRadius: Double
+    /// Radius of the compass ring around the anchor (fraction of the short side).
+    let ringRadius: Double
+    let bands: [Band]
+    /// Head turn (degrees, from the rest pose) that reaches a band; the band holds down to 60 % of it.
+    let yawThreshold: Double
+    let pitchThreshold: Double
+    /// Seconds a band must hold with the gaze on the anchor.
+    let dwell: TimeInterval
+
+    init(anchor: NormalizedPoint, radius: Double = 0.2, releaseRadius: Double = 0.27, ringRadius: Double = 0.2, bands: [Band],
+         yawThreshold: Double = 6, pitchThreshold: Double = 5, dwell: TimeInterval = 0.6) {
+        self.anchor = anchor
+        self.radius = max(radius, 0.05)
+        self.releaseRadius = max(releaseRadius, self.radius)
+        self.ringRadius = max(ringRadius, 0.05)
+        self.bands = bands
+        self.yawThreshold = max(yawThreshold, 1)
+        self.pitchThreshold = max(pitchThreshold, 1)
+        self.dwell = max(dwell, 0.1)
+    }
 }
 
 /// Chapter IX, « l'absence »: a presence held by the gaze, then an answer elsewhere; in a gap trial the presence fades

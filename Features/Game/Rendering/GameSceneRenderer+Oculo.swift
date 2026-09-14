@@ -132,7 +132,9 @@ extension GameSceneRenderer {
         case .compass:
             context.stroke(disc(element.radius), with: .color(DSColor.textTertiary.opacity(0.35)), lineWidth: 1 * scale)
             let angle = element.phase
-            let notch = CGPoint(x: center.x + element.radius * cos(angle), y: center.y + element.radius * sin(angle))
+            // The head turn pushes the notch out from the anchor toward the ring (1 at the band threshold).
+            let reach = element.radius * min(1, max(0, element.intensity))
+            let notch = CGPoint(x: center.x + reach * cos(angle), y: center.y + reach * sin(angle))
             var glow = context
             glow.blendMode = .plusLighter
             glow.fill(Path(ellipseIn: CGRect(x: notch.x - 14 * scale, y: notch.y - 14 * scale, width: 28 * scale, height: 28 * scale)),

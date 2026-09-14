@@ -33,6 +33,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case croisement
     case lanterne
     case absence
+    case ancre
 
     var name: String {
         switch self {
@@ -61,6 +62,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .croisement: "croisement"
         case .lanterne: "lanterne du courant"
         case .absence: "absence"
+        case .ancre: "ancre"
         }
     }
 
@@ -91,6 +93,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .croisement: "Les jumelles s'appellent d'un coin à l'autre. Répondez à celle qui respire : leur lien se resserre."
         case .lanterne: "Le courant la porte toujours par le même chemin. Dans la brume elle disparaît : soyez là où elle ressort."
         case .absence: "Une présence tient tant que vous la regardez. Quand une autre répond, parfois après un silence, allez à elle."
+        case .ancre: "Gardez les yeux posés sur elle et tournez doucement la tête : la boussole suit, jusqu'à l'arc qui s'allume."
         }
     }
 }

@@ -10,7 +10,7 @@ struct DSGlyph: View {
         // Expansion
         case jumelles, souffle, dormeuse, echo, gouffre, braise, balise
         // Oculomotor finals
-        case coeur, filVivant, miroir, etoileAbsente, jardin, croisement, lanterne, absence
+        case coeur, filVivant, miroir, etoileAbsente, jardin, croisement, lanterne, absence, ancre
     }
 
     let kind: Kind
@@ -202,6 +202,14 @@ struct DSGlyph: View {
             case .absence:
                 context.fill(circle(CGPoint(x: c.x - s * 0.22, y: c.y + s * 0.14), s * 0.16), with: .color(tint))
                 context.stroke(circle(CGPoint(x: c.x + s * 0.22, y: c.y - s * 0.14), s * 0.16), with: .color(tint.opacity(0.6)), style: StrokeStyle(lineWidth: stroke.lineWidth, dash: [2, 2]))
+            case .ancre:
+                context.stroke(circle(CGPoint(x: c.x, y: c.y - s * 0.3), s * 0.1), with: .color(tint), style: stroke)
+                var shaft = Path()
+                shaft.move(to: CGPoint(x: c.x, y: c.y - s * 0.2))
+                shaft.addLine(to: CGPoint(x: c.x, y: c.y + s * 0.36))
+                shaft.move(to: CGPoint(x: c.x - s * 0.34, y: c.y + s * 0.08))
+                shaft.addQuadCurve(to: CGPoint(x: c.x + s * 0.34, y: c.y + s * 0.08), control: CGPoint(x: c.x, y: c.y + s * 0.62))
+                context.stroke(shaft, with: .color(tint), style: stroke)
             }
         }
         .accessibilityHidden(true)
@@ -209,7 +217,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir, .etoileAbsente, .jardin, .croisement, .lanterne, .absence]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir, .etoileAbsente, .jardin, .croisement, .lanterne, .absence, .ancre]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

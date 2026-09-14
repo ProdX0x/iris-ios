@@ -32,6 +32,7 @@ extension GameElement {
         case .croisement: .croisement
         case .lanterne: .lanterne
         case .absence: .absence
+        case .ancre: .ancre
         }
     }
 }
