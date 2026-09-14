@@ -64,11 +64,14 @@ struct OculoPolylineSnapshot: Hashable, Sendable {
     let points: [Vector2]
     let intensity: Double
     let isClosed: Bool
+    /// A soft, wide band of mist rather than a line.
+    let isMist: Bool
 
-    init(points: [Vector2], intensity: Double, isClosed: Bool = false) {
+    init(points: [Vector2], intensity: Double, isClosed: Bool = false, isMist: Bool = false) {
         self.points = points
         self.intensity = intensity
         self.isClosed = isClosed
+        self.isMist = isMist
     }
 }
 
@@ -190,6 +193,24 @@ enum OculoSceneBuilder {
                 scene.elements.append(OculoElementSnapshot(role: .cradle, position: position, radius: state.radius,
                                                            intensity: isActive && state.isInside ? min(1, state.dwellTime / state.dwell) : 0,
                                                            isActive: isActive, isLit: !isActive, index: index))
+            }
+            return scene
+        case let .courant(state):
+            var scene = Scene()
+            let track = stride(from: 0, to: state.samples.count, by: 4).map { state.samples[$0] }
+            scene.polylines.append(OculoPolylineSnapshot(points: track, intensity: 0.14, isClosed: true))
+            if elapsed >= state.mistFrom - 1 {
+                let fadeIn = min(1, max(0, elapsed - (state.mistFrom - 1)))
+                for index in state.mists.indices {
+                    scene.polylines.append(OculoPolylineSnapshot(points: state.mistTrail(index), intensity: fadeIn, isMist: true))
+                    scene.elements.append(OculoElementSnapshot(role: .relay, position: state.exits[index], radius: state.catchRadius,
+                                                               isActive: state.hiddenIn == index || state.catchMist == index,
+                                                               isLit: state.caught.contains(index), index: index))
+                }
+            }
+            if state.mist(at: elapsed) == nil {
+                scene.elements.append(OculoElementSnapshot(role: .lantern, position: state.position(at: elapsed), radius: state.catchRadius,
+                                                           intensity: 0.5 + 0.5 * state.progress))
             }
             return scene
         }

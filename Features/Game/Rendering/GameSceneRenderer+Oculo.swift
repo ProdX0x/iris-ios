@@ -25,6 +25,11 @@ extension GameSceneRenderer {
         path.move(to: CGPoint(x: first.x, y: first.y))
         for point in polyline.points.dropFirst() { path.addLine(to: CGPoint(x: point.x, y: point.y)) }
         if polyline.isClosed { path.closeSubpath() }
+        if polyline.isMist {
+            context.stroke(path, with: .color(palette.glow.opacity(0.1 * polyline.intensity)), style: StrokeStyle(lineWidth: 44 * scale, lineCap: .round, lineJoin: .round))
+            context.stroke(path, with: .color(palette.glow.opacity(0.16 * polyline.intensity)), style: StrokeStyle(lineWidth: 24 * scale, lineCap: .round, lineJoin: .round))
+            return
+        }
         context.stroke(path, with: .color(palette.accent.opacity(0.7 * polyline.intensity)),
                        style: StrokeStyle(lineWidth: 1.4 * scale, lineCap: .round, lineJoin: .round))
     }

@@ -19,6 +19,50 @@ enum OculoStageDefinition: Hashable, Sendable {
     case jardin(JardinDefinition)
     /// Chapter VII: diagonal saccades of variable amplitude.
     case croisement(CroisementDefinition)
+    /// Chapter VIII: predictive pursuit.
+    case courant(CourantDefinition)
+}
+
+/// Chapter VIII, « la lanterne du courant »: a lantern carried around a closed loop by a periodic current; from the
+/// second lap it vanishes in mist patches and must be met where it comes out.
+struct CourantDefinition: Hashable, Sendable {
+    /// A stretch of the loop, as fractions of its length.
+    struct Mist: Hashable, Sendable {
+        let start: Double
+        let end: Double
+
+        init(start: Double, end: Double) {
+            self.start = min(max(start, 0), 1)
+            self.end = min(max(end, self.start), 1)
+        }
+    }
+
+    /// The loop passes through these points, smoothed and closed.
+    let waypoints: [NormalizedPoint]
+    /// Seconds per lap.
+    let period: TimeInterval
+    /// Amplitude (seconds) of the gentle breathing of the pace.
+    let drift: TimeInterval
+    let mists: [Mist]
+    /// Mists hide the lantern only after this time (a first lap to learn the way).
+    let mistFrom: TimeInterval
+    let catchRadius: Double
+    /// Seconds after the lantern comes out during which a gaze within reach still catches it.
+    let catchWindow: TimeInterval
+    /// Catches needed (and every mist caught at least once).
+    let catches: Int
+
+    init(waypoints: [NormalizedPoint], period: TimeInterval = 8, drift: TimeInterval = 0.25, mists: [Mist], mistFrom: TimeInterval = 8,
+         catchRadius: Double = 0.2, catchWindow: TimeInterval = 0.3, catches: Int = 5) {
+        self.waypoints = waypoints
+        self.period = max(period, 2)
+        self.drift = min(max(drift, 0), self.period / 20)
+        self.mists = mists
+        self.mistFrom = max(mistFrom, 0)
+        self.catchRadius = max(catchRadius, 0.05)
+        self.catchWindow = max(catchWindow, 0.05)
+        self.catches = max(catches, 1)
+    }
 }
 
 /// Chapter VII, « croisement »: the twins call each other from opposite corners of a diagonal; the one that breathes

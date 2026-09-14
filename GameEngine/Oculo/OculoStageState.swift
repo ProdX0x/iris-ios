@@ -48,6 +48,7 @@ enum OculoStageState: Hashable, Sendable {
     case etoiles(EtoilesStageState)
     case jardin(JardinStageState)
     case croisement(CroisementStageState)
+    case courant(CourantStageState)
 }
 
 extension OculoStageState {
@@ -60,6 +61,7 @@ extension OculoStageState {
         case let .etoiles(etoiles): self = .etoiles(EtoilesStageState(definition: etoiles, bounds: bounds, shortSide: shortSide))
         case let .jardin(jardin): self = .jardin(JardinStageState(definition: jardin, bounds: bounds, shortSide: shortSide))
         case let .croisement(croisement): self = .croisement(CroisementStageState(definition: croisement, bounds: bounds, shortSide: shortSide))
+        case let .courant(courant): self = .courant(CourantStageState(definition: courant, bounds: bounds, shortSide: shortSide))
         }
     }
 
@@ -89,6 +91,10 @@ extension OculoStageState {
             let outcome = state.update(input)
             self = .croisement(state)
             return outcome
+        case var .courant(state):
+            let outcome = state.update(input)
+            self = .courant(state)
+            return outcome
         }
     }
 
@@ -100,6 +106,7 @@ extension OculoStageState {
         case let .etoiles(state): state.isComplete
         case let .jardin(state): state.isComplete
         case let .croisement(state): state.isComplete
+        case let .courant(state): state.isComplete
         }
     }
 
@@ -112,6 +119,7 @@ extension OculoStageState {
         case let .etoiles(state): state.progress
         case let .jardin(state): state.progress
         case let .croisement(state): state.progress
+        case let .courant(state): state.progress
         }
     }
 
@@ -124,13 +132,14 @@ extension OculoStageState {
         case let .etoiles(state): state.suggestedGaze(at: elapsed)
         case let .jardin(state): state.suggestedGaze
         case let .croisement(state): state.activePosition(at: elapsed)
+        case let .courant(state): state.position(at: elapsed)
         }
     }
 
     /// The head orientation the ideal player adopts now (nil: no preference).
     var suggestedHead: HeadPose? {
         switch self {
-        case .coeur, .fil, .miroir, .etoiles, .jardin, .croisement: nil
+        case .coeur, .fil, .miroir, .etoiles, .jardin, .croisement, .courant: nil
         }
     }
 }
