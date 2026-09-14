@@ -11,14 +11,14 @@ struct UnavailableView: View {
     var body: some View {
         DSScreen {
             Text("appareil")
-                .dsEyebrowStyle(tint: DSColor.statusDanger)
+                .dsEyebrowStyle(tint: DSColor.State.danger)
             Text(title)
                 .font(DSFont.title)
-                .foregroundStyle(DSColor.textPrimary)
+                .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Text(message)
                 .font(DSFont.body)
-                .foregroundStyle(DSColor.textSecondary)
+                .foregroundStyle(DSColor.Identity.textSecondary)
             DSCard(style: .flat) {
                 DSStatusRow(systemImage: "faceid", title: "Suivi facial ARKit", detail: "Non pris en charge sur cet appareil", state: .error)
                 DSStatusRow(systemImage: "iphone", title: "Appareils compatibles",

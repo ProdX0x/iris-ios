@@ -10,7 +10,7 @@ struct GameView: View {
 
     var body: some View {
         ZStack {
-            DSBackground()
+            GameFieldBackground()
             DSThemeWash(palette: viewModel.chapter.theme.palette)
             GameCanvasHost(viewModel: viewModel)
                 .ignoresSafeArea()
@@ -23,7 +23,7 @@ struct GameView: View {
             GameHUDHost(viewModel: viewModel)
             GameOverlayHost(viewModel: viewModel)
         }
-        .background(DSColor.fieldInk)
+        .background(DSColor.Chapter.ink)
         .statusBarHidden(true)
         .persistentSystemOverlays(.hidden)
         .onDisappear { viewModel.viewDisappeared() }

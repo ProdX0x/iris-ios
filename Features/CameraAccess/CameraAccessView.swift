@@ -12,10 +12,10 @@ struct CameraAccessView: View {
     var body: some View {
         DSScreen {
             Text("avant de jouer")
-                .dsEyebrowStyle(tint: DSColor.accent)
+                .dsEyebrowStyle(tint: DSColor.Identity.accent)
             Text("la caméra lit votre regard")
                 .font(DSFont.title)
-                .foregroundStyle(DSColor.textPrimary)
+                .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
 
             DSCard {
@@ -41,7 +41,7 @@ struct CameraAccessView: View {
         case .explain:
             Text("iOS va vous demander l'autorisation d'utiliser la caméra frontale. Elle sert uniquement à détecter où vous regardez.")
                 .font(DSFont.body)
-                .foregroundStyle(DSColor.textSecondary)
+                .foregroundStyle(DSColor.Identity.textSecondary)
             DSButton("Autoriser la caméra", systemImage: "camera") {
                 Task { await viewModel.requestAccess() }
             }
@@ -49,15 +49,15 @@ struct CameraAccessView: View {
         case .requesting:
             HStack(spacing: DSSpacing.m) {
                 ProgressView()
-                    .tint(DSColor.accent)
+                    .tint(DSColor.Navigation.control)
                 Text("Demande d'accès en cours…")
                     .font(DSFont.body)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
             }
         case .denied:
             Text("L'accès à la caméra a été refusé. Sans regard, Iris ne peut pas fonctionner. Vous pouvez l'autoriser dans Réglages, puis revenir ici.")
                 .font(DSFont.body)
-                .foregroundStyle(DSColor.textSecondary)
+                .foregroundStyle(DSColor.Identity.textSecondary)
             DSButton("Ouvrir Réglages", systemImage: "gear") {
                 if let url = SystemLinks.appSettings { openURL(url) }
             }
@@ -65,7 +65,7 @@ struct CameraAccessView: View {
         case .restricted:
             Text("L'accès à la caméra est restreint sur cet appareil (temps d'écran, profil de gestion). Iris ne peut pas lire le regard tant que cette restriction est active.")
                 .font(DSFont.body)
-                .foregroundStyle(DSColor.textSecondary)
+                .foregroundStyle(DSColor.Identity.textSecondary)
             DSButton("Retour", variant: .secondary) { viewModel.abandon() }
         }
     }

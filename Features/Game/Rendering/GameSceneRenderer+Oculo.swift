@@ -51,7 +51,7 @@ extension GameSceneRenderer {
     private func drawOculoArc(_ arc: OculoArcSnapshot, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
         var path = Path()
         path.addArc(center: CGPoint(x: arc.center.x, y: arc.center.y), radius: arc.radius, startAngle: .radians(arc.start), endAngle: .radians(arc.end), clockwise: false)
-        let color = arc.isActive ? palette.accent : DSColor.textTertiary
+        let color = arc.isActive ? palette.accent : DSColor.Chapter.cendre
         context.stroke(path, with: .color(color.opacity(0.25 + 0.6 * arc.intensity)), style: StrokeStyle(lineWidth: (arc.isActive ? 3 : 1.5) * scale, lineCap: .round))
     }
 
@@ -74,32 +74,32 @@ extension GameSceneRenderer {
             }
             halo(22 * scale * breath, palette.glow, 0.15 + 0.35 * element.intensity)
             context.stroke(disc(8 * scale * breath), with: .color(palette.accent.opacity(0.4 + 0.5 * element.intensity)), lineWidth: 1.6 * scale)
-            context.fill(disc(3 * scale), with: .color(DSColor.lueurCore.opacity(0.5 + 0.5 * element.intensity)))
+            context.fill(disc(3 * scale), with: .color(DSColor.Chapter.lueurCore.opacity(0.5 + 0.5 * element.intensity)))
         case .distractor:
-            halo(18 * scale, DSColor.statusDanger, 0.35 * element.intensity)
-            context.fill(disc(4 * scale), with: .color(DSColor.lueurCore.opacity(0.9 * element.intensity)))
+            halo(18 * scale, DSColor.Chapter.trouble, 0.35 * element.intensity)
+            context.fill(disc(4 * scale), with: .color(DSColor.Chapter.lueurCore.opacity(0.9 * element.intensity)))
         case .spark, .lantern:
             halo(26 * scale, palette.glow, 0.2 + 0.5 * element.intensity)
-            context.fill(disc(6 * scale), with: .radialGradient(Gradient(colors: [DSColor.lueurCore, palette.accent.opacity(0.8)]), center: center, startRadius: 0, endRadius: 7 * scale))
+            context.fill(disc(6 * scale), with: .radialGradient(Gradient(colors: [DSColor.Chapter.lueurCore, palette.accent.opacity(0.8)]), center: center, startRadius: 0, endRadius: 7 * scale))
             if element.isActive {
                 context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.1)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             }
         case .flash:
-            halo(element.radius * 0.8 * (1 + 0.6 * element.phase), DSColor.lueurGlow, 0.6 * element.intensity)
-            context.fill(disc(9 * scale * (1 - 0.5 * element.phase)), with: .color(DSColor.lueurCore.opacity(element.intensity)))
+            halo(element.radius * 0.8 * (1 + 0.6 * element.phase), DSColor.Chapter.lueurGlow, 0.6 * element.intensity)
+            context.fill(disc(9 * scale * (1 - 0.5 * element.phase)), with: .color(DSColor.Chapter.lueurCore.opacity(element.intensity)))
         case .window:
             context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.14 : 0.05)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             halo(24 * scale * breath, palette.glow, element.isActive ? 0.35 : 0.05)
             context.stroke(disc(12 * scale * breath), with: .color(palette.accent.opacity(element.isActive ? 0.8 : 0.2)), lineWidth: 1.6 * scale)
-            if element.isLit { context.fill(disc(5 * scale), with: .color(DSColor.statusSuccess)) }
+            if element.isLit { context.fill(disc(5 * scale), with: .color(DSColor.Chapter.success)) }
         case .constellation:
             let pulse = reduceMotion ? 1 : 1 + (0.15 + 0.35 * element.phase) * sin(time * 2.1 + Double(element.index) * 0.9)
-            halo(18 * scale * pulse, DSColor.lueurGlow, 0.35 + 0.35 * element.phase)
-            context.fill(starPath(center: center, radius: 7 * scale * pulse, points: 4), with: .color(DSColor.lueurCore))
+            halo(18 * scale * pulse, DSColor.Chapter.lueurGlow, 0.35 + 0.35 * element.phase)
+            context.fill(starPath(center: center, radius: 7 * scale * pulse, points: 4), with: .color(DSColor.Chapter.lueurCore))
         case .star:
             if element.isLit || element.intensity > 0 {
-                halo(16 * scale, DSColor.lueurGlow, 0.5 * max(element.intensity, element.isLit ? 0.8 : 0))
-                context.fill(starPath(center: center, radius: 6 * scale, points: 4), with: .color(DSColor.lueurCore.opacity(0.5 + 0.5 * max(element.intensity, element.isLit ? 1 : 0))))
+                halo(16 * scale, DSColor.Chapter.lueurGlow, 0.5 * max(element.intensity, element.isLit ? 0.8 : 0))
+                context.fill(starPath(center: center, radius: 6 * scale, points: 4), with: .color(DSColor.Chapter.lueurCore.opacity(0.5 + 0.5 * max(element.intensity, element.isLit ? 1 : 0))))
             } else if element.isActive {
                 context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.08)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             }
@@ -111,7 +111,7 @@ extension GameSceneRenderer {
                 context.stroke(stem, with: .color(palette.accent.opacity(0.8)), style: StrokeStyle(lineWidth: 1.6 * scale, lineCap: .round))
                 let bloom = CGPoint(x: center.x + 6 * scale, y: center.y - 26 * scale * element.intensity)
                 halo(14 * scale, palette.glow, 0.4)
-                context.fill(Path(ellipseIn: CGRect(x: bloom.x - 5 * scale, y: bloom.y - 5 * scale, width: 10 * scale, height: 10 * scale)), with: .color(DSColor.lueurCore))
+                context.fill(Path(ellipseIn: CGRect(x: bloom.x - 5 * scale, y: bloom.y - 5 * scale, width: 10 * scale, height: 10 * scale)), with: .color(DSColor.Chapter.lueurCore))
             } else {
                 // Breathing seeds swell slowly; the others only twinkle, quick and small.
                 let pulse: CGFloat
@@ -132,17 +132,17 @@ extension GameSceneRenderer {
             context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.12 : 0.04)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             if element.isActive { halo(28 * scale * breath, palette.glow, 0.35) }
             context.stroke(disc(9 * scale * (element.isActive ? breath : 1)), with: .color(palette.accent.opacity(element.isLit ? 0.9 : (element.isActive ? 0.8 : 0.3))), lineWidth: 1.4 * scale)
-            if element.isLit { context.fill(disc(4 * scale), with: .color(DSColor.lueurCore.opacity(0.9))) }
+            if element.isLit { context.fill(disc(4 * scale), with: .color(DSColor.Chapter.lueurCore.opacity(0.9))) }
         case .relay:
             context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.12 : 0.04)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             if element.isActive { halo(24 * scale * breath, palette.glow, 0.35) }
             context.stroke(disc(8 * scale), with: .color(palette.accent.opacity(element.isLit ? 0.9 : (element.isActive ? 0.85 : 0.3))), lineWidth: 1.4 * scale)
-            if element.isLit { context.fill(disc(3.5 * scale), with: .color(DSColor.statusSuccess.opacity(0.9))) }
+            if element.isLit { context.fill(disc(3.5 * scale), with: .color(DSColor.Chapter.success.opacity(0.9))) }
         case .presence:
             if element.intensity > 0.01 {
                 halo(30 * scale * breath, palette.glow, 0.45 * element.intensity)
                 context.stroke(disc(10 * scale * breath), with: .color(palette.accent.opacity(0.9 * element.intensity)), lineWidth: 1.6 * scale)
-                context.fill(disc(3.5 * scale), with: .color(DSColor.lueurCore.opacity(element.intensity)))
+                context.fill(disc(3.5 * scale), with: .color(DSColor.Chapter.lueurCore.opacity(element.intensity)))
             }
             if element.isActive {
                 context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.1)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))

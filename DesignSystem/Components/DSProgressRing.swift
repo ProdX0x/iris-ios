@@ -10,7 +10,7 @@ struct DSProgressRing: View {
     private let lineWidth: CGFloat
     private let label: String?
 
-    init(progress: Double, tint: Color = DSColor.statusSuccess, lineWidth: CGFloat = 6, label: String? = nil) {
+    init(progress: Double, tint: Color = DSColor.State.success, lineWidth: CGFloat = 6, label: String? = nil) {
         self.progress = progress
         self.tint = tint
         self.lineWidth = lineWidth
@@ -20,7 +20,7 @@ struct DSProgressRing: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(DSColor.lineSubtle, lineWidth: lineWidth)
+                .stroke(DSColor.Identity.line, lineWidth: lineWidth)
             Circle()
                 .trim(from: 0, to: min(max(progress, 0), 1))
                 .stroke(tint, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
@@ -29,7 +29,7 @@ struct DSProgressRing: View {
             if let label {
                 Text(label)
                     .font(DSFont.title2)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
             }
         }
         .accessibilityElement(children: .ignore)
@@ -42,5 +42,5 @@ struct DSProgressRing: View {
     DSProgressRing(progress: 0.7, label: "14 / 14")
         .frame(width: 140, height: 140)
         .padding()
-        .background(DSColor.backgroundPrimary)
+        .background(DSColor.Identity.ground)
 }

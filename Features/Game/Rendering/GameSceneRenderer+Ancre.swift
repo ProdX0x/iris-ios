@@ -100,7 +100,7 @@ extension GameSceneRenderer {
             }
         }
         let bars = StrokeStyle(lineWidth: 2 * scale, lineCap: .round)
-        context.stroke(dim, with: .color(DSColor.textTertiary.opacity(0.22 * opacity)), style: bars)
+        context.stroke(dim, with: .color(DSColor.Chapter.cendre.opacity(0.22 * opacity)), style: bars)
         if !bright.isEmpty {
             var glow = context
             glow.blendMode = .plusLighter
@@ -125,7 +125,7 @@ extension GameSceneRenderer {
                                             center: point, startRadius: 0, endRadius: size))
             if head.length >= 1 {
                 let dot = 2.4 * scale
-                context.fill(Path(ellipseIn: CGRect(x: point.x - dot, y: point.y - dot, width: 2 * dot, height: 2 * dot)), with: .color(DSColor.lueurCore.opacity(0.9 * opacity)))
+                context.fill(Path(ellipseIn: CGRect(x: point.x - dot, y: point.y - dot, width: 2 * dot, height: 2 * dot)), with: .color(DSColor.Chapter.lueurCore.opacity(0.9 * opacity)))
             }
         }
     }
@@ -170,7 +170,7 @@ extension GameSceneRenderer {
                                                                 center: point, startRadius: 0, endRadius: 11 * scale))
                 context.fill(disc(3 * scale), with: .color(palette.accent.opacity(breath * opacity)))
             } else {
-                context.fill(disc(2.2 * scale), with: .color(DSColor.textTertiary.opacity(0.35 * opacity)))
+                context.fill(disc(2.2 * scale), with: .color(DSColor.Chapter.cendre.opacity(0.35 * opacity)))
             }
         }
     }
@@ -196,7 +196,7 @@ extension GameSceneRenderer {
         }
         halo(17 * scale, 0.4 * presence)
         context.stroke(disc(7 * scale), with: .color(palette.accent.opacity(0.65 * presence)), lineWidth: 1.2 * scale)
-        context.fill(disc(3.2 * scale), with: .color(DSColor.lueurCore.opacity(presence)))
+        context.fill(disc(3.2 * scale), with: .color(DSColor.Chapter.lueurCore.opacity(presence)))
         if scene.gazeIsCriterion && scene.fixationProgress > 0.01 {
             var arc = Path()
             arc.addArc(center: center, radius: 11 * scale, startAngle: .radians(-Double.pi / 2), endAngle: .radians(-Double.pi / 2 + 2 * Double.pi * scene.fixationProgress), clockwise: false)
@@ -226,7 +226,7 @@ extension GameSceneRenderer {
                 let point = CGPoint(x: center.x + distance * cos(angle), y: center.y + distance * sin(angle) - 12 * scale * eased * e)
                 let twinkle = reduceMotion ? 1 : 0.55 + 0.45 * sin(time * (5 + 6 * b) + 30 * a)
                 let size = (0.6 + 1.2 * c) * scale * (1 - 0.4 * progress)
-                let color = grain == 0 ? DSColor.lueurCore : palette.accent
+                let color = grain == 0 ? DSColor.Chapter.lueurCore : palette.accent
                 glow.fill(Path(ellipseIn: CGRect(x: point.x - size, y: point.y - size, width: 2 * size, height: 2 * size)),
                           with: .color(color.opacity(0.85 * fade * twinkle)))
             }

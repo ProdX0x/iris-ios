@@ -43,7 +43,7 @@ struct DSScreen<Content: View>: View {
 
 #Preview {
     DSScreen {
-        Text("iris").font(DSFont.display).foregroundStyle(DSColor.textPrimary)
+        Text("iris").font(DSFont.display).foregroundStyle(DSColor.Identity.textPrimary)
         Text("attention indirecte").dsEyebrowStyle()
     }
 }

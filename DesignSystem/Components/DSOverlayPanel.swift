@@ -12,7 +12,7 @@ struct DSOverlayPanel<Actions: View>: View {
     private let dim: Double
     @ViewBuilder private let actions: Actions
 
-    init(title: String, subtitle: String? = nil, eyebrow: String? = nil, tint: Color = DSColor.textPrimary, dim: Double = 0.86,
+    init(title: String, subtitle: String? = nil, eyebrow: String? = nil, tint: Color = DSColor.Identity.textPrimary, dim: Double = 0.86,
          @ViewBuilder actions: () -> Actions) {
         self.title = title
         self.subtitle = subtitle
@@ -24,13 +24,13 @@ struct DSOverlayPanel<Actions: View>: View {
 
     var body: some View {
         ZStack {
-            DSColor.fieldInk.opacity(dim)
+            DSColor.Navigation.veil.opacity(dim)
                 .ignoresSafeArea()
             ScrollView(showsIndicators: false) {
                 VStack(spacing: DSSpacing.l) {
                     VStack(spacing: DSSpacing.s) {
                         if let eyebrow {
-                            Text(eyebrow).dsEyebrowStyle(tint: DSColor.textSecondary)
+                            Text(eyebrow).dsEyebrowStyle(tint: DSColor.Identity.textSecondary)
                         }
                         Text(title)
                             .font(DSFont.display)
@@ -40,7 +40,7 @@ struct DSOverlayPanel<Actions: View>: View {
                         if let subtitle {
                             Text(subtitle)
                                 .font(DSFont.callout)
-                                .foregroundStyle(DSColor.textSecondary)
+                                .foregroundStyle(DSColor.Identity.textSecondary)
                                 .multilineTextAlignment(.center)
                         }
                     }
@@ -63,5 +63,5 @@ struct DSOverlayPanel<Actions: View>: View {
         DSButton("Reprendre") {}
         DSButton("Chapitres", variant: .ghost) {}
     }
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

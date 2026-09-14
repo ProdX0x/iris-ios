@@ -6,15 +6,20 @@ Reference: Design/ART_DIRECTION.md (chambre noire) and Design/UX_VISION.md. This
 Dark only, front view, no perspective. Ink grounds, pearl lueurs, amber for attention, mint for success, coral for trouble, marée blue for currents. New York serif titles in lowercase, SF for reading, tracked uppercase eyebrows.
 
 ## Tokens (asset catalogue)
+Four colour families in `DSColor`, each token backed by its own colour set, never shared (ADR-22). The interface reads `Identity`, `Navigation` and `State`; the game world (renderer, chapter palettes and wash, `GameFieldBackground`) reads only `Chapter`. Equal values across families are deliberate copies. `AccentColor` (system tint) and `LaunchBackground` (launch screen) are separate system assets.
 ```
-ds.background.primary #07080B (encre)   ds.background.surface #0D0F14 (abysse)   ds.background.elevated #161922 (ardoise)
-ds.line.subtle #262A35
-ds.text.primary #ECE7DC (nacre)   ds.text.secondary #A7A399 (brume)   ds.text.tertiary #85817A (cendre, ≥ 4.5:1 on encre)
-ds.text.warm #D9D2C3   ds.text.onAccent #1A1206
-ds.accent #F2B35A (ambre)   ds.accent.deep #C9812F (braise)
-ds.status.success #7FE0C0 (menthe)   ds.status.danger #FF7A5C (corail)   ds.status.info #9CC3E6
-ds.field.ink #07080B   ds.field.abyss #121620   ds.lueur.core #F4EFE4   ds.lueur.glow #F7E6C4   ds.maree #5E93BF   ds.veil #ECE7DC
-ds.rank.1 #E9C98A (sable)   ds.rank.2 #9CC3E6 (givre)   ds.rank.3 #DBA3CF (orchidée), always doubled by pips
+Identity    ds.identity.ground #07080B (encre)   ds.identity.ground.abyss #121620   ds.identity.surface #0D0F14 (abysse)   ds.identity.surface.elevated #161922 (ardoise)
+            ds.identity.line #262A35   ds.identity.text.primary #ECE7DC (nacre)   ds.identity.text.secondary #A7A399 (brume)
+            ds.identity.text.tertiary #85817A (cendre, ≥ 4.5:1 on encre)   ds.identity.text.warm #D9D2C3
+            ds.identity.accent #F2B35A (ambre)   ds.identity.emblem.core #F4EFE4   ds.identity.emblem.glow #F7E6C4
+Navigation  ds.navigation.primary #F2B35A   ds.navigation.onPrimary #1A1206   ds.navigation.secondary #161922
+            ds.navigation.control #F2B35A (switches, text actions, progress)   ds.navigation.selection #F2B35A   ds.navigation.veil #07080B
+State       ds.state.success #7FE0C0 (menthe)   ds.state.danger #FF7A5C (corail)   ds.state.warning #F2B35A   ds.state.info #9CC3E6
+Chapter     ds.chapter.ink #07080B   ds.chapter.abyss #121620   ds.chapter.attention #F2B35A (ambre)   ds.chapter.attention.deep #C9812F (braise)
+            ds.chapter.lueur.core #F4EFE4   ds.chapter.lueur.glow #F7E6C4   ds.chapter.maree #5E93BF   ds.chapter.veil #ECE7DC
+            ds.chapter.nacre #ECE7DC   ds.chapter.cendre #85817A   ds.chapter.line #262A35   ds.chapter.success #7FE0C0   ds.chapter.trouble #FF7A5C
+            ds.chapter.rank.1 #E9C98A (sable)   ds.chapter.rank.2 #9CC3E6 (givre)   ds.chapter.rank.3 #DBA3CF (orchidée), always doubled by pips
+            ds.chapter.theme.<jumelles|brume|echo|gouffres|braises|constellation>.<accent|glow|wash> (chapters VII to XII)
 Typography: display largeTitle serif · title / title2 / title3 serif · numeral title3 serif · body, callout, footnote, caption · eyebrow caption semibold tracked 2 · digits monospaced
 Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 · 22 · pill · Motion 0.15 / 0.28 / 0.45 s, Reduce Motion: cross-fades only
 ```
@@ -22,7 +27,7 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 ## Components
 | Component | Purpose | Used by |
 |---|---|---|
-| DSBackground (+ DSIrisFibers) | Chambre noire ground, fibres, slow breathing | every screen |
+| DSBackground (+ DSIrisFibers) | Chambre noire ground, fibres, slow breathing, identity tokens | every interface screen (the game draws GameFieldBackground) |
 | DSScreen | Scrolling page container with gutters | chapters, carnet, journey end, camera, unavailable |
 | DSButton, DSPressableButtonStyle | Primary, secondary, ghost actions, 52 pt | everywhere |
 | DSCard | flat, elevated, glass surfaces | chapters, carnet, settings, result, pause |
@@ -35,7 +40,7 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 | DSProgressRing | circular progress | gaze setup |
 | dsEyebrowStyle, dsGlow | label style, soft glow | everywhere |
 
-Feature components: LevelIntroCard, LevelResultView (EclatBadge), GameHUDView, ChapterCard, LevelNode, FixationMark (gaze setup), GameSceneRenderer (world).
+Feature components: LevelIntroCard, LevelResultView (EclatBadge), GameHUDView, ChapterCard, LevelNode, FixationMark (gaze setup), GameSceneRenderer and GameFieldBackground (world, chapter tokens only).
 
 ## Accessibility
 Dynamic Type on every interface text; 44 pt minimum targets; VoiceOver labels on chapters, nodes, éclats and HUD; hints are posted as accessibility announcements; the game canvas is hidden from VoiceOver; rank never relies on colour alone; Reduce Motion removes breathing, filaments motion, shimmer and ripples.

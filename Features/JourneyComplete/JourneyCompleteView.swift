@@ -19,14 +19,14 @@ struct JourneyCompleteView: View {
             }
             .padding(.top, DSSpacing.l)
             VStack(alignment: .leading, spacing: DSSpacing.s) {
-                Text("le dernier iris").dsEyebrowStyle(tint: DSColor.statusSuccess)
+                Text("le dernier iris").dsEyebrowStyle(tint: DSColor.State.success)
                 Text(Campaign.chapters.last?.name ?? "")
                     .font(DSFont.display)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
                     .accessibilityAddTraits(.isHeader)
                 Text("Toutes les lueurs ont trouvé leur iris. Vous avez appris à regarder juste, pas à regarder plus.")
                     .font(DSFont.body)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
             }
             DSCard(style: .flat) {
                 HStack {
@@ -48,7 +48,7 @@ struct JourneyCompleteView: View {
             Text(value)
                 .font(DSFont.title3)
                 .monospacedDigit()
-                .foregroundStyle(DSColor.textPrimary)
+                .foregroundStyle(DSColor.Identity.textPrimary)
         }
         .accessibilityElement(children: .combine)
     }

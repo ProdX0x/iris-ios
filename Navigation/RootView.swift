@@ -56,7 +56,7 @@ struct RootView: View {
             case .settings:
                 SettingsView()
                     .environment(coordinator)
-                    .presentationBackground(DSColor.backgroundSurface)
+                    .presentationBackground(DSColor.Identity.surface)
                     .presentationDragIndicator(.visible)
             }
         }

@@ -16,7 +16,7 @@ struct GazeSetupView: View {
             content
             GazeLiveDotsView(viewModel: viewModel)
         }
-        .background(DSColor.backgroundPrimary)
+        .background(DSColor.Identity.ground)
         .onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: { size in
@@ -41,7 +41,7 @@ struct GazeSetupView: View {
                 DSIrisMark(size: 90, isBreathing: true)
                 Text("démarrage du suivi du regard…")
                     .font(DSFont.callout)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
             }
         case let .readiness(report):
             GazeReadinessView(report: report, onCancel: { viewModel.cancel() })
@@ -62,7 +62,7 @@ struct GazeSetupView: View {
         case .suspended:
             DSOverlayPanel(title: "en pause", subtitle: "Iris attend votre retour.", dim: 0.94) { EmptyView() }
         case let .failed(failure):
-            DSOverlayPanel(title: failure.title, subtitle: failure.message, tint: DSColor.statusDanger, dim: 0.94) {
+            DSOverlayPanel(title: failure.title, subtitle: failure.message, tint: DSColor.State.danger, dim: 0.94) {
                 if failure == .cameraDenied {
                     DSButton("Ouvrir Réglages", systemImage: "gear") {
                         if let url = SystemLinks.appSettings { openURL(url) }
@@ -84,13 +84,13 @@ private struct GazeLiveDotsView: View {
             ZStack {
                 if let raw = viewModel.liveRaw {
                     Circle()
-                        .strokeBorder(DSColor.statusDanger.opacity(0.8), lineWidth: 1.5)
+                        .strokeBorder(DSColor.State.danger.opacity(0.8), lineWidth: 1.5)
                         .frame(width: 16, height: 16)
                         .position(x: raw.x * proxy.size.width, y: raw.y * proxy.size.height)
                 }
                 if let calibrated = viewModel.liveCalibrated {
                     Circle()
-                        .fill(DSColor.statusSuccess.opacity(0.9))
+                        .fill(DSColor.State.success.opacity(0.9))
                         .frame(width: 12, height: 12)
                         .position(x: calibrated.x * proxy.size.width, y: calibrated.y * proxy.size.height)
                 }

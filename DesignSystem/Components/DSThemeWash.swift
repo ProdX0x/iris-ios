@@ -28,7 +28,7 @@ struct DSThemeWash: View {
 
 #Preview {
     ZStack {
-        DSBackground()
-        DSThemeWash(palette: DSThemePalette(accent: DSColor.statusInfo, glow: DSColor.statusInfo, wash: DSColor.statusInfo))
+        DSColor.Chapter.ink
+        DSThemeWash(palette: .jumelles)
     }
 }

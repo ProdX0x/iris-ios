@@ -19,19 +19,19 @@ struct DSIrisMark: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(RadialGradient(colors: [DSColor.accent.opacity(0.18), .clear], center: .center, startRadius: size * 0.2, endRadius: size * 0.8))
+                .fill(RadialGradient(colors: [DSColor.Identity.accent.opacity(0.18), .clear], center: .center, startRadius: size * 0.2, endRadius: size * 0.8))
                 .frame(width: size * 1.6, height: size * 1.6)
             Circle()
-                .strokeBorder(DSColor.accent.opacity(0.45), lineWidth: max(1, size * 0.012))
+                .strokeBorder(DSColor.Identity.accent.opacity(0.45), lineWidth: max(1, size * 0.012))
                 .frame(width: size, height: size)
             DSApertureBlades(closure: open ? 0.25 : 0.55, rotation: open ? 12 : 0)
-                .stroke(DSColor.accent, style: StrokeStyle(lineWidth: max(1.5, size * 0.07), lineCap: .round))
+                .stroke(DSColor.Identity.accent, style: StrokeStyle(lineWidth: max(1.5, size * 0.07), lineCap: .round))
                 .frame(width: size * 0.84, height: size * 0.84)
             Circle()
-                .fill(RadialGradient(colors: [DSColor.lueurCore, DSColor.lueurGlow.opacity(0)], center: .center, startRadius: 0, endRadius: size * 0.16))
+                .fill(RadialGradient(colors: [DSColor.Identity.emblemCore, DSColor.Identity.emblemGlow.opacity(0)], center: .center, startRadius: 0, endRadius: size * 0.16))
                 .frame(width: size * 0.32, height: size * 0.32)
             Circle()
-                .fill(DSColor.lueurCore)
+                .fill(DSColor.Identity.emblemCore)
                 .frame(width: size * 0.08, height: size * 0.08)
         }
         .frame(width: size * 1.6, height: size * 1.6)
@@ -77,5 +77,5 @@ struct DSApertureBlades: Shape {
         DSIrisMark(size: 48)
     }
     .padding()
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

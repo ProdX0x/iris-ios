@@ -87,7 +87,7 @@ struct ChapterCardLayoutTests {
                     }
                     .padding(.horizontal, DSSpacing.gutter)
                     .padding(.vertical, DSSpacing.l)
-                    .background(DSColor.fieldInk)
+                    .background(DSColor.Identity.ground)
                     .environment(\.dynamicTypeSize, size)
                     .preferredColorScheme(.dark)
                     let renderer = ImageRenderer(content: column)

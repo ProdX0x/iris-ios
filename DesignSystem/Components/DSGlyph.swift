@@ -28,7 +28,7 @@ struct DSGlyph: View {
         return path
     }
 
-    init(_ kind: Kind, tint: Color = DSColor.accent) {
+    init(_ kind: Kind, tint: Color = DSColor.Identity.accent) {
         self.kind = kind
         self.tint = tint
     }
@@ -243,5 +243,5 @@ struct DSGlyph: View {
         }
     }
     .padding()
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

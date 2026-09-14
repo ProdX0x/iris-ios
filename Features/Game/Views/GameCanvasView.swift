@@ -32,7 +32,7 @@ struct GameCanvasHost: View {
         let bounds = PlayfieldBounds(width: 393, height: 852)
         let resolved = LevelResolver.resolve(level, in: bounds)
         ZStack {
-            DSBackground()
+            GameFieldBackground()
             GameCanvasView(snapshot: GameSceneSnapshot(session: resolved.makeSession(), resolved: resolved, showsRoute: true, showsGaze: false, diagnostics: nil),
                            reduceMotion: false)
         }

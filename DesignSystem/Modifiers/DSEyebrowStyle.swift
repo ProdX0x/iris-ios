@@ -17,7 +17,7 @@ struct DSEyebrowStyle: ViewModifier {
 }
 
 extension View {
-    func dsEyebrowStyle(tint: Color = DSColor.textSecondary) -> some View {
+    func dsEyebrowStyle(tint: Color = DSColor.Identity.textSecondary) -> some View {
         modifier(DSEyebrowStyle(tint: tint))
     }
 }

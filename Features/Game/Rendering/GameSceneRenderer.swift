@@ -119,7 +119,7 @@ struct GameSceneRenderer {
                 path.move(to: CGPoint(x: x - direction.x * segment / 2, y: y - direction.y * segment / 2))
                 path.addLine(to: CGPoint(x: x + direction.x * segment / 2, y: y + direction.y * segment / 2))
             }
-            context.stroke(path, with: .color(DSColor.maree.opacity(0.42)), style: StrokeStyle(lineWidth: 1.4 * scale, lineCap: .round))
+            context.stroke(path, with: .color(DSColor.Chapter.maree.opacity(0.42)), style: StrokeStyle(lineWidth: 1.4 * scale, lineCap: .round))
         }
     }
 
@@ -133,8 +133,8 @@ struct GameSceneRenderer {
             path.addLine(to: CGPoint(x: veil.b.x, y: veil.b.y))
         }
         let scale = snapshot.scale
-        context.stroke(path, with: .color(DSColor.veil.opacity(0.08)), style: StrokeStyle(lineWidth: 14 * scale, lineCap: .round))
-        context.stroke(path, with: .color(DSColor.veil.opacity(0.62)), style: StrokeStyle(lineWidth: 3 * scale, lineCap: .round))
+        context.stroke(path, with: .color(DSColor.Chapter.veil.opacity(0.08)), style: StrokeStyle(lineWidth: 14 * scale, lineCap: .round))
+        context.stroke(path, with: .color(DSColor.Chapter.veil.opacity(0.62)), style: StrokeStyle(lineWidth: 3 * scale, lineCap: .round))
     }
 
     // MARK: Route help
@@ -149,7 +149,7 @@ struct GameSceneRenderer {
                 path.addLine(to: CGPoint(x: point.x, y: point.y))
             }
         }
-        context.stroke(path, with: .color(DSColor.textPrimary.opacity(0.22)),
+        context.stroke(path, with: .color(DSColor.Chapter.nacre.opacity(0.22)),
                        style: StrokeStyle(lineWidth: 2 * scale, lineCap: .round, lineJoin: .round, dash: [0.1, 10 * scale]))
     }
 
@@ -158,26 +158,26 @@ struct GameSceneRenderer {
     private func drawIris(_ lueur: LueurSnapshot, sequential: Bool, in context: inout GraphicsContext, scale: Double) {
         let center = CGPoint(x: lueur.arrival.x, y: lueur.arrival.y)
         let radius = lueur.irisRadius
-        let ringColor = sequential ? DSColor.rank(lueur.sequence).opacity(lueur.isIrisOpen ? 0.7 : 0.25) : DSColor.textPrimary.opacity(lueur.isIrisOpen ? 0.28 : 0.12)
+        let ringColor = sequential ? DSColor.Chapter.rank(lueur.sequence).opacity(lueur.isIrisOpen ? 0.7 : 0.25) : DSColor.Chapter.nacre.opacity(lueur.isIrisOpen ? 0.28 : 0.12)
         context.stroke(circle(center, radius), with: .color(ringColor), lineWidth: 1.2 * scale)
 
         if lueur.isValidated {
             var glow = context
             glow.blendMode = .plusLighter
-            glow.fill(circle(center, radius * 1.7), with: .radialGradient(Gradient(colors: [DSColor.statusSuccess.opacity(0.32), DSColor.statusSuccess.opacity(0)]),
+            glow.fill(circle(center, radius * 1.7), with: .radialGradient(Gradient(colors: [DSColor.Chapter.success.opacity(0.32), DSColor.Chapter.success.opacity(0)]),
                                                                           center: center, startRadius: 0, endRadius: radius * 1.7))
-            context.fill(circle(center, radius * 0.42), with: .color(DSColor.statusSuccess.opacity(0.85)))
+            context.fill(circle(center, radius * 0.42), with: .color(DSColor.Chapter.success.opacity(0.85)))
         } else if lueur.isLatent, let awakening = lueur.awakening {
             // PROTOTYPE: shut, the iris opens a little with every balise of the thread.
             let closure = 0.92 - 0.72 * awakening
             let bladesRect = CGRect(x: center.x - radius * 0.86, y: center.y - radius * 0.86, width: radius * 1.72, height: radius * 1.72)
             let blades = DSApertureBlades(closure: closure, rotation: awakening * 30).path(in: bladesRect)
-            context.stroke(blades, with: .color(DSColor.accent.opacity(0.25 + 0.65 * awakening)), style: StrokeStyle(lineWidth: 2.2 * scale, lineCap: .round))
+            context.stroke(blades, with: .color(DSColor.Chapter.attention.opacity(0.25 + 0.65 * awakening)), style: StrokeStyle(lineWidth: 2.2 * scale, lineCap: .round))
         } else {
             let closure = 0.12 + 0.78 * lueur.progress
             let bladesRect = CGRect(x: center.x - radius * 0.86, y: center.y - radius * 0.86, width: radius * 1.72, height: radius * 1.72)
             let blades = DSApertureBlades(closure: closure, rotation: lueur.progress * 40).path(in: bladesRect)
-            let bladeColor = lueur.isIrisOpen ? (lueur.progress > 0 ? DSColor.accent : DSColor.accentDeep.opacity(0.8)) : DSColor.textTertiary.opacity(0.35)
+            let bladeColor = lueur.isIrisOpen ? (lueur.progress > 0 ? DSColor.Chapter.attention : DSColor.Chapter.attentionDeep.opacity(0.8)) : DSColor.Chapter.cendre.opacity(0.35)
             context.stroke(blades, with: .color(bladeColor), style: StrokeStyle(lineWidth: 2.2 * scale, lineCap: .round))
         }
 
@@ -187,7 +187,7 @@ struct GameSceneRenderer {
             let y = center.y - radius - 9 * scale
             let startX = center.x - Double(lueur.sequence - 1) * spacing / 2
             for index in 0..<lueur.sequence {
-                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: y), pipRadius), with: .color(DSColor.rank(lueur.sequence)))
+                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: y), pipRadius), with: .color(DSColor.Chapter.rank(lueur.sequence)))
             }
         }
     }
@@ -222,9 +222,9 @@ struct GameSceneRenderer {
         if pair.isValidated {
             var glow = context
             glow.blendMode = .plusLighter
-            glow.fill(circle(center, radius * 2.4), with: .radialGradient(Gradient(colors: [DSColor.statusSuccess.opacity(0.32), DSColor.statusSuccess.opacity(0)]),
+            glow.fill(circle(center, radius * 2.4), with: .radialGradient(Gradient(colors: [DSColor.Chapter.success.opacity(0.32), DSColor.Chapter.success.opacity(0)]),
                                                                           center: center, startRadius: 0, endRadius: radius * 2.4))
-            context.fill(circle(center, radius * 0.5), with: .color(DSColor.statusSuccess.opacity(0.85)))
+            context.fill(circle(center, radius * 0.5), with: .color(DSColor.Chapter.success.opacity(0.85)))
             return
         }
         guard pair.isLinked else { return }
@@ -234,7 +234,7 @@ struct GameSceneRenderer {
         let closure = 0.12 + 0.78 * pair.progress
         let bladesRect = CGRect(x: center.x - ringRadius * 0.86, y: center.y - ringRadius * 0.86, width: ringRadius * 1.72, height: ringRadius * 1.72)
         let blades = DSApertureBlades(closure: closure, rotation: pair.progress * 40).path(in: bladesRect)
-        let bladeColor = pair.isIrisOpen ? (pair.progress > 0 ? palette.accent : palette.accent.opacity(0.7)) : DSColor.textTertiary.opacity(0.35)
+        let bladeColor = pair.isIrisOpen ? (pair.progress > 0 ? palette.accent : palette.accent.opacity(0.7)) : DSColor.Chapter.cendre.opacity(0.35)
         context.stroke(blades, with: .color(bladeColor), style: StrokeStyle(lineWidth: 2 * scale, lineCap: .round))
     }
 
@@ -246,7 +246,7 @@ struct GameSceneRenderer {
         let angle = atan2(delta.y, delta.x)
         var arc = Path()
         arc.addArc(center: center, radius: lueur.radius + 3.5 * lueur.radius / 20, startAngle: .radians(angle - 0.75), endAngle: .radians(angle + 0.75), clockwise: false)
-        let color = lueur.isValidated ? DSColor.statusSuccess : palette.accent
+        let color = lueur.isValidated ? DSColor.Chapter.success : palette.accent
         context.stroke(arc, with: .color(color.opacity(lueur.isLinked ? 0.95 : 0.6)), style: StrokeStyle(lineWidth: 1.8 * lueur.radius / 20, lineCap: .round))
     }
 
@@ -354,8 +354,8 @@ struct GameSceneRenderer {
         glow.blendMode = .plusLighter
         glow.fill(circle(center, radius * 1.9 * breath), with: .radialGradient(Gradient(colors: [palette.accent.opacity(0.14), palette.accent.opacity(0)]),
                                                                                 center: center, startRadius: radius * 0.5, endRadius: radius * 1.9 * breath))
-        context.fill(circle(center, radius), with: .color(DSColor.fieldAbyss))
-        context.fill(circle(center, radius), with: .color(DSColor.lueurGlow.opacity(0.22)))
+        context.fill(circle(center, radius), with: .color(DSColor.Chapter.abyss))
+        context.fill(circle(center, radius), with: .color(DSColor.Chapter.lueurGlow.opacity(0.22)))
         context.stroke(circle(center, radius), with: .color(palette.accent.opacity(0.75)), lineWidth: 1.4 * radius / 20)
         // A closed lid across the body.
         var lid = Path()
@@ -372,7 +372,7 @@ struct GameSceneRenderer {
             }
         }
         if lueur.disturbance > 0.02 {
-            context.stroke(circle(center, radius * 1.4), with: .color(DSColor.statusDanger.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
+            context.stroke(circle(center, radius * 1.4), with: .color(DSColor.Chapter.trouble.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
         }
     }
 
@@ -381,12 +381,12 @@ struct GameSceneRenderer {
     private func drawGouffre(_ well: GouffreSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
                              palette: DSThemePalette, reduceMotion: Bool) {
         let center = CGPoint(x: well.center.x, y: well.center.y)
-        context.fill(circle(center, well.pullRadius), with: .radialGradient(Gradient(colors: [DSColor.fieldAbyss.opacity(0.9), DSColor.fieldAbyss.opacity(0)]),
+        context.fill(circle(center, well.pullRadius), with: .radialGradient(Gradient(colors: [DSColor.Chapter.abyss.opacity(0.9), DSColor.Chapter.abyss.opacity(0)]),
                                                                             center: center, startRadius: well.radius * 0.8, endRadius: well.pullRadius))
         context.stroke(circle(center, well.pullRadius), with: .color(palette.accent.opacity(0.1)),
                        style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 6 * scale]))
-        context.fill(circle(center, well.radius), with: .color(DSColor.fieldAbyss))
-        context.fill(circle(center, well.radius), with: .radialGradient(Gradient(colors: [DSColor.fieldInk.opacity(0), palette.accent.opacity(0.22)]),
+        context.fill(circle(center, well.radius), with: .color(DSColor.Chapter.abyss))
+        context.fill(circle(center, well.radius), with: .radialGradient(Gradient(colors: [DSColor.Chapter.ink.opacity(0), palette.accent.opacity(0.22)]),
                                                                         center: center, startRadius: well.radius * 0.3, endRadius: well.radius))
         let spin = reduceMotion ? 0 : time * 0.9
         for ring in 0..<2 {
@@ -403,7 +403,7 @@ struct GameSceneRenderer {
         let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
         let radius = lueur.radius * (1 - progress)
         guard radius > 0.5 else { return }
-        context.fill(circle(center, radius), with: .radialGradient(Gradient(colors: [DSColor.lueurCore.opacity(1 - progress), palette.accent.opacity(0.4 * (1 - progress))]),
+        context.fill(circle(center, radius), with: .radialGradient(Gradient(colors: [DSColor.Chapter.lueurCore.opacity(1 - progress), palette.accent.opacity(0.4 * (1 - progress))]),
                                                                    center: center, startRadius: 0, endRadius: radius))
     }
 
@@ -420,24 +420,24 @@ struct GameSceneRenderer {
 
     private func drawVeilleuse(_ flame: VeilleuseSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double, reduceMotion: Bool) {
         let center = CGPoint(x: flame.position.x, y: flame.position.y)
-        context.stroke(circle(center, flame.lookRadius), with: .color(DSColor.accent.opacity(0.1)),
+        context.stroke(circle(center, flame.lookRadius), with: .color(DSColor.Chapter.attention.opacity(0.1)),
                        style: StrokeStyle(lineWidth: 1 * scale, dash: [3 * scale, 6 * scale]))
         let ringRadius = 16 * scale
-        context.stroke(circle(center, ringRadius), with: .color(DSColor.lineSubtle), lineWidth: 2 * scale)
+        context.stroke(circle(center, ringRadius), with: .color(DSColor.Chapter.line), lineWidth: 2 * scale)
         if flame.charge > 0 {
             var arc = Path()
             arc.addArc(center: center, radius: ringRadius, startAngle: .degrees(-90), endAngle: .degrees(-90 + 360 * flame.charge), clockwise: false)
-            context.stroke(arc, with: .color(flame.isLow ? DSColor.statusDanger : DSColor.accent), style: StrokeStyle(lineWidth: 2.5 * scale, lineCap: .round))
+            context.stroke(arc, with: .color(flame.isLow ? DSColor.Chapter.trouble : DSColor.Chapter.attention), style: StrokeStyle(lineWidth: 2.5 * scale, lineCap: .round))
 
             let flicker = (flame.isLow && !reduceMotion) ? 0.85 + 0.15 * sin(time * 22) : 1
             let height = 20 * scale * (0.55 + 0.45 * flame.charge) * flicker
             var glow = context
             glow.blendMode = .plusLighter
-            glow.fill(circle(center, height * 1.3), with: .radialGradient(Gradient(colors: [DSColor.accent.opacity(0.45 * flame.charge), DSColor.accent.opacity(0)]),
+            glow.fill(circle(center, height * 1.3), with: .radialGradient(Gradient(colors: [DSColor.Chapter.attention.opacity(0.45 * flame.charge), DSColor.Chapter.attention.opacity(0)]),
                                                                           center: center, startRadius: 0, endRadius: height * 1.3))
-            context.fill(teardrop(center: center, height: height), with: .color(DSColor.accent))
+            context.fill(teardrop(center: center, height: height), with: .color(DSColor.Chapter.attention))
         } else {
-            context.fill(circle(center, 3 * scale), with: .color(DSColor.textTertiary))
+            context.fill(circle(center, 3 * scale), with: .color(DSColor.Chapter.cendre))
         }
     }
 
@@ -450,7 +450,7 @@ struct GameSceneRenderer {
         }
         let center = CGPoint(x: lueur.position.x, y: lueur.position.y)
         let radius = lueur.radius
-        let glowColor = lueur.isValidated ? DSColor.statusSuccess : DSColor.lueurGlow
+        let glowColor = lueur.isValidated ? DSColor.Chapter.success : DSColor.Chapter.lueurGlow
         let shimmer = (lueur.temperament == .vive && !reduceMotion) ? 0.8 + 0.2 * sin(time * 9 + Double(lueur.sequence)) : 1
         let haloOpacity = (lueur.temperament == .lourde ? 0.36 : 0.26) * shimmer
         var glow = context
@@ -458,26 +458,26 @@ struct GameSceneRenderer {
         glow.fill(circle(center, radius * 2.8), with: .radialGradient(Gradient(colors: [glowColor.opacity(haloOpacity), glowColor.opacity(0)]),
                                                                       center: center, startRadius: radius * 0.6, endRadius: radius * 2.8))
         let highlight = CGPoint(x: center.x - radius * 0.3, y: center.y - radius * 0.3)
-        let coreColors = lueur.isValidated ? [DSColor.lueurCore, DSColor.statusSuccess] : [DSColor.lueurCore, DSColor.lueurGlow]
+        let coreColors = lueur.isValidated ? [DSColor.Chapter.lueurCore, DSColor.Chapter.success] : [DSColor.Chapter.lueurCore, DSColor.Chapter.lueurGlow]
         context.fill(circle(center, radius), with: .radialGradient(Gradient(colors: coreColors), center: highlight, startRadius: 0, endRadius: radius * 1.4))
 
         if sequential {
-            context.stroke(circle(center, radius + 3.5 * lueur.radius / 20), with: .color(DSColor.rank(lueur.sequence).opacity(0.9)), lineWidth: 1.6 * lueur.radius / 20)
+            context.stroke(circle(center, radius + 3.5 * lueur.radius / 20), with: .color(DSColor.Chapter.rank(lueur.sequence).opacity(0.9)), lineWidth: 1.6 * lueur.radius / 20)
             let pip = radius * 0.11
             let spacing = radius * 0.36
             let startX = center.x - Double(lueur.sequence - 1) * spacing / 2
             for index in 0..<lueur.sequence {
-                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: center.y), pip), with: .color(DSColor.fieldInk.opacity(0.8)))
+                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: center.y), pip), with: .color(DSColor.Chapter.ink.opacity(0.8)))
             }
         }
 
         if lueur.disturbance > 0.02 {
             if reduceMotion {
-                context.stroke(circle(center, radius * 1.5), with: .color(DSColor.statusDanger.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
+                context.stroke(circle(center, radius * 1.5), with: .color(DSColor.Chapter.trouble.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
             } else {
                 let phase = fract(time * 2.2 + Double(lueur.sequence) * 0.3)
                 context.stroke(circle(center, radius * (1.25 + 0.95 * phase)),
-                               with: .color(DSColor.statusDanger.opacity(min(0.85, lueur.disturbance * 1.2) * (1 - phase))), lineWidth: 2)
+                               with: .color(DSColor.Chapter.trouble.opacity(min(0.85, lueur.disturbance * 1.2) * (1 - phase))), lineWidth: 2)
             }
         }
     }
@@ -493,19 +493,19 @@ struct GameSceneRenderer {
         let haloOpacity = 0.06 + 0.32 * warmth + 0.25 * flarePulse
         var glow = context
         glow.blendMode = .plusLighter
-        glow.fill(circle(center, haloRadius), with: .radialGradient(Gradient(colors: [DSColor.accent.opacity(haloOpacity), DSColor.accent.opacity(0)]),
+        glow.fill(circle(center, haloRadius), with: .radialGradient(Gradient(colors: [DSColor.Chapter.attention.opacity(haloOpacity), DSColor.Chapter.attention.opacity(0)]),
                                                                     center: center, startRadius: radius * 0.5, endRadius: haloRadius))
         // Ember body: dark when cold, amber as it warms, nacre core once lit.
-        context.fill(circle(center, radius), with: .color(DSColor.fieldAbyss))
-        context.fill(circle(center, radius), with: .color(DSColor.accentDeep.opacity(0.35 + 0.65 * warmth)))
+        context.fill(circle(center, radius), with: .color(DSColor.Chapter.abyss))
+        context.fill(circle(center, radius), with: .color(DSColor.Chapter.attentionDeep.opacity(0.35 + 0.65 * warmth)))
         let coreRadius = radius * (0.25 + 0.55 * warmth)
         let coreOpacity = max(0, (warmth - 0.3) / 0.7)
-        context.fill(circle(center, coreRadius), with: .radialGradient(Gradient(colors: [DSColor.lueurCore.opacity(coreOpacity), DSColor.accent.opacity(coreOpacity * 0.6)]),
+        context.fill(circle(center, coreRadius), with: .radialGradient(Gradient(colors: [DSColor.Chapter.lueurCore.opacity(coreOpacity), DSColor.Chapter.attention.opacity(coreOpacity * 0.6)]),
                                                                        center: center, startRadius: 0, endRadius: coreRadius))
         if lueur.isFlaring {
-            context.stroke(circle(center, radius * (1.15 + 0.35 * flarePulse)), with: .color(DSColor.lueurCore.opacity(0.5 + 0.4 * flarePulse)), lineWidth: 1.5)
+            context.stroke(circle(center, radius * (1.15 + 0.35 * flarePulse)), with: .color(DSColor.Chapter.lueurCore.opacity(0.5 + 0.4 * flarePulse)), lineWidth: 1.5)
         }
-        context.stroke(circle(center, radius + 2.5 * radius / 20), with: .color(DSColor.accent.opacity(0.35 + 0.45 * warmth)),
+        context.stroke(circle(center, radius + 2.5 * radius / 20), with: .color(DSColor.Chapter.attention.opacity(0.35 + 0.45 * warmth)),
                        style: StrokeStyle(lineWidth: 1.4 * radius / 20, dash: lueur.isIrisOpen ? [] : [2.5 * radius / 20, 3.5 * radius / 20]))
 
         if sequential {
@@ -513,17 +513,17 @@ struct GameSceneRenderer {
             let spacing = radius * 0.36
             let startX = center.x - Double(lueur.sequence - 1) * spacing / 2
             for index in 0..<lueur.sequence {
-                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: center.y), pip), with: .color(DSColor.fieldInk.opacity(0.8)))
+                context.fill(circle(CGPoint(x: startX + Double(index) * spacing, y: center.y), pip), with: .color(DSColor.Chapter.ink.opacity(0.8)))
             }
         }
 
         if lueur.disturbance > 0.02 {
             if reduceMotion {
-                context.stroke(circle(center, radius * 1.5), with: .color(DSColor.statusDanger.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
+                context.stroke(circle(center, radius * 1.5), with: .color(DSColor.Chapter.trouble.opacity(lueur.disturbance * 0.6)), lineWidth: 2)
             } else {
                 let phase = fract(time * 2.2 + Double(lueur.sequence) * 0.3)
                 context.stroke(circle(center, radius * (1.25 + 0.95 * phase)),
-                               with: .color(DSColor.statusDanger.opacity(min(0.85, lueur.disturbance * 1.2) * (1 - phase))), lineWidth: 2)
+                               with: .color(DSColor.Chapter.trouble.opacity(min(0.85, lueur.disturbance * 1.2) * (1 - phase))), lineWidth: 2)
             }
         }
     }
@@ -538,7 +538,7 @@ struct GameSceneRenderer {
             path.move(to: CGPoint(x: thread.from.x, y: thread.from.y))
             path.addLine(to: CGPoint(x: end.x, y: end.y))
             let opacity = thread.isComplete ? 0.16 : 0.55
-            context.stroke(path, with: .color(DSColor.accent.opacity(opacity)),
+            context.stroke(path, with: .color(DSColor.Chapter.attention.opacity(opacity)),
                            style: StrokeStyle(lineWidth: (thread.isComplete ? 1 : 1.6) * scale, lineCap: .round, dash: thread.isComplete ? [2 * scale, 6 * scale] : []))
         }
     }
@@ -547,26 +547,26 @@ struct GameSceneRenderer {
         let center = CGPoint(x: balise.position.x, y: balise.position.y)
         let ring = 7 * scale
         if balise.isActive {
-            context.stroke(circle(center, balise.radius), with: .color(DSColor.accent.opacity(0.1)),
+            context.stroke(circle(center, balise.radius), with: .color(DSColor.Chapter.attention.opacity(0.1)),
                            style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
             let breath = reduceMotion ? 1 : 1 + 0.18 * sin(time * 3.2)
             var glow = context
             glow.blendMode = .plusLighter
-            glow.fill(circle(center, 30 * scale * breath), with: .radialGradient(Gradient(colors: [DSColor.accent.opacity(0.32), DSColor.accent.opacity(0)]),
+            glow.fill(circle(center, 30 * scale * breath), with: .radialGradient(Gradient(colors: [DSColor.Chapter.attention.opacity(0.32), DSColor.Chapter.attention.opacity(0)]),
                                                                                   center: center, startRadius: ring * 0.5, endRadius: 30 * scale * breath))
-            context.stroke(circle(center, ring * 1.9 * breath), with: .color(DSColor.accent.opacity(0.7)), lineWidth: 1.4 * scale)
+            context.stroke(circle(center, ring * 1.9 * breath), with: .color(DSColor.Chapter.attention.opacity(0.7)), lineWidth: 1.4 * scale)
         }
         let fresh = balise.litAge.map { max(0, 1 - $0 / 1.2) } ?? 0
         if balise.isLit {
             var glow = context
             glow.blendMode = .plusLighter
-            glow.fill(circle(center, ring * (2.2 + 2.5 * fresh)), with: .radialGradient(Gradient(colors: [DSColor.lueurGlow.opacity(0.18 + 0.5 * fresh), DSColor.lueurGlow.opacity(0)]),
+            glow.fill(circle(center, ring * (2.2 + 2.5 * fresh)), with: .radialGradient(Gradient(colors: [DSColor.Chapter.lueurGlow.opacity(0.18 + 0.5 * fresh), DSColor.Chapter.lueurGlow.opacity(0)]),
                                                                                           center: center, startRadius: 0, endRadius: ring * (2.2 + 2.5 * fresh)))
-            context.fill(circle(center, ring * 0.7), with: .color(DSColor.lueurCore.opacity(0.7 + 0.3 * fresh)))
-            context.stroke(circle(center, ring), with: .color(DSColor.accent.opacity(0.8)), lineWidth: 1.4 * scale)
+            context.fill(circle(center, ring * 0.7), with: .color(DSColor.Chapter.lueurCore.opacity(0.7 + 0.3 * fresh)))
+            context.stroke(circle(center, ring), with: .color(DSColor.Chapter.attention.opacity(0.8)), lineWidth: 1.4 * scale)
         } else {
-            context.stroke(circle(center, ring), with: .color(DSColor.textTertiary.opacity(balise.isActive ? 0.9 : 0.5)), lineWidth: 1.2 * scale)
-            context.fill(circle(center, 1.8 * scale), with: .color(DSColor.textTertiary.opacity(0.7)))
+            context.stroke(circle(center, ring), with: .color(DSColor.Chapter.cendre.opacity(balise.isActive ? 0.9 : 0.5)), lineWidth: 1.2 * scale)
+            context.fill(circle(center, 1.8 * scale), with: .color(DSColor.Chapter.cendre.opacity(0.7)))
         }
     }
 
@@ -574,10 +574,10 @@ struct GameSceneRenderer {
 
     private func drawDiagnostics(_ diagnostics: GazeDiagnostics, in context: inout GraphicsContext) {
         if let raw = diagnostics.raw {
-            context.stroke(circle(CGPoint(x: raw.x, y: raw.y), 7), with: .color(DSColor.statusDanger.opacity(0.8)), lineWidth: 1.5)
+            context.stroke(circle(CGPoint(x: raw.x, y: raw.y), 7), with: .color(DSColor.Chapter.trouble.opacity(0.8)), lineWidth: 1.5)
         }
         if let calibrated = diagnostics.calibrated {
-            context.fill(circle(CGPoint(x: calibrated.x, y: calibrated.y), 4), with: .color(DSColor.statusSuccess.opacity(0.9)))
+            context.fill(circle(CGPoint(x: calibrated.x, y: calibrated.y), 4), with: .color(DSColor.Chapter.success.opacity(0.9)))
         }
         if let edge = diagnostics.edge {
             drawEdgeIndicator(edge, in: &context)
@@ -613,13 +613,13 @@ struct GameSceneRenderer {
             chevron.addLine(to: tip)
             chevron.addLine(to: CGPoint(x: tip.x + size, y: tip.y - size))
         }
-        context.stroke(chevron, with: .color(DSColor.statusDanger.opacity(0.85)), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+        context.stroke(chevron, with: .color(DSColor.Chapter.trouble.opacity(0.85)), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
     }
 
     private func drawCursor(at gaze: Vector2, in context: inout GraphicsContext) {
         let center = CGPoint(x: gaze.x, y: gaze.y)
-        context.stroke(circle(center, 14), with: .color(DSColor.accent.opacity(0.7)), lineWidth: 1.5)
-        context.fill(circle(center, 2), with: .color(DSColor.accent))
+        context.stroke(circle(center, 14), with: .color(DSColor.Chapter.attention.opacity(0.7)), lineWidth: 1.5)
+        context.fill(circle(center, 2), with: .color(DSColor.Chapter.attention))
     }
 
     // MARK: Shapes

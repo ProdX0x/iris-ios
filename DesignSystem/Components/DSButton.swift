@@ -48,24 +48,24 @@ struct DSButton: View {
 
     private var background: Color {
         switch variant {
-        case .primary: DSColor.accent
-        case .secondary: DSColor.backgroundElevated
+        case .primary: DSColor.Navigation.primary
+        case .secondary: DSColor.Navigation.secondary
         case .ghost: .clear
         }
     }
 
     private var foreground: Color {
         switch variant {
-        case .primary: DSColor.textOnAccent
-        case .secondary: DSColor.textPrimary
-        case .ghost: DSColor.textSecondary
+        case .primary: DSColor.Navigation.onPrimary
+        case .secondary: DSColor.Identity.textPrimary
+        case .ghost: DSColor.Identity.textSecondary
         }
     }
 
     private var border: Color {
         switch variant {
         case .primary: .clear
-        case .secondary: DSColor.lineSubtle
+        case .secondary: DSColor.Identity.line
         case .ghost: .clear
         }
     }
@@ -90,12 +90,12 @@ struct DSPressableButtonStyle: ButtonStyle {
         DSButton("Désactivé") {}.disabled(true)
     }
     .padding()
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }
 
 #Preview("Accessibility size") {
     DSButton("Commencer", systemImage: "eye") {}
         .padding()
-        .background(DSColor.backgroundPrimary)
+        .background(DSColor.Identity.ground)
         .dynamicTypeSize(.accessibility3)
 }

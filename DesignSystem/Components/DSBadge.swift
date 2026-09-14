@@ -34,11 +34,11 @@ struct DSBadge: View {
 
     private var foreground: Color {
         switch tone {
-        case .neutral: DSColor.textSecondary
-        case .accent: DSColor.accent
-        case .success: DSColor.statusSuccess
-        case .danger: DSColor.statusDanger
-        case .info: DSColor.statusInfo
+        case .neutral: DSColor.Identity.textSecondary
+        case .accent: DSColor.Identity.accent
+        case .success: DSColor.State.success
+        case .danger: DSColor.State.danger
+        case .info: DSColor.State.info
         }
     }
 }
@@ -52,5 +52,5 @@ struct DSBadge: View {
         DSBadge("info", tone: .info)
     }
     .padding()
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

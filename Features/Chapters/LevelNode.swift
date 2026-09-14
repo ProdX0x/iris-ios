@@ -24,13 +24,13 @@ struct LevelNode: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(state == .locked ? DSColor.backgroundSurface : DSColor.backgroundElevated)
+                    .fill(state == .locked ? DSColor.Identity.surface : DSColor.Identity.surfaceElevated)
                 DSEclats(lit: Eclat.allCases.map { eclats.contains($0) }, lineWidth: 2.5)
                     .padding(2)
                     .opacity(state == .locked ? 0.35 : 1)
                 if state == .next {
                     Circle()
-                        .strokeBorder(DSColor.accent, lineWidth: 2)
+                        .strokeBorder(DSColor.Navigation.selection, lineWidth: 2)
                         .padding(-style.ringOutset)
                 }
                 Text("\(level.index)")
@@ -39,7 +39,7 @@ struct LevelNode: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
                     .padding(DSSpacing.xs)
-                    .foregroundStyle(state == .locked ? DSColor.textTertiary : DSColor.textPrimary)
+                    .foregroundStyle(state == .locked ? DSColor.Identity.textTertiary : DSColor.Identity.textPrimary)
             }
             .padding(style.circleInset)
             // A square no larger than the historical button, as large as the row allows.

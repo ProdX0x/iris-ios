@@ -35,7 +35,7 @@ struct LevelResultView: View {
                     metric("pertes", "\(result.outcome.losses)")
                 }
                 if result.isNewBestTime {
-                    Text("meilleur temps").dsEyebrowStyle(tint: DSColor.statusSuccess)
+                    Text("meilleur temps").dsEyebrowStyle(tint: DSColor.State.success)
                 }
             }
             DSButton(result.primaryTitle, systemImage: result.isCampaignEnd ? "sparkles" : "arrow.right", action: onPrimary)
@@ -60,7 +60,7 @@ struct LevelResultView: View {
             Text(value)
                 .font(DSFont.title3)
                 .monospacedDigit()
-                .foregroundStyle(DSColor.textPrimary)
+                .foregroundStyle(DSColor.Identity.textPrimary)
         }
         .accessibilityElement(children: .combine)
     }
@@ -75,21 +75,21 @@ private struct EclatBadge: View {
         VStack(spacing: DSSpacing.xs) {
             ZStack {
                 Circle()
-                    .fill(isLit ? DSColor.statusSuccess.opacity(0.2) : Color.clear)
+                    .fill(isLit ? DSColor.State.success.opacity(0.2) : Color.clear)
                 Circle()
-                    .strokeBorder(isLit ? DSColor.statusSuccess : DSColor.lineSubtle, lineWidth: 2)
+                    .strokeBorder(isLit ? DSColor.State.success : DSColor.Identity.line, lineWidth: 2)
                 DSApertureBlades(closure: isLit ? 0.85 : 0.2, rotation: 0)
-                    .stroke(isLit ? DSColor.statusSuccess : DSColor.textTertiary, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                    .stroke(isLit ? DSColor.State.success : DSColor.Identity.textTertiary, style: StrokeStyle(lineWidth: 2, lineCap: .round))
                     .padding(10)
             }
             .frame(width: 56, height: 56)
             .animation(.easeInOut(duration: 0.3), value: isLit)
             Text(eclat.title)
                 .font(DSFont.callout)
-                .foregroundStyle(isLit ? DSColor.textPrimary : DSColor.textTertiary)
+                .foregroundStyle(isLit ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
             Text(eclat.condition)
                 .font(DSFont.caption)
-                .foregroundStyle(DSColor.textTertiary)
+                .foregroundStyle(DSColor.Identity.textTertiary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 96)
             if isNew {

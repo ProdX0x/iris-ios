@@ -19,7 +19,7 @@ struct DSEclats: View {
             ForEach(0..<3, id: \.self) { index in
                 Circle()
                     .trim(from: Double(index) / 3 + 0.02, to: Double(index + 1) / 3 - 0.02)
-                    .stroke(isLit(index) ? DSColor.statusSuccess : DSColor.lineSubtle,
+                    .stroke(isLit(index) ? DSColor.State.success : DSColor.Identity.line,
                             style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                     .rotationEffect(.degrees(-90))
             }
@@ -40,5 +40,5 @@ struct DSEclats: View {
         DSEclats(lit: [true, true, true], lineWidth: 5).frame(width: 90, height: 90)
     }
     .padding()
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

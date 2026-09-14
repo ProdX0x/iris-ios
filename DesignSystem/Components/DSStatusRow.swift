@@ -28,17 +28,17 @@ struct DSStatusRow: View {
         HStack(alignment: .top, spacing: DSSpacing.m) {
             Image(systemName: systemImage)
                 .font(DSFont.headline)
-                .foregroundStyle(DSColor.accent)
+                .foregroundStyle(DSColor.Identity.accent)
                 .frame(width: DSSpacing.l)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text(title)
                     .font(DSFont.body)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
                 if let detail {
                     Text(detail)
                         .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                 }
             }
             Spacer(minLength: DSSpacing.s)
@@ -54,10 +54,10 @@ struct DSStatusRow: View {
 
     private var dotColor: Color {
         switch state {
-        case .pending: DSColor.textTertiary
-        case .ok: DSColor.statusSuccess
-        case .warning: DSColor.accent
-        case .error: DSColor.statusDanger
+        case .pending: DSColor.Identity.textTertiary
+        case .ok: DSColor.State.success
+        case .warning: DSColor.State.warning
+        case .error: DSColor.State.danger
         }
     }
 
@@ -78,5 +78,5 @@ struct DSStatusRow: View {
         DSStatusRow(systemImage: "speaker.wave.2", title: "Son", state: .pending)
     }
     .padding()
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

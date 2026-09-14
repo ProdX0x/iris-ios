@@ -17,17 +17,17 @@ struct GazeVerdictView: View {
             Spacer()
             VStack(spacing: DSSpacing.s) {
                 Text(isAccepted ? "calibration validée" : "précision insuffisante")
-                    .dsEyebrowStyle(tint: isAccepted ? DSColor.statusSuccess : DSColor.statusDanger)
+                    .dsEyebrowStyle(tint: isAccepted ? DSColor.State.success : DSColor.State.danger)
                 Text(isAccepted ? "regard prêt" : "la précision peut être améliorée")
                     .font(DSFont.display)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
                     .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                 Text(isAccepted
                      ? "Le point menthe suit votre regard. Vérifiez qu'il se pose bien là où vous regardez, puis continuez."
                      : "Les cibles de contrôle n'ont pas été retrouvées avec assez de précision. Recalibrez en tenant l'iPhone droit, sans bouger la tête.")
                     .font(DSFont.callout)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, DSSpacing.gutter)
@@ -40,7 +40,7 @@ struct GazeVerdictView: View {
                 }
                 Text("en pourcentage de la petite dimension de l'écran (seuils 18 % et 30 %)")
                     .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.textTertiary)
+                    .foregroundStyle(DSColor.Identity.textTertiary)
             }
             .padding(.horizontal, DSSpacing.gutter)
 
@@ -66,7 +66,7 @@ struct GazeVerdictView: View {
             Text(label).dsEyebrowStyle()
             Text("\(Int((value * 100).rounded())) %")
                 .font(DSFont.title2)
-                .foregroundStyle(DSColor.textPrimary)
+                .foregroundStyle(DSColor.Identity.textPrimary)
         }
         .accessibilityElement(children: .combine)
     }
@@ -77,5 +77,5 @@ struct GazeVerdictView: View {
         ValidationResult.Measurement(target: SIMD2(0.5, 0.5), measured: SIMD2(0.52, 0.5), error: 0.05),
         ValidationResult.Measurement(target: SIMD2(0.15, 0.5), measured: SIMD2(0.2, 0.48), error: 0.11),
     ]), isAccepted: true, attempts: 0, onPrimary: {}, onSecondary: {}, onCancel: {})
-    .background(DSColor.backgroundPrimary)
+    .background(DSColor.Identity.ground)
 }

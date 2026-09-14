@@ -44,7 +44,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Services/NotificationObserverBag.swift | class | Audio | Owns NotificationCenter observer tokens and removes them when its owner is deallocated | Claude (mission Iris) |
 | Audio/Services/SilentAudioService.swift | class | Audio | No-op audio used by previews and by the app when the audio engine cannot start | Claude (mission Iris) |
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
-| DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The chambre noire: ink ground, abyss centre, faint iris fibres, vignette; optionally breathing | Claude (mission Iris) |
+| DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The interface's chambre noire (identity tokens): ink ground, abyss centre, faint iris fibres, vignette; | Claude (mission Iris) |
 | DesignSystem/Components/DSBadge.swift | struct | DesignSystem | Small status pill (success, danger, info, neutral, accent) | Claude (mission Iris) |
 | DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions with press feedback, 52 pt minimum height | Claude (mission Iris) |
 | DesignSystem/Components/DSCard.swift | struct | DesignSystem | Elevated surface with hairline border for grouped content and overlays | Claude (mission Iris) |
@@ -58,7 +58,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Components/DSThemeWash.swift | struct | DesignSystem | Tints the chambre noire with a chapter's wash and a soft glow at the top; draws nothing for the historical palette | Claude (mission Iris) |
 | DesignSystem/Modifiers/DSEyebrowStyle.swift | struct | DesignSystem | Small uppercase tracked label style used for section markers and HUD readouts | Claude (mission Iris) |
 | DesignSystem/Modifiers/DSGlow.swift | struct | DesignSystem | Soft coloured glow used for the iris mark and validated states | Claude (mission Iris) |
-| DesignSystem/Tokens/DSColor.swift | enum | DesignSystem | Semantic colour tokens of the "chambre noire" identity (values live in the asset catalogue) | Claude (mission Iris) |
+| DesignSystem/Tokens/DSColor.swift | enum | DesignSystem | Colour tokens by role: interface identity, navigation, states, and the chapters' game world (values live | Claude (mission Iris) |
 | DesignSystem/Tokens/DSFont.swift | enum | DesignSystem | Typography tokens: New York serif titles in lowercase, SF for reading, all Dynamic Type aware | Claude (mission Iris) |
 | DesignSystem/Tokens/DSMotion.swift | enum | DesignSystem | Motion tokens; every animation has a Reduce Motion variant (cross-fade only) | Claude (mission Iris) |
 | DesignSystem/Tokens/DSRadius.swift | enum | DesignSystem | Corner radius scale | Claude (mission Iris) |
@@ -159,6 +159,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/ViewModels/GazeCalibrationStatus.swift | enum | Presentation | What the game knows about the calibration in use (pause panel readout) | Claude (mission Iris) |
 | Features/Game/ViewModels/LevelResult.swift | struct | Presentation | What the result screen shows after a level: measurements, éclats and what comes next | Claude (mission Iris) |
 | Features/Game/Views/GameCanvasView.swift | struct | Presentation | Draws one scene snapshot; re-evaluated only when the snapshot changes | Claude (mission Iris) |
+| Features/Game/Views/GameFieldBackground.swift | struct | Presentation | The field behind a level: the chambre noire drawn from chapter tokens only, so a new interface background | Claude (mission Iris) |
 | Features/Game/Views/GameHUDView.swift | struct | Presentation | Peripheral HUD: level mark, pause, contextual hint at the bottom, diagnostic badges when enabled | Claude (mission Iris) |
 | Features/Game/Views/GameOverlayView.swift | struct | Presentation | One overlay per game phase: intro, pause, result, interruption, face lost, resume, suspension, failure | Claude (mission Iris) |
 | Features/Game/Views/GameView.swift | struct | Presentation | The game screen: chambre noire background, chapter wash, world canvas, peripheral HUD and phase overlays | Claude (mission Iris) |

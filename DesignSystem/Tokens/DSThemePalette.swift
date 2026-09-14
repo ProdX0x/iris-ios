@@ -20,17 +20,17 @@ struct DSThemePalette: Hashable, Sendable {
     }
 
     /// Chapters I to VI: the historical tokens, no wash.
-    static let chambreNoire = DSThemePalette(accent: DSColor.accent, glow: DSColor.lueurGlow, wash: nil)
+    static let chambreNoire = DSThemePalette(accent: DSColor.Chapter.attention, glow: DSColor.Chapter.lueurGlow, wash: nil)
     /// Chapter VII, jumelles: rose over plum.
-    static let jumelles = DSThemePalette(accent: DSColor.themeJumellesAccent, glow: DSColor.themeJumellesGlow, wash: DSColor.themeJumellesWash)
+    static let jumelles = DSThemePalette(accent: DSColor.Chapter.jumellesAccent, glow: DSColor.Chapter.jumellesGlow, wash: DSColor.Chapter.jumellesWash)
     /// Chapter VIII, souffles: pale cyan over teal ink.
-    static let brume = DSThemePalette(accent: DSColor.themeBrumeAccent, glow: DSColor.themeBrumeGlow, wash: DSColor.themeBrumeWash)
+    static let brume = DSThemePalette(accent: DSColor.Chapter.brumeAccent, glow: DSColor.Chapter.brumeGlow, wash: DSColor.Chapter.brumeWash)
     /// Chapter IX, échos: chartreuse over moss ink.
-    static let echo = DSThemePalette(accent: DSColor.themeEchoAccent, glow: DSColor.themeEchoGlow, wash: DSColor.themeEchoWash)
+    static let echo = DSThemePalette(accent: DSColor.Chapter.echoAccent, glow: DSColor.Chapter.echoGlow, wash: DSColor.Chapter.echoWash)
     /// Chapter X, gouffres: lavender over a violet abyss.
-    static let gouffres = DSThemePalette(accent: DSColor.themeGouffresAccent, glow: DSColor.themeGouffresGlow, wash: DSColor.themeGouffresWash)
+    static let gouffres = DSThemePalette(accent: DSColor.Chapter.gouffresAccent, glow: DSColor.Chapter.gouffresGlow, wash: DSColor.Chapter.gouffresWash)
     /// Chapter XI, braises: ember orange over burnt ink.
-    static let braises = DSThemePalette(accent: DSColor.themeBraisesAccent, glow: DSColor.themeBraisesGlow, wash: DSColor.themeBraisesWash)
+    static let braises = DSThemePalette(accent: DSColor.Chapter.braisesAccent, glow: DSColor.Chapter.braisesGlow, wash: DSColor.Chapter.braisesWash)
     /// Chapter XII, constellation: silver over the deepest night.
-    static let constellation = DSThemePalette(accent: DSColor.themeConstellationAccent, glow: DSColor.themeConstellationGlow, wash: DSColor.themeConstellationWash)
+    static let constellation = DSThemePalette(accent: DSColor.Chapter.constellationAccent, glow: DSColor.Chapter.constellationGlow, wash: DSColor.Chapter.constellationWash)
 }

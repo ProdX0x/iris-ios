@@ -1,6 +1,7 @@
 // DSBackground.swift
 // Layer: DesignSystem
-// Purpose: The chambre noire: ink ground, abyss centre, faint iris fibres, vignette; optionally breathing
+// Purpose: The interface's chambre noire (identity tokens): ink ground, abyss centre, faint iris fibres, vignette;
+// optionally breathing. The game draws its own field from chapter tokens (GameFieldBackground)
 
 import SwiftUI
 
@@ -21,11 +22,11 @@ struct DSBackground: View {
 
     var body: some View {
         ZStack {
-            DSColor.fieldInk
-            RadialGradient(colors: [DSColor.fieldAbyss, DSColor.fieldInk], center: .center, startRadius: 0, endRadius: 520)
+            DSColor.Identity.ground
+            RadialGradient(colors: [DSColor.Identity.groundAbyss, DSColor.Identity.ground], center: .center, startRadius: 0, endRadius: 520)
                 .opacity(breath ? 1 : 0.86)
-            DSIrisFibers(opacity: intensity == .vivid ? 0.045 : 0.03)
-            RadialGradient(colors: [DSColor.accent.opacity(intensity == .vivid ? 0.07 : 0.035), .clear],
+            DSIrisFibers(opacity: intensity == .vivid ? 0.045 : 0.03, color: DSColor.Identity.textPrimary)
+            RadialGradient(colors: [DSColor.Identity.accent.opacity(intensity == .vivid ? 0.07 : 0.035), .clear],
                            center: UnitPoint(x: 0.5, y: 0.42), startRadius: 0, endRadius: 360)
         }
         .ignoresSafeArea()
@@ -37,9 +38,10 @@ struct DSBackground: View {
     }
 }
 
-/// Eighty fine rays from the centre, drawn once (static inputs).
+/// Eighty fine rays from the centre, drawn once (static inputs), in the colour of the ground that owns them.
 struct DSIrisFibers: View {
     let opacity: Double
+    let color: Color
 
     var body: some View {
         Canvas { context, size in
@@ -58,7 +60,7 @@ struct DSIrisFibers: View {
                 path.move(to: CGPoint(x: centerX + cosine * start, y: centerY + sine * start))
                 path.addLine(to: CGPoint(x: centerX + cosine * outer, y: centerY + sine * outer))
             }
-            context.stroke(path, with: .color(DSColor.textPrimary.opacity(opacity)), lineWidth: 0.6)
+            context.stroke(path, with: .color(color.opacity(opacity)), lineWidth: 0.6)
         }
         .allowsHitTesting(false)
     }

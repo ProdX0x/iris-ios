@@ -15,7 +15,7 @@ struct FixationTargetView: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                FixationMark(progress: display.progress, isCollecting: display.isCollecting, tint: DSColor.accent)
+                FixationMark(progress: display.progress, isCollecting: display.isCollecting, tint: DSColor.Identity.accent)
                     .frame(width: 64, height: 64)
                     .position(x: display.target.x * proxy.size.width, y: display.target.y * proxy.size.height)
                     .animation(DSMotion.animation(DSMotion.standardAnimation, reduceMotion: reduceMotion), value: display.target)
@@ -23,10 +23,10 @@ struct FixationTargetView: View {
                 // Placed between the top and middle rows of targets so it never covers one of them.
                 VStack(spacing: DSSpacing.xs) {
                     Text("\(stageLabel) \(display.index + 1) / \(display.count)")
-                        .dsEyebrowStyle(tint: DSColor.accent)
+                        .dsEyebrowStyle(tint: DSColor.Identity.accent)
                     Text("suivez le point des yeux, sans bouger la tête")
                         .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                 }
                 .position(x: proxy.size.width / 2, y: proxy.size.height * 0.31)
                 .accessibilityElement(children: .combine)
@@ -34,10 +34,10 @@ struct FixationTargetView: View {
                 Button(action: onCancel) {
                     Image(systemName: "xmark")
                         .font(DSFont.headline)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                         .frame(width: 44, height: 44)
-                        .background(DSColor.backgroundSurface.opacity(0.7), in: Circle())
-                        .overlay(Circle().strokeBorder(DSColor.lineSubtle, lineWidth: 1))
+                        .background(DSColor.Identity.surface.opacity(0.7), in: Circle())
+                        .overlay(Circle().strokeBorder(DSColor.Identity.line, lineWidth: 1))
                 }
                 .accessibilityLabel("Annuler")
                 .position(x: DSSpacing.xl + DSSpacing.s, y: proxy.size.height - DSSpacing.xxl)
@@ -50,5 +50,5 @@ struct FixationTargetView: View {
 #Preview {
     FixationTargetView(display: FixationDisplay(target: SIMD2(0.15, 0.14), index: 0, count: 9, progress: 0.4, isCollecting: true),
                        stageLabel: "calibration", viewport: .referencePhone, onCancel: {})
-        .background(DSColor.backgroundPrimary)
+        .background(DSColor.Identity.ground)
 }

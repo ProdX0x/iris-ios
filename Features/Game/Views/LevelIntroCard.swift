@@ -13,7 +13,7 @@ struct LevelIntroCard: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             Button(action: onStart) {
-                LinearGradient(colors: [DSColor.fieldInk.opacity(0.05), DSColor.fieldInk.opacity(0.55)], startPoint: .center, endPoint: .bottom)
+                LinearGradient(colors: [DSColor.Navigation.veil.opacity(0.05), DSColor.Navigation.veil.opacity(0.55)], startPoint: .center, endPoint: .bottom)
                     .ignoresSafeArea()
             }
             .buttonStyle(.plain)
@@ -26,16 +26,16 @@ struct LevelIntroCard: View {
                     Spacer()
                     Button("chapitres", action: onChapters)
                         .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                         .frame(minHeight: 44)
                 }
                 Text(level.title)
                     .font(DSFont.title)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
                     .accessibilityAddTraits(.isHeader)
                 Text(level.principle)
                     .font(DSFont.callout)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                 if !level.introduces.isEmpty {
                     HStack(spacing: DSSpacing.m) {
@@ -45,7 +45,7 @@ struct LevelIntroCard: View {
                                     .frame(width: 18, height: 18)
                                 Text(element.name)
                                     .font(DSFont.footnote)
-                                    .foregroundStyle(DSColor.textPrimary)
+                                    .foregroundStyle(DSColor.Identity.textPrimary)
                             }
                             .accessibilityElement(children: .combine)
                         }
@@ -58,8 +58,8 @@ struct LevelIntroCard: View {
             .padding(.horizontal, DSSpacing.l)
             .padding(.vertical, DSSpacing.m)
             .frame(maxWidth: 520, alignment: .leading)
-            .background(DSColor.backgroundSurface.opacity(0.8), in: RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous).strokeBorder(DSColor.lineSubtle, lineWidth: 1))
+            .background(DSColor.Identity.surface.opacity(0.8), in: RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous).strokeBorder(DSColor.Identity.line, lineWidth: 1))
             .padding(.horizontal, DSSpacing.m)
             .padding(.bottom, DSSpacing.s)
         }

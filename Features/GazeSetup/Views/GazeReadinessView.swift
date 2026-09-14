@@ -11,16 +11,16 @@ struct GazeReadinessView: View {
     var body: some View {
         VStack(spacing: DSSpacing.m) {
             VStack(spacing: DSSpacing.xs) {
-                Text("diagnostic du regard").dsEyebrowStyle(tint: DSColor.accent)
+                Text("diagnostic du regard").dsEyebrowStyle(tint: DSColor.Identity.accent)
                 Text(report.isReady ? "regard prêt pour la calibration" : "regardez le point")
                     .font(DSFont.title2)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
                     .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
             }
             .padding(.top, DSSpacing.m)
 
-            FixationMark(progress: report.isReady ? 1 : 0, isCollecting: report.isReady, tint: report.isReady ? DSColor.statusSuccess : DSColor.accent)
+            FixationMark(progress: report.isReady ? 1 : 0, isCollecting: report.isReady, tint: report.isReady ? DSColor.State.success : DSColor.Identity.accent)
                 .frame(width: 56, height: 56)
 
             ScrollView(showsIndicators: false) {
@@ -32,7 +32,7 @@ struct GazeReadinessView: View {
                 .padding(.horizontal, DSSpacing.gutter)
                 Text(report.isReady ? "La calibration démarre dans un instant. Gardez la tête immobile." : "Tenez l'iPhone droit devant vous, à 30 ou 40 cm, et fixez le point.")
                     .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.textTertiary)
+                    .foregroundStyle(DSColor.Identity.textTertiary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, DSSpacing.gutter)
                     .padding(.top, DSSpacing.s)

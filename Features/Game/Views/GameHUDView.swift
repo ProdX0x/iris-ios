@@ -17,16 +17,16 @@ struct GameHUDView: View {
         VStack {
             HStack(alignment: .center) {
                 Text(levelMark)
-                    .dsEyebrowStyle(tint: DSColor.textSecondary)
+                    .dsEyebrowStyle(tint: DSColor.Identity.textSecondary)
                     .accessibilityLabel("Niveau \(levelMark)")
                 Spacer()
                 Button(action: onPause) {
                     Image(systemName: "pause")
                         .font(DSFont.headline)
-                        .foregroundStyle(DSColor.textPrimary)
+                        .foregroundStyle(DSColor.Identity.textPrimary)
                         .frame(width: 44, height: 44)
-                        .background(DSColor.backgroundSurface.opacity(0.6), in: Circle())
-                        .overlay(Circle().strokeBorder(DSColor.lineSubtle, lineWidth: 1))
+                        .background(DSColor.Identity.surface.opacity(0.6), in: Circle())
+                        .overlay(Circle().strokeBorder(DSColor.Identity.line, lineWidth: 1))
                 }
                 .opacity(showsPause ? 1 : 0)
                 .disabled(!showsPause)
@@ -36,12 +36,12 @@ struct GameHUDView: View {
             if let hint {
                 Text(hint)
                     .font(DSFont.callout)
-                    .foregroundStyle(DSColor.textWarm)
+                    .foregroundStyle(DSColor.Identity.textWarm)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .padding(.horizontal, DSSpacing.m)
                     .padding(.vertical, DSSpacing.s)
-                    .background(DSColor.fieldInk.opacity(0.55), in: Capsule())
+                    .background(DSColor.Navigation.veil.opacity(0.55), in: Capsule())
                     .transition(.opacity)
                     .id(hint)
             }
@@ -107,5 +107,5 @@ struct GameHUDHost: View {
 #Preview {
     GameHUDView(levelMark: "III · 2", hint: "Regardez juste sous la lueur : elle montera.", showsPause: true,
                 diagnostics: nil, onPause: {})
-        .background(DSColor.backgroundPrimary)
+        .background(DSColor.Identity.ground)
 }

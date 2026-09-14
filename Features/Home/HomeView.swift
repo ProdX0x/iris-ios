@@ -17,7 +17,7 @@ struct HomeView: View {
                     Button { coordinator.showSettings() } label: {
                         Image(systemName: "slider.horizontal.3")
                             .font(DSFont.headline)
-                            .foregroundStyle(DSColor.textSecondary)
+                            .foregroundStyle(DSColor.Identity.textSecondary)
                             .frame(width: 44, height: 44)
                     }
                     .accessibilityLabel("Réglages")
@@ -27,11 +27,11 @@ struct HomeView: View {
                 VStack(spacing: DSSpacing.s) {
                     Text("iris")
                         .font(DSFont.display)
-                        .foregroundStyle(DSColor.textPrimary)
+                        .foregroundStyle(DSColor.Identity.textPrimary)
                         .accessibilityAddTraits(.isHeader)
                     Text("Ce que vous regardez s'éloigne.")
                         .font(DSFont.callout)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                 }
                 Spacer(minLength: DSSpacing.l)
                 VStack(spacing: DSSpacing.s) {
@@ -39,14 +39,14 @@ struct HomeView: View {
                     if let detail = summary.detail {
                         Text(detail)
                             .font(DSFont.footnote)
-                            .foregroundStyle(DSColor.textTertiary)
+                            .foregroundStyle(DSColor.Identity.textTertiary)
                             .multilineTextAlignment(.center)
                     }
                     DSButton("Chapitres", variant: .secondary) { coordinator.openChapters() }
                         .padding(.top, DSSpacing.xs)
                     if summary.eclats > 0 {
                         Text("\(summary.eclats) éclats sur \(summary.maxEclats)")
-                            .dsEyebrowStyle(tint: DSColor.statusSuccess)
+                            .dsEyebrowStyle(tint: DSColor.State.success)
                             .padding(.top, DSSpacing.xs)
                     }
                 }

@@ -27,7 +27,7 @@ struct GameOverlayView: View {
         case .interrupted:
             DSOverlayPanel(title: "interrompu",
                            subtitle: "La caméra est utilisée ailleurs. La partie reprendra dès que votre regard sera retrouvé.",
-                           tint: DSColor.statusDanger) {
+                           tint: DSColor.State.danger) {
                 DSButton("Chapitres", variant: .secondary) { viewModel.openChapters() }
             }
         case .resuming:
@@ -38,7 +38,7 @@ struct GameOverlayView: View {
         case .faceLost:
             DSOverlayPanel(title: "visage perdu",
                            subtitle: "Replacez-vous face à l'écran. La partie reprend d'elle-même.",
-                           tint: DSColor.statusDanger, dim: 0.75) {
+                           tint: DSColor.State.danger, dim: 0.75) {
                 DSButton("Chapitres", variant: .ghost) { viewModel.openChapters() }
             }
         case .suspended:
@@ -46,7 +46,7 @@ struct GameOverlayView: View {
                 EmptyView()
             }
         case let .failed(failure):
-            DSOverlayPanel(title: failure.title, subtitle: failure.message, tint: DSColor.statusDanger, dim: 0.94) {
+            DSOverlayPanel(title: failure.title, subtitle: failure.message, tint: DSColor.State.danger, dim: 0.94) {
                 if failure.canOpenSettings {
                     DSButton("Ouvrir Réglages", systemImage: "gear") {
                         if let url = SystemLinks.appSettings { openURL(url) }
@@ -67,14 +67,14 @@ struct GameOverlayView: View {
                 Text("regard").dsEyebrowStyle()
                 Text(viewModel.calibrationStatus.description)
                     .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
                 DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { viewModel.requestRecalibration() }
                 Toggle("Points de regard (diagnostic)", isOn: $viewModel.showsGazeIndicator)
-                    .tint(DSColor.accent)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .tint(DSColor.Navigation.control)
+                    .foregroundStyle(DSColor.Identity.textPrimary)
                 Text("Corail : brut. Menthe : calibré. Ambre : curseur lissé utilisé par le jeu.")
                     .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.textTertiary)
+                    .foregroundStyle(DSColor.Identity.textTertiary)
             }
         }
     }

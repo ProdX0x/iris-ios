@@ -35,24 +35,24 @@ struct ChapterCard: View {
         HStack(alignment: .firstTextBaseline) {
             Text(chapter.numeral)
                 .font(DSFont.numeral)
-                .foregroundStyle(isUnlocked ? chapter.theme.palette.accent : DSColor.textTertiary)
+                .foregroundStyle(isUnlocked ? chapter.theme.palette.accent : DSColor.Identity.textTertiary)
                 .fixedSize()
                 .frame(minWidth: 36, alignment: .leading)
             VStack(alignment: .leading, spacing: DSSpacing.xxs) {
                 Text(chapter.name)
                     .font(DSFont.title2)
-                    .foregroundStyle(isUnlocked ? DSColor.textPrimary : DSColor.textTertiary)
+                    .foregroundStyle(isUnlocked ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(isUnlocked ? chapter.principle : lockedHint)
                     .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             Text("\(completed) / \(chapter.levels.count)")
                 .font(DSFont.footnote)
                 .monospacedDigit()
-                .foregroundStyle(DSColor.textTertiary)
+                .foregroundStyle(DSColor.Identity.textTertiary)
                 .fixedSize()
                 .layoutPriority(1)
         }

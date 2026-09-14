@@ -12,12 +12,12 @@ struct CarnetView: View {
             Button { coordinator.openChapters() } label: {
                 Label("Chapitres", systemImage: "chevron.left")
                     .font(DSFont.callout)
-                    .foregroundStyle(DSColor.textSecondary)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
                     .frame(minHeight: 44)
             }
             Text("carnet")
                 .font(DSFont.display)
-                .foregroundStyle(DSColor.textPrimary)
+                .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             DSCard(style: .flat) {
                 ForEach(GameElement.allCases, id: \.self) { element in
@@ -34,16 +34,16 @@ private struct CarnetRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: DSSpacing.m) {
-            DSGlyph(isKnown ? element.glyphKind : .inconnu, tint: isKnown ? DSColor.accent : DSColor.textTertiary)
+            DSGlyph(isKnown ? element.glyphKind : .inconnu, tint: isKnown ? DSColor.Identity.accent : DSColor.Identity.textTertiary)
                 .frame(width: 28, height: 28)
             VStack(alignment: .leading, spacing: DSSpacing.xxs) {
                 Text(isKnown ? element.name : "à découvrir")
                     .font(DSFont.headline)
-                    .foregroundStyle(isKnown ? DSColor.textPrimary : DSColor.textTertiary)
+                    .foregroundStyle(isKnown ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
                 if isKnown {
                     Text(element.summary)
                         .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                 }
             }
             Spacer(minLength: 0)

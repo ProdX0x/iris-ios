@@ -15,12 +15,12 @@ struct SettingsView: View {
                 HStack {
                     Text("réglages")
                         .font(DSFont.title)
-                        .foregroundStyle(DSColor.textPrimary)
+                        .foregroundStyle(DSColor.Identity.textPrimary)
                         .accessibilityAddTraits(.isHeader)
                     Spacer()
                     Button("Fermer") { coordinator.dismissSheet() }
                         .font(DSFont.callout)
-                        .foregroundStyle(DSColor.accent)
+                        .foregroundStyle(DSColor.Navigation.control)
                         .frame(minHeight: 44)
                 }
                 DSCard(style: .flat) {
@@ -29,8 +29,8 @@ struct SettingsView: View {
                     Toggle("Vibrations", isOn: $settings.hapticsEnabled)
                     Toggle("Points de regard (diagnostic)", isOn: $settings.showsGazeIndicator)
                 }
-                .tint(DSColor.accent)
-                .foregroundStyle(DSColor.textPrimary)
+                .tint(DSColor.Navigation.control)
+                .foregroundStyle(DSColor.Identity.textPrimary)
                 DSCard(style: .flat) {
                     Text("regard").dsEyebrowStyle()
                     DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { coordinator.recalibrate() }
@@ -40,14 +40,14 @@ struct SettingsView: View {
                     Text("confidentialité").dsEyebrowStyle()
                     Text("Le regard est calculé sur l'iPhone, en temps réel. Aucune image, aucune vidéo et aucune donnée du visage n'est enregistrée ni envoyée. Seuls les coefficients de calibration et votre progression sont gardés sur l'appareil.")
                         .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                 }
                 #if DEBUG
                 DSCard(style: .flat) {
                     Text("prototypes (debug)").dsEyebrowStyle()
                     Text("Hors campagne. Rien n'est enregistré.")
                         .font(DSFont.footnote)
-                        .foregroundStyle(DSColor.textSecondary)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
                     DSButton("Braises A · braise", systemImage: "flame", variant: .secondary) { coordinator.playPrototype(BraisesPrototype.a) }
                 }
                 #endif
@@ -59,7 +59,7 @@ struct SettingsView: View {
             }
             .padding(DSSpacing.gutter)
         }
-        .background(DSColor.backgroundSurface)
+        .background(DSColor.Identity.surface)
         .preferredColorScheme(.dark)
     }
 }
