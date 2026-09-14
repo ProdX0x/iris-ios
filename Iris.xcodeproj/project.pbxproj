@@ -19,6 +19,7 @@
 		0812248C8FF141F0E32DE62D /* Temperament.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D2BE518F2A9E6465F98B1B /* Temperament.swift */; };
 		08C06F6328901159489B17A5 /* GazeSetupViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0782523A70B6E6C8B3B861F /* GazeSetupViewModelTests.swift */; };
 		0B4A1495726212C955AD778F /* UserDefaultsProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CC4833E2986E27D59ECE3A /* UserDefaultsProgressStore.swift */; };
+		0B661EE62A626A7377C3A026 /* Campaign+FinalConstellation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C583FDE00AD780BEE600026 /* Campaign+FinalConstellation.swift */; };
 		0C2B5B24A9B1CBE33DE030DF /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9362D94447166741649F5784 /* AppContainer.swift */; };
 		0C4424A093630F7C4516EE55 /* BraiseStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1572AD8AD958A319467FFA /* BraiseStateTests.swift */; };
 		0DD1A247AF0396C78D50C2D8 /* DeviceCapabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA83F5A055F5EAF728EA344F /* DeviceCapabilities.swift */; };
@@ -136,6 +137,7 @@
 		740C061AC7E63BA3E9A62BB7 /* HeadPose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6C2B4408A7403D78FDEC03 /* HeadPose.swift */; };
 		742CD2128219E08990B5A16D /* ValidationRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6A0DB27AD062812B546090 /* ValidationRules.swift */; };
 		74FDE5E76895E79161AEE104 /* LaunchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BEC32F454392D52CD02E7A /* LaunchOptionsTests.swift */; };
+		7509D8304066A3BA434A302A /* OculoOrchestreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6839715E0ACF181DED1477 /* OculoOrchestreTests.swift */; };
 		777BBFBB55959E279AA45171 /* CurrentField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D193ED9955EC8AC01E8BFD47 /* CurrentField.swift */; };
 		795914C662C2AE17CE1BBE4D /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F82D2EF5ABDFA0132BE936 /* GameView.swift */; };
 		79C6364F9AFD54AB6256AA30 /* LevelDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E34840236DEDE1EBF17AA4 /* LevelDefinition.swift */; };
@@ -347,6 +349,7 @@
 		1ACA812F6559EBBAE7486C88 /* ARKitGazeTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKitGazeTrackingService.swift; sourceTree = "<group>"; };
 		1B27768B77AD73DF8F94051C /* LevelDifficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDifficulty.swift; sourceTree = "<group>"; };
 		1B95B7C01AA3030FBC1C6779 /* TurnRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnRule.swift; sourceTree = "<group>"; };
+		1C583FDE00AD780BEE600026 /* Campaign+FinalConstellation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalConstellation.swift"; sourceTree = "<group>"; };
 		1D00739A8AC864D1F3EB0090 /* ResolvedLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolvedLevel.swift; sourceTree = "<group>"; };
 		1D5ADFCCBDA6A92D1EDFB354 /* historical_campaign.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = historical_campaign.txt; sourceTree = "<group>"; };
 		1EEB9F52FA98B6CDAFD36D8F /* GameSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionTests.swift; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 		385308503D02B747A893A04F /* MockAudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioService.swift; sourceTree = "<group>"; };
 		39B06250E3FB05DBFF96244A /* DSThemeWash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSThemeWash.swift; sourceTree = "<group>"; };
 		39FAAA20C282D9001110907B /* Campaign+FinalClairvoyance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalClairvoyance.swift"; sourceTree = "<group>"; };
+		3A6839715E0ACF181DED1477 /* OculoOrchestreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoOrchestreTests.swift; sourceTree = "<group>"; };
 		3E5B2C07EDCB5EBFACEC9C3A /* DisplayLinkGameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLinkGameClock.swift; sourceTree = "<group>"; };
 		40FA363A9BA19D1671A16932 /* HistoricalCampaignDump.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalCampaignDump.swift; sourceTree = "<group>"; };
 		42738B44E0ABA6B64F11E28B /* Campaign+Voiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Voiles.swift"; sourceTree = "<group>"; };
@@ -995,6 +999,7 @@
 				A606C12C2B1E4EDF49BBFF8E /* OculoJardinTests.swift */,
 				EB28C7BCEB504283D259AEF6 /* OculoMiroirTests.swift */,
 				031F8D7D83FD64AA0FCB9A55 /* OculomotorLevelTests.swift */,
+				3A6839715E0ACF181DED1477 /* OculoOrchestreTests.swift */,
 				7EF376737430E4AD3A368532 /* OculoStageTestSupport.swift */,
 				96971871FBF2873B93A374AB /* OculoTournerTests.swift */,
 				AF4900229A2D127497A80827 /* SoufflesTests.swift */,
@@ -1277,6 +1282,7 @@
 				B30BE49103058FBD72F88D3F /* Campaign+Eveil.swift */,
 				464D09E42ECABB1A88075F82 /* Campaign+FinalBraises.swift */,
 				39FAAA20C282D9001110907B /* Campaign+FinalClairvoyance.swift */,
+				1C583FDE00AD780BEE600026 /* Campaign+FinalConstellation.swift */,
 				82DD0627F96457CF9A137462 /* Campaign+FinalCourants.swift */,
 				4A8A16E860990286E05BEBD6 /* Campaign+FinalEchos.swift */,
 				21DD16DFE16DDD1864365283 /* Campaign+FinalGouffres.swift */,
@@ -1597,6 +1603,7 @@
 				4968A2DA681B1E8C642A8EE6 /* OculoFilTests.swift in Sources */,
 				83908D09EF13EA0813D69FB8 /* OculoJardinTests.swift in Sources */,
 				D1E2B3513CAA2959128B86E4 /* OculoMiroirTests.swift in Sources */,
+				7509D8304066A3BA434A302A /* OculoOrchestreTests.swift in Sources */,
 				9896EA5F3CF8D128E8F8C011 /* OculoSequenceClockTests.swift in Sources */,
 				6EFCBDA822BC8616C099933F /* OculoStageTestSupport.swift in Sources */,
 				D2F55724367F510A891FF58A /* OculoTournerTests.swift in Sources */,
@@ -1655,6 +1662,7 @@
 				88A9960936912990185C845E /* Campaign+Eveil.swift in Sources */,
 				7D0EC98B563033D5776A8F93 /* Campaign+FinalBraises.swift in Sources */,
 				A6D33A22670601F1B245433B /* Campaign+FinalClairvoyance.swift in Sources */,
+				0B661EE62A626A7377C3A026 /* Campaign+FinalConstellation.swift in Sources */,
 				A2B35CF303A05851D5AA5448 /* Campaign+FinalCourants.swift in Sources */,
 				5335D6F3644EA4562A5505B5 /* Campaign+FinalEchos.swift in Sources */,
 				B911D8883C6CED736AE65C84 /* Campaign+FinalGouffres.swift in Sources */,

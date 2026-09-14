@@ -10,7 +10,7 @@ struct DSGlyph: View {
         // Expansion
         case jumelles, souffle, dormeuse, echo, gouffre, braise, balise
         // Oculomotor finals
-        case coeur, filVivant, miroir, etoileAbsente, jardin, croisement, lanterne, absence, ancre, premierRegard
+        case coeur, filVivant, miroir, etoileAbsente, jardin, croisement, lanterne, absence, ancre, premierRegard, orchestre
     }
 
     let kind: Kind
@@ -218,6 +218,17 @@ struct DSGlyph: View {
                 context.stroke(eye, with: .color(tint), style: stroke)
                 context.fill(circle(CGPoint(x: c.x - s * 0.17, y: c.y), s * 0.07), with: .color(tint))
                 context.fill(circle(CGPoint(x: c.x + s * 0.34, y: c.y), s * 0.12), with: .color(tint.opacity(0.8)))
+            case .orchestre:
+                var ring = Path()
+                for index in 0..<6 {
+                    let angle = -Double.pi / 2 + Double(index) * Double.pi / 3
+                    let point = CGPoint(x: c.x + s * 0.36 * cos(angle), y: c.y + s * 0.36 * sin(angle))
+                    if index == 0 { ring.move(to: point) } else { ring.addLine(to: point) }
+                    context.fill(circle(point, s * 0.07), with: .color(tint))
+                }
+                ring.closeSubpath()
+                context.stroke(ring, with: .color(tint.opacity(0.4)), style: StrokeStyle(lineWidth: max(1, s * 0.04)))
+                context.fill(starPath(center: c, radius: s * 0.16), with: .color(tint))
             }
         }
         .accessibilityHidden(true)
@@ -225,7 +236,7 @@ struct DSGlyph: View {
 }
 
 #Preview {
-    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir, .etoileAbsente, .jardin, .croisement, .lanterne, .absence, .ancre, .premierRegard]
+    let kinds: [DSGlyph.Kind] = [.lueur, .iris, .ecran, .temperaments, .ordre, .cascade, .courant, .voile, .veilleuse, .irisMouvant, .inconnu, .jumelles, .souffle, .dormeuse, .echo, .gouffre, .braise, .balise, .coeur, .filVivant, .miroir, .etoileAbsente, .jardin, .croisement, .lanterne, .absence, .ancre, .premierRegard, .orchestre]
     LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: 4)) {
         ForEach(kinds, id: \.self) { kind in
             DSGlyph(kind).frame(width: 32, height: 32)

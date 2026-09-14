@@ -35,6 +35,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
     case absence
     case ancre
     case premierRegard
+    case orchestre
 
     var name: String {
         switch self {
@@ -65,6 +66,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .absence: "absence"
         case .ancre: "ancre"
         case .premierRegard: "d'abord les yeux"
+        case .orchestre: "orchestre du regard"
         }
     }
 
@@ -97,6 +99,7 @@ enum GameElement: String, Hashable, Sendable, CaseIterable, Codable {
         case .absence: "Une présence tient tant que vous la regardez. Quand une autre répond, parfois après un silence, allez à elle."
         case .ancre: "Gardez les yeux posés sur elle et tournez doucement la tête : la boussole suit, jusqu'à l'arc qui s'allume."
         case .premierRegard: "Une braise s'allume au bord. Allez-y des yeux, puis laissez la tête suivre : elle donne toute sa chaleur."
+        case .orchestre: "Tout ce que vos yeux ont appris, d'un seul souffle. Chaque passage allume une étoile."
         }
     }
 }

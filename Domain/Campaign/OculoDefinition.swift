@@ -450,11 +450,14 @@ struct OculoDefinition: Hashable, Sendable {
     let pause: TimeInterval
     /// The Carnet idea this sequence embodies.
     let element: GameElement
+    /// Each completed stage lights a star of a constellation that comes alive once the sequence is complete.
+    let showsConstellation: Bool
 
-    init(stages: [OculoStageDefinition], element: GameElement, hidesLueurs: Bool = true, pause: TimeInterval = 0.6) {
+    init(stages: [OculoStageDefinition], element: GameElement, hidesLueurs: Bool = true, pause: TimeInterval = 0.6, showsConstellation: Bool = false) {
         self.stages = stages
         self.element = element
         self.hidesLueurs = hidesLueurs
         self.pause = max(pause, 0)
+        self.showsConstellation = showsConstellation
     }
 }

@@ -95,6 +95,9 @@ struct OculoSnapshot: Hashable, Sendable {
     let elements: [OculoElementSnapshot]
     let polylines: [OculoPolylineSnapshot]
     let arcs: [OculoArcSnapshot]
+    /// Chapter XII: one star per stage, lit once the stage is complete, and the links between the lit stars.
+    let constellation: [OculoElementSnapshot]
+    let constellationLinks: OculoPolylineSnapshot?
 
     init(sequence: OculoSequenceState, elapsed: TimeInterval, head: HeadPose?) {
         stageIndex = min(sequence.currentIndex, max(0, sequence.stageCount - 1))
@@ -117,6 +120,29 @@ struct OculoSnapshot: Hashable, Sendable {
         self.elements = elements
         self.polylines = polylines
         self.arcs = arcs
+        var constellation: [OculoElementSnapshot] = []
+        var links: OculoPolylineSnapshot?
+        if sequence.showsConstellation, sequence.stageCount > 0 {
+            let count = sequence.stageCount
+            let lit = sequence.isComplete ? count : min(sequence.currentIndex, count)
+            // Once complete, the constellation opens out over a second and a half and keeps breathing.
+            let bloom = sequence.completedAt.map { min(1, max(0, elapsed - $0) / 1.5) } ?? 0
+            let radius = sequence.constellationRadius * (1 + 0.8 * bloom)
+            var litPoints: [Vector2] = []
+            for index in 0..<count {
+                let angle = -Double.pi / 2 + 2 * Double.pi * Double(index) / Double(count)
+                let position = Vector2(x: sequence.constellationCenter.x + radius * cos(angle), y: sequence.constellationCenter.y + radius * sin(angle))
+                let isLit = index < lit
+                if isLit { litPoints.append(position) }
+                constellation.append(OculoElementSnapshot(role: .constellation, position: position, radius: 12, intensity: isLit ? 1 : 0, phase: bloom,
+                                                          isLit: isLit, index: index))
+            }
+            if litPoints.count >= 2 {
+                links = OculoPolylineSnapshot(points: litPoints, intensity: 0.3 + 0.5 * bloom, isClosed: sequence.isComplete)
+            }
+        }
+        self.constellation = constellation
+        constellationLinks = links
     }
 }
 

@@ -75,6 +75,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Campaign/Campaign+Eveil.swift | - | Domain | Chapter I, Éveil: the gaze repels; hold; stay on the screen; two lueurs; temperaments | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalBraises.swift | - | Domain | OCULOMOTOR EXPANSION, chapter XI final « d'abord les yeux » (eye-head coordination, saccade-first gaze | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalClairvoyance.swift | - | Domain | OCULOMOTOR EXPANSION, chapter VI final « le jardin caché » (visual search, systematic scanning): among | Claude (mission Iris) |
+| Domain/Campaign/Campaign+FinalConstellation.swift | - | Domain | OCULOMOTOR EXPANSION, chapter XII final « l'orchestre du regard » (multi-modal oculomotor sequencing): | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalCourants.swift | - | Domain | OCULOMOTOR EXPANSION, chapter III final « le fil vivant » (smooth pursuit): a spark glides along a smooth | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalEchos.swift | - | Domain | OCULOMOTOR EXPANSION, chapter IX final « l'absence » (fixation disengagement, gap and overlap shifts): a | Claude (mission Iris) |
 | Domain/Campaign/Campaign+FinalGouffres.swift | - | Domain | OCULOMOTOR EXPANSION, chapter X final « l'ancre » (gaze stabilisation, VOR-inspired): the gaze holds an | Claude (mission Iris) |
@@ -250,6 +251,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/OculoFilTests.swift | struct | Tests | Chapter III final « le fil vivant »: the spark never stops, the account grows only while the gaze accompanies | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoJardinTests.swift | struct | Tests | Chapter VI final « le jardin caché »: breathing seeds sprout under a rest, lingering on a twinkling seed | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoMiroirTests.swift | struct | Tests | Chapter IV final « le miroir menteur »: the door opens opposite the lure; going to the lure or letting the | Claude (mission Iris) |
+| Tests/IrisTests/Campaign/OculoOrchestreTests.swift | struct | Tests | Chapter XII final « l'orchestre du regard »: seven short passages of seven different gaze ideas, each | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoStageTestSupport.swift | enum | Tests | OCULOMOTOR EXPANSION: scripted gaze runs over a level's session (a policy chooses the gaze, and the head, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculoTournerTests.swift | struct | Tests | Chapter XI final « d'abord les yeux »: eyes first then the head gives full warmth, the head first half, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |

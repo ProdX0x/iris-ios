@@ -6,6 +6,17 @@
 import SwiftUI
 
 extension GameSceneRenderer {
+    /// Chapter XII: the constellation of completed stages, drawn behind the current stage and after the sequence ends.
+    func drawOculoConstellation(_ oculo: OculoSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
+                                palette: DSThemePalette, reduceMotion: Bool) {
+        if let links = oculo.constellationLinks {
+            drawOculoPolyline(links, in: &context, scale: scale, palette: palette)
+        }
+        for star in oculo.constellation where star.isLit {
+            drawOculoElement(star, time: time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+        }
+    }
+
     func drawOculo(_ oculo: OculoSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
                    palette: DSThemePalette, reduceMotion: Bool) {
         for polyline in oculo.polylines {
@@ -78,7 +89,11 @@ extension GameSceneRenderer {
             halo(24 * scale * breath, palette.glow, element.isActive ? 0.35 : 0.05)
             context.stroke(disc(12 * scale * breath), with: .color(palette.accent.opacity(element.isActive ? 0.8 : 0.2)), lineWidth: 1.6 * scale)
             if element.isLit { context.fill(disc(5 * scale), with: .color(DSColor.statusSuccess)) }
-        case .star, .constellation:
+        case .constellation:
+            let pulse = reduceMotion ? 1 : 1 + (0.15 + 0.35 * element.phase) * sin(time * 2.1 + Double(element.index) * 0.9)
+            halo(18 * scale * pulse, DSColor.lueurGlow, 0.35 + 0.35 * element.phase)
+            context.fill(starPath(center: center, radius: 7 * scale * pulse, points: 4), with: .color(DSColor.lueurCore))
+        case .star:
             if element.isLit || element.intensity > 0 {
                 halo(16 * scale, DSColor.lueurGlow, 0.5 * max(element.intensity, element.isLit ? 0.8 : 0))
                 context.fill(starPath(center: center, radius: 6 * scale, points: 4), with: .color(DSColor.lueurCore.opacity(0.5 + 0.5 * max(element.intensity, element.isLit ? 1 : 0))))

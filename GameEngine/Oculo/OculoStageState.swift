@@ -188,10 +188,19 @@ struct OculoSequenceState: Hashable, Sendable {
     /// others in a sequence behaves exactly as it does alone.
     private(set) var stageStartedAt: TimeInterval = 0
 
-    init(stages: [OculoStageState], hidesLueurs: Bool, pause: TimeInterval) {
+    /// Chapter XII: a constellation of one star per stage, around `constellationCenter`.
+    let showsConstellation: Bool
+    let constellationCenter: Vector2
+    let constellationRadius: Double
+
+    init(stages: [OculoStageState], hidesLueurs: Bool, pause: TimeInterval, showsConstellation: Bool = false,
+         constellationCenter: Vector2 = .zero, constellationRadius: Double = 0) {
         self.stages = stages
         self.hidesLueurs = hidesLueurs
         self.pause = pause
+        self.showsConstellation = showsConstellation
+        self.constellationCenter = constellationCenter
+        self.constellationRadius = constellationRadius
         if stages.isEmpty { completedAt = 0 }
     }
 

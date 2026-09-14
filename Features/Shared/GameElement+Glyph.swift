@@ -34,6 +34,7 @@ extension GameElement {
         case .absence: .absence
         case .ancre: .ancre
         case .premierRegard: .premierRegard
+        case .orchestre: .orchestre
         }
     }
 }

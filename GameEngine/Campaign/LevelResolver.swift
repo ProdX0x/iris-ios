@@ -96,7 +96,8 @@ enum LevelResolver {
             },
             oculo: definition.oculo.map { oculo in
                 OculoSequenceState(stages: oculo.stages.map { OculoStageState(definition: $0, bounds: bounds, shortSide: shortSide, scale: scale) },
-                                   hidesLueurs: oculo.hidesLueurs, pause: oculo.pause)
+                                   hidesLueurs: oculo.hidesLueurs, pause: oculo.pause, showsConstellation: oculo.showsConstellation,
+                                   constellationCenter: bounds.center, constellationRadius: 0.14 * shortSide)
             },
             lueurRadii: definition.lueurs.map { lueurRadius * scale * $0.temperament.radiusMultiplier },
             requiresAttentionOnField: true,
