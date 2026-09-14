@@ -56,6 +56,12 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Components/DSScreen.swift | struct | DesignSystem | Page container: atmosphere background, safe-area aware column, consistent gutters | Claude (mission Iris) |
 | DesignSystem/Components/DSStatusRow.swift | struct | DesignSystem | Icon, title, detail and a coloured state dot; used for capability and permission lists | Claude (mission Iris) |
 | DesignSystem/Components/DSThemeWash.swift | struct | DesignSystem | Tints the chambre noire with a chapter's wash and a soft glow at the top; draws nothing for the historical palette | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassGroup.swift | struct | DesignSystem | Neighbouring glass elements share one glass layer on iOS 26 (no glass on glass, coherent morphing, fewer | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassModifier.swift | struct | DesignSystem | `.dsGlass(role)`: draws a view on the glass of its role, native Liquid Glass on iOS 26 and the plain | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassRendering.swift | enum | DesignSystem | The one place deciding how glass is drawn: native Liquid Glass on iOS 26, a light plain surface before, | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassRole.swift | enum | DesignSystem | The four intentions of glass in Iris (clear control, regular panel, chrome, prominent action): each role | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassShape.swift | enum | DesignSystem | The few shapes glass may take: a circle for icons, a capsule where it means something, a moderately | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassSurface.swift | struct | DesignSystem | The plain surface standing in for glass: translucent where Liquid Glass is unavailable, opaque under | Claude (mission Iris) |
 | DesignSystem/Modifiers/DSEyebrowStyle.swift | struct | DesignSystem | Small uppercase tracked label style used for section markers and HUD readouts | Claude (mission Iris) |
 | DesignSystem/Modifiers/DSGlow.swift | struct | DesignSystem | Soft coloured glow used for the iris mark and validated states | Claude (mission Iris) |
 | DesignSystem/Tokens/DSColor.swift | enum | DesignSystem | Colour tokens by role: interface identity, navigation, states, and the chapters' game world (values live | Claude (mission Iris) |

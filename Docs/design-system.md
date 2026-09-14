@@ -42,5 +42,16 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 
 Feature components: LevelIntroCard, LevelResultView (EclatBadge), GameHUDView, ChapterCard, LevelNode, FixationMark (gaze setup), GameSceneRenderer and GameFieldBackground (world, chapter tokens only).
 
+## Liquid Glass (ADR-23)
+Foundation only: roles in `DesignSystem/Glass`, used by no screen yet.
+| Role | iOS 26, native | iOS 17–25, translucent | Reduce Transparency, opaque | Shape |
+|---|---|---|---|---|
+| clearControl | `Glass.clear`, interactive | Identity.surface 60 % | Identity.surfaceElevated | circle |
+| regularPanel | `Glass.regular` | Identity.surface 88 % | Identity.surface | rounded, DSRadius.l |
+| chrome | `Glass.regular` (system bars keep their own glass) | Identity.surfaceElevated 92 % | Identity.surfaceElevated | capsule |
+| prominentAction | `Glass.regular` tinted Navigation.primary 40 %, interactive | Navigation.primary | Navigation.primary | capsule |
+
+API: `.dsGlass(role)`, or `.dsGlass(role, in: .rounded(DSRadius.m))`; `DSGlassGroup(spacing:)` around neighbouring glass (`GlassEffectContainer` on iOS 26); `.dsGlassID(_:in:)` to morph, a fade under Reduce Motion. The modifier sets the content colour for its surface, turns the touch response off under Reduce Motion, and strengthens the edge of plain surfaces under Increase Contrast (Identity.textTertiary). Glass stays neutral; no blur, timer or display link; no large glass animating over the running game canvas. The development gallery (`Tests/IrisTests/DesignSystem/DSGlassGallery.swift`) is shown by `DSGlassGalleryCaptureTests` for screenshots and is not part of the app.
+
 ## Accessibility
 Dynamic Type on every interface text; 44 pt minimum targets; VoiceOver labels on chapters, nodes, éclats and HUD; hints are posted as accessibility announcements; the game canvas is hidden from VoiceOver; rank never relies on colour alone; Reduce Motion removes breathing, filaments motion, shimmer and ripples.
