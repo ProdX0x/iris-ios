@@ -24,7 +24,7 @@ struct GazeReadinessView: View {
                 .frame(width: 56, height: 56)
 
             ScrollView(showsIndicators: false) {
-                DSCard(style: .glass) {
+                DSGlassPanel {
                     ForEach(report.checks) { check in
                         DSStatusRow(systemImage: symbol(for: check.kind), title: check.kind.title, detail: check.detail, state: state(for: check.status))
                     }

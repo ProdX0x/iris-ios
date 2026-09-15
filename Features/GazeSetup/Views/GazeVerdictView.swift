@@ -32,7 +32,7 @@ struct GazeVerdictView: View {
             }
             .padding(.horizontal, DSSpacing.gutter)
 
-            DSCard(style: .glass) {
+            DSGlassPanel {
                 HStack {
                     metric(label: "erreur moyenne", value: result.meanError)
                     Spacer()

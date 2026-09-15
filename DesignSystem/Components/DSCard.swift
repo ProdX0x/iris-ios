@@ -1,6 +1,7 @@
 // DSCard.swift
 // Layer: DesignSystem
-// Purpose: Elevated surface with hairline border for grouped content and overlays
+// Purpose: Elevated surface with hairline border for grouped content. Panels that stand on glass use DSGlassPanel:
+// this card never imitates a material
 
 import SwiftUI
 
@@ -8,7 +9,6 @@ struct DSCard<Content: View>: View {
     enum Style {
         case flat
         case elevated
-        case glass
     }
 
     private let style: Style
@@ -33,7 +33,6 @@ struct DSCard<Content: View>: View {
         switch style {
         case .flat: DSColor.Identity.surface
         case .elevated: DSColor.Identity.surfaceElevated
-        case .glass: DSColor.Identity.surface.opacity(0.88)
         }
     }
 }

@@ -1,6 +1,7 @@
 // DSButton.swift
 // Layer: DesignSystem
-// Purpose: Primary, secondary and ghost actions with press feedback, 52 pt minimum height
+// Purpose: Primary, secondary and ghost actions, 52 pt minimum height: the system's Liquid Glass button styles where
+// the platform draws them, the historical painted capsule before iOS 26 and under Reduce Transparency
 
 import SwiftUI
 
@@ -9,6 +10,15 @@ struct DSButton: View {
         case primary
         case secondary
         case ghost
+
+        /// What the action means to the system.
+        var glassRole: DSGlassButtonStyle.Role {
+            switch self {
+            case .primary: .prominent
+            case .secondary: .standard
+            case .ghost: .plain
+            }
+        }
     }
 
     private let title: String
@@ -17,6 +27,7 @@ struct DSButton: View {
     private let action: () -> Void
 
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     init(_ title: String, systemImage: String? = nil, variant: Variant = .primary, action: @escaping () -> Void) {
         self.title = title
@@ -26,6 +37,9 @@ struct DSButton: View {
     }
 
     var body: some View {
+        let rendering = DSGlassRendering.resolve(reduceTransparency: reduceTransparency)
+        // The system's glass draws the surface itself; everywhere else the button paints the capsule it always had.
+        let paintsSurface = rendering != .native || variant == .ghost
         Button(action: action) {
             HStack(spacing: DSSpacing.s) {
                 if let systemImage {
@@ -37,24 +51,29 @@ struct DSButton: View {
             .font(DSFont.headline)
             .frame(maxWidth: .infinity, minHeight: 52)
             .padding(.horizontal, DSSpacing.l)
-            .foregroundStyle(foreground)
-            .background(background, in: Capsule())
-            .overlay(Capsule().strokeBorder(border, lineWidth: 1))
+            .foregroundStyle(foreground(rendering))
+            .background(paintsSurface ? background(rendering) : .clear, in: Capsule())
+            .overlay {
+                if paintsSurface {
+                    Capsule().strokeBorder(border, lineWidth: 1)
+                }
+            }
         }
-        .buttonStyle(DSPressableButtonStyle())
+        .dsGlassButton(variant.glassRole, rendering: rendering)
         .opacity(isEnabled ? 1 : 0.4)
         .accessibilityLabel(title)
     }
 
-    private var background: Color {
+    /// The main action stands on the surface of its glass role; the others keep their own.
+    private func background(_ rendering: DSGlassRendering) -> Color {
         switch variant {
-        case .primary: DSColor.Navigation.primary
+        case .primary: DSGlassRole.prominentAction.fill(rendering)
         case .secondary: DSColor.Navigation.secondary
         case .ghost: .clear
         }
     }
 
-    private var foreground: Color {
+    private func foreground(_ rendering: DSGlassRendering) -> Color {
         switch variant {
         case .primary: DSColor.Navigation.onPrimary
         case .secondary: DSColor.Identity.textPrimary

@@ -1,6 +1,7 @@
 // GameHUDView.swift
 // Layer: Presentation
-// Purpose: Peripheral HUD: level mark, pause, contextual hint at the bottom, diagnostic badges when enabled
+// Purpose: Peripheral HUD over the running level: level mark, the pause control and the contextual hint on the
+// system's glass, diagnostic badges when enabled
 
 import SwiftUI
 
@@ -23,10 +24,8 @@ struct GameHUDView: View {
                 Button(action: onPause) {
                     Image(systemName: "pause")
                         .font(DSFont.headline)
-                        .foregroundStyle(DSColor.Identity.textPrimary)
                         .frame(width: 44, height: 44)
-                        .background(DSColor.Identity.surface.opacity(0.6), in: Circle())
-                        .overlay(Circle().strokeBorder(DSColor.Identity.line, lineWidth: 1))
+                        .dsGlass(.clearControl)
                 }
                 .opacity(showsPause ? 1 : 0)
                 .disabled(!showsPause)
@@ -41,7 +40,7 @@ struct GameHUDView: View {
                     .lineLimit(2)
                     .padding(.horizontal, DSSpacing.m)
                     .padding(.vertical, DSSpacing.s)
-                    .background(DSColor.Navigation.veil.opacity(0.55), in: Capsule())
+                    .dsGlass(.chrome, in: .capsule)
                     .transition(.opacity)
                     .id(hint)
             }

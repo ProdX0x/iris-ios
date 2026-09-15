@@ -1,6 +1,7 @@
 // DSScreen.swift
 // Layer: DesignSystem
-// Purpose: Page container: atmosphere background, safe-area aware column, consistent gutters
+// Purpose: Page container: atmosphere background, safe-area aware column, consistent gutters, and content softened
+// where it passes under the system's glass bars
 
 import SwiftUI
 
@@ -22,6 +23,7 @@ struct DSScreen<Content: View>: View {
                 ScrollView(showsIndicators: false) {
                     column
                 }
+                .dsSoftScrollEdges()
             } else {
                 column
             }

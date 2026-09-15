@@ -1,6 +1,7 @@
 // LevelIntroCard.swift
 // Layer: Presentation
-// Purpose: What the level asks, in three seconds; a compact translucent card so the level stays readable behind it
+// Purpose: What the level asks, in three seconds; a compact panel on the system's glass so the level stays readable
+// behind it, and one prominent action to begin
 
 import SwiftUI
 
@@ -58,8 +59,7 @@ struct LevelIntroCard: View {
             .padding(.horizontal, DSSpacing.l)
             .padding(.vertical, DSSpacing.m)
             .frame(maxWidth: 520, alignment: .leading)
-            .background(DSColor.Identity.surface.opacity(0.8), in: RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous).strokeBorder(DSColor.Identity.line, lineWidth: 1))
+            .dsGlass(.regularPanel)
             .padding(.horizontal, DSSpacing.m)
             .padding(.bottom, DSSpacing.s)
         }

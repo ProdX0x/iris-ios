@@ -63,7 +63,7 @@ struct GameOverlayView: View {
             DSButton("Reprendre", systemImage: "play.fill") { viewModel.primaryAction() }
             DSButton("Recommencer", variant: .secondary) { viewModel.restartLevel() }
             DSButton("Chapitres", variant: .ghost) { viewModel.openChapters() }
-            DSCard(style: .glass) {
+            DSGlassPanel {
                 Text("regard").dsEyebrowStyle()
                 Text(viewModel.calibrationStatus.description)
                     .font(DSFont.footnote)

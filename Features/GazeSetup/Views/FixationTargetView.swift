@@ -1,6 +1,7 @@
 // FixationTargetView.swift
 // Layer: Presentation
-// Purpose: One calibration or validation target positioned in normalized coordinates, with progress and stage label
+// Purpose: One calibration or validation target positioned in normalized coordinates, with progress, stage label and
+// a cancel control on the system's glass (the measurement itself is untouched)
 
 import SwiftUI
 
@@ -34,10 +35,8 @@ struct FixationTargetView: View {
                 Button(action: onCancel) {
                     Image(systemName: "xmark")
                         .font(DSFont.headline)
-                        .foregroundStyle(DSColor.Identity.textSecondary)
                         .frame(width: 44, height: 44)
-                        .background(DSColor.Identity.surface.opacity(0.7), in: Circle())
-                        .overlay(Circle().strokeBorder(DSColor.Identity.line, lineWidth: 1))
+                        .dsGlass(.clearControl)
                 }
                 .accessibilityLabel("Annuler")
                 .position(x: DSSpacing.xl + DSSpacing.s, y: proxy.size.height - DSSpacing.xxl)
