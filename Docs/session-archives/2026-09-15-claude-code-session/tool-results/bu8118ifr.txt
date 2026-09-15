@@ -1,0 +1,916 @@
+################ ios-project-foundation ################
+---
+name: ios-project-foundation
+description: >
+  Build the shared context files for an iOS project from a short interview. Produces project-brief.md, conventions.md and file-map.md inside Docs/. This is the foundation every other iOS skill reads before writing a single line of Swift. Use this skill at the start of any new iOS or SwiftUI project, or when onboarding Claude onto an existing Xcode project. Trigger whenever the user says "set up my iOS project", "init the project context", "onboard me on this app", "start a new iOS app", "create the project foundation", "nouveau projet iOS", "initialise le projet", "pose les fondations", "configure les conventions", or opens a project folder that has no Docs/project-brief.md. Always produces three files saved into Docs/ at the project root.
+---
+
+# iOS Project Foundation
+
+## CRITICAL: Auto-start on load
+
+The moment this skill is loaded, installed, uploaded, or triggered, you MUST immediately run Step 1 below. Your very next message to the user is the interview. Nothing else.
+
+Do NOT:
+- Summarise this skill
+- Describe what files it creates
+- Explain how it works
+- Ask if the user wants to run it
+- Confirm installation
+
+Do THIS:
+- Go straight to Step 1
+- Send the interview as your first and only response
+
+## Step 1. Detect existing project
+
+Before asking anything, scan the working directory:
+
+1. Look for `*.xcodeproj`, `*.xcworkspace` or `Package.swift`. Note the project name.
+2. Look for `Docs/project-brief.md`, `Docs/conventions.md`, `Docs/file-map.md`.
+3. If all three exist, read them and say:
+
+> Foundation already exists. Tell me what to update (brief, conventions or file map), or say "rebuild" to start over.
+
+Then stop and wait.
+
+4. If a Swift project exists but no Docs/ files, note every top-level folder and count `.swift` files. You will need this in Step 4. Then continue to Step 2.
+5. If nothing exists, continue to Step 2.
+
+## Step 2. Run the project interview
+
+You MUST call the AskUserQuestion tool. Do not type the questions as chat text. AskUserQuestion supports a maximum of 4 questions per call, so send two calls: Batch 1 first, wait for answers, then Batch 2.
+
+### Batch 1 (your very first action, no text before it)
+
+```json
+[
+  {
+    "question": "What is the app and what does it do in one sentence?",
+    "header": "App",
+    "multiSelect": false,
+    "options": [
+      {"label": "Utility", "description": "Solves one clear task (converter, tracker, calculator)"},
+      {"label": "Content", "description": "Reads, browses or consumes content (feed, reader, catalogue)"},
+      {"label": "Social or community", "description": "Users interact with each other"},
+      {"label": "Business tool", "description": "Internal or professional workflow"}
+    ]
+  },
+  {
+    "question": "Minimum iOS version and Swift toolchain?",
+    "header": "Targets",
+    "multiSelect": false,
+    "options": [
+      {"label": "iOS 17+, Swift 6", "description": "Observation framework, strict concurrency. Recommended."},
+      {"label": "iOS 16+, Swift 5.10", "description": "NavigationStack available, ObservableObject required"},
+      {"label": "iOS 18+, Swift 6", "description": "Latest APIs only"}
+    ]
+  },
+  {
+    "question": "Where does the data live?",
+    "header": "Data",
+    "multiSelect": true,
+    "options": [
+      {"label": "Local only", "description": "SwiftData or file storage, no server"},
+      {"label": "CloudKit", "description": "Apple sync, no custom backend"},
+      {"label": "REST or GraphQL API", "description": "Custom backend over HTTPS"},
+      {"label": "Firebase or Supabase", "description": "Third-party BaaS"}
+    ]
+  },
+  {
+    "question": "Third-party dependencies policy?",
+    "header": "Dependencies",
+    "multiSelect": false,
+    "options": [
+      {"label": "Zero third-party", "description": "Apple frameworks only. Recommended for App Store review speed."},
+      {"label": "SPM allowed, minimal", "description": "One or two vetted packages maximum"},
+      {"label": "SPM allowed, pragmatic", "description": "Whatever ships faster"}
+    ]
+  }
+]
+```
+
+### Batch 2 (send immediately after Batch 1 answers, no commentary between)
+
+```json
+[
+  {
+    "question": "Who is the user and what is their main frustration today?",
+    "header": "User",
+    "multiSelect": false,
+    "options": [
+      {"label": "Consumer", "description": "General public, App Store discovery"},
+      {"label": "Prosumer", "description": "Power users who pay for quality"},
+      {"label": "Internal team", "description": "Enterprise or TestFlight distribution"}
+    ]
+  },
+  {
+    "question": "Monetisation?",
+    "header": "Business",
+    "multiSelect": false,
+    "options": [
+      {"label": "Free", "description": "No payment logic"},
+      {"label": "One-time purchase", "description": "Paid upfront or single IAP"},
+      {"label": "Subscription", "description": "StoreKit 2 subscription tiers"},
+      {"label": "Undecided", "description": "Design the architecture to allow it later"}
+    ]
+  },
+  {
+    "question": "Code style preferences?",
+    "header": "Style",
+    "multiSelect": true,
+    "options": [
+      {"label": "Strict access control", "description": "Everything private unless proven otherwise"},
+      {"label": "Protocol-first", "description": "Every dependency behind a protocol"},
+      {"label": "Async/await only", "description": "No Combine, no completion handlers"},
+      {"label": "Localisation from day one", "description": "String Catalog, no hardcoded copy"}
+    ]
+  }
+]
+```
+
+After both batches, ask in chat for the app name and bundle identifier if not already detected from an existing `.xcodeproj`. Then move to Step 3.
+
+## Step 3. Write Docs/project-brief.md
+
+Create `Docs/project-brief.md`. Use this exact structure:
+
+```
+# Project Brief
+
+## App
+[Name, one-sentence purpose, category from question 1]
+
+## Bundle
+[Bundle identifier, minimum iOS version, Swift version, Xcode version]
+
+## User
+[2 to 3 sentences on who uses this and the frustration it removes]
+
+## Core promise
+[One sentence: what the user gets that they cannot get elsewhere]
+
+## Data
+[Where data lives, sync strategy, offline expectations]
+
+## Business model
+[From question 6, plus what it implies for architecture: StoreKit, entitlements, feature gating]
+
+## Dependency policy
+[From question 4, with the allowed list if any]
+
+## Non-goals
+[3 things this app will NOT do in version 1]
+```
+
+Keep it under 300 words. Every line must be something a later skill would reference when making a decision.
+
+## Step 4. Write Docs/conventions.md
+
+Create `Docs/conventions.md`. This is the single source of truth for naming, layering and style. Every other skill reads it before generating code.
+
+Load `references/conventions-template.md` from this skill folder. Fill every placeholder from the interview answers. Do not leave any `[...]` placeholder in the output. The template already encodes the non-negotiable architecture:
+
+- MVVM for presentation
+- Clean Architecture in three layers: Domain, Data, Presentation
+- Coordinators for navigation
+- Constructor injection through a single `AppContainer`
+- One type per file, file name equals type name
+
+If the user chose iOS 16, replace `@Observable` with `ObservableObject` and `@Published` throughout the template and note it in the Observation section.
+
+Keep conventions.md under 600 words. Rules, not prose.
+
+## Step 5. Write Docs/file-map.md
+
+Create `Docs/file-map.md`. This is the anti-duplication registry. Every skill that creates a file MUST append a row here. Every skill that is about to create a file MUST search this table first.
+
+```
+# File Map
+
+Registry of every source file in the project. One row per file. Updated by every skill that creates or deletes a file. Search this table before creating anything.
+
+| Path | Type | Layer | Purpose | Created by |
+|---|---|---|---|---|
+```
+
+If an existing project was detected in Step 1, walk every `.swift` file and add one row per file. Infer Layer from the folder (Domain, Data, Presentation, Core, DesignSystem, App, Tests, Unknown). Infer Purpose from the primary type declaration. Set Created by to `existing`. Flag any file that contains more than one top-level type with `[multi-type]` in the Purpose column.
+
+## Step 6. Confirm and hand off
+
+Tell the user:
+
+> Foundation is in place. Three files are now in Docs/: project-brief.md, conventions.md and file-map.md. Every iOS skill reads these before doing anything. Edit them anytime.
+>
+> Next steps, in order:
+>
+> - Say "define the product" to run product-conception and write the feature list
+> - Say "design the architecture" to run architecture-designer
+> - Say "build feature [name]" to run feature-builder end to end
+>
+> Each of these is a separate skill. Pick one and go.
+
+## What this skill produces
+
+Three files in `Docs/` at the project root:
+
+1. `project-brief.md`: what the app is, for whom, data strategy, business model, dependency policy
+2. `conventions.md`: naming, layering, file rules, style rules, the contract every other skill obeys
+3. `file-map.md`: the registry of every source file, the anti-duplication mechanism
+
+## Dependencies
+
+- None. This is the foundation skill.
+- `references/conventions-template.md` in this skill folder.
+
+## Rules
+
+- When this skill triggers, go straight to Step 1. No summary, no preamble.
+- Always detect an existing project before interviewing. Never overwrite existing Docs/ files without the user saying "rebuild".
+- Always put the three files in `Docs/`. Never in the project root, never in the Xcode group, never scattered.
+- Never leave a placeholder in conventions.md.
+- Never invent a bundle identifier. Ask.
+- Keep project-brief.md under 300 words and conventions.md under 600 words.
+- Never use em dashes in any output file.
+- British English in skill files. Code identifiers and comments in English. User-facing copy in the language the user writes in.
+################ product-conception ################
+---
+name: product-conception
+description: >
+  Turn an app idea into a scoped product definition: user personas, jobs to be done, feature list with priorities, user flows and acceptance criteria. Produces Docs/product.md and one Docs/Features/<name>.md stub per feature. Use this skill whenever the user says "define the product", "scope the app", "what features should this have", "write the product spec", "list the features", "MVP scope", "définis le produit", "cadre les fonctionnalités", "spec produit", "quelles fonctionnalités", or describes an app idea and wants it structured before any architecture or code. Requires ios-project-foundation to have run first.
+---
+
+# Product Conception
+
+## Prerequisites check
+
+The moment this skill triggers, check for `Docs/project-brief.md` and `Docs/conventions.md`.
+
+If either is missing, tell the user:
+
+> Product conception builds on the project foundation. Say "set up my iOS project" to run ios-project-foundation first, then come back here.
+
+Then stop.
+
+If both exist, read them fully, then check for `Docs/product.md`. If it exists, read it and go to Step 5 (update mode). Otherwise go straight to Step 1.
+
+## Step 1. Gather the idea
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "How much of the product is already decided?",
+    "header": "Maturity",
+    "multiSelect": false,
+    "options": [
+      {"label": "Just an idea", "description": "One sentence, help me shape it"},
+      {"label": "Rough feature list", "description": "I will paste bullet points"},
+      {"label": "Detailed spec", "description": "I will paste a document or notes"},
+      {"label": "Existing app", "description": "Reverse-engineer from the codebase"}
+    ]
+  },
+  {
+    "question": "Scope target for version 1?",
+    "header": "Scope",
+    "multiSelect": false,
+    "options": [
+      {"label": "Tiny MVP", "description": "3 to 5 features, ship in weeks"},
+      {"label": "Solid v1", "description": "6 to 10 features"},
+      {"label": "Full product", "description": "Everything, phased"}
+    ]
+  }
+]
+```
+
+Wait for the paste if applicable. If "Existing app", walk `Features/` and `Domain/UseCases/` and infer the feature list from folder names and use case names.
+
+## Step 2. Define personas and jobs
+
+From the brief and the idea, write:
+
+- 1 to 3 personas. Name, one-line context, primary frustration, success moment.
+- For each persona, 2 to 4 jobs to be done in the format: "When [situation], I want to [motivation], so I can [outcome]."
+
+Present them in chat. Call AskUserQuestion to confirm which persona is primary. Do not proceed without confirmation.
+
+## Step 3. Build the feature list
+
+Derive features from the jobs. For each feature produce:
+
+| Field | Rule |
+|---|---|
+| Name | PascalCase noun, becomes the folder name under `Features/` |
+| Job served | Which JTBD it fulfils |
+| Priority | P0 (v1 blocker), P1 (v1 nice), P2 (later) |
+| Screens | List of screens, each one future View |
+| Data touched | Entities read or written |
+| Depends on | Other features that must exist first |
+
+Respect the scope from Step 1. Tiny MVP means P0 only, maximum 5 features. Present the table. Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Feature list looks right?",
+    "header": "Confirm",
+    "multiSelect": false,
+    "options": [
+      {"label": "Approve", "description": "Write the files"},
+      {"label": "Cut features", "description": "I will tell you which to remove"},
+      {"label": "Add features", "description": "I will tell you what is missing"}
+    ]
+  }
+]
+```
+
+Iterate until approved. Maximum 3 rounds.
+
+## Step 4. Write the files
+
+### Docs/product.md
+
+```
+# Product
+
+## Personas
+[Name: context. Frustration. Success moment.] x1 to 3. Mark the primary one.
+
+## Jobs to be done
+[Grouped by persona, "When... I want... so I can..." format]
+
+## Feature list
+[The approved table from Step 3, sorted by priority then dependency order]
+
+## User flows
+[For each P0 feature: numbered steps from entry point to success state. Max 8 steps each.]
+
+## Out of scope for v1
+[Explicit list. Include anything the user mentioned and then cut.]
+
+## Open questions
+[Anything unresolved that architecture-designer must decide]
+```
+
+### Docs/Features/<Name>.md, one per feature
+
+```
+# Feature: <Name>
+
+Status: specified
+Priority: <P0|P1|P2>
+Depends on: <feature names or none>
+
+## Job
+[The JTBD this serves, one line]
+
+## Screens
+[One line per screen: ScreenName. What the user sees. What they can do.]
+
+## Acceptance criteria
+[Given / When / Then, 3 to 6 criteria]
+
+## Entities
+[Entities this feature reads or writes. Names only. domain-modeler owns the definitions.]
+
+## Notes
+[Edge cases, platform constraints, anything the implementer must know]
+```
+
+Register every created file in `Docs/file-map.md` with Layer `Docs`.
+
+## Step 5. Update mode
+
+If `Docs/product.md` already existed, ask what changed (new feature, cut feature, priority change, new persona). Apply the change to `product.md` and to the affected `Docs/Features/<Name>.md`. Never regenerate untouched features. Bump the Status line of a changed feature to `respecified`.
+
+## Step 6. Hand off
+
+Tell the user:
+
+> Product is defined. Docs/product.md and one spec per feature in Docs/Features/ are written.
+>
+> Next: say "design the architecture" to run architecture-designer. It reads the feature list and decides modules, data flow and technical choices.
+
+## What this skill produces
+
+1. `Docs/product.md`: personas, jobs, feature table, flows, scope boundaries
+2. `Docs/Features/<Name>.md`: one spec stub per feature, consumed by every downstream skill
+
+## Dependencies
+
+- Requires: `Docs/project-brief.md`, `Docs/conventions.md` (ios-project-foundation)
+- Feeds: architecture-designer, domain-modeler, feature-builder
+
+## Rules
+
+- Always read project-brief.md before proposing anything. Respect the non-goals listed there.
+- Always confirm the primary persona and the feature list before writing files.
+- Never write a feature without at least 3 acceptance criteria.
+- Never define entity fields here. Names only. domain-modeler owns the shapes.
+- Never exceed the scope chosen in Step 1.
+- Feature names are PascalCase and become folder names. No spaces, no accents.
+- Never use em dashes in any output file.
+################ architecture-designer ################
+---
+name: architecture-designer
+description: >
+  Design the technical architecture of the iOS app: layer boundaries, module map, data flow, navigation topology, dependency graph and every technical decision recorded as an ADR. Produces Docs/architecture.md with text diagrams. Use this skill whenever the user says "design the architecture", "how should I structure this app", "architecture decisions", "which pattern for", "MVVM setup", "clean architecture for this app", "conçois l'architecture", "structure de l'app", "décisions techniques", "quel pattern", or before any code is written on a new project. Requires ios-project-foundation. Reads Docs/product.md if present.
+---
+
+# Architecture Designer
+
+## Prerequisites check
+
+Check for `Docs/project-brief.md` and `Docs/conventions.md`. If missing, say:
+
+> Architecture needs the foundation. Say "set up my iOS project" first.
+
+Then stop.
+
+If present, read both. Read `Docs/product.md` and every `Docs/Features/*.md` if they exist. If `Docs/architecture.md` already exists, read it and go to Step 6 (amend mode). Otherwise go straight to Step 1.
+
+## Step 1. Gather constraints
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Modularisation level?",
+    "header": "Modules",
+    "multiSelect": false,
+    "options": [
+      {"label": "Single target, folder layers", "description": "One app target, layers enforced by folders and conventions. Fastest to iterate."},
+      {"label": "SPM local packages per layer", "description": "Domain, Data, DesignSystem as local packages. Compiler-enforced boundaries."},
+      {"label": "SPM packages per feature", "description": "Each feature its own package. For teams of 3+."}
+    ]
+  },
+  {
+    "question": "Persistence engine?",
+    "header": "Storage",
+    "multiSelect": false,
+    "options": [
+      {"label": "SwiftData", "description": "iOS 17+, @Model, CloudKit ready"},
+      {"label": "Core Data", "description": "Broad compatibility"},
+      {"label": "Files or UserDefaults", "description": "Small state only"},
+      {"label": "None", "description": "Stateless or remote only"}
+    ]
+  },
+  {
+    "question": "Navigation complexity?",
+    "header": "Navigation",
+    "multiSelect": false,
+    "options": [
+      {"label": "Single stack", "description": "One NavigationStack, linear flows"},
+      {"label": "Tabs with stacks", "description": "TabView, one stack per tab"},
+      {"label": "Deep links and modals", "description": "Tabs, sheets, full screen covers, URL routing"}
+    ]
+  }
+]
+```
+
+If `product.md` is missing, also ask the user to list the 3 to 5 main features in chat.
+
+## Step 2. Draw the layer diagram
+
+Produce the layer diagram in a plain code block. Adapt names to this project. The arrows are the only allowed dependencies.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  App                                                        │
+│  <AppName>App.swift  ·  AppContainer (composition root)     │
+└───────────────────────────┬─────────────────────────────────┘
+                            │ builds
+┌───────────────────────────▼─────────────────────────────────┐
+│  Presentation (MVVM)                                        │
+│  Features/<Name>/  Views → ViewModels → Coordinators        │
+│  DesignSystem/     Tokens, Components, Modifiers            │
+└───────────────────────────┬─────────────────────────────────┘
+                            │ depends on
+┌───────────────────────────▼─────────────────────────────────┐
+│  Domain (pure Swift)                                        │
+│  Entities · ValueObjects · UseCases · Repository protocols  │
+└───────────────────────────▲─────────────────────────────────┘
+                            │ implements
+┌───────────────────────────┴─────────────────────────────────┐
+│  Data                                                       │
+│  RepositoryImpl · Remote/Local DataSources · DTOs · Mappers │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Step 3. Map features to modules
+
+For every feature in `product.md`, produce one block:
+
+```
+Feature: <Name>
+  Screens:        <ViewA>, <ViewB>
+  ViewModels:     <ViewA>ViewModel, <ViewB>ViewModel
+  Coordinator:    <Name>Coordinator, routes: [.list, .detail(id), .create]
+  Use cases:      Fetch<Noun>sUseCase, Create<Noun>UseCase
+  Repositories:   <Noun>Repository (protocol) ← <Noun>RepositoryImpl
+  Data sources:   <Noun>RemoteDataSource, <Noun>LocalDataSource
+  Entities:       <Noun>
+  Cross-feature:  reads <OtherNoun> via <OtherNoun>Repository (never via another feature's ViewModel)
+```
+
+Detect shared entities: any entity used by two or more features is flagged `[shared]` and must be owned by exactly one feature folder in Domain. Record the owner.
+
+## Step 4. Draw the navigation and data flow
+
+**Navigation topology** as a text tree:
+
+```
+AppCoordinator
+├── Tab: <TabName> → <Feature>Coordinator
+│   ├── <ListView>
+│   └── <DetailView>(id)
+├── Tab: ...
+└── Modal: <OnboardingCoordinator> (presented once)
+```
+
+**One data flow** end to end, for the most important P0 feature:
+
+```
+User tap
+ → <View>.onTapGesture calls viewModel.load()
+ → <ViewModel>.load() calls fetchUseCase.execute()
+ → Default<Fetch>UseCase calls repository.fetchAll()
+ → <RepositoryImpl> calls remoteDataSource.fetch() then localDataSource.save()
+ → <Mapper>.toDomain(dto) returns [<Entity>]
+ → ViewModel sets state = .loaded(items)
+ → View re-renders
+```
+
+## Step 5. Record decisions and write Docs/architecture.md
+
+Every choice is an ADR. Minimum set: modularisation, persistence, networking, navigation, DI, concurrency, error handling, localisation, testing strategy. Format:
+
+```
+### ADR-<n>: <Title>
+Status: accepted
+Context: [one or two sentences]
+Decision: [one sentence]
+Consequences: [what this forces, what it forbids]
+```
+
+Write `Docs/architecture.md`:
+
+```
+# Architecture
+
+## Overview
+[3 sentences: pattern, layers, modularisation level]
+
+## Layer diagram
+[Step 2 block]
+
+## Feature map
+[Step 3 blocks]
+
+## Navigation topology
+[Step 4 tree]
+
+## Reference data flow
+[Step 4 flow]
+
+## Dependency graph
+[Text list: which concrete type is injected where. AppContainer builds X with Y and Z.]
+
+## Decisions
+[All ADRs]
+
+## Forbidden
+[Explicit list: Views importing Data, Domain importing SwiftUI, ViewModels calling other ViewModels, singletons outside AppContainer, and anything project-specific]
+```
+
+Register the file in `Docs/file-map.md`. Update the Architecture section of `Docs/conventions.md` only if a decision changed something there (for example ObservableObject mode). Never rewrite conventions.md wholesale.
+
+## Step 6. Amend mode
+
+If `architecture.md` existed, ask what changed. Add a new ADR with Status `accepted` and mark the superseded ADR as `superseded by ADR-<n>`. Never delete an ADR. Update only the affected diagram sections.
+
+## Step 7. Hand off
+
+Tell the user:
+
+> Architecture is written in Docs/architecture.md with [n] decisions recorded.
+>
+> Next: say "generate the file structure" to run file-structure-organizer, which turns this into real folders and stub files. Or say "build feature [name]" to run feature-builder.
+
+## What this skill produces
+
+1. `Docs/architecture.md`: diagrams, feature map, navigation, data flow, ADRs, forbidden list
+
+## Dependencies
+
+- Requires: `Docs/project-brief.md`, `Docs/conventions.md`
+- Reads if present: `Docs/product.md`, `Docs/Features/*.md`
+- Feeds: file-structure-organizer, domain-modeler, coordinator-navigator, dependency-injector
+
+## Rules
+
+- Always produce diagrams in plain code blocks. Never as images.
+- Always record every choice as an ADR. A decision not written down does not exist.
+- Never introduce a fourth layer. Domain, Data, Presentation, plus App and Core as infrastructure.
+- Never let a feature depend on another feature's Presentation. Cross-feature access goes through Domain.
+- Never contradict conventions.md. If a decision requires changing it, say so explicitly and edit only that section.
+- Never propose a third-party package if the dependency policy in project-brief.md is "zero".
+- Never use em dashes in any output file.
+################ ui-ux-designer ################
+---
+name: ui-ux-designer
+description: >
+  Design the visual and interaction system of the app: design tokens (colour, typography, spacing, radius, motion), component inventory, screen wireframes as text, and interaction rules following Apple Human Interface Guidelines. Produces Docs/design-system.md and DesignSystem/Tokens/ files. Use this skill whenever the user says "design the UI", "design system", "tokens", "colour palette", "typography", "wireframe", "how should this screen look", "UX for", "conçois l'interface", "design system", "palette", "typographie", "maquette", "à quoi doit ressembler", or before view-generator runs for the first time. Requires ios-project-foundation. Reads Docs/product.md.
+---
+
+# UI/UX Designer
+
+## Prerequisites check
+
+Check for `Docs/project-brief.md` and `Docs/conventions.md`. If missing, say:
+
+> The design system follows the product brief. Run ios-project-foundation first.
+
+Then stop. If present, read both plus `Docs/product.md`, `Docs/Features/*.md` and `Docs/design-system.md` if present. If `design-system.md` exists, go to Step 6 (extend mode). Otherwise go straight to Step 1.
+
+## Step 1. Gather direction
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Visual direction?",
+    "header": "Direction",
+    "multiSelect": false,
+    "options": [
+      {"label": "Native Apple", "description": "System colours, SF fonts, standard controls. Fastest, always HIG compliant."},
+      {"label": "Native with brand accent", "description": "System base, one brand colour, custom components where it matters"},
+      {"label": "Custom branded", "description": "Full palette, custom type scale, bespoke components"}
+    ]
+  },
+  {
+    "question": "Brand inputs?",
+    "header": "Brand",
+    "multiSelect": false,
+    "options": [
+      {"label": "I have hex codes and fonts", "description": "I will paste them"},
+      {"label": "I have a reference app or screenshots", "description": "I will describe or paste"},
+      {"label": "Propose for me", "description": "Derive from the product brief"}
+    ]
+  },
+  {
+    "question": "Appearance support?",
+    "header": "Appearance",
+    "multiSelect": true,
+    "options": [
+      {"label": "Light and dark", "description": "Both, semantic colours required"},
+      {"label": "Dynamic Type", "description": "Full range including accessibility sizes"},
+      {"label": "Reduce Motion", "description": "Every animation has a reduced variant"},
+      {"label": "iPad layouts", "description": "Size class aware"}
+    ]
+  }
+]
+```
+
+Wait for pasted inputs if applicable.
+
+## Step 2. Define tokens
+
+Present the token set in chat. Every token is semantic, never named after its value.
+
+```
+Colour (light / dark)
+  ds.background.primary      #FFFFFF / #000000
+  ds.background.secondary    #F2F2F7 / #1C1C1E
+  ds.text.primary            #000000 / #FFFFFF
+  ds.text.secondary          #3C3C43 99% / #EBEBF5 60%
+  ds.accent                  <brand> / <brand adjusted>
+  ds.status.success / warning / danger / info
+
+Typography (Dynamic Type mapped)
+  ds.font.largeTitle   → .largeTitle, bold
+  ds.font.title        → .title2, semibold
+  ds.font.body         → .body
+  ds.font.caption      → .caption
+
+Spacing (4pt grid)
+  ds.space.xs 4 · s 8 · m 16 · l 24 · xl 32 · xxl 48
+
+Radius
+  ds.radius.s 6 · m 12 · l 20 · pill 999
+
+Motion
+  ds.motion.fast 0.15s · standard 0.25s · slow 0.4s, easeInOut
+  Reduce Motion: cross-fade only
+```
+
+Call AskUserQuestion to approve. Maximum 3 rounds.
+
+## Step 3. Component inventory
+
+From the screens in `Docs/Features/*.md`, list every reusable component the app needs. Prefix `DS`. For each: name, purpose, variants, states, which screens use it.
+
+```
+| Component | Purpose | Variants | States | Used by |
+|---|---|---|---|---|
+| DSScreen | Page container, title, background, safe areas | plain, grouped | none | every screen |
+| DSButton | Primary action | primary, secondary, destructive, ghost | enabled, disabled, loading | Form, Detail |
+| DSEmptyState | No content placeholder | with action, without | none | List screens |
+| DSErrorState | Failure with retry | inline, fullscreen | none | every loading screen |
+| DSLoadingView | Progress placeholder | inline, fullscreen | none | every loading screen |
+| DSCard | Grouped content block | elevated, flat | none | Dashboard, Detail |
+| DSTextField | Text input with validation | default, secure, multiline | idle, focused, error | Form |
+| DSBadge | Status label | success, warning, danger, neutral | none | Rows |
+```
+
+A component earns a row only if two or more screens use it, or if it encodes a rule (validation display, loading). Feature-only components stay in the feature folder and are not listed here.
+
+## Step 4. Wireframes
+
+For each P0 screen, a text wireframe:
+
+```
+┌─────────────────────────────┐
+│ ‹ Back        Invoices   [+]│  DSScreen title, toolbar
+├─────────────────────────────┤
+│ 🔍 Search                   │  .searchable
+├─────────────────────────────┤
+│ ▢ Acme Corp      €1,200  ● │  InvoiceRow: title, amount, DSBadge
+│ ▢ Globex         €340    ● │
+│ ...                         │
+├─────────────────────────────┤
+│ (empty) DSEmptyState        │  when no invoices
+└─────────────────────────────┘
+```
+
+Plus interaction notes per screen: tap targets, swipe actions, haptics, transitions, empty and error behaviour.
+
+## Step 5. Write the files
+
+`Docs/design-system.md`:
+
+```
+# Design System
+
+## Direction
+[From Step 1, 2 sentences]
+
+## Tokens
+[Step 2 block, final]
+
+## Components
+[Step 3 table]
+
+## Wireframes
+[Step 4, one per P0 screen]
+
+## Interaction rules
+[Haptics policy, animation policy, loading policy, error display policy, empty state policy]
+
+## Accessibility
+[Dynamic Type range, VoiceOver labelling rule, contrast minimum 4.5:1, Reduce Motion behaviour, minimum tap target 44pt]
+
+## HIG references
+[Which HIG patterns each screen type follows]
+```
+
+Token files, one per category, under `DesignSystem/Tokens/`:
+
+```swift
+// DSColor.swift
+// Layer: DesignSystem
+// Purpose: Semantic colour tokens, light and dark
+
+import SwiftUI
+
+enum DSColor {
+    static let backgroundPrimary = Color("ds.background.primary", bundle: .main)
+    static let textPrimary = Color("ds.text.primary", bundle: .main)
+    static let accent = Color("ds.accent", bundle: .main)
+}
+```
+
+Colour values go into `App/Resources/Assets.xcassets` as colour sets with light and dark appearances. Never hex literals in Swift. `DSFont`, `DSSpacing`, `DSRadius`, `DSMotion` follow the same pattern with static constants.
+
+Register every file in `Docs/file-map.md`.
+
+## Step 6. Extend mode
+
+If `design-system.md` exists, ask what to add: a token, a component row, a wireframe. Add only that. Never rename an existing token. If a token must change value, change it in the asset catalogue and note the date in the doc.
+
+## Step 7. Hand off
+
+Tell the user:
+
+> Design system is written: [n] tokens, [n] components inventoried, [n] wireframes. Say "build the component library" to run swiftui-component-library and implement the DS components.
+
+## What this skill produces
+
+1. `Docs/design-system.md`
+2. `DesignSystem/Tokens/DSColor.swift`, `DSFont.swift`, `DSSpacing.swift`, `DSRadius.swift`, `DSMotion.swift`
+3. Colour sets in the asset catalogue
+
+## Dependencies
+
+- Requires: `Docs/project-brief.md`, `Docs/conventions.md`
+- Reads if present: `Docs/product.md`, `Docs/Features/*.md`
+- Feeds: swiftui-component-library, view-generator
+
+## Rules
+
+- Always name tokens semantically. Never `blue500`, always `accent` or `status.info`.
+- Always provide light and dark values for every colour.
+- Always map typography to Dynamic Type styles. Never fixed point sizes as the primary scale.
+- Never put hex literals in Swift files.
+- Never inventory a component used by only one screen.
+- Every interactive element meets 44pt and 4.5:1 contrast.
+- Never use em dashes in any output file.
+################ conventions-template ################
+# Conventions
+
+Single source of truth for this project. Every skill reads this file before generating code. If code disagrees with this file, the code is wrong.
+
+## Targets
+- Minimum iOS: [version]
+- Swift: [version], strict concurrency: [complete | minimal]
+- Xcode: [version]
+- Observation: [@Observable | ObservableObject]
+
+## Architecture
+- Pattern: MVVM in the Presentation layer, Clean Architecture across three layers.
+- Layers and the only allowed dependency direction:
+  - Presentation depends on Domain
+  - Data depends on Domain
+  - Domain depends on nothing (no UIKit, no SwiftUI, no Foundation networking, no SwiftData)
+- Navigation: Coordinators. Views never push other views. Views emit intents, coordinators decide.
+- Dependency injection: constructor injection. One `AppContainer` in `Core/DI/`. No global singletons except `AppContainer.shared` used only at the composition root.
+- Concurrency: async/await only. No Combine. No completion handlers. Every ViewModel is `@MainActor`.
+
+## Folder layout
+```
+App/                 entry point, AppDelegate, Info.plist, Resources/
+Core/                DI/, Navigation/, Extensions/, Utilities/
+DesignSystem/        Tokens/, Components/, Modifiers/
+Domain/              Entities/, ValueObjects/, Repositories/, UseCases/, Errors/
+Data/                Repositories/, DataSources/Remote/, DataSources/Local/, DTOs/, Mappers/
+Features/<Name>/     Presentation/Views/, Presentation/ViewModels/, Presentation/Components/, Coordinator/
+Tests/               UnitTests/<Layer>/, UITests/
+Docs/                project-brief.md, conventions.md, architecture.md, domain-model.md, design-system.md, file-map.md, Features/
+```
+- Domain and Data are grouped by feature inside each subfolder: `Domain/UseCases/<Feature>/`, `Data/Repositories/<Feature>/`.
+- Feature-only UI components live in `Features/<Name>/Presentation/Components/`. If a component is used by two features, it moves to `DesignSystem/Components/`.
+
+## Naming
+| Thing | Rule | Example |
+|---|---|---|
+| Entity | Noun, no suffix | `Invoice` |
+| Value object | Noun, no suffix | `Money` |
+| Repository protocol | `<Noun>Repository` | `InvoiceRepository` |
+| Repository impl | `<Noun>RepositoryImpl` | `InvoiceRepositoryImpl` |
+| Use case protocol | `<Verb><Noun>UseCase` | `CreateInvoiceUseCase` |
+| Use case impl | `Default<Verb><Noun>UseCase` | `DefaultCreateInvoiceUseCase` |
+| Data source | `<Noun><Remote|Local>DataSource` | `InvoiceRemoteDataSource` |
+| DTO | `<Noun>DTO` | `InvoiceDTO` |
+| Mapper | `<Noun>Mapper` | `InvoiceMapper` |
+| ViewModel | `<Screen>ViewModel` | `InvoiceListViewModel` |
+| View | `<Screen>View` | `InvoiceListView` |
+| Coordinator | `<Feature>Coordinator` | `InvoicesCoordinator` |
+| Route enum | `<Feature>Route` | `InvoicesRoute` |
+| Domain error | `<Noun>Error` | `InvoiceError` |
+| Test | `<TypeUnderTest>Tests` | `CreateInvoiceUseCaseTests` |
+| Mock | `Mock<Protocol>` | `MockInvoiceRepository` |
+
+## File rules
+- One top-level type per file. File name equals type name. `InvoiceListViewModel.swift` contains `InvoiceListViewModel` and nothing else.
+- Extensions of a type live in `<Type>+<Concern>.swift` next to the type.
+- No file over 300 lines. Split by concern.
+- No `Utils.swift`, `Helpers.swift`, `Extensions.swift` catch-all files.
+- Every new file is registered in `Docs/file-map.md`.
+
+## Code style
+- Access control: [strict | default]. Default to `private` and widen only when needed.
+- Every dependency is a protocol. Concrete types are injected, never instantiated inside a consumer.
+- Use cases expose one `execute` method.
+- ViewModels expose state as stored properties and actions as methods. No `@Published` unless ObservableObject mode.
+- Views are dumb: read state, call actions, render. No business logic, no formatting logic beyond presentation.
+- No force unwrap. No `try!`. No `as!`.
+- Errors: typed domain errors. Never `Error` alone at a public boundary.
+- Strings: [String Catalog only | hardcoded allowed]. No user-facing string literal in a View if catalog mode.
+- No `TODO` left in generated code. Unfinished work goes in Docs/Features/<name>.md.
+
+## Testing
+- Unit tests: Swift Testing (`@Test`, `#expect`). One test file per type.
+- UI tests: XCTest. One test class per critical user flow.
+- Every use case has a test. Every ViewModel has a test. Every mapper has a test.
+- Mocks are hand-written, live in `Tests/UnitTests/Mocks/`, one per protocol.
+
+## Dependencies
+- Policy: [zero | minimal | pragmatic]
+- Allowed packages: [list or "none"]
+
+## Localisation
+- [String Catalog from day one | English only for v1]
+- Base language: [en | fr]

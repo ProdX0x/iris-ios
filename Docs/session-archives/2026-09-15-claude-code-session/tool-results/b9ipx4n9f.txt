@@ -1,0 +1,922 @@
+AbsenceStageState.swift
+AncreStageState.swift
+CoeurStageState.swift
+CourantStageState.swift
+CroisementStageState.swift
+EtoilesStageState.swift
+FilStageState.swift
+JardinStageState.swift
+MiroirStageState.swift
+OculoStageState.swift
+TournerStageState.swift
+=================== GameEngine/Oculo/OculoStageState.swift
+     1	// OculoStageState.swift
+     2	// Layer: GameEngine
+     3	// Purpose: OCULOMOTOR EXPANSION: the resolved gaze-contingent stages of a level and their sequence. Every stage is a
+     4	// small deterministic machine fed with the smoothed gaze, its activity and the head pose; it reports successes,
+     5	// misses and its completion, and can suggest the ideal gaze and head (the simulated player's oracle).
+     6	
+     7	import Foundation
+     8	
+     9	/// What a stage receives every tick.
+    10	struct OculoInput: Hashable, Sendable {
+    11	    let seconds: TimeInterval
+    12	    let gaze: Vector2
+    13	    let gazeActive: Bool
+    14	    let head: HeadPose?
+    15	    let elapsed: TimeInterval
+    16	
+    17	    init(seconds: TimeInterval, gaze: Vector2, gazeActive: Bool, head: HeadPose?, elapsed: TimeInterval) {
+    18	        self.seconds = seconds
+    19	        self.gaze = gaze
+    20	        self.gazeActive = gazeActive
+    21	        self.head = head
+    22	        self.elapsed = elapsed
+    23	    }
+    24	}
+    25	
+    26	enum OculoChange: Hashable, Sendable {
+    27	    case success
+    28	    case miss
+    29	    case completed
+    30	}
+    31	
+    32	/// What a stage returns: its changes, and impulses to give lueurs (chapter XI only).
+    33	struct OculoOutcome: Hashable, Sendable {
+    34	    var changes: [OculoChange] = []
+    35	    var impulses: [OculoImpulse] = []
+    36	}
+    37	
+    38	struct OculoImpulse: Hashable, Sendable {
+    39	    let target: Int
+    40	    let impulse: Vector2
+    41	}
+    42	
+    43	/// One resolved stage. Cases are added chapter by chapter; each delegates to its own state.
+    44	enum OculoStageState: Hashable, Sendable {
+    45	    case coeur(CoeurStageState)
+    46	    case fil(FilStageState)
+    47	    case miroir(MiroirStageState)
+    48	    case etoiles(EtoilesStageState)
+    49	    case jardin(JardinStageState)
+    50	    case croisement(CroisementStageState)
+    51	    case courant(CourantStageState)
+    52	    case absence(AbsenceStageState)
+    53	    case ancre(AncreStageState)
+    54	    case tourner(TournerStageState)
+    55	}
+    56	
+    57	extension OculoStageState {
+    58	    /// Resolves an authored stage on the playfield.
+    59	    init(definition: OculoStageDefinition, bounds: PlayfieldBounds, shortSide: Double, scale: Double) {
+    60	        switch definition {
+    61	        case let .coeur(coeur): self = .coeur(CoeurStageState(definition: coeur, bounds: bounds, shortSide: shortSide))
+    62	        case let .fil(fil): self = .fil(FilStageState(definition: fil, bounds: bounds, shortSide: shortSide))
+    63	        case let .miroir(miroir): self = .miroir(MiroirStageState(definition: miroir, bounds: bounds, shortSide: shortSide))
+    64	        case let .etoiles(etoiles): self = .etoiles(EtoilesStageState(definition: etoiles, bounds: bounds, shortSide: shortSide))
+    65	        case let .jardin(jardin): self = .jardin(JardinStageState(definition: jardin, bounds: bounds, shortSide: shortSide))
+    66	        case let .croisement(croisement): self = .croisement(CroisementStageState(definition: croisement, bounds: bounds, shortSide: shortSide))
+    67	        case let .courant(courant): self = .courant(CourantStageState(definition: courant, bounds: bounds, shortSide: shortSide))
+    68	        case let .absence(absence): self = .absence(AbsenceStageState(definition: absence, bounds: bounds, shortSide: shortSide))
+    69	        case let .ancre(ancre): self = .ancre(AncreStageState(definition: ancre, bounds: bounds, shortSide: shortSide))
+    70	        case let .tourner(tourner): self = .tourner(TournerStageState(definition: tourner, bounds: bounds, shortSide: shortSide))
+    71	        }
+    72	    }
+    73	
+    74	    mutating func update(_ input: OculoInput, targets: [Target], braisesLit: [Int]) -> OculoOutcome {
+    75	        switch self {
+    76	        case var .coeur(state):
+    77	            let outcome = state.update(input)
+    78	            self = .coeur(state)
+    79	            return outcome
+    80	        case var .fil(state):
+    81	            let outcome = state.update(input)
+    82	            self = .fil(state)
+    83	            return outcome
+    84	        case var .miroir(state):
+    85	            let outcome = state.update(input)
+    86	            self = .miroir(state)
+    87	            return outcome
+    88	        case var .etoiles(state):
+    89	            let outcome = state.update(input)
+    90	            self = .etoiles(state)
+    91	            return outcome
+    92	        case var .jardin(state):
+    93	            let outcome = state.update(input)
+    94	            self = .jardin(state)
+    95	            return outcome
+    96	        case var .croisement(state):
+    97	            let outcome = state.update(input)
+    98	            self = .croisement(state)
+    99	            return outcome
+   100	        case var .courant(state):
+   101	            let outcome = state.update(input)
+   102	            self = .courant(state)
+   103	            return outcome
+   104	        case var .absence(state):
+   105	            let outcome = state.update(input)
+   106	            self = .absence(state)
+   107	            return outcome
+   108	        case var .ancre(state):
+   109	            let outcome = state.update(input)
+   110	            self = .ancre(state)
+   111	            return outcome
+   112	        case var .tourner(state):
+   113	            let outcome = state.update(input)
+   114	            self = .tourner(state)
+   115	            return outcome
+   116	        }
+   117	    }
+   118	
+   119	    var isComplete: Bool {
+   120	        switch self {
+   121	        case let .coeur(state): state.isComplete
+   122	        case let .fil(state): state.isComplete
+   123	        case let .miroir(state): state.isComplete
+   124	        case let .etoiles(state): state.isComplete
+   125	        case let .jardin(state): state.isComplete
+   126	        case let .croisement(state): state.isComplete
+   127	        case let .courant(state): state.isComplete
+   128	        case let .absence(state): state.isComplete
+   129	        case let .ancre(state): state.isComplete
+   130	        case let .tourner(state): state.isComplete
+   131	        }
+   132	    }
+   133	
+   134	    /// 0...1 progress of the stage.
+   135	    var progress: Double {
+   136	        switch self {
+   137	        case let .coeur(state): state.progress
+   138	        case let .fil(state): state.progress
+   139	        case let .miroir(state): state.progress
+   140	        case let .etoiles(state): state.progress
+   141	        case let .jardin(state): state.progress
+   142	        case let .croisement(state): state.progress
+   143	        case let .courant(state): state.progress
+   144	        case let .absence(state): state.progress
+   145	        case let .ancre(state): state.progress
+   146	        case let .tourner(state): state.progress
+   147	        }
+   148	    }
+   149	
+   150	    /// Where the ideal player looks now (nil: anywhere), for the simulated player only.
+   151	    func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
+   152	        switch self {
+   153	        case let .coeur(state): state.position
+   154	        case let .fil(state): state.position(at: elapsed)
+   155	        case let .miroir(state): state.suggestedGaze(at: elapsed)
+   156	        case let .etoiles(state): state.suggestedGaze(at: elapsed)
+   157	        case let .jardin(state): state.suggestedGaze
+   158	        case let .croisement(state): state.activePosition(at: elapsed)
+   159	        case let .courant(state): state.position(at: elapsed)
+   160	        case let .absence(state): state.suggestedGaze(at: elapsed)
+   161	        case let .ancre(state): state.anchor
+   162	        case let .tourner(state): state.suggestedGaze(at: elapsed)
+   163	        }
+   164	    }
+   165	
+   166	    /// The head orientation the ideal player adopts now (nil: no preference).
+   167	    var suggestedHead: HeadPose? {
+   168	        switch self {
+   169	        case .coeur, .fil, .miroir, .etoiles, .jardin, .croisement, .courant, .absence: nil
+   170	        case let .ancre(state): state.suggestedHead
+   171	        case let .tourner(state): state.suggestedHead
+   172	        }
+   173	    }
+   174	}
+   175	
+   176	/// The stages of a level, played one after the other with a breath between them.
+   177	struct OculoSequenceState: Hashable, Sendable {
+   178	    private(set) var stages: [OculoStageState]
+   179	    let hidesLueurs: Bool
+   180	    let pause: TimeInterval
+   181	    private(set) var currentIndex = 0
+   182	    /// While a stage just completed, the breath before the next one.
+   183	    private(set) var pauseRemaining: TimeInterval = 0
+   184	    private(set) var completedAt: TimeInterval?
+   185	    private(set) var successes = 0
+   186	    private(set) var misses = 0
+   187	    /// When the current stage started: every stage runs on its own clock (0 when it begins), so a stage placed after
+   188	    /// others in a sequence behaves exactly as it does alone.
+   189	    private(set) var stageStartedAt: TimeInterval = 0
+   190	
+   191	    /// Chapter XII: a constellation of one star per stage, around `constellationCenter`.
+   192	    let showsConstellation: Bool
+   193	    let constellationCenter: Vector2
+   194	    let constellationRadius: Double
+   195	
+   196	    init(stages: [OculoStageState], hidesLueurs: Bool, pause: TimeInterval, showsConstellation: Bool = false,
+   197	         constellationCenter: Vector2 = .zero, constellationRadius: Double = 0) {
+   198	        self.stages = stages
+   199	        self.hidesLueurs = hidesLueurs
+   200	        self.pause = pause
+   201	        self.showsConstellation = showsConstellation
+   202	        self.constellationCenter = constellationCenter
+   203	        self.constellationRadius = constellationRadius
+   204	        if stages.isEmpty { completedAt = 0 }
+   205	    }
+   206	
+   207	    var isComplete: Bool { completedAt != nil }
+   208	    var isBreathing: Bool { pauseRemaining > 0 }
+   209	    var current: OculoStageState? { stages.indices.contains(currentIndex) ? stages[currentIndex] : nil }
+   210	    var stageCount: Int { stages.count }
+   211	
+   212	    var progress: Double {
+   213	        guard !stages.isEmpty else { return 1 }
+   214	        if isComplete { return 1 }
+   215	        return (Double(currentIndex) + (current?.progress ?? 0)) / Double(stages.count)
+   216	    }
+   217	
+   218	    enum Change: Hashable, Sendable {
+   219	        case success(stage: Int)
+   220	        case miss(stage: Int)
+   221	        case stageCompleted(stage: Int)
+   222	        case completed
+   223	    }
+   224	
+   225	    mutating func update(_ input: OculoInput, targets: [Target], braisesLit: [Int]) -> (changes: [Change], impulses: [OculoImpulse]) {
+   226	        guard !isComplete, stages.indices.contains(currentIndex) else { return ([], []) }
+   227	        if pauseRemaining > 0 {
+   228	            pauseRemaining = max(0, pauseRemaining - input.seconds)
+   229	            if pauseRemaining <= 0 { stageStartedAt = input.elapsed }
+   230	            return ([], [])
+   231	        }
+   232	        let local = OculoInput(seconds: input.seconds, gaze: input.gaze, gazeActive: input.gazeActive, head: input.head,
+   233	                               elapsed: input.elapsed - stageStartedAt)
+   234	        let outcome = stages[currentIndex].update(local, targets: targets, braisesLit: braisesLit)
+   235	        var changes: [Change] = []
+   236	        for change in outcome.changes {
+   237	            switch change {
+   238	            case .success:
+   239	                successes += 1
+   240	                changes.append(.success(stage: currentIndex))
+   241	            case .miss:
+   242	                misses += 1
+   243	                changes.append(.miss(stage: currentIndex))
+   244	            case .completed:
+   245	                changes.append(.stageCompleted(stage: currentIndex))
+   246	            }
+   247	        }
+   248	        if stages[currentIndex].isComplete {
+   249	            if !changes.contains(.stageCompleted(stage: currentIndex)) { changes.append(.stageCompleted(stage: currentIndex)) }
+   250	            currentIndex += 1
+   251	            if currentIndex >= stages.count {
+   252	                completedAt = input.elapsed
+   253	                changes.append(.completed)
+   254	            } else {
+   255	                pauseRemaining = pause
+   256	            }
+   257	        }
+   258	        return (changes, outcome.impulses)
+   259	    }
+   260	
+   261	    /// Time on the current stage's own clock.
+   262	    func stageTime(at elapsed: TimeInterval) -> TimeInterval {
+   263	        elapsed - stageStartedAt
+   264	    }
+   265	
+   266	    func suggestedGaze(at elapsed: TimeInterval) -> Vector2? {
+   267	        guard !isComplete, pauseRemaining <= 0 else { return nil }
+   268	        return current?.suggestedGaze(at: stageTime(at: elapsed))
+   269	    }
+   270	
+   271	    var suggestedHead: HeadPose? {
+   272	        guard !isComplete, pauseRemaining <= 0 else { return nil }
+   273	        return current?.suggestedHead
+   274	    }
+   275	}
+=================== GameEngine/Oculo/AncreStageState.swift
+     1	// AncreStageState.swift
+     2	// Layer: GameEngine
+     3	// Purpose: Chapter X final: the gaze stays on an anchor while small head turns push a notch around a compass into the
+     4	// band the level designates; each band holds for a while, then the head comes back before the next one. The sign of
+     5	// each axis is learned from the player's own first turn, so no head convention is assumed.
+     6	
+     7	import Foundation
+     8	
+     9	struct AncreStageState: Hashable, Sendable {
+    10	    let anchor: Vector2
+    11	    let radius: Double
+    12	    let releaseRadius: Double
+    13	    let ringRadius: Double
+    14	    let bands: [AncreDefinition.Band]
+    15	    let yawThreshold: Double
+    16	    let pitchThreshold: Double
+    17	    let yawRelease: Double
+    18	    let pitchRelease: Double
+    19	    let dwell: TimeInterval
+    20	
+    21	    private(set) var baseline: HeadPose?
+    22	    /// +1 or -1: the sign of the player's first yaw turn and first pitch tilt (nil until they happen).
+    23	    private(set) var yawSign: Double?
+    24	    private(set) var pitchSign: Double?
+    25	    private(set) var bandIndex = 0
+    26	    /// After a band, the head must come back near its rest before the next band counts.
+    27	    private(set) var awaitingReturn = false
+    28	    private(set) var isOnAnchor = false
+    29	    private(set) var inBand = false
+    30	    private(set) var holdTime: TimeInterval = 0
+    31	    /// Times the gaze left the anchor while a band was holding.
+    32	    private(set) var slips = 0
+    33	    private(set) var lastDelta: HeadPose = .neutral
+    34	    private(set) var completedAt: TimeInterval?
+    35	
+    36	    init(definition: AncreDefinition, bounds: PlayfieldBounds, shortSide: Double) {
+    37	        anchor = definition.anchor.absolute(in: bounds)
+    38	        radius = definition.radius * shortSide
+    39	        releaseRadius = definition.releaseRadius * shortSide
+    40	        ringRadius = definition.ringRadius * shortSide
+    41	        bands = definition.bands
+    42	        yawThreshold = definition.yawThreshold
+    43	        pitchThreshold = definition.pitchThreshold
+    44	        yawRelease = definition.yawThreshold * 0.6
+    45	        pitchRelease = definition.pitchThreshold * 0.6
+    46	        dwell = definition.dwell
+    47	        if bands.isEmpty { completedAt = 0 }
+    48	    }
+    49	
+    50	    var isComplete: Bool { completedAt != nil }
+    51	    var band: AncreDefinition.Band? { bands.indices.contains(bandIndex) ? bands[bandIndex] : nil }
+    52	    var progress: Double { bands.isEmpty ? 1 : (Double(bandIndex) + (dwell > 0 ? min(1, holdTime / dwell) : 0)) / Double(bands.count) }
+    53	
+    54	    /// Where a band sits on the compass: the first yaw turn to the right, its opposite to the left, the first pitch
+    55	    /// tilt up, its opposite down.
+    56	    static func angle(of band: AncreDefinition.Band) -> Double {
+    57	        switch (band.axis, band.direction) {
+    58	        case (.yaw, .first), (.yaw, .same): 0
+    59	        case (.yaw, .opposite): Double.pi
+    60	        case (.pitch, .first), (.pitch, .same): -Double.pi / 2
+    61	        case (.pitch, .opposite): Double.pi / 2
+    62	        }
+    63	    }
+    64	
+    65	    /// The head turn in compass terms: +x toward the first yaw band, -y toward the first pitch band, 1 at the threshold.
+    66	    func screenOffset() -> (x: Double, y: Double) {
+    67	        (lastDelta.yaw * (yawSign ?? 1) / yawThreshold, -lastDelta.pitch * (pitchSign ?? 1) / pitchThreshold)
+    68	    }
+    69	
+    70	    private func reaches(_ delta: HeadPose, _ band: AncreDefinition.Band, threshold yaw: Double, _ pitch: Double) -> Bool {
+    71	        switch (band.axis, band.direction) {
+    72	        case (.yaw, .first): abs(delta.yaw) >= yaw
+    73	        case (.yaw, .same): delta.yaw * (yawSign ?? 1) >= yaw
+    74	        case (.yaw, .opposite): -delta.yaw * (yawSign ?? 1) >= yaw
+    75	        case (.pitch, .first): abs(delta.pitch) >= pitch
+    76	        case (.pitch, .same): delta.pitch * (pitchSign ?? 1) >= pitch
+    77	        case (.pitch, .opposite): -delta.pitch * (pitchSign ?? 1) >= pitch
+    78	        }
+    79	    }
+    80	
+    81	    mutating func update(_ input: OculoInput) -> OculoOutcome {
+    82	        var outcome = OculoOutcome()
+    83	        guard !isComplete, let band, let head = input.head else { return outcome }
+    84	        if baseline == nil { baseline = head }
+    85	        let rest = baseline ?? head
+    86	        let delta = HeadPose(yaw: head.yaw - rest.yaw, pitch: head.pitch - rest.pitch)
+    87	        lastDelta = delta
+    88	        if input.gazeActive {
+    89	            let distance = input.gaze.distance(to: anchor)
+    90	            if isOnAnchor {
+    91	                if distance > releaseRadius { isOnAnchor = false }
+    92	            } else if distance <= radius {
+    93	                isOnAnchor = true
+    94	            }
+    95	        } else {
+    96	            isOnAnchor = false
+    97	        }
+    98	        if awaitingReturn {
+    99	            inBand = false
+   100	            holdTime = 0
+   101	            if abs(delta.yaw) < yawRelease && abs(delta.pitch) < pitchRelease { awaitingReturn = false }
+   102	            return outcome
+   103	        }
+   104	        // The first turn on an axis sets its sign, as soon as it is clearly under way.
+   105	        if band.direction == .first {
+   106	            switch band.axis {
+   107	            case .yaw where abs(delta.yaw) >= yawRelease: yawSign = delta.yaw >= 0 ? 1 : -1
+   108	            case .pitch where abs(delta.pitch) >= pitchRelease: pitchSign = delta.pitch >= 0 ? 1 : -1
+   109	            default: break
+   110	            }
+   111	        }
+   112	        inBand = inBand ? reaches(delta, band, threshold: yawRelease, pitchRelease) : reaches(delta, band, threshold: yawThreshold, pitchThreshold)
+   113	        if inBand && isOnAnchor {
+   114	            holdTime += input.seconds
+   115	            if holdTime >= dwell - 1e-9 {
+   116	                bandIndex += 1
+   117	                holdTime = 0
+   118	                inBand = false
+   119	                awaitingReturn = true
+   120	                outcome.changes.append(.success)
+   121	                if bandIndex >= bands.count {
+   122	                    completedAt = input.elapsed
+   123	                    outcome.changes.append(.completed)
+   124	                }
+   125	            }
+   126	        } else {
+   127	            if holdTime > 0 && inBand && !isOnAnchor {
+   128	                slips += 1
+   129	                outcome.changes.append(.miss)
+   130	            }
+   131	            holdTime = 0
+   132	        }
+   133	        return outcome
+   134	    }
+   135	
+   136	    /// The ideal player: eyes on the anchor, a gentle turn a little past the threshold toward the band, then back to rest.
+   137	    var suggestedHead: HeadPose? {
+   138	        guard !isComplete else { return nil }
+   139	        // No turn before the rest pose is known: the first head sample becomes the rest.
+   140	        guard let rest = baseline else { return .neutral }
+   141	        guard let band, !awaitingReturn else { return rest }
+   142	        let yaw = yawSign ?? 1
+   143	        let pitch = pitchSign ?? 1
+   144	        switch (band.axis, band.direction) {
+   145	        case (.yaw, .first), (.yaw, .same): return HeadPose(yaw: rest.yaw + yaw * (yawThreshold + 2.5), pitch: rest.pitch)
+   146	        case (.yaw, .opposite): return HeadPose(yaw: rest.yaw - yaw * (yawThreshold + 2.5), pitch: rest.pitch)
+   147	        case (.pitch, .first), (.pitch, .same): return HeadPose(yaw: rest.yaw, pitch: rest.pitch + pitch * (pitchThreshold + 2.5))
+   148	        case (.pitch, .opposite): return HeadPose(yaw: rest.yaw, pitch: rest.pitch - pitch * (pitchThreshold + 2.5))
+   149	        }
+   150	    }
+   151	}
+=================== Domain/Campaign/OculoDefinition.swift
+     1	// OculoDefinition.swift
+     2	// Layer: Domain
+     3	// Purpose: OCULOMOTOR EXPANSION: a level may open with a sequence of gaze-contingent stages (one per paradigm),
+     4	// each a small deterministic machine; while the sequence is incomplete the lueurs may stay latent
+     5	
+     6	import Foundation
+     7	
+     8	/// One stage of a gaze-contingent sequence. Cases are added chapter by chapter.
+     9	enum OculoStageDefinition: Hashable, Sendable {
+    10	    /// Chapter II: fixation stability with distractor inhibition.
+    11	    case coeur(CoeurDefinition)
+    12	    /// Chapter III: smooth pursuit.
+    13	    case fil(FilDefinition)
+    14	    /// Chapter IV: anti-saccade (inhibitory control).
+    15	    case miroir(MiroirDefinition)
+    16	    /// Chapter V: memory-guided saccades.
+    17	    case etoiles(EtoilesDefinition)
+    18	    /// Chapter VI: visual search and systematic scanning.
+    19	    case jardin(JardinDefinition)
+    20	    /// Chapter VII: diagonal saccades of variable amplitude.
+    21	    case croisement(CroisementDefinition)
+    22	    /// Chapter VIII: predictive pursuit.
+    23	    case courant(CourantDefinition)
+    24	    /// Chapter IX: fixation disengagement (gap and overlap shifts).
+    25	    case absence(AbsenceDefinition)
+    26	    /// Chapter X: gaze stabilisation while the head turns (VOR-inspired).
+    27	    case ancre(AncreDefinition)
+    28	    /// Chapter XI: eye-head coordination (saccade-first gaze shift).
+    29	    case tourner(TournerDefinition)
+    30	}
+    31	
+    32	/// Chapter XI, « d'abord les yeux »: braises light at the edge one after another; reaching one with the eyes first and
+    33	/// letting the head follow gives all its warmth, the head before the eyes half, the eyes alone a third.
+    34	struct TournerDefinition: Hashable, Sendable {
+    35	    let places: [NormalizedPoint]
+    36	    /// The order in which the braises light (indices into `places`, repeated as needed).
+    37	    let order: [Int]
+    38	    let radius: Double
+    39	    let releaseRadius: Double
+    40	    /// Rest on a braise that counts as reaching it.
+    41	    let dwell: TimeInterval
+    42	    /// Head motion (|Δyaw| + |Δpitch|, degrees) when the eyes arrive under which the head has not moved yet.
+    43	    let headStill: Double
+    44	    /// Head motion, after the eyes arrived, that counts as the head following.
+    45	    let headTurn: Double
+    46	    let followWindow: TimeInterval
+    47	    let announceTimeout: TimeInterval
+    48	    let pause: TimeInterval
+    49	    /// Warmth needed, and the warmth each coordination gives.
+    50	    let goal: Double
+    51	    let fullYield: Double
+    52	    let headFirstYield: Double
+    53	    let eyesOnlyYield: Double
+    54	
+    55	    init(places: [NormalizedPoint], order: [Int], radius: Double = 0.2, releaseRadius: Double = 0.27, dwell: TimeInterval = 0.2,
+    56	         headStill: Double = 3, headTurn: Double = 5, followWindow: TimeInterval = 1.5, announceTimeout: TimeInterval = 4,
+    57	         pause: TimeInterval = 0.6, goal: Double = 4, fullYield: Double = 1, headFirstYield: Double = 0.5, eyesOnlyYield: Double = 0.34) {
+    58	        self.places = places
+    59	        self.order = order.filter { places.indices.contains($0) }
+    60	        self.radius = max(radius, 0.05)
+    61	        self.releaseRadius = max(releaseRadius, self.radius)
+    62	        self.dwell = max(dwell, 0.05)
+    63	        self.headStill = max(headStill, 0)
+    64	        self.headTurn = max(headTurn, self.headStill)
+    65	        self.followWindow = max(followWindow, 0.2)
+    66	        self.announceTimeout = max(announceTimeout, 1)
+    67	        self.pause = max(pause, 0)
+    68	        self.goal = max(goal, 0)
+    69	        self.fullYield = max(fullYield, 0)
+    70	        self.headFirstYield = max(headFirstYield, 0)
+    71	        self.eyesOnlyYield = max(eyesOnlyYield, 0.01)
+    72	    }
+    73	}
+    74	
+    75	/// Chapter X, « l'ancre »: the gaze holds an anchor while small head turns steer a compass into designated bands.
+    76	struct AncreDefinition: Hashable, Sendable {
+    77	    enum Axis: Hashable, Sendable {
+    78	        case yaw
+    79	        case pitch
+    80	    }
+    81	
+    82	    enum Direction: Hashable, Sendable {
+    83	        /// The player's first turn on the axis, either way; it sets the axis's direction for the bands after it.
+    84	        case first
+    85	        case same
+    86	        case opposite
+    87	    }
+    88	
+    89	    struct Band: Hashable, Sendable {
+    90	        let axis: Axis
+    91	        let direction: Direction
+    92	
+    93	        init(_ axis: Axis, _ direction: Direction) {
+    94	            self.axis = axis
+    95	            self.direction = direction
+    96	        }
+    97	    }
+    98	
+    99	    let anchor: NormalizedPoint
+   100	    let radius: Double
+   101	    let releaseRadius: Double
+   102	    /// Radius of the compass ring around the anchor (fraction of the short side).
+   103	    let ringRadius: Double
+   104	    let bands: [Band]
+   105	    /// Head turn (degrees, from the rest pose) that reaches a band; the band holds down to 60 % of it.
+   106	    let yawThreshold: Double
+   107	    let pitchThreshold: Double
+   108	    /// Seconds a band must hold with the gaze on the anchor.
+   109	    let dwell: TimeInterval
+   110	
+   111	    init(anchor: NormalizedPoint, radius: Double = 0.2, releaseRadius: Double = 0.27, ringRadius: Double = 0.2, bands: [Band],
+   112	         yawThreshold: Double = 6, pitchThreshold: Double = 5, dwell: TimeInterval = 0.6) {
+   113	        self.anchor = anchor
+   114	        self.radius = max(radius, 0.05)
+   115	        self.releaseRadius = max(releaseRadius, self.radius)
+   116	        self.ringRadius = max(ringRadius, 0.05)
+   117	        self.bands = bands
+   118	        self.yawThreshold = max(yawThreshold, 1)
+   119	        self.pitchThreshold = max(pitchThreshold, 1)
+   120	        self.dwell = max(dwell, 0.1)
+   121	    }
+   122	}
+   123	
+   124	/// Chapter IX, « l'absence »: a presence held by the gaze, then an answer elsewhere; in a gap trial the presence fades
+   125	/// before the answer appears, in an overlap trial it keeps singing while the answer appears.
+   126	struct AbsenceDefinition: Hashable, Sendable {
+   127	    enum Mode: Hashable, Sendable {
+   128	        case gap
+   129	        case overlap
+   130	    }
+   131	
+   132	    struct Trial: Hashable, Sendable {
+   133	        let from: Int
+   134	        let to: Int
+   135	        let mode: Mode
+   136	
+   137	        init(_ from: Int, _ to: Int, _ mode: Mode) {
+   138	            self.from = from
+   139	            self.to = to
+   140	            self.mode = mode
+   141	        }
+   142	    }
+   143	
+   144	    let places: [NormalizedPoint]
+   145	    let trials: [Trial]
+   146	    /// Continuous rest on the presence before the answer comes.
+   147	    let hold: TimeInterval
+   148	    /// Silence between the presence fading and the answer appearing (gap trials).
+   149	    let gap: TimeInterval
+   150	    /// Seconds the answer waits for the gaze.
+   151	    let answerWindow: TimeInterval
+   152	    let dwell: TimeInterval
+   153	    let radius: Double
+   154	    let releaseRadius: Double
+   155	    /// Breath before a missed trial starts over.
+   156	    let pause: TimeInterval
+   157	
+   158	    init(places: [NormalizedPoint], trials: [Trial], hold: TimeInterval = 0.5, gap: TimeInterval = 0.3, answerWindow: TimeInterval = 1.8,
+   159	         dwell: TimeInterval = 0.25, radius: Double = 0.2, releaseRadius: Double = 0.27, pause: TimeInterval = 0.7) {
+   160	        self.places = places
+   161	        self.trials = trials.filter { places.indices.contains($0.from) && places.indices.contains($0.to) && $0.from != $0.to }
+   162	        self.hold = max(hold, 0.1)
+   163	        self.gap = max(gap, 0)
+   164	        self.answerWindow = max(answerWindow, 0.5)
+   165	        self.dwell = max(dwell, 0.05)
+   166	        self.radius = max(radius, 0.05)
+   167	        self.releaseRadius = max(releaseRadius, self.radius)
+   168	        self.pause = max(pause, 0)
+   169	    }
+   170	}
+   171	
+   172	/// Chapter VIII, « la lanterne du courant »: a lantern carried around a closed loop by a periodic current; from the
+   173	/// second lap it vanishes in mist patches and must be met where it comes out.
+   174	struct CourantDefinition: Hashable, Sendable {
+   175	    /// A stretch of the loop, as fractions of its length.
+   176	    struct Mist: Hashable, Sendable {
+   177	        let start: Double
+   178	        let end: Double
+   179	
+   180	        init(start: Double, end: Double) {
+   181	            self.start = min(max(start, 0), 1)
+   182	            self.end = min(max(end, self.start), 1)
+   183	        }
+   184	    }
+   185	
+   186	    /// The loop passes through these points, smoothed and closed.
+   187	    let waypoints: [NormalizedPoint]
+   188	    /// Seconds per lap.
+   189	    let period: TimeInterval
+   190	    /// Amplitude (seconds) of the gentle breathing of the pace.
+   191	    let drift: TimeInterval
+   192	    let mists: [Mist]
+   193	    /// Mists hide the lantern only after this time (a first lap to learn the way).
+   194	    let mistFrom: TimeInterval
+   195	    let catchRadius: Double
+   196	    /// Seconds after the lantern comes out during which a gaze within reach still catches it.
+   197	    let catchWindow: TimeInterval
+   198	    /// Catches needed (and every mist caught at least once).
+   199	    let catches: Int
+   200	
+   201	    init(waypoints: [NormalizedPoint], period: TimeInterval = 8, drift: TimeInterval = 0.25, mists: [Mist], mistFrom: TimeInterval = 8,
+   202	         catchRadius: Double = 0.2, catchWindow: TimeInterval = 0.3, catches: Int = 5) {
+   203	        self.waypoints = waypoints
+   204	        self.period = max(period, 2)
+   205	        self.drift = min(max(drift, 0), self.period / 20)
+   206	        self.mists = mists
+   207	        self.mistFrom = max(mistFrom, 0)
+   208	        self.catchRadius = max(catchRadius, 0.05)
+   209	        self.catchWindow = max(catchWindow, 0.05)
+   210	        self.catches = max(catches, 1)
+   211	    }
+   212	}
+   213	
+   214	/// Chapter VII, « croisement »: the twins call each other from opposite corners of a diagonal; the one that breathes
+   215	/// waits for the gaze, then calls her sister across. Legs change diagonal and amplitude; the twins glide between legs.
+   216	struct CroisementDefinition: Hashable, Sendable {
+   217	    enum Diagonal: Hashable, Sendable {
+   218	        /// Top-left and bottom-right.
+   219	        case falling
+   220	        /// Top-right and bottom-left.
+   221	        case rising
+   222	    }
+   223	
+   224	    struct Leg: Hashable, Sendable {
+   225	        let diagonal: Diagonal
+   226	        /// Half-offsets of each twin from the centre (fractions of the width and height).
+   227	        let dx: Double
+   228	        let dy: Double
+   229	        /// Acquisitions on this leg before the twins glide to the next one.
+   230	        let exchanges: Int
+   231	
+   232	        init(_ diagonal: Diagonal, dx: Double, dy: Double, exchanges: Int = 2) {
+   233	            self.diagonal = diagonal
+   234	            self.dx = dx
+   235	            self.dy = dy
+   236	            self.exchanges = max(exchanges, 1)
+   237	        }
+   238	    }
+   239	
+   240	    let center: NormalizedPoint
+   241	    let legs: [Leg]
+   242	    let radius: Double
+   243	    let releaseRadius: Double
+   244	    let dwell: TimeInterval
+   245	    /// Seconds the twins take to glide from one leg to the next.
+   246	    let glide: TimeInterval
+   247	
+   248	    init(center: NormalizedPoint, legs: [Leg], radius: Double = 0.2, releaseRadius: Double = 0.27, dwell: TimeInterval = 0.25, glide: TimeInterval = 0.6) {
+   249	        self.center = center
+   250	        self.legs = legs
+   251	        self.radius = max(radius, 0.05)
+   252	        self.releaseRadius = max(releaseRadius, self.radius)
+   253	        self.dwell = max(dwell, 0.05)
+   254	        self.glide = max(glide, 0)
+   255	    }
+   256	}
+   257	
+   258	/// Chapter VI, « le jardin caché »: seeds all over the field; in each batch a few of them breathe slowly among seeds that
+   259	/// only twinkle. A gaze that rests on a breathing seed makes it sprout; lingering on a seed that only twinkles folds the
+   260	/// sprouts of the current batch back (a local retry). Sprouts stay once their batch is complete.
+   261	struct JardinDefinition: Hashable, Sendable {
+   262	    let seeds: [NormalizedPoint]
+   263	    /// The breathing seeds of each batch (indices into `seeds`).
+   264	    let batches: [[Int]]
+   265	    let radius: Double
+   266	    let releaseRadius: Double
+   267	    /// Rest on a breathing seed that makes it sprout.
+   268	    let dwell: TimeInterval
+   269	    /// Lingering on a twinkling seed that folds the batch back (longer than `dwell`: a passing glance costs nothing).
+   270	    let lingerDwell: TimeInterval
+   271	
+   272	    init(seeds: [NormalizedPoint], batches: [[Int]], radius: Double = 0.18, releaseRadius: Double = 0.24, dwell: TimeInterval = 0.3,
+   273	         lingerDwell: TimeInterval = 0.5) {
+   274	        self.seeds = seeds
+   275	        self.batches = batches.map { $0.filter { seeds.indices.contains($0) } }.filter { !$0.isEmpty }
+   276	        self.radius = max(radius, 0.05)
+   277	        self.releaseRadius = max(releaseRadius, self.radius)
+   278	        self.dwell = max(dwell, 0.05)
+   279	        self.lingerDwell = max(lingerDwell, self.dwell)
+   280	    }
+   281	}
+   282	
+   283	/// Chapter V, « les étoiles absentes »: a few stars shine briefly, vanish, and reappear only where the gaze returns
+   284	/// to their remembered place; each round adds them to a constellation.
+   285	struct EtoilesDefinition: Hashable, Sendable {
+   286	    /// Every place a star can shine.
+   287	    let candidates: [NormalizedPoint]
+   288	    /// The stars of each round (indices into `candidates`).
+   289	    let rounds: [[Int]]
+   290	    let showDuration: TimeInterval
+   291	    let blankDuration: TimeInterval
+   292	    /// Seconds allowed to find every star of a round before it is shown again.
+   293	    let recallLimit: TimeInterval
+   294	    let radius: Double
+   295	    let releaseRadius: Double
+   296	    let dwell: TimeInterval
+   297	
+   298	    init(candidates: [NormalizedPoint], rounds: [[Int]], showDuration: TimeInterval = 1.4, blankDuration: TimeInterval = 0.5,
+   299	         recallLimit: TimeInterval = 8, radius: Double = 0.2, releaseRadius: Double = 0.27, dwell: TimeInterval = 0.25) {
+   300	        self.candidates = candidates
+   301	        self.rounds = rounds.map { $0.filter { candidates.indices.contains($0) } }.filter { !$0.isEmpty }
+   302	        self.showDuration = max(showDuration, 0.3)
+   303	        self.blankDuration = max(blankDuration, 0)
+   304	        self.recallLimit = max(recallLimit, 1)
+   305	        self.radius = max(radius, 0.05)
+   306	        self.releaseRadius = max(releaseRadius, self.radius)
+   307	        self.dwell = max(dwell, 0.05)
+   308	    }
+   309	}
+   310	
+   311	/// Chapter IV, « le miroir menteur »: a lure flashes on one side while the door opens on the opposite side for a
+   312	/// while; a gaze that goes to the lure closes the door, the cycle repeats until the gaze goes to the door instead.
+   313	struct MiroirDefinition: Hashable, Sendable {
+   314	    enum Side: Hashable, Sendable {
+   315	        case right, left, top, bottom
+   316	
+   317	        var opposite: Side {
+   318	            switch self {
+   319	            case .right: .left
+   320	            case .left: .right
+   321	            case .top: .bottom
+   322	            case .bottom: .top
+   323	            }
+   324	        }
+   325	    }
+   326	
+   327	    /// Where each side lies.
+   328	    let right: NormalizedPoint
+   329	    let left: NormalizedPoint
+   330	    let top: NormalizedPoint
+   331	    let bottom: NormalizedPoint
+   332	    /// The side of each lure, in order; the door is always opposite.
+   333	    let cycles: [Side]
+   334	    let radius: Double
+   335	    let releaseRadius: Double
+   336	    let flashDuration: TimeInterval
+   337	    /// The door opens `windowOpensAt` after the flash and stays open `windowDuration` (the first `teachingCycles` cycles longer).
+   338	    let windowOpensAt: TimeInterval
+   339	    let windowDuration: TimeInterval
+   340	    let teachingCycles: Int
+   341	    let teachingWindowDuration: TimeInterval
+   342	    let dwell: TimeInterval
+   343	    /// Breath after a success, and after a miss before the same cycle repeats.
+   344	    let pause: TimeInterval
+   345	
+   346	    init(right: NormalizedPoint, left: NormalizedPoint, top: NormalizedPoint, bottom: NormalizedPoint, cycles: [Side],
+   347	         radius: Double = 0.2, releaseRadius: Double = 0.27, flashDuration: TimeInterval = 0.5, windowOpensAt: TimeInterval = 0.15,
+   348	         windowDuration: TimeInterval = 1.8, teachingCycles: Int = 1, teachingWindowDuration: TimeInterval = 3, dwell: TimeInterval = 0.2,
+   349	         pause: TimeInterval = 0.8) {
+   350	        self.right = right
+   351	        self.left = left
+   352	        self.top = top
+   353	        self.bottom = bottom
+   354	        self.cycles = cycles
+   355	        self.radius = max(radius, 0.05)
+   356	        self.releaseRadius = max(releaseRadius, self.radius)
+   357	        self.flashDuration = max(flashDuration, 0.1)
+   358	        self.windowOpensAt = max(windowOpensAt, 0)
+   359	        self.windowDuration = max(windowDuration, 0.5)
+   360	        self.teachingCycles = max(teachingCycles, 0)
+   361	        self.teachingWindowDuration = max(teachingWindowDuration, self.windowDuration)
+   362	        self.dwell = max(dwell, 0.05)
+   363	        self.pause = max(pause, 0)
+   364	    }
+   365	
+   366	    func position(of side: Side) -> NormalizedPoint {
+   367	        switch side {
+   368	        case .right: right
+   369	        case .left: left
+   370	        case .top: top
+   371	        case .bottom: bottom
+   372	        }
+   373	    }
+   374	}
+   375	
+   376	/// Chapter III, « le fil vivant »: a spark travels a smooth closed curve without ever stopping; the filament it leaves
+   377	/// stays alive while the gaze accompanies it and frays while the gaze is away.
+   378	struct FilDefinition: Hashable, Sendable {
+   379	    let center: NormalizedPoint
+   380	    /// Half-amplitudes of the curve (fractions of the width and height): x = cx + ax·sin(ωt), y = cy + ay·sin(ωt + phase) + wobble·sin(3ωt).
+   381	    let amplitudeX: Double
+   382	    let amplitudeY: Double
+   383	    let phase: Double
+   384	    let wobble: Double
+   385	    /// Seconds per lap.
+   386	    let period: TimeInterval
+   387	    /// Gaze distance (fraction of the short side) that counts as accompanying; release beyond `releaseRadius`.
+   388	    let radius: Double
+   389	    let releaseRadius: Double
+   390	    /// Seconds of accompaniment needed; the account frays at `decay` per second while the gaze is away.
+   391	    let requirement: TimeInterval
+   392	    let decay: Double
+   393	
+   394	    init(center: NormalizedPoint, amplitudeX: Double = 0.3, amplitudeY: Double = 0.28, phase: Double = .pi / 3, wobble: Double = 0.05,
+   395	         period: TimeInterval = 10, radius: Double = 0.2, releaseRadius: Double = 0.27, requirement: TimeInterval = 8, decay: Double = 1) {
+   396	        self.center = center
+   397	        self.amplitudeX = amplitudeX
+   398	        self.amplitudeY = amplitudeY
+   399	        self.phase = phase
+   400	        self.wobble = wobble
+   401	        self.period = max(period, 2)
+   402	        self.radius = max(radius, 0.05)
+   403	        self.releaseRadius = max(releaseRadius, self.radius)
+   404	        self.requirement = max(requirement, 0.5)
+   405	        self.decay = max(decay, 0)
+   406	    }
+   407	}
+   408	
+   409	/// Chapter II, « le cœur de verre »: a cold heart warms while the gaze rests on it; sparks flare around it and steal
+   410	/// some warmth from a gaze that goes to them.
+   411	struct CoeurDefinition: Hashable, Sendable {
+   412	    let position: NormalizedPoint
+   413	    /// Gaze distance (fraction of the short side) that counts as resting on the heart; release beyond `releaseRadius`.
+   414	    let radius: Double
+   415	    let releaseRadius: Double
+   416	    /// Seconds of rest needed (a continuity account: it drains at `decay` per second while the gaze is away).
+   417	    let requirement: TimeInterval
+   418	    let decay: Double
+   419	    /// Where sparks flare, one at a time, every `distractorPeriod` seconds for `distractorDuration`, from `firstDistractorAt`.
+   420	    let distractors: [NormalizedPoint]
+   421	    let distractorPeriod: TimeInterval
+   422	    let distractorDuration: TimeInterval
+   423	    let distractorRadius: Double
+   424	    /// Seconds of rest lost when the gaze goes to a spark.
+   425	    let distractorPenalty: TimeInterval
+   426	    let firstDistractorAt: TimeInterval
+   427	
+   428	    init(position: NormalizedPoint, radius: Double = 0.2, releaseRadius: Double = 0.27, requirement: TimeInterval = 6, decay: Double = 1,
+   429	         distractors: [NormalizedPoint], distractorPeriod: TimeInterval = 2.4, distractorDuration: TimeInterval = 1.1,
+   430	         distractorRadius: Double = 0.15, distractorPenalty: TimeInterval = 0.6, firstDistractorAt: TimeInterval = 3) {
+   431	        self.position = position
+   432	        self.radius = max(radius, 0.05)
+   433	        self.releaseRadius = max(releaseRadius, self.radius)
+   434	        self.requirement = max(requirement, 0.5)
+   435	        self.decay = max(decay, 0)
+   436	        self.distractors = distractors
+   437	        self.distractorPeriod = max(distractorPeriod, 0.5)
+   438	        self.distractorDuration = min(max(distractorDuration, 0.2), self.distractorPeriod)
+   439	        self.distractorRadius = max(distractorRadius, 0.05)
+   440	        self.distractorPenalty = max(distractorPenalty, 0)
+   441	        self.firstDistractorAt = max(firstDistractorAt, 0)
+   442	    }
+   443	}
+   444	
+   445	struct OculoDefinition: Hashable, Sendable {
+   446	    let stages: [OculoStageDefinition]
+   447	    /// Whether the lueurs wait, unseen and still, until the sequence completes.
+   448	    let hidesLueurs: Bool
+   449	    /// Breath between two stages (seconds).
+   450	    let pause: TimeInterval
+   451	    /// The Carnet idea this sequence embodies.
+   452	    let element: GameElement
+   453	    /// Each completed stage lights a star of a constellation that comes alive once the sequence is complete.
+   454	    let showsConstellation: Bool
+   455	
+   456	    init(stages: [OculoStageDefinition], element: GameElement, hidesLueurs: Bool = true, pause: TimeInterval = 0.6, showsConstellation: Bool = false) {
+   457	        self.stages = stages
+   458	        self.element = element
+   459	        self.hidesLueurs = hidesLueurs
+   460	        self.pause = max(pause, 0)
+   461	        self.showsConstellation = showsConstellation
+   462	    }
+   463	}
+=================== Domain/ValueObjects/HeadPose.swift
+     1	// HeadPose.swift
+     2	// Layer: Domain
+     3	// Purpose: Head orientation the game may read (degrees, deltas only make sense within a session); provided by the
+     4	// gaze observation, nil when unknown
+     5	
+     6	import Foundation
+     7	
+     8	struct HeadPose: Hashable, Sendable {
+     9	    let yaw: Double
+    10	    let pitch: Double
+    11	
+    12	    init(yaw: Double, pitch: Double) {
+    13	        self.yaw = yaw
+    14	        self.pitch = pitch
+    15	    }
+    16	
+    17	    static let neutral = HeadPose(yaw: 0, pitch: 0)
+    18	}

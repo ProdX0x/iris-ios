@@ -1,0 +1,13 @@
+- [Iris project setup](iris-project-setup.md) — xcodegen project, test/build commands, debug launch options, TrueDepth validation still pending
+- [Iris Apple identity lock](iris-apple-identity.md) — bundle net.steve-s.iris, team G4U9RG5GL7 in project.yml; NKN63DTRM4 is not a team
+- [Iris human validation](iris-human-validation.md) — Gaze Engine v2 validated on iPhone 14 Pro 2026-09-12; hand movement and edge observations are design constraints, not bugs
+- [Iris expansion phase A](iris-expansion-phase-a.md) — the phase A concept study; superseded by the built expansion (Phares dropped)
+- [Iris expansion baseline](iris-expansion-baseline.md) — start new prototypes from baseline/iris-expansion-validated (Braises A + audio split); Braises B rejected and absent
+- [Iris full expansion](iris-full-expansion.md) — feature/iris-full-expansion: chapters VII–XII (70 levels), fingerprint protection of I–VI; human-validated, frozen at tag iris-expansion-human-validated-v1
+- [Iris oculomotor prototype](iris-oculomotor-prototype.md) — level 1-6 "le fil des balises", human-validated, tag iris-ch1-oculomotor-human-validated-v1; DEBUG trace needs a Debug build
+- [Iris oculomotor expansion](iris-oculomotor-expansion.md) — feature/iris-oculomotor-expansion: optional gaze-paradigm finals 2-6…12-7, played and judged excellent; 10-7 reworked separately
+- [Iris chapter card layout](iris-chapter-card-layout.md) — fix/chapter-card-adaptive-layout: adaptive level row so 7+ levels never clip; awaiting the user's check on the iPhone 14 Pro
+- [Iris X·7 ancre correction](iris-x7-ancre-correction.md) — prototype/x7-stabilisation-head-guidance: 10-7 as two guided head loops + traced silhouette; option A on fix/x7-head-only-circling (gaze only in fixations, head alone during circles); not pushed
+- [Iris Liquid Glass phase 1](iris-liquid-glass-phase1.md) — feature/iris-liquid-glass-2026: DSColor Identity/Navigation/State vs Chapter, zero visual change proven by capture harness; not pushed
+- [Iris Liquid Glass phase 2](iris-liquid-glass-phase2.md) — DesignSystem/Glass roles + fallback + test-target gallery with real simulator screenshots; no screen migrated; not pushed
+- [Iris Liquid Glass phase 2B](iris-liquid-glass-phase2b.md) — human verdict on phase 2 glass, DSGlassRecipe, selection gallery of panel/chrome/prominent candidates; awaiting the user's choice

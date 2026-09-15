@@ -1,0 +1,467 @@
+=================== GameSession oculo
+45:    /// OCULOMOTOR EXPANSION: the last head orientation fed to the session (nil when unknown).
+46-    private(set) var headPose: HeadPose?
+47-
+48-    init(level: Level,
+49-         bounds: PlayfieldBounds,
+50-         physics: PhysicsConstants = .reference,
+51-         validation: ValidationRules? = nil,
+--
+106:    /// OCULOMOTOR EXPANSION: the gaze-contingent stages.
+107:    var oculo: OculoSequenceState? { environment.oculo }
+108-
+109-    var areLueursLatent: Bool {
+110-        if environment.balises.map({ !$0.isComplete }) ?? false { return true }
+111:        if let oculo = environment.oculo, oculo.hidesLueurs, !oculo.isComplete { return true }
+112-        return false
+113-    }
+114-
+115:    /// OCULOMOTOR EXPANSION: head orientation from the gaze observation; read only by the stages that ask for it.
+116-    mutating func ingestHeadPose(_ pose: HeadPose?) {
+117-        headPose = pose
+118-    }
+119-
+120-    func isSwallowed(targetAt index: Int) -> Bool {
+121-        swallows[index] != nil
+--
+201:        updateOculo(seconds: seconds, cursor: cursor, events: &events)
+202-        let latent = areLueursLatent
+203-        let positions = targets.map(\.position)
+204-        updateTwins(positions: positions, events: &events)
+205-        updateEchoes(positions: positions, events: &events)
+206-
+207-        var everyTargetValidated = true
+--
+471:    /// OCULOMOTOR EXPANSION: advances the current stage; when the sequence completes, latent lueurs appear.
+472:    private mutating func updateOculo(seconds: TimeInterval, cursor: Vector2, events: inout [GameEvent]) {
+473:        guard var sequence = environment.oculo, !sequence.isComplete else { return }
+474-        let braisesLit = events.compactMap { event -> Int? in
+475-            if case let .braiseLit(sequence) = event { return sequence - 1 }
+476-            return nil
+477-        }
+478:        let input = OculoInput(seconds: seconds, gaze: cursor, gazeActive: gaze.isActive, head: headPose, elapsed: elapsed)
+479-        let result = sequence.update(input, targets: targets, braisesLit: braisesLit)
+480:        environment.oculo = sequence
+481-        for impulse in result.impulses {
+482-            applyImpulse(impulse.impulse, toTargetAt: impulse.target)
+483-        }
+484-        for change in result.changes {
+485-            switch change {
+486:            case let .success(stage): events.append(.oculoSuccess(stage: stage))
+487:            case let .miss(stage): events.append(.oculoMiss(stage: stage))
+488:            case let .stageCompleted(stage): events.append(.oculoStageCompleted(stage: stage))
+489-            case .completed:
+490:                events.append(.oculoCompleted)
+491-                if sequence.hidesLueurs {
+492-                    releasedAt = elapsed
+493-                    for target in targets { events.append(.lueurReleased(sequence: target.sequence)) }
+494-                }
+495-            }
+496-        }
+=================== GameEvent
+     1	// GameEvent.swift
+     2	// Layer: GameEngine
+     3	// Purpose: Facts produced by one engine tick, consumed by audio, haptics, hints and presentation
+     4	
+     5	import Foundation
+     6	
+     7	enum LossCause: Hashable, Sendable {
+     8	    /// The validated lueur drifted beyond the wobble tolerance.
+     9	    case drift
+    10	    /// A lower-ranked lueur lost its validation (R-11).
+    11	    case cascade
+    12	    /// The veilleuse lighting its iris went out (R-26).
+    13	    case veilleuse
+    14	    /// Chapter X: a well swallowed the validated lueur.
+    15	    case gouffre
+    16	}
+    17	
+    18	enum GameEvent: Hashable, Sendable {
+    19	    case validationProgressed(sequence: Int, progress: Double)
+    20	    case validationProgressStopped(sequence: Int)
+    21	    case targetValidated(sequence: Int)
+    22	    case targetLost(sequence: Int, cause: LossCause)
+    23	    case levelCompleted
+    24	    /// A lueur entered the attention zone (it starts being repelled).
+    25	    case intrusion(sequence: Int)
+    26	    /// R-23: the gaze left the screen; irises are closed until it comes back.
+    27	    case attentionLeftField
+    28	    case attentionReturned
+    29	    case veilleuseLow(index: Int)
+    30	    case veilleuseOut(index: Int)
+    31	    case veilleuseRelit(index: Int)
+    32	    /// EXPERIMENTAL (prototype B1): a braise woke, went back to sleep, or flared.
+    33	    case braiseLit(sequence: Int)
+    34	    case braiseCooled(sequence: Int)
+    35	    case braiseFlared(sequence: Int)
+    36	    /// Chapter VII: the twins of `sequence` (the lower of the pair) came within reach, or lost each other.
+    37	    case twinsLinked(sequence: Int)
+    38	    case twinsParted(sequence: Int)
+    39	    /// Chapter VIII: a gust picked the lueur up, or let it go (end of the track, spill by the gaze).
+    40	    case lueurCarried(sequence: Int)
+    41	    case lueurDropped(sequence: Int)
+    42	    /// Chapter IX: an iris emitted its echo (at closing, then at every breath), or an echo woke a sleeping lueur.
+    43	    case echoEmitted(sequence: Int)
+    44	    case lueurWoken(sequence: Int)
+    45	    /// Chapter X: a well swallowed the lueur; the well sent it back to its start.
+    46	    case lueurSwallowed(sequence: Int)
+    47	    case lueurReturned(sequence: Int)
+    48	    /// PROTOTYPE (chapter I level 6): a balise woke (step index in the thread); the thread is complete; a latent lueur appeared.
+    49	    case baliseLit(balise: Int, step: Int)
+    50	    case balisesCompleted
+    51	    case lueurReleased(sequence: Int)
+    52	    /// OCULOMOTOR EXPANSION: a stage counted a success or a miss, a stage completed, the whole sequence completed.
+    53	    case oculoSuccess(stage: Int)
+    54	    case oculoMiss(stage: Int)
+    55	    case oculoStageCompleted(stage: Int)
+    56	    case oculoCompleted
+    57	}
+=================== Tests/IrisTests/Campaign/OculoAncreTests.swift
+     1	// OculoAncreTests.swift
+     2	// Layer: Tests
+     3	// Purpose: Chapter X final « l'ancre »: the gaze on the anchor plus a gentle head turn into each band wins; the head
+     4	// alone, the gaze alone, a head that always turns the same way, no head data and random gazes never do; the sign of
+     5	// each axis is learned from the player
+     6	
+     7	import Foundation
+     8	import Testing
+     9	@testable import Iris
+    10	
+    11	@Suite("Chapter X final: ancre")
+    12	struct OculoAncreTests {
+    13	    private typealias Support = OculoStageTestSupport
+    14	    private var level: LevelDefinition { Campaign.finalGouffres }
+    15	
+    16	    private var ancre: AncreStageState? {
+    17	        let resolved = LevelResolver.resolve(level, in: Support.bounds)
+    18	        if case let .ancre(state)? = resolved.environment.oculo?.current { return state }
+    19	        return nil
+    20	    }
+    21	
+    22	    private static func oracleHead(_ index: Int, _ session: GameSession) -> HeadPose? {
+    23	        session.oculo?.suggestedHead ?? .neutral
+    24	    }
+    25	
+    26	    @Test("structure: level 10-7 is the optional final of chapter X; both axes, each opened by a first turn, thresholds gentle")
+    27	    func structure() throws {
+    28	        let chapter = try #require(Campaign.chapter(number: 10))
+    29	        #expect(chapter.levels.count == 7 && chapter.levels.last?.id == "10-7")
+    30	        #expect(Campaign.level(id: "10-7") == level && !level.gatesProgression && level.introduces == [.ancre])
+    31	        let state = try #require(ancre)
+    32	        #expect(state.bands.count == 6)
+    33	        for axis in [AncreDefinition.Axis.yaw, .pitch] {
+    34	            let onAxis = state.bands.filter { $0.axis == axis }
+    35	            #expect(onAxis.first?.direction == .first && onAxis.count >= 2, "\(axis)")
+    36	        }
+    37	        #expect((4...8).contains(state.yawThreshold) && (3...7).contains(state.pitchThreshold), "small, comfortable turns")
+    38	        #expect((0.15...0.85).contains(state.anchor.x / 393) && (0.12...0.88).contains(state.anchor.y / 852))
+    39	    }
+    40	
+    41	    @Test("the gaze on the anchor and a gentle turn into each band wins six bands without a slip; the head never turns more than 9°")
+    42	    func stabilising() throws {
+    43	        var largest = 0.0
+    44	        let run = Support.run(level, seconds: 60, head: { index, session in
+    45	            let pose = Self.oracleHead(index, session)
+    46	            largest = max(largest, abs(pose?.yaw ?? 0), abs(pose?.pitch ?? 0))
+    47	            return pose
+    48	        }, policy: Support.oracle)
+    49	        #expect(run.completedSequence && run.successes == 6 && run.misses == 0 && !run.session.areLueursLatent)
+    50	        #expect(largest <= 9)
+    51	    }
+    52	
+    53	    @Test("ablations: gaze alone (head still), head alone (gaze away), a head that always turns the same way, no head data and random gazes never complete")
+    54	    func ablations() {
+    55	        let still = Support.run(level, seconds: 45, head: { _, _ in .neutral }, policy: Support.oracle)
+    56	        #expect(!still.completedSequence && still.successes == 0)
+    57	        let headOnly = Support.run(level, seconds: 45, head: Self.oracleHead, policy: Support.corner)
+    58	        #expect(!headOnly.completedSequence && headOnly.successes == 0)
+    59	        let oneWay = Support.run(level, seconds: 45, head: { _, _ in HeadPose(yaw: 9, pitch: 0) }, policy: Support.oracle)
+    60	        #expect(!oneWay.completedSequence && oneWay.successes <= 1, "the second band needs the other way (and a return to rest)")
+    61	        let noHead = Support.run(level, seconds: 45, policy: Support.oracle)
+    62	        #expect(!noHead.completedSequence && noHead.successes == 0)
+    63	        for seed in 1...3 {
+    64	            let random = Support.run(level, seconds: 45, noise: true, seed: seed, head: Self.oracleHead, policy: Support.randomGaze)
+    65	            #expect(!random.completedSequence, "seed \(seed)")
+    66	        }
+    67	    }
+    68	
+    69	    @Test("a first turn to the left is learned as the player's own direction; a return to rest opens the next band; leaving the anchor mid-band is one slip")
+    70	    func mechanics() throws {
+    71	        var state = try #require(ancre)
+    72	        var t = 0.0
+    73	        func step(_ head: HeadPose, gaze: Vector2? = nil, _ seconds: Double = 0.05) -> [OculoChange] {
+    74	            t += seconds
+    75	            return state.update(OculoInput(seconds: seconds, gaze: gaze ?? state.anchor, gazeActive: true, head: head, elapsed: t)).changes
+    76	        }
+    77	        _ = step(.neutral)
+    78	        var changes: [OculoChange] = []
+    79	        for _ in 0..<14 { changes += step(HeadPose(yaw: -8, pitch: 0)) }
+    80	        #expect(changes == [.success] && state.yawSign == -1 && state.awaitingReturn)
+    81	        _ = step(HeadPose(yaw: 8, pitch: 0))
+    82	        #expect(state.holdTime == 0, "no band counts before the head comes back to rest")
+    83	        _ = step(.neutral)
+    84	        #expect(!state.awaitingReturn)
+    85	        changes = []
+    86	        for _ in 0..<6 { changes += step(HeadPose(yaw: 8, pitch: 0)) }
+    87	        changes += step(HeadPose(yaw: 8, pitch: 0), gaze: Vector2(x: 30, y: 830))
+    88	        #expect(changes == [.miss] && state.slips == 1, "the opposite of a left turn is a right turn; leaving the anchor slips once")
+    89	        changes = []
+    90	        for _ in 0..<14 { changes += step(HeadPose(yaw: 8, pitch: 0)) }
+    91	        #expect(changes == [.success] && state.bandIndex == 2)
+    92	        let offset = state.screenOffset()
+    93	        #expect(offset.x < 0, "a right turn, for this player, points away from their first band")
+    94	        _ = state.update(OculoInput(seconds: 1, gaze: state.anchor, gazeActive: true, head: nil, elapsed: t + 1))
+    95	        #expect(state.bandIndex == 2, "no head data: nothing changes, nothing crashes")
+    96	    }
+    97	
+    98	    @Test("guided bot wins, avoidance and off-screen never; the scene shows the anchor, the compass and the designated arc")
+    99	    func botsAndScene() throws {
+   100	        let guided = (1...3).map { CampaignBot(definition: level, policy: .guided, seed: $0).run(maxSeconds: 90) }
+   101	        let solved = guided.allSatisfy(\.completed)
+   102	        #expect(solved, "guided \(guided.map(\.time))")
+   103	        #expect(!CampaignBot(definition: level, policy: .avoidance).run(maxSeconds: 60).completed)
+   104	        #expect(!CampaignBot(definition: level, policy: .offScreen).run(maxSeconds: 30).completed)
+   105	        let resolved = LevelResolver.resolve(level, in: Support.bounds)
+   106	        var session = resolved.makeSession(noiseSources: [SilentNoise()])
+   107	        session.placeGaze(at: Vector2(x: 30, y: 830))
+   108	        session.ingestHeadPose(.neutral)
+   109	        _ = session.advance(by: Support.frame)
+   110	        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+   111	        let oculo = try #require(snapshot.oculo)
+   112	        let anchors = oculo.elements.filter { $0.role == .anchor }.count
+   113	        let compasses = oculo.elements.filter { $0.role == .compass }.count
+   114	        let activeArcs = oculo.arcs.filter { $0.isActive }.count
+   115	        #expect(anchors == 1 && compasses == 1 && activeArcs == 1)
+   116	    }
+   117	}
+=================== Tests/IrisTests/Campaign/ExpansionCampaignFingerprintTests.swift
+     1	// ExpansionCampaignFingerprintTests.swift
+     2	// Layer: Tests
+     3	// Purpose: Protection of the human-validated chapters VII to XII and of chapter I level 6: their canonical dump must
+     4	// match Fixtures/expansion_campaign.txt byte for byte, and the played chapters must start with those exact levels
+     5	
+     6	import Foundation
+     7	import Testing
+     8	@testable import Iris
+     9	
+    10	@Suite("Expansion campaign protection")
+    11	struct ExpansionCampaignFingerprintTests {
+    12	    @Test("the canonical dump of chapters VII to XII and of level 1-6 matches Fixtures/expansion_campaign.txt byte for byte")
+    13	    func dumpMatchesFixture() throws {
+    14	        let bundle = Bundle(for: GoldenTraceBundleLocator.self)
+    15	        let url = try #require(bundle.url(forResource: "expansion_campaign", withExtension: "txt"), "fixture missing from the test bundle")
+    16	        let expected = try String(contentsOf: url, encoding: .utf8)
+    17	        let actual = ExpansionCampaignDump.render()
+    18	        if actual != expected {
+    19	            let expectedLines = expected.components(separatedBy: "\n")
+    20	            let actualLines = actual.components(separatedBy: "\n")
+    21	            var report: [String] = []
+    22	            for index in 0..<max(expectedLines.count, actualLines.count) where report.count < 12 {
+    23	                let before = index < expectedLines.count ? expectedLines[index] : "<missing>"
+    24	                let after = index < actualLines.count ? actualLines[index] : "<missing>"
+    25	                if before != after { report.append("line \(index + 1)\n  fixture: \(before)\n  now:     \(after)") }
+    26	            }
+    27	            let details: String = report.joined(separator: "\n")
+    28	            Issue.record(Comment(rawValue: "validated expansion changed (\(expectedLines.count) fixture lines, \(actualLines.count) now):\n\(details)"))
+    29	        }
+    30	        #expect(actual == expected)
+    31	    }
+    32	
+    33	    @Test("every played chapter starts with its validated levels, in order; only optional levels may follow")
+    34	    func playedChaptersKeepValidatedLevels() {
+    35	        for (base, played) in zip(Campaign.baseChapters, Campaign.chapters) {
+    36	            #expect(base.number == played.number && base.name == played.name && base.theme == played.theme, "chapter \(base.number)")
+    37	            #expect(Array(played.levels.prefix(base.levels.count)) == base.levels, "chapter \(base.number)")
+    38	            #expect(played.levels.dropFirst(base.levels.count).allSatisfy { !$0.gatesProgression }, "chapter \(base.number)")
+    39	            #expect(played.levels.dropFirst(base.levels.count).count <= 1, "chapter \(base.number): at most one added level")
+    40	        }
+    41	        #expect(Campaign.baseChapters.map(\.levels.count) == [6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+    42	    }
+    43	}
+=================== Tests/IrisTests/Campaign/HistoricalCampaignFingerprintTests.swift
+     1	// HistoricalCampaignFingerprintTests.swift
+     2	// Layer: Tests
+     3	// Purpose: Protection of the historical campaign (chapters I to VI, 34 levels) and of the frozen engine: the canonical
+     4	// dump must match its fixture byte for byte, the frozen source files must keep their checksum, and the historical
+     5	// levels must carry none of the expansion mechanics
+     6	
+     7	import CryptoKit
+     8	import Foundation
+     9	import Testing
+    10	@testable import Iris
+    11	
+    12	@Suite("Historical campaign protection")
+    13	struct HistoricalCampaignFingerprintTests {
+    14	    static let historicalIDs = ["1-1", "1-2", "1-3", "1-4", "1-5",
+    15	                                "2-1", "2-2", "2-3", "2-4", "2-5",
+    16	                                "3-1", "3-2", "3-3", "3-4", "3-5", "3-6",
+    17	                                "4-1", "4-2", "4-3", "4-4", "4-5", "4-6",
+    18	                                "5-1", "5-2", "5-3", "5-4", "5-5", "5-6",
+    19	                                "6-1", "6-2", "6-3", "6-4", "6-5", "6-6"]
+    20	
+    21	    /// SHA-256 of the sources that the expansion must never change: the six historical chapters, the Gaze Engine,
+    22	    /// the gaze filter and the physics integrator. Any legitimate change must be deliberate and update this table.
+    23	    /// PROTOTYPE branch (chapter I level 6): `GazeTrackingService.swift` and `ARKitGazeTrackingService.swift` were
+    24	    /// re-hashed after one additive change each, an optional `observation` (head pose, eye geometry) that nothing in
+    25	    /// the gaze computation reads; no threshold, filter, mapping or state behaviour changed (README, prototype section).
+    26	    static let frozenSources: [String: String] = [
+    27	        "AR/Calibration/AffineTransform2D.swift": "358b3235b9d2601a0057da899d2fb670d89befc5e41156fe961137c8b166ffe9",
+    28	        "AR/Calibration/AxisMapping.swift": "4aafc40399ebfaaef2213f5f43185e052cefcd2b461dad03cc0079fbc775e9f7",
+    29	        "AR/Calibration/BlinkDetector.swift": "0dcece8ae830dda53afaa43751c098389d65a52eb663ac4b9bfcc9cf0d53e942",
+    30	        "AR/Calibration/CalibrationGrid.swift": "42ba061f8aef76349e0c17e8b10e6809c0d1c2dfd7ab60422f9cbb9cec1facfd",
+    31	        "AR/Calibration/CalibrationProfile.swift": "0107e1fce4f08b30ac76e242d3c8e59f14847167e8cc57031c139450ba1b1a4e",
+    32	        "AR/Calibration/CalibrationResult.swift": "29468b5255186c19a7cd085045390e122bbf9a4e4537a053de59cdfe31213518",
+    33	        "AR/Calibration/CalibrationStore.swift": "e2a3c0663811b3fd10741ee6f85871afe7ea8be67b205bdeb83d6460d1713355",
+    34	        "AR/Calibration/DeviceAxis.swift": "7c022865a8eb376245b584023b91ca36b6b12eb66c3299d92524afd150387b6a",
+    35	        "AR/Calibration/FixationSequence.swift": "8aa0a84b2ef3289de5ca8526c26e9abaf8c037b7e5c2bd135e7436bb8a29bc7e",
+    36	        "AR/Calibration/GazeMapper.swift": "d0b01b54094e84d08b8896d590b91422ce0b95522a924994da67b1b2fcece89a",
+    37	        "AR/Calibration/GazeReadinessEvaluator.swift": "8ef8ed107e36c89afbf8f9fcb50e53b5afdbe38d67c7bfd1608b5ff3f5c5dd48",
+    38	        "AR/Calibration/GazeReadinessReport.swift": "292a04167813e8746e92e570251d0944ab1aa372970ee23a5f2ac972ee0e4259",
+    39	        "AR/Calibration/NominalDisplayGeometry.swift": "12010e81c1ad9818265b3e90992adc41a5c34a3bee9b20421b6f052d4f7dbd1b",
+    40	        "AR/Calibration/NormalizedCoordinates.swift": "23d95ae7c14de0e91142e69e330a82c90006a4aca0cd4c9784d37abadfb444d9",
+    41	        "AR/Calibration/RobustAggregator.swift": "a7b66f5ed18601dd18845acfae0ec4c27cc1938d79f2c6248a3fb78983e3e7df",
+    42	        "AR/Projection/GazeRay.swift": "7e10dbfc01f549c18ae0e4575fb85e499b65fd5fb952acdf619cf69afe1d30f7",
+    43	        "AR/Services/ARKitGazeTrackingService.swift": "05f2d7f2f364c48da0b115ed55e6b15ea2b2f983cf67f0cc703a4be610fa45cc",
+    44	        "AR/Services/CameraAuthorizationService.swift": "84337ff6957b8decd5e703be995386467cc34a3310ccba4b66a8dcdf78c1f3f4",
+    45	        "AR/Services/DeviceCapabilities.swift": "aaf35bcce665d7e6cedba423948898b5994218b4f0172301f9680ff11863c3bb",
+    46	        "AR/Services/GazeTrackingService.swift": "bb319fd4e4340e51462e99045ed0b38fa54a5f7d72e93b27c8138a2b30236432",
+    47	        "AR/Services/InterfaceOrientationProvider.swift": "ca7e8439fa236446e9d3af74e66fd4a11f06868c0d108d8810f3b88c45816766",
+    48	        "AR/Services/SimulatedGazeTrackingService.swift": "d16b5dd7d0ee423ce85addf40aef0f0d21143b45daf82d05a7283a0653aa98a7",
+    49	        "Domain/Campaign/Campaign+Clairvoyance.swift": "2d9f0f2b3b4680bd1b3313667ae23b2b65504018001ca75c2bf3856ff654868d",
+    50	        "Domain/Campaign/Campaign+Courants.swift": "8151505f821032102ed440be21aff6368d765e421f36edd7552ebee4e70cfa4a",
+    51	        "Domain/Campaign/Campaign+Eveil.swift": "0b21c291944269ac775e8f2917a82b1de7cd939b5f37450d6d17561db30752e3",
+    52	        "Domain/Campaign/Campaign+Partage.swift": "13e7102e71722994256bc0f8a4cbdc507316f868b508b9e43cbf31222b9f9e71",
+    53	        "Domain/Campaign/Campaign+Veilleuses.swift": "fdb63a4e6948521543e79d6033aff37bf011a50a169f885db53bbf4a2ffa57fa",
+    54	        "Domain/Campaign/Campaign+Voiles.swift": "800f7005d9338f3cdb3885049cb1f9614f4164cdf15eec3571849af7773a02b0",
+    55	        // Human-validated chapters VII to XII and chapter I level 6 (oculomotor expansion branch): frozen as well.
+    56	        "Domain/Campaign/Campaign+Jumelles.swift": "5fae102a59f4eded604b10b9d4eb73f29ac423c57a3991a3e4ce1579f61d03e9",
+    57	        "Domain/Campaign/Campaign+Souffles.swift": "08551e3452bd051428927704889910df712d9ea8f2f0e1d5bab7bead707bb361",
+    58	        "Domain/Campaign/Campaign+Echos.swift": "4df729bf64d83c8976db098ea483e0cd3e6bc09535b27edfc8a250bf202b1c7e",
+    59	        "Domain/Campaign/Campaign+Gouffres.swift": "7b63ee242f5e9c1f57b49e3760a59e27978eb692e555beb76105a68da8bc4854",
+    60	        "Domain/Campaign/Campaign+Braises.swift": "f11acafdbb93ca18d4a5d6248aee30287781943ee00500bb3712c7d8e2e050d4",
+    61	        "Domain/Campaign/Campaign+Constellation.swift": "e343c0c7d44550310a293e8da1ffce4a9c6ef7b6c8376b863c5cbcbc3bc26281",
+    62	        "Domain/Campaign/Campaign+Oculomoteur.swift": "0c257f7899f7cc161be637305bb72a49d2161b27088fbe56f211d32efb989b10",
+    63	        "GameEngine/Gaze/GazeFilter.swift": "e2b8f50ec196e3013229370c5343cc117649cf39cfed291d1bb9e38f39557693",
+    64	        "GameEngine/Physics/TargetPhysics.swift": "99e15cc5116499c7bfa443742f9b9733fda80c82b457eadb56f9b2f774ca6639",
+    65	    ]
+    66	
+    67	    /// Project root, derived from this file's compile-time path (Tests/IrisTests/Campaign/...).
+    68	    private static var projectRoot: URL {
+    69	        URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+    70	    }
+    71	
+    72	    @Test("the canonical dump of the 34 historical levels matches Fixtures/historical_campaign.txt byte for byte")
+    73	    func dumpMatchesFixture() throws {
+    74	        let bundle = Bundle(for: GoldenTraceBundleLocator.self)
+    75	        let url = try #require(bundle.url(forResource: "historical_campaign", withExtension: "txt"), "fixture missing from the test bundle")
+    76	        let expected = try String(contentsOf: url, encoding: .utf8)
+    77	        let actual = HistoricalCampaignDump.render()
+    78	        if actual != expected {
+    79	            let expectedLines = expected.components(separatedBy: "\n")
+    80	            let actualLines = actual.components(separatedBy: "\n")
+    81	            var report: [String] = []
+    82	            for index in 0..<max(expectedLines.count, actualLines.count) where report.count < 12 {
+    83	                let before = index < expectedLines.count ? expectedLines[index] : "<missing>"
+    84	                let after = index < actualLines.count ? actualLines[index] : "<missing>"
+    85	                if before != after {
+    86	                    report.append("line \(index + 1)\n  fixture: \(before)\n  now:     \(after)")
+    87	                }
+    88	            }
+    89	            let details: String = report.joined(separator: "\n")
+    90	            Issue.record(Comment(rawValue: "historical campaign changed (\(expectedLines.count) fixture lines, \(actualLines.count) now):\n\(details)"))
+    91	        }
+    92	        #expect(actual == expected)
+    93	    }
+    94	
+    95	    @Test("the frozen sources (historical chapters, Gaze Engine, gaze filter, physics integrator) keep their checksum")
+    96	    func frozenSourcesUnchanged() throws {
+    97	        let root = Self.projectRoot
+    98	        for (path, expected) in Self.frozenSources.sorted(by: { $0.key < $1.key }) {
+    99	            let data = try Data(contentsOf: root.appendingPathComponent(path))
+   100	            let digest: String = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+   101	            #expect(digest == expected, "\(path) changed")
+   102	        }
+   103	    }
+   104	
+   105	    @Test("the historical chapters keep their ids, order, names, theme and carry no expansion mechanic")
+   106	    func purity() {
+   107	        #expect(Campaign.historicalLevels.map(\.id) == Self.historicalIDs)
+   108	        #expect(Campaign.historicalChapters.map(\.name) == ["éveil", "partage", "courants", "voiles", "veilleuses", "clairvoyance"])
+   109	        #expect(Campaign.historicalChapters.map(\.ambientFrequency) == [110, 123.47, 98, 130.81, 116.54, 146.83])
+   110	        #expect(Campaign.historicalChapters.allSatisfy { $0.theme == .chambreNoire && $0.isHistorical })
+   111	        for level in Campaign.historicalLevels {
+   112	            #expect(!level.hasBraises && !level.isExperimental, "\(level.id)")
+   113	            #expect(level.lueurs.allSatisfy { $0.braise == nil && $0.twin == nil && !$0.asleep }, "\(level.id)")
+   114	            #expect(!level.hasTwins && level.souffles.isEmpty && level.echo == nil && !level.hasSleepers && level.gouffres.isEmpty, "\(level.id)")
+   115	            #expect(level.balises == nil && level.oculo == nil && level.gatesProgression, "\(level.id)")
+   116	        }
+   117	        #expect(Campaign.chapters.dropFirst(6).allSatisfy { !$0.isHistorical })
+   118	    }
+   119	}
+=================== CampaignBot oculo
+75-    var routeIndex: [Int]
+76-    var servingVeilleuse: Int?
+77:    /// OCULOMOTOR EXPANSION: the head the ideal player adopts (the stage's oracle), nil for every other policy.
+78-    var head: HeadPose?
+79-    /// Chapter VIII: where each gust track crosses a veil (the pickup point of the ferry), by gust index.
+80-    let crossings: [(souffle: Int, veil: Int, point: Vector2, tangent: Vector2)]
+81-
+82-    init(resolved: ResolvedLevel, policy: CampaignBot.Policy, gazeNoise: Double, seed: Int) {
+83-        self.resolved = resolved
+84-        self.policy = policy
+85-        self.gazeNoise = gazeNoise
+86-        self.generator = LinearCongruentialGenerator(seed: 4242 + seed * 7919)
+87-        self.aim = resolved.bounds.center
+88-        self.routeIndex = Array(repeating: 0, count: resolved.level.targets.count)
+89-        var crossings: [(souffle: Int, veil: Int, point: Vector2, tangent: Vector2)] = []
+--
+120-            return
+121-        }
+122:        // OCULOMOTOR EXPANSION: the ideal player follows the stage's oracle, gaze and head.
+123:        if policy != .avoidance, let oculo = session.oculo, !oculo.isComplete {
+124:            head = oculo.suggestedHead
+125:            if let suggested = oculo.suggestedGaze(at: session.elapsed) {
+126-                aim = suggested
+127-                return
+128-            }
+129-        } else {
+130-            head = nil
+131-        }
+132-        if policy == .guided || policy == .straight, let flame = veilleuseToServe(session: session) {
+133-            aim = session.veilleuses[flame].position
+134-            return
+135-        }
+136-        if policy == .guided || policy == .ignoresVeilleuses || policy == .straight, let feed = feedAim(session: session) {
+137-            aim = feed
+=================== cues
+Audio/Policy/AudioCuePolicy.swift-36-                cues.append(.stopProgress(voice: sequence - 1))
+Audio/Policy/AudioCuePolicy.swift:37:            case .targetValidated, .balisesCompleted, .oculoStageCompleted, .oculoCompleted:
+Audio/Policy/AudioCuePolicy.swift-38-                // A thread of balises or a gaze stage completing is a closing of the same weight as a validation.
+Audio/Policy/AudioCuePolicy.swift-39-                if !completes { cues.append(.validation) }
+Audio/Policy/AudioCuePolicy.swift-40-            case .targetLost, .veilleuseOut, .lueurSwallowed:
+Audio/Policy/AudioCuePolicy.swift-41-                // A well swallowing a lueur is a setback of the same weight as a loss: the same tone.
+--
+Audio/Policy/AudioCuePolicy.swift-44-                cues.append(.levelComplete)
+Audio/Policy/AudioCuePolicy.swift:45:            case .veilleuseLow, .braiseLit, .twinsLinked, .lueurCarried, .lueurWoken, .baliseLit, .oculoSuccess:
+Audio/Policy/AudioCuePolicy.swift-46-                // A braise that lights, twins that see each other, a gust that picks a lueur up and an echo that wakes one
+Audio/Policy/AudioCuePolicy.swift-47-                // reuse the soft pulse: one idea, one sound.
+Audio/Policy/AudioCuePolicy.swift-48-                pulseRequested = true
+Audio/Policy/AudioCuePolicy.swift-49-            case .intrusion, .attentionLeftField, .attentionReturned, .veilleuseRelit, .braiseCooled, .braiseFlared, .twinsParted,
+Audio/Policy/AudioCuePolicy.swift:50:                 .lueurDropped, .echoEmitted, .lueurReturned, .lueurReleased, .oculoMiss:
+Audio/Policy/AudioCuePolicy.swift-51-                break
+Audio/Policy/AudioCuePolicy.swift-52-            }
+Audio/Policy/AudioCuePolicy.swift-53-        }
+Audio/Policy/AudioCuePolicy.swift-54-        if lossRequested && time - lastLossTime >= lossRetriggerInterval {
+Haptics/Policy/HapticCuePolicy.swift-32-            switch event {
+Haptics/Policy/HapticCuePolicy.swift:33:            case .targetValidated, .balisesCompleted, .oculoStageCompleted, .oculoCompleted:
+Haptics/Policy/HapticCuePolicy.swift-34-                validated = true
+Haptics/Policy/HapticCuePolicy.swift-35-            case .targetLost, .veilleuseOut, .lueurSwallowed:
+Haptics/Policy/HapticCuePolicy.swift-36-                lost = true
+Haptics/Policy/HapticCuePolicy.swift-37-            case .levelCompleted:
+--
+Haptics/Policy/HapticCuePolicy.swift-44-                 .braiseLit, .braiseCooled, .braiseFlared, .twinsLinked, .twinsParted, .lueurCarried, .lueurDropped,
+Haptics/Policy/HapticCuePolicy.swift:45:                 .echoEmitted, .lueurWoken, .lueurReturned, .baliseLit, .lueurReleased, .oculoSuccess, .oculoMiss:
+Haptics/Policy/HapticCuePolicy.swift-46-                break
+Haptics/Policy/HapticCuePolicy.swift-47-            }
+Haptics/Policy/HapticCuePolicy.swift-48-        }
+Haptics/Policy/HapticCuePolicy.swift-49-        if stopped && !holding {

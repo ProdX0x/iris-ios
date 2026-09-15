@@ -1,0 +1,798 @@
+=================== Features/Game/Rendering/OculoSnapshot.swift
+     1	// OculoSnapshot.swift
+     2	// Layer: Presentation
+     3	// Purpose: OCULOMOTOR EXPANSION: plain scene description of the current gaze stage, built from the engine state once
+     4	// per frame; the renderer draws elements by role with the chapter palette
+     5	
+     6	import Foundation
+     7	
+     8	enum OculoRole: Hashable, Sendable {
+     9	    /// A zone the gaze should rest in (dotted circle), and the thing at its centre.
+    10	    case target
+    11	    /// A tempting thing to ignore.
+    12	    case distractor
+    13	    /// A moving light the gaze follows.
+    14	    case spark
+    15	    /// A sudden bright burst.
+    16	    case flash
+    17	    /// An opening that accepts the gaze for a while.
+    18	    case window
+    19	    /// A remembered light.
+    20	    case star
+    21	    /// A seed of the garden, sprouted or not.
+    22	    case seed
+    23	    /// A resting place of the twins.
+    24	    case cradle
+    25	    /// The light carried along the loop, and a relay ahead of it.
+    26	    case lantern
+    27	    case relay
+    28	    /// A presence that glows, fades, answers.
+    29	    case presence
+    30	    /// The anchor of the gaze and the compass the head turns.
+    31	    case anchor
+    32	    case compass
+    33	    /// A braise the level announces.
+    34	    case announce
+    35	    /// A star of the final constellation.
+    36	    case constellation
+    37	}
+    38	
+    39	struct OculoElementSnapshot: Hashable, Sendable {
+    40	    let role: OculoRole
+    41	    let position: Vector2
+    42	    let radius: Double
+    43	    /// 0...1 brightness or charge.
+    44	    let intensity: Double
+    45	    /// 0...1 animation phase when meaningful.
+    46	    let phase: Double
+    47	    let isActive: Bool
+    48	    let isLit: Bool
+    49	    let index: Int
+    50	
+    51	    init(role: OculoRole, position: Vector2, radius: Double, intensity: Double = 1, phase: Double = 0, isActive: Bool = false, isLit: Bool = false, index: Int = 0) {
+    52	        self.role = role
+    53	        self.position = position
+    54	        self.radius = radius
+    55	        self.intensity = intensity
+    56	        self.phase = phase
+    57	        self.isActive = isActive
+    58	        self.isLit = isLit
+    59	        self.index = index
+    60	    }
+    61	}
+    62	
+    63	struct OculoPolylineSnapshot: Hashable, Sendable {
+    64	    let points: [Vector2]
+    65	    let intensity: Double
+    66	    let isClosed: Bool
+    67	    /// A soft, wide band of mist rather than a line.
+    68	    let isMist: Bool
+    69	
+    70	    init(points: [Vector2], intensity: Double, isClosed: Bool = false, isMist: Bool = false) {
+    71	        self.points = points
+    72	        self.intensity = intensity
+    73	        self.isClosed = isClosed
+    74	        self.isMist = isMist
+    75	    }
+    76	}
+    77	
+    78	/// An arc drawn around a centre (compass bands, charge rings): angles in radians, screen convention.
+    79	struct OculoArcSnapshot: Hashable, Sendable {
+    80	    let center: Vector2
+    81	    let radius: Double
+    82	    let start: Double
+    83	    let end: Double
+    84	    let intensity: Double
+    85	    let isActive: Bool
+    86	}
+    87	
+    88	struct OculoSnapshot: Hashable, Sendable {
+    89	    let stageIndex: Int
+    90	    let stageCount: Int
+    91	    let progress: Double
+    92	    let stageProgress: Double
+    93	    let isBreathing: Bool
+    94	    let isComplete: Bool
+    95	    let elements: [OculoElementSnapshot]
+    96	    let polylines: [OculoPolylineSnapshot]
+    97	    let arcs: [OculoArcSnapshot]
+    98	    /// Chapter XII: one star per stage, lit once the stage is complete, and the links between the lit stars.
+    99	    let constellation: [OculoElementSnapshot]
+   100	    let constellationLinks: OculoPolylineSnapshot?
+   101	
+   102	    init(sequence: OculoSequenceState, elapsed: TimeInterval, head: HeadPose?) {
+   103	        stageIndex = min(sequence.currentIndex, max(0, sequence.stageCount - 1))
+   104	        stageCount = sequence.stageCount
+   105	        progress = sequence.progress
+   106	        isBreathing = sequence.isBreathing
+   107	        isComplete = sequence.isComplete
+   108	        var elements: [OculoElementSnapshot] = []
+   109	        var polylines: [OculoPolylineSnapshot] = []
+   110	        var arcs: [OculoArcSnapshot] = []
+   111	        var stageProgress = 1.0
+   112	        if let stage = sequence.current, !sequence.isComplete {
+   113	            stageProgress = stage.progress
+   114	            let scene = OculoSceneBuilder.scene(for: stage, elapsed: sequence.stageTime(at: elapsed), head: head)
+   115	            elements = scene.elements
+   116	            polylines = scene.polylines
+   117	            arcs = scene.arcs
+   118	        }
+   119	        self.stageProgress = stageProgress
+   120	        self.elements = elements
+   121	        self.polylines = polylines
+   122	        self.arcs = arcs
+   123	        var constellation: [OculoElementSnapshot] = []
+   124	        var links: OculoPolylineSnapshot?
+   125	        if sequence.showsConstellation, sequence.stageCount > 0 {
+   126	            let count = sequence.stageCount
+   127	            let lit = sequence.isComplete ? count : min(sequence.currentIndex, count)
+   128	            // Once complete, the constellation opens out over a second and a half and keeps breathing.
+   129	            let bloom = sequence.completedAt.map { min(1, max(0, elapsed - $0) / 1.5) } ?? 0
+   130	            let radius = sequence.constellationRadius * (1 + 0.8 * bloom)
+   131	            var litPoints: [Vector2] = []
+   132	            for index in 0..<count {
+   133	                let angle = -Double.pi / 2 + 2 * Double.pi * Double(index) / Double(count)
+   134	                let position = Vector2(x: sequence.constellationCenter.x + radius * cos(angle), y: sequence.constellationCenter.y + radius * sin(angle))
+   135	                let isLit = index < lit
+   136	                if isLit { litPoints.append(position) }
+   137	                constellation.append(OculoElementSnapshot(role: .constellation, position: position, radius: 12, intensity: isLit ? 1 : 0, phase: bloom,
+   138	                                                          isLit: isLit, index: index))
+   139	            }
+   140	            if litPoints.count >= 2 {
+   141	                links = OculoPolylineSnapshot(points: litPoints, intensity: 0.3 + 0.5 * bloom, isClosed: sequence.isComplete)
+   142	            }
+   143	        }
+   144	        self.constellation = constellation
+   145	        constellationLinks = links
+   146	    }
+   147	}
+   148	
+   149	/// Builds the scene of one stage; one case per stage kind, added chapter by chapter.
+   150	enum OculoSceneBuilder {
+   151	    struct Scene {
+   152	        var elements: [OculoElementSnapshot] = []
+   153	        var polylines: [OculoPolylineSnapshot] = []
+   154	        var arcs: [OculoArcSnapshot] = []
+   155	    }
+   156	
+   157	    static func scene(for stage: OculoStageState, elapsed: TimeInterval, head: HeadPose?) -> Scene {
+   158	        switch stage {
+   159	        case let .coeur(state):
+   160	            var scene = Scene()
+   161	            scene.elements.append(OculoElementSnapshot(role: .target, position: state.position, radius: state.radius, intensity: state.progress, isActive: true))
+   162	            scene.arcs.append(OculoArcSnapshot(center: state.position, radius: state.radius * 0.55, start: -.pi / 2, end: -.pi / 2 + 2 * .pi * state.progress,
+   163	                                               intensity: state.progress, isActive: true))
+   164	            if let spark = state.activeDistractor(at: elapsed) {
+   165	                let fade = max(0, 1 - spark.age / state.distractorDuration)
+   166	                scene.elements.append(OculoElementSnapshot(role: .distractor, position: spark.position, radius: state.distractorRadius,
+   167	                                                           intensity: fade, phase: spark.age / state.distractorDuration, index: spark.ordinal))
+   168	            }
+   169	            return scene
+   170	        case let .fil(state):
+   171	            var scene = Scene()
+   172	            let spark = state.position(at: elapsed)
+   173	            scene.polylines.append(OculoPolylineSnapshot(points: state.trail + [spark], intensity: 0.15 + 0.85 * state.progress))
+   174	            scene.elements.append(OculoElementSnapshot(role: .spark, position: spark, radius: state.radius, intensity: 0.4 + 0.6 * state.progress,
+   175	                                                       isActive: true, isLit: state.isNear))
+   176	            return scene
+   177	        case let .miroir(state):
+   178	            var scene = Scene()
+   179	            let doorOpen = state.isDoorOpen(at: elapsed)
+   180	            for (side, position) in state.positions.sorted(by: { "\($0.key)" < "\($1.key)" }) {
+   181	                let isDoor = state.doorSide == side
+   182	                scene.elements.append(OculoElementSnapshot(role: .window, position: position, radius: state.radius, intensity: isDoor && doorOpen ? 1 : 0.2,
+   183	                                                           isActive: isDoor && doorOpen, isLit: isDoor && state.isInDoor && doorOpen))
+   184	            }
+   185	            if let age = state.flashAge(at: elapsed), let lure = state.lureSide, let position = state.positions[lure] {
+   186	                scene.elements.append(OculoElementSnapshot(role: .flash, position: position, radius: state.radius, intensity: 1 - age / state.flashDuration,
+   187	                                                           phase: age / state.flashDuration))
+   188	            }
+   189	            return scene
+   190	        case let .etoiles(state):
+   191	            var scene = Scene()
+   192	            let showing = state.isShowing
+   193	            for (index, position) in state.candidates.enumerated() {
+   194	                let inRound = state.currentRound.contains(index)
+   195	                let lit = state.constellation.contains(index) || state.found.contains(index)
+   196	                let shining = showing && inRound
+   197	                scene.elements.append(OculoElementSnapshot(role: .star, position: position, radius: state.radius, intensity: shining ? 1 : 0,
+   198	                                                           isActive: false, isLit: lit, index: index))
+   199	            }
+   200	            let drawn = state.constellation + state.found
+   201	            if drawn.count >= 2 {
+   202	                scene.polylines.append(OculoPolylineSnapshot(points: drawn.map { state.candidates[$0] }, intensity: 0.5))
+   203	            }
+   204	            return scene
+   205	        case let .jardin(state):
+   206	            var scene = Scene()
+   207	            for (index, position) in state.seeds.enumerated() {
+   208	                scene.elements.append(OculoElementSnapshot(role: .seed, position: position, radius: state.radius,
+   209	                                                           intensity: state.isSprouted(index) ? 1 : (state.dwellingOn == index ? min(1, state.dwellTime / state.dwell) : 0),
+   210	                                                           isActive: state.isBreathing(index), isLit: state.isSprouted(index), index: index))
+   211	            }
+   212	            return scene
+   213	        case let .croisement(state):
+   214	            var scene = Scene()
+   215	            let pair = state.twins(at: elapsed)
+   216	            scene.polylines.append(OculoPolylineSnapshot(points: [pair.0, pair.1], intensity: 0.15 + 0.85 * state.progress))
+   217	            for (index, position) in [pair.0, pair.1].enumerated() {
+   218	                let isActive = index == state.active
+   219	                scene.elements.append(OculoElementSnapshot(role: .cradle, position: position, radius: state.radius,
+   220	                                                           intensity: isActive && state.isInside ? min(1, state.dwellTime / state.dwell) : 0,
+   221	                                                           isActive: isActive, isLit: !isActive, index: index))
+   222	            }
+   223	            return scene
+   224	        case let .courant(state):
+   225	            var scene = Scene()
+   226	            let track = stride(from: 0, to: state.samples.count, by: 4).map { state.samples[$0] }
+   227	            scene.polylines.append(OculoPolylineSnapshot(points: track, intensity: 0.14, isClosed: true))
+   228	            if elapsed >= state.mistFrom - 1 {
+   229	                let fadeIn = min(1, max(0, elapsed - (state.mistFrom - 1)))
+   230	                for index in state.mists.indices {
+   231	                    scene.polylines.append(OculoPolylineSnapshot(points: state.mistTrail(index), intensity: fadeIn, isMist: true))
+   232	                    scene.elements.append(OculoElementSnapshot(role: .relay, position: state.exits[index], radius: state.catchRadius,
+   233	                                                               isActive: state.hiddenIn == index || state.catchMist == index,
+   234	                                                               isLit: state.caught.contains(index), index: index))
+   235	                }
+   236	            }
+   237	            if state.mist(at: elapsed) == nil {
+   238	                scene.elements.append(OculoElementSnapshot(role: .lantern, position: state.position(at: elapsed), radius: state.catchRadius,
+   239	                                                           intensity: 0.5 + 0.5 * state.progress))
+   240	            }
+   241	            return scene
+   242	        case let .absence(state):
+   243	            var scene = Scene()
+   244	            let visibility = state.visibility(at: elapsed)
+   245	            if let first = state.first, visibility.first > 0 {
+   246	                scene.elements.append(OculoElementSnapshot(role: .presence, position: first, radius: state.radius, intensity: visibility.first,
+   247	                                                           isActive: state.isHolding, index: 0))
+   248	                if state.isHolding {
+   249	                    scene.arcs.append(OculoArcSnapshot(center: first, radius: state.radius * 0.45, start: -Double.pi / 2,
+   250	                                                       end: -Double.pi / 2 + 2 * Double.pi * min(1, state.holdTime / state.hold), intensity: 1, isActive: true))
+   251	                }
+   252	            }
+   253	            if let second = state.second, visibility.second > 0 {
+   254	                scene.elements.append(OculoElementSnapshot(role: .presence, position: second, radius: state.radius, intensity: visibility.second,
+   255	                                                           isActive: true, index: 1))
+   256	            }
+   257	            return scene
+   258	        case let .ancre(state):
+   259	            var scene = Scene()
+   260	            scene.elements.append(OculoElementSnapshot(role: .anchor, position: state.anchor, radius: state.radius,
+   261	                                                       intensity: state.dwell > 0 ? min(1, state.holdTime / state.dwell) : 0,
+   262	                                                       isActive: true, isLit: state.isOnAnchor))
+   263	            for index in 0..<min(state.bandIndex, state.bands.count) {
+   264	                let angle = AncreStageState.angle(of: state.bands[index])
+   265	                scene.arcs.append(OculoArcSnapshot(center: state.anchor, radius: state.ringRadius, start: angle - 0.22, end: angle + 0.22,
+   266	                                                   intensity: 0.3, isActive: false))
+   267	            }
+   268	            if let band = state.band, !state.awaitingReturn {
+   269	                let angle = AncreStageState.angle(of: band)
+   270	                scene.arcs.append(OculoArcSnapshot(center: state.anchor, radius: state.ringRadius, start: angle - 0.4, end: angle + 0.4,
+   271	                                                   intensity: state.inBand ? 1 : 0.45, isActive: true))
+   272	            }
+   273	            let offset = state.screenOffset()
+   274	            scene.elements.append(OculoElementSnapshot(role: .compass, position: state.anchor, radius: state.ringRadius,
+   275	                                                       intensity: min(1, (offset.x * offset.x + offset.y * offset.y).squareRoot()),
+   276	                                                       phase: atan2(offset.y, offset.x), isLit: state.inBand))
+   277	            return scene
+   278	        case let .tourner(state):
+   279	            var scene = Scene()
+   280	            if let place = state.place {
+   281	                switch state.phase {
+   282	                case let .announce(start):
+   283	                    scene.elements.append(OculoElementSnapshot(role: .announce, position: place, radius: state.radius,
+   284	                                                               intensity: min(1, max(0, elapsed - start) / 0.4), isActive: true, index: state.announcement))
+   285	                case .follow:
+   286	                    scene.elements.append(OculoElementSnapshot(role: .announce, position: place, radius: state.radius, intensity: 1,
+   287	                                                               isActive: true, isLit: true, index: state.announcement))
+   288	                case .rest, .done:
+   289	                    break
+   290	                }
+   291	            }
+   292	            scene.arcs.append(OculoArcSnapshot(center: state.center, radius: state.radius * 0.5, start: -Double.pi / 2,
+   293	                                               end: -Double.pi / 2 + 2 * Double.pi * state.progress, intensity: state.progress, isActive: true))
+   294	            return scene
+   295	        }
+   296	    }
+   297	}
+=================== Features/Game/Rendering/GameSceneRenderer+Oculo.swift
+     1	// GameSceneRenderer+Oculo.swift
+     2	// Layer: Presentation
+     3	// Purpose: OCULOMOTOR EXPANSION: draws the current gaze stage from its scene description, by role, in the chapter
+     4	// palette; nothing here reads the engine
+     5	
+     6	import SwiftUI
+     7	
+     8	extension GameSceneRenderer {
+     9	    /// Chapter XII: the constellation of completed stages, drawn behind the current stage and after the sequence ends.
+    10	    func drawOculoConstellation(_ oculo: OculoSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
+    11	                                palette: DSThemePalette, reduceMotion: Bool) {
+    12	        if let links = oculo.constellationLinks {
+    13	            drawOculoPolyline(links, in: &context, scale: scale, palette: palette)
+    14	        }
+    15	        for star in oculo.constellation where star.isLit {
+    16	            drawOculoElement(star, time: time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+    17	        }
+    18	    }
+    19	
+    20	    func drawOculo(_ oculo: OculoSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
+    21	                   palette: DSThemePalette, reduceMotion: Bool) {
+    22	        for polyline in oculo.polylines {
+    23	            drawOculoPolyline(polyline, in: &context, scale: scale, palette: palette)
+    24	        }
+    25	        for arc in oculo.arcs {
+    26	            drawOculoArc(arc, in: &context, scale: scale, palette: palette)
+    27	        }
+    28	        for element in oculo.elements {
+    29	            drawOculoElement(element, time: time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+    30	        }
+    31	    }
+    32	
+    33	    private func drawOculoPolyline(_ polyline: OculoPolylineSnapshot, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
+    34	        guard let first = polyline.points.first, polyline.intensity > 0.01 else { return }
+    35	        var path = Path()
+    36	        path.move(to: CGPoint(x: first.x, y: first.y))
+    37	        for point in polyline.points.dropFirst() { path.addLine(to: CGPoint(x: point.x, y: point.y)) }
+    38	        if polyline.isClosed { path.closeSubpath() }
+    39	        if polyline.isMist {
+    40	            context.stroke(path, with: .color(palette.glow.opacity(0.1 * polyline.intensity)), style: StrokeStyle(lineWidth: 44 * scale, lineCap: .round, lineJoin: .round))
+    41	            context.stroke(path, with: .color(palette.glow.opacity(0.16 * polyline.intensity)), style: StrokeStyle(lineWidth: 24 * scale, lineCap: .round, lineJoin: .round))
+    42	            return
+    43	        }
+    44	        context.stroke(path, with: .color(palette.accent.opacity(0.7 * polyline.intensity)),
+    45	                       style: StrokeStyle(lineWidth: 1.4 * scale, lineCap: .round, lineJoin: .round))
+    46	    }
+    47	
+    48	    private func drawOculoArc(_ arc: OculoArcSnapshot, in context: inout GraphicsContext, scale: Double, palette: DSThemePalette) {
+    49	        var path = Path()
+    50	        path.addArc(center: CGPoint(x: arc.center.x, y: arc.center.y), radius: arc.radius, startAngle: .radians(arc.start), endAngle: .radians(arc.end), clockwise: false)
+    51	        let color = arc.isActive ? palette.accent : DSColor.textTertiary
+    52	        context.stroke(path, with: .color(color.opacity(0.25 + 0.6 * arc.intensity)), style: StrokeStyle(lineWidth: (arc.isActive ? 3 : 1.5) * scale, lineCap: .round))
+    53	    }
+    54	
+    55	    private func drawOculoElement(_ element: OculoElementSnapshot, time: TimeInterval, in context: inout GraphicsContext, scale: Double,
+    56	                                  palette: DSThemePalette, reduceMotion: Bool) {
+    57	        let center = CGPoint(x: element.position.x, y: element.position.y)
+    58	        let breath = reduceMotion ? 1 : 1 + 0.12 * sin(time * 3.1 + Double(element.index))
+    59	        func disc(_ radius: CGFloat) -> Path {
+    60	            Path(ellipseIn: CGRect(x: center.x - radius, y: center.y - radius, width: radius * 2, height: radius * 2))
+    61	        }
+    62	        func halo(_ radius: CGFloat, _ color: Color, _ opacity: Double) {
+    63	            var glow = context
+    64	            glow.blendMode = .plusLighter
+    65	            glow.fill(disc(radius), with: .radialGradient(Gradient(colors: [color.opacity(opacity), color.opacity(0)]), center: center, startRadius: 0, endRadius: radius))
+    66	        }
+    67	        switch element.role {
+    68	        case .target, .anchor:
+    69	            if element.isActive {
+    70	                context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.12)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+    71	            }
+    72	            halo(22 * scale * breath, palette.glow, 0.15 + 0.35 * element.intensity)
+    73	            context.stroke(disc(8 * scale * breath), with: .color(palette.accent.opacity(0.4 + 0.5 * element.intensity)), lineWidth: 1.6 * scale)
+    74	            context.fill(disc(3 * scale), with: .color(DSColor.lueurCore.opacity(0.5 + 0.5 * element.intensity)))
+    75	        case .distractor:
+    76	            halo(18 * scale, DSColor.statusDanger, 0.35 * element.intensity)
+    77	            context.fill(disc(4 * scale), with: .color(DSColor.lueurCore.opacity(0.9 * element.intensity)))
+    78	        case .spark, .lantern:
+    79	            halo(26 * scale, palette.glow, 0.2 + 0.5 * element.intensity)
+    80	            context.fill(disc(6 * scale), with: .radialGradient(Gradient(colors: [DSColor.lueurCore, palette.accent.opacity(0.8)]), center: center, startRadius: 0, endRadius: 7 * scale))
+    81	            if element.isActive {
+    82	                context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.1)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+    83	            }
+    84	        case .flash:
+    85	            halo(element.radius * 0.8 * (1 + 0.6 * element.phase), DSColor.lueurGlow, 0.6 * element.intensity)
+    86	            context.fill(disc(9 * scale * (1 - 0.5 * element.phase)), with: .color(DSColor.lueurCore.opacity(element.intensity)))
+    87	        case .window:
+    88	            context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.14 : 0.05)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+    89	            halo(24 * scale * breath, palette.glow, element.isActive ? 0.35 : 0.05)
+    90	            context.stroke(disc(12 * scale * breath), with: .color(palette.accent.opacity(element.isActive ? 0.8 : 0.2)), lineWidth: 1.6 * scale)
+    91	            if element.isLit { context.fill(disc(5 * scale), with: .color(DSColor.statusSuccess)) }
+    92	        case .constellation:
+    93	            let pulse = reduceMotion ? 1 : 1 + (0.15 + 0.35 * element.phase) * sin(time * 2.1 + Double(element.index) * 0.9)
+    94	            halo(18 * scale * pulse, DSColor.lueurGlow, 0.35 + 0.35 * element.phase)
+    95	            context.fill(starPath(center: center, radius: 7 * scale * pulse, points: 4), with: .color(DSColor.lueurCore))
+    96	        case .star:
+    97	            if element.isLit || element.intensity > 0 {
+    98	                halo(16 * scale, DSColor.lueurGlow, 0.5 * max(element.intensity, element.isLit ? 0.8 : 0))
+    99	                context.fill(starPath(center: center, radius: 6 * scale, points: 4), with: .color(DSColor.lueurCore.opacity(0.5 + 0.5 * max(element.intensity, element.isLit ? 1 : 0))))
+   100	            } else if element.isActive {
+   101	                context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.08)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+   102	            }
+   103	        case .seed:
+   104	            if element.isLit {
+   105	                var stem = Path()
+   106	                stem.move(to: center)
+   107	                stem.addQuadCurve(to: CGPoint(x: center.x + 6 * scale, y: center.y - 26 * scale * element.intensity), control: CGPoint(x: center.x - 8 * scale, y: center.y - 14 * scale))
+   108	                context.stroke(stem, with: .color(palette.accent.opacity(0.8)), style: StrokeStyle(lineWidth: 1.6 * scale, lineCap: .round))
+   109	                let bloom = CGPoint(x: center.x + 6 * scale, y: center.y - 26 * scale * element.intensity)
+   110	                halo(14 * scale, palette.glow, 0.4)
+   111	                context.fill(Path(ellipseIn: CGRect(x: bloom.x - 5 * scale, y: bloom.y - 5 * scale, width: 10 * scale, height: 10 * scale)), with: .color(DSColor.lueurCore))
+   112	            } else {
+   113	                // Breathing seeds swell slowly; the others only twinkle, quick and small.
+   114	                let pulse: CGFloat
+   115	                if reduceMotion {
+   116	                    pulse = element.isActive ? 1.2 : 1
+   117	                } else if element.isActive {
+   118	                    pulse = 1 + 0.38 * sin(time * 2.3 + Double(element.index))
+   119	                } else {
+   120	                    pulse = 0.9 + 0.1 * sin(time * 9 + Double(element.index) * 1.7)
+   121	                }
+   122	                context.fill(disc(4 * scale * pulse), with: .color(palette.accent.opacity(0.7)))
+   123	                context.stroke(disc(7 * scale * pulse), with: .color(palette.accent.opacity(0.35)), lineWidth: 1 * scale)
+   124	                if element.intensity > 0 {
+   125	                    context.stroke(disc(11 * scale), with: .color(palette.glow.opacity(0.5 * element.intensity)), lineWidth: 1.2 * scale)
+   126	                }
+   127	            }
+   128	        case .cradle:
+   129	            context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.12 : 0.04)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+   130	            if element.isActive { halo(28 * scale * breath, palette.glow, 0.35) }
+   131	            context.stroke(disc(9 * scale * (element.isActive ? breath : 1)), with: .color(palette.accent.opacity(element.isLit ? 0.9 : (element.isActive ? 0.8 : 0.3))), lineWidth: 1.4 * scale)
+   132	            if element.isLit { context.fill(disc(4 * scale), with: .color(DSColor.lueurCore.opacity(0.9))) }
+   133	        case .relay:
+   134	            context.stroke(disc(element.radius), with: .color(palette.accent.opacity(element.isActive ? 0.12 : 0.04)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+   135	            if element.isActive { halo(24 * scale * breath, palette.glow, 0.35) }
+   136	            context.stroke(disc(8 * scale), with: .color(palette.accent.opacity(element.isLit ? 0.9 : (element.isActive ? 0.85 : 0.3))), lineWidth: 1.4 * scale)
+   137	            if element.isLit { context.fill(disc(3.5 * scale), with: .color(DSColor.statusSuccess.opacity(0.9))) }
+   138	        case .presence:
+   139	            if element.intensity > 0.01 {
+   140	                halo(30 * scale * breath, palette.glow, 0.45 * element.intensity)
+   141	                context.stroke(disc(10 * scale * breath), with: .color(palette.accent.opacity(0.9 * element.intensity)), lineWidth: 1.6 * scale)
+   142	                context.fill(disc(3.5 * scale), with: .color(DSColor.lueurCore.opacity(element.intensity)))
+   143	            }
+   144	            if element.isActive {
+   145	                context.stroke(disc(element.radius), with: .color(palette.accent.opacity(0.1)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+   146	            }
+   147	        case .compass:
+   148	            context.stroke(disc(element.radius), with: .color(DSColor.textTertiary.opacity(0.35)), lineWidth: 1 * scale)
+   149	            let angle = element.phase
+   150	            // The head turn pushes the notch out from the anchor toward the ring (1 at the band threshold).
+   151	            let reach = element.radius * min(1, max(0, element.intensity))
+   152	            let notch = CGPoint(x: center.x + reach * cos(angle), y: center.y + reach * sin(angle))
+   153	            var glow = context
+   154	            glow.blendMode = .plusLighter
+   155	            glow.fill(Path(ellipseIn: CGRect(x: notch.x - 14 * scale, y: notch.y - 14 * scale, width: 28 * scale, height: 28 * scale)),
+   156	                      with: .radialGradient(Gradient(colors: [palette.glow.opacity(0.4), palette.glow.opacity(0)]), center: notch, startRadius: 0, endRadius: 14 * scale))
+   157	            context.fill(Path(ellipseIn: CGRect(x: notch.x - 5 * scale, y: notch.y - 5 * scale, width: 10 * scale, height: 10 * scale)), with: .color(element.isLit ? DSColor.statusSuccess : palette.accent))
+   158	        case .announce:
+   159	            halo(element.radius * 0.6 * breath, palette.glow, 0.3 * element.intensity)
+   160	            context.stroke(disc(element.radius * 0.35 * breath), with: .color(palette.accent.opacity(0.6 * element.intensity)), style: StrokeStyle(lineWidth: 1.2 * scale, dash: [3 * scale, 4 * scale]))
+   161	        }
+   162	    }
+   163	
+   164	    private func starPath(center: CGPoint, radius: CGFloat, points: Int) -> Path {
+   165	        var path = Path()
+   166	        for index in 0..<(points * 2) {
+   167	            let angle = Double(index) * .pi / Double(points) - .pi / 2
+   168	            let r = index.isMultiple(of: 2) ? radius : radius * 0.42
+   169	            let point = CGPoint(x: center.x + r * cos(angle), y: center.y + r * sin(angle))
+   170	            if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
+   171	        }
+   172	        path.closeSubpath()
+   173	        return path
+   174	    }
+   175	}
+=================== Features/Game/Diagnostics/OculomotorTrace.swift
+     1	// OculomotorTrace.swift
+     2	// Layer: Presentation (DEBUG instrumentation)
+     3	// Purpose: PROTOTYPE (chapter I level 6): observes, never steers. Classifies every gaze sample (VALID_INSIDE,
+     4	// VALID_OUTSIDE when the mapper still produces a projection outside the viewport, INVALID otherwise), records
+     5	// viewport exits with only what was really observed, and measures each balise transition (acquisition, dwell,
+     6	// head yaw/pitch deltas). Technical figures, not clinical ones.
+     7	
+     8	import Foundation
+     9	import os
+    10	
+    11	@MainActor
+    12	final class OculomotorTrace {
+    13	    enum GazeState: String, Sendable {
+    14	        case validInside = "VALID_INSIDE"
+    15	        case validOutside = "VALID_OUTSIDE"
+    16	        case invalid = "INVALID"
+    17	    }
+    18	
+    19	    enum Edge: String, Sendable {
+    20	        case left = "LEFT"
+    21	        case right = "RIGHT"
+    22	        case top = "TOP"
+    23	        case bottom = "BOTTOM"
+    24	    }
+    25	
+    26	    /// One trip outside the viewport (a projection outside it, or no usable projection at all).
+    27	    struct Excursion: Sendable {
+    28	        let startTime: TimeInterval
+    29	        let state: GazeState
+    30	        /// Last position inside the viewport before the exit, if there was one.
+    31	        let lastValidPosition: Vector2?
+    32	        /// Last movement direction observed inside the viewport, if it pointed at the edge the gaze was near.
+    33	        let lastDirection: Edge?
+    34	        /// The projection the mapper really produced (nil when the gaze was INVALID: no position is ever invented).
+    35	        let projected: Vector2?
+    36	        /// True when the projection sits on the mapper's clamp (its real value lay farther out).
+    37	        let isCapped: Bool
+    38	        var endTime: TimeInterval?
+    39	        var reentry: Vector2?
+    40	
+    41	        var duration: TimeInterval? { endTime.map { $0 - startTime } }
+    42	    }
+    43	
+    44	    /// One thread step: from the previous balise (or the start) to the designated one.
+    45	    struct Transition: Sendable {
+    46	        let from: String?
+    47	        let to: String
+    48	        let startTime: TimeInterval
+    49	        let startGaze: Vector2?
+    50	        let startState: GazeState
+    51	        let headYawStart: Double?
+    52	        let headPitchStart: Double?
+    53	        var firstEntry: TimeInterval?
+    54	        var validation: TimeInterval?
+    55	        var headYawAcquisition: Double?
+    56	        var headPitchAcquisition: Double?
+    57	        /// Largest |Δyaw| + |Δpitch| seen during the transition (descriptive, no threshold).
+    58	        var headMotion: Double = 0
+    59	        var excursions = 0
+    60	        var invalidDuration: TimeInterval = 0
+    61	        var outsideDuration: TimeInterval = 0
+    62	
+    63	        var acquisition: TimeInterval? { firstEntry.map { $0 - startTime } }
+    64	        var dwell: TimeInterval? {
+    65	            guard let validation, let firstEntry else { return nil }
+    66	            return validation - firstEntry
+    67	        }
+    68	        var headYawDelta: Double? {
+    69	            guard let a = headYawAcquisition, let s = headYawStart else { return nil }
+    70	            return a - s
+    71	        }
+    72	        var headPitchDelta: Double? {
+    73	            guard let a = headPitchAcquisition, let s = headPitchStart else { return nil }
+    74	            return a - s
+    75	        }
+    76	    }
+    77	
+    78	    let names: [String]
+    79	    private(set) var state: GazeState = .invalid
+    80	    private(set) var lastValidPosition: Vector2?
+    81	    private(set) var lastDirection: Edge?
+    82	    /// Edge to show on the DEBUG indicator: the projected side while VALID_OUTSIDE, the last observed direction while
+    83	    /// INVALID, nil while inside.
+    84	    private(set) var lastEdge: Edge?
+    85	    private(set) var headYaw: Double?
+    86	    private(set) var headPitch: Double?
+    87	    private(set) var headRoll: Double?
+    88	    private(set) var excursions: [Excursion] = []
+    89	    private(set) var transitions: [Transition] = []
+    90	    private(set) var lines: [String] = []
+    91	
+    92	    private var current: Transition?
+    93	    private var currentBalise: Int?
+    94	    private var previousInside: (position: Vector2, time: TimeInterval)?
+    95	    private var lastSampleTime: TimeInterval?
+    96	    private var lastTickTime: TimeInterval?
+    97	    private var wasInside = false
+    98	    private let logger = Logger(subsystem: "net.steve-s.iris", category: "oculotest")
+    99	
+   100	    init(names: [String]) {
+   101	        self.names = names
+   102	    }
+   103	
+   104	    var statusLine: String {
+   105	        var parts = ["oculo : \(state.rawValue)"]
+   106	        if let lastEdge { parts.append(lastEdge.rawValue) }
+   107	        if let headYaw, let headPitch { parts.append(String(format: "yaw %.1f° pitch %.1f°", headYaw, headPitch)) }
+   108	        return parts.joined(separator: " · ")
+   109	    }
+   110	
+   111	    // MARK: Samples
+   112	
+   113	    /// `mapped` is the calibrated playfield point the mapper produced, nil when it produced none.
+   114	    func observeSample(mapped: Vector2?, sample: RawGazeSample, bounds: PlayfieldBounds) {
+   115	        let time = sample.timestamp
+   116	        lastSampleTime = time
+   117	        if let observation = sample.observation {
+   118	            headYaw = observation.headYaw
+   119	            headPitch = observation.headPitch
+   120	            headRoll = observation.headRoll
+   121	            if var transition = current, let yawStart = transition.headYawStart, let pitchStart = transition.headPitchStart {
+   122	                transition.headMotion = max(transition.headMotion, abs(observation.headYaw - yawStart) + abs(observation.headPitch - pitchStart))
+   123	                current = transition
+   124	            }
+   125	        }
+   126	        let newState: GazeState
+   127	        if let mapped {
+   128	            let inside = mapped.x >= 0 && mapped.x <= bounds.width && mapped.y >= 0 && mapped.y <= bounds.height
+   129	            newState = inside ? .validInside : .validOutside
+   130	        } else {
+   131	            newState = .invalid
+   132	        }
+   133	        if newState == .validInside, let mapped {
+   134	            if let previous = previousInside, time > previous.time {
+   135	                let delta = mapped - previous.position
+   136	                if delta.length > 2 {
+   137	                    lastDirection = abs(delta.x) >= abs(delta.y) ? (delta.x > 0 ? .right : .left) : (delta.y > 0 ? .bottom : .top)
+   138	                }
+   139	            }
+   140	            previousInside = (mapped, time)
+   141	            lastValidPosition = mapped
+   142	        }
+   143	        transition(to: newState, mapped: mapped, bounds: bounds, time: time)
+   144	    }
+   145	
+   146	    /// The face left the camera (no samples arrive) or came back.
+   147	    func observeFaceVisible(_ visible: Bool, time: TimeInterval? = nil) {
+   148	        let at = time ?? lastSampleTime ?? 0
+   149	        if !visible {
+   150	            transition(to: .invalid, mapped: nil, bounds: nil, time: at)
+   151	        }
+   152	    }
+   153	
+   154	    private func transition(to newState: GazeState, mapped: Vector2?, bounds: PlayfieldBounds?, time: TimeInterval) {
+   155	        guard newState != state else { return }
+   156	        let previous = state
+   157	        state = newState
+   158	        switch newState {
+   159	        case .validInside:
+   160	            lastEdge = nil
+   161	            if var open = excursions.last, open.endTime == nil {
+   162	                open.endTime = time
+   163	                open.reentry = mapped
+   164	                excursions[excursions.count - 1] = open
+   165	                log(String(format: "reentry after %.0fms at %@", (open.duration ?? 0) * 1000, describe(mapped)))
+   166	            }
+   167	        case .validOutside, .invalid:
+   168	            var edge: Edge?
+   169	            var capped = false
+   170	            if newState == .validOutside, let mapped, let bounds {
+   171	                edge = Self.edge(of: mapped, in: bounds)
+   172	                let marginX = bounds.width * 0.5
+   173	                let marginY = bounds.height * 0.5
+   174	                capped = mapped.x <= -marginX + 1e-6 || mapped.x >= bounds.width + marginX - 1e-6
+   175	                    || mapped.y <= -marginY + 1e-6 || mapped.y >= bounds.height + marginY - 1e-6
+   176	            } else if let bounds, let position = lastValidPosition {
+   177	                edge = Self.nearEdge(position, in: bounds, direction: lastDirection)
+   178	            } else if bounds == nil {
+   179	                edge = lastDirection
+   180	            }
+   181	            lastEdge = edge
+   182	            if previous == .validInside {
+   183	                let excursion = Excursion(startTime: time, state: newState, lastValidPosition: lastValidPosition,
+   184	                                          lastDirection: lastDirection, projected: newState == .validOutside ? mapped : nil,
+   185	                                          isCapped: capped, endTime: nil, reentry: nil)
+   186	                excursions.append(excursion)
+   187	                if var transition = current {
+   188	                    transition.excursions += 1
+   189	                    current = transition
+   190	                }
+   191	                log("exit state=\(newState.rawValue) edge=\(edge?.rawValue ?? "unknown") last=\(describe(lastValidPosition)) "
+   192	                    + "projected=\(newState == .validOutside ? describe(mapped) : "none")\(capped ? " capped" : "") lastDirection=\(lastDirection?.rawValue ?? "unknown")")
+   193	            } else if var open = excursions.last, open.endTime == nil, open.state != newState {
+   194	                // Outside, then no projection at all: keep the exit as observed, note the change.
+   195	                excursions[excursions.count - 1] = open
+   196	                open.endTime = nil
+   197	                log("exit continues state=\(newState.rawValue)")
+   198	            }
+   199	        }
+   200	    }
+   201	
+   202	    // MARK: Ticks
+   203	
+   204	    /// Called once per engine tick with the events of that tick; measures the thread transitions in level time.
+   205	    func observeTick(session: GameSession, events: [GameEvent]) {
+   206	        let now = session.elapsed
+   207	        if let last = lastTickTime, var transition = current {
+   208	            let dt = max(0, now - last)
+   209	            if state == .invalid { transition.invalidDuration += dt }
+   210	            if state == .validOutside { transition.outsideDuration += dt }
+   211	            current = transition
+   212	        }
+   213	        lastTickTime = now
+   214	        // OCULOMOTOR EXPANSION: stage successes, misses and completions, with the head pose at that moment.
+   215	        for event in events {
+   216	            switch event {
+   217	            case let .oculoSuccess(stage):
+   218	                log(String(format: "stage=%d success gazeState=%@ yaw=%@ pitch=%@", stage + 1, state.rawValue, degrees(headYaw), degrees(headPitch)))
+   219	            case let .oculoMiss(stage):
+   220	                log(String(format: "stage=%d miss gazeState=%@ yaw=%@ pitch=%@", stage + 1, state.rawValue, degrees(headYaw), degrees(headPitch)))
+   221	            case let .oculoStageCompleted(stage):
+   222	                log(String(format: "stage=%d complete at %.2fs excursions=%d", stage + 1, now, excursions.count))
+   223	            case .oculoCompleted:
+   224	                log(String(format: "sequence complete at %.2fs excursions=%d", now, excursions.count))
+   225	            default:
+   226	                break
+   227	            }
+   228	        }
+   229	        guard let balises = session.balises else { return }
+   230	
+   231	        for event in events {
+   232	            if case let .baliseLit(balise, step) = event, var transition = current {
+   233	                transition.validation = now
+   234	                current = nil
+   235	                transitions.append(transition)
+   236	                log(String(format: "transition=%@->%@ step=%d acquisition=%@ dwell=%@ gazeState=%@ excursions=%d invalid=%.0fms outside=%.0fms headYawDelta=%@ headPitchDelta=%@ headMotion=%.1fdeg",
+   237	                           transition.from ?? "START", transition.to, step, milliseconds(transition.acquisition), milliseconds(transition.dwell),
+   238	                           transition.startState.rawValue, transition.excursions, transition.invalidDuration * 1000, transition.outsideDuration * 1000,
+   239	                           degrees(transition.headYawDelta), degrees(transition.headPitchDelta), transition.headMotion))
+   240	                _ = balise
+   241	            }
+   242	            if event == .balisesCompleted {
+   243	                let acquisitions = transitions.compactMap(\.acquisition)
+   244	                let dwells = transitions.compactMap(\.dwell)
+   245	                let motions = transitions.map(\.headMotion)
+   246	                log(String(format: "thread complete at %.2fs transitions=%d meanAcquisition=%.0fms meanDwell=%.0fms meanHeadMotion=%.1fdeg excursions=%d",
+   247	                           now, transitions.count, mean(acquisitions) * 1000, mean(dwells) * 1000, mean(motions), excursions.count))
+   248	            }
+   249	        }
+   250	
+   251	        let active = balises.activeBalise
+   252	        if active != currentBalise {
+   253	            currentBalise = active
+   254	            wasInside = false
+   255	            if let active {
+   256	                current = Transition(from: transitions.last?.to, to: names.indices.contains(active) ? names[active] : "\(active)",
+   257	                                     startTime: now, startGaze: session.gaze.isActive ? session.gaze.position : nil, startState: state,
+   258	                                     headYawStart: headYaw, headPitchStart: headPitch)
+   259	            } else {
+   260	                current = nil
+   261	            }
+   262	        }
+   263	        if let active, balises.activeBalise == active, balises.isInside, !wasInside, var transition = current, transition.firstEntry == nil {
+   264	            transition.firstEntry = now
+   265	            transition.headYawAcquisition = headYaw
+   266	            transition.headPitchAcquisition = headPitch
+   267	            current = transition
+   268	        }
+   269	        wasInside = balises.isInside
+   270	    }
+   271	
+   272	    // MARK: Helpers
+   273	
+   274	    static func edge(of point: Vector2, in bounds: PlayfieldBounds) -> Edge? {
+   275	        let excess: [(Edge, Double)] = [(.left, -point.x), (.right, point.x - bounds.width), (.top, -point.y), (.bottom, point.y - bounds.height)]
+   276	        guard let worst = excess.max(by: { $0.1 < $1.1 }), worst.1 > 0 else { return nil }
+   277	        return worst.0
+   278	    }
+   279	
+   280	    /// The last observed direction, kept only when the last inside position lay in the outer third toward that edge.
+   281	    static func nearEdge(_ position: Vector2, in bounds: PlayfieldBounds, direction: Edge?) -> Edge? {
+   282	        guard let direction else { return nil }
+   283	        switch direction {
+   284	        case .left: return position.x <= bounds.width / 3 ? .left : nil
+   285	        case .right: return position.x >= bounds.width * 2 / 3 ? .right : nil
+   286	        case .top: return position.y <= bounds.height / 3 ? .top : nil
+   287	        case .bottom: return position.y >= bounds.height * 2 / 3 ? .bottom : nil
+   288	        }
+   289	    }
+   290	
+   291	    private func log(_ message: String) {
+   292	        let line = "[OculoTest] " + message
+   293	        lines.append(line)
+   294	        logger.info("\(line, privacy: .public)")
+   295	    }
+   296	
+   297	    private func describe(_ point: Vector2?) -> String {
+   298	        point.map { String(format: "(%.0f,%.0f)", $0.x, $0.y) } ?? "none"
+   299	    }
+   300	
+   301	    private func milliseconds(_ value: TimeInterval?) -> String {
+   302	        value.map { String(format: "%.0fms", $0 * 1000) } ?? "none"
+   303	    }
+   304	
+   305	    private func degrees(_ value: Double?) -> String {
+   306	        value.map { String(format: "%.1fdeg", $0) } ?? "none"
+   307	    }
+   308	
+   309	    private func mean(_ values: [Double]) -> Double {
+   310	        values.isEmpty ? 0 : values.reduce(0, +) / Double(values.count)
+   311	    }
+   312	}
+=================== oculo dans GameSceneSnapshot / GameSceneRenderer
+Features/Game/Rendering/GameSceneSnapshot.swift:174:    /// OCULOMOTOR EXPANSION: the current gaze stage of the level.
+Features/Game/Rendering/GameSceneSnapshot.swift:175:    var oculo: OculoSnapshot?
+Features/Game/Rendering/GameSceneSnapshot.swift:201:        oculo = nil
+Features/Game/Rendering/GameSceneSnapshot.swift:237:                          awakening: session.balises?.progress ?? session.oculo?.progress)
+Features/Game/Rendering/GameSceneSnapshot.swift:241:        oculo = session.oculo.map { OculoSnapshot(sequence: $0, elapsed: session.elapsed, head: session.headPose) }
+Features/Game/Rendering/GameSceneRenderer.swift:27:        // Latent twins (an oculomotor final still in progress) show neither their postes nor their thread yet.
+Features/Game/Rendering/GameSceneRenderer.swift:49:        if let oculo = snapshot.oculo {
+Features/Game/Rendering/GameSceneRenderer.swift:50:            drawOculoConstellation(oculo, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)
+Features/Game/Rendering/GameSceneRenderer.swift:51:            if !oculo.isComplete {
+Features/Game/Rendering/GameSceneRenderer.swift:52:                drawOculo(oculo, time: snapshot.time, in: &context, scale: scale, palette: palette, reduceMotion: reduceMotion)

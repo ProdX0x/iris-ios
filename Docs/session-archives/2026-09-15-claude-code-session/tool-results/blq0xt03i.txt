@@ -1,0 +1,1105 @@
+################ domain-modeler ################
+---
+name: domain-modeler
+description: >
+  Model the Domain layer: entities, value objects, invariants, typed errors and repository protocols, as pure Swift with no framework imports. Produces Docs/domain-model.md plus one file per type under Domain/. Use this skill whenever the user says "model the domain", "define the entities", "what are the models", "create the data model", "domain layer", "value objects", "repository protocol", "modélise le domaine", "définis les entités", "crée les modèles", "couche domaine", or when any skill needs an entity that does not exist yet. Requires ios-project-foundation. Reads Docs/Features/*.md and Docs/architecture.md.
+---
+
+# Domain Modeler
+
+## Prerequisites check
+
+Check for `Docs/conventions.md` and `Docs/file-map.md`. If missing, say:
+
+> Domain modelling needs the foundation. Say "set up my iOS project" first.
+
+Then stop. If present, read both, then read `Docs/architecture.md`, every `Docs/Features/*.md` and `Docs/domain-model.md` if they exist. Go straight to Step 1.
+
+## Step 1. Scope the modelling
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "What should I model?",
+    "header": "Scope",
+    "multiSelect": false,
+    "options": [
+      {"label": "Whole product", "description": "Every entity named across Docs/Features/*.md"},
+      {"label": "One feature", "description": "Only the entities of one feature spec"},
+      {"label": "One entity", "description": "I will describe it in chat"}
+    ]
+  }
+]
+```
+
+Collect the entity names from the chosen scope. Before designing anything, search `Docs/file-map.md` and `Domain/Entities/` for each name. Split the list into `existing` and `new`. Existing entities are read, never regenerated. Only extend them if a feature spec needs a field they lack, and say so.
+
+## Step 2. Design each entity
+
+For every new entity, decide and write in chat:
+
+| Aspect | Rule |
+|---|---|
+| Kind | `struct` by default. `final class` only with a written reason (identity semantics, reference sharing). |
+| Identity | `let id: <Entity>ID` where `<Entity>ID` is a typed wrapper around UUID or String. Never bare `UUID` as a field type. |
+| Fields | Named, typed, minimal. No optional unless absence is a real state. |
+| Value objects | Any field with validation rules (email, money, percentage, phone) becomes a value object with a failable or throwing initialiser. |
+| Invariants | Rules that must always hold. Enforced in the initialiser or a mutating method. Listed explicitly. |
+| Conformances | `Equatable`, `Hashable`, `Sendable`, `Identifiable`. `Codable` only if the entity itself crosses a boundary, otherwise DTOs handle it. |
+| Relationships | By ID reference, never by embedding another entity unless composition is intrinsic. |
+
+Flag shared entities (used by two or more features) and assign one owning feature folder.
+
+## Step 3. Design errors and repository protocols
+
+For each feature in scope, one `<Noun>Error` enum in `Domain/Errors/`:
+
+```swift
+enum InvoiceError: Error, Equatable, Sendable {
+    case notFound(InvoiceID)
+    case invalidAmount
+    case alreadyPaid
+    case storage(underlying: String)
+}
+```
+
+For each aggregate root, one repository protocol in `Domain/Repositories/<Feature>/`:
+
+```swift
+protocol InvoiceRepository: Sendable {
+    func fetchAll() async throws(InvoiceError) -> [Invoice]
+    func fetch(id: InvoiceID) async throws(InvoiceError) -> Invoice
+    func save(_ invoice: Invoice) async throws(InvoiceError)
+    func delete(id: InvoiceID) async throws(InvoiceError)
+}
+```
+
+Use typed throws when Swift 6 is set in conventions.md. Otherwise plain `throws` with the error documented.
+
+Present all entities, value objects, errors and protocols in chat as Swift. Call AskUserQuestion to approve. Iterate, maximum 3 rounds.
+
+## Step 4. Write the files
+
+One file per type, at the path dictated by conventions.md:
+
+- `Domain/Entities/<Feature>/<Entity>.swift`
+- `Domain/Entities/<Feature>/<Entity>ID.swift`
+- `Domain/ValueObjects/<ValueObject>.swift`
+- `Domain/Errors/<Noun>Error.swift`
+- `Domain/Repositories/<Feature>/<Noun>Repository.swift`
+
+File header on every file:
+
+```swift
+// <Name>.swift
+// Layer: Domain
+// Purpose: <one line>
+```
+
+Only `import Foundation`. Nothing else. Every file must compile alone.
+
+Register each file in `Docs/file-map.md`. If a stub already existed from file-structure-organizer, fill it in place. Never create a sibling.
+
+## Step 5. Write Docs/domain-model.md
+
+```
+# Domain Model
+
+## Entities
+[One block per entity: name, owning feature, fields with types, invariants, relationships by ID]
+
+## Value objects
+[Name, wrapped type, validation rule, example valid and invalid values]
+
+## Errors
+[One enum per feature, every case with the situation that raises it]
+
+## Repositories
+[One protocol per aggregate, method signatures, which error each can throw]
+
+## Glossary
+[Ubiquitous language: every domain word, one definition. Used by every skill to name things identically.]
+```
+
+If the file existed, merge: add new sections, update changed ones, never drop existing entries.
+
+## Step 6. Hand off
+
+Tell the user:
+
+> Domain is modelled: [n] entities, [n] value objects, [n] error types, [n] repository protocols. Docs/domain-model.md is the reference.
+>
+> Next: say "generate the use cases" to run use-case-generator, or "write the business rules" for business-logic-engine.
+
+## What this skill produces
+
+1. Pure Swift files under `Domain/`, one type each
+2. `Docs/domain-model.md` with the glossary every other skill uses
+
+## Dependencies
+
+- Requires: `Docs/conventions.md`, `Docs/file-map.md`
+- Reads if present: `Docs/architecture.md`, `Docs/Features/*.md`, `Docs/domain-model.md`
+- Feeds: use-case-generator, business-logic-engine, data-layer-generator, viewmodel-generator, test-generator
+
+## Rules
+
+- Always search file-map.md and Domain/ before designing an entity. Existing entities are extended, never duplicated.
+- Always use typed IDs. Never `UUID` or `String` as an identity field type.
+- Never import SwiftUI, UIKit, SwiftData, CoreData, Combine or any networking framework in Domain.
+- Never put formatting, persistence or networking concerns in an entity.
+- Never make a repository protocol expose DTOs. Domain types only.
+- Every value object has at least one documented invalid input.
+- Every glossary term is used verbatim by downstream skills. No synonyms.
+- Never use em dashes in any output file.
+################ business-logic-engine ################
+---
+name: business-logic-engine
+description: >
+  Extract and implement business rules as pure, testable domain services and entity methods. Turns acceptance criteria and product rules into Swift logic that lives in Domain, never in ViewModels or Views. Produces Domain/Services/ files and a rules table in Docs/domain-model.md. Use this skill whenever the user says "write the business rules", "implement the logic for", "validation rules", "calculation logic", "domain service", "the rule is", "règles métier", "logique métier", "implémente la règle", "calcul de", "validation de", or when a use case needs a rule that spans several entities. Requires domain-modeler.
+---
+
+# Business Logic Engine
+
+## Prerequisites check
+
+Check for `Docs/conventions.md` and `Docs/domain-model.md`. If either is missing, say:
+
+> Business rules attach to entities. Run domain-modeler first ("model the domain").
+
+Then stop. If present, read both, plus `Docs/Features/*.md` and `Docs/file-map.md`. Go straight to Step 1.
+
+## Step 1. Collect the rules
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Where do the rules come from?",
+    "header": "Source",
+    "multiSelect": false,
+    "options": [
+      {"label": "Feature specs", "description": "Extract from acceptance criteria in Docs/Features/*.md"},
+      {"label": "I will describe them", "description": "I will type the rules in chat"},
+      {"label": "Existing code", "description": "Find rules currently buried in ViewModels or Views and move them"}
+    ]
+  }
+]
+```
+
+If "Existing code": grep `Features/` for `if`, `guard`, `switch`, arithmetic and `Date` logic inside ViewModels and Views. List every candidate rule with its file and line. These are extraction targets.
+
+## Step 2. Write the rules table
+
+Every rule gets an ID and a home before any code:
+
+```
+| ID | Rule (plain language) | Inputs | Output | Home | Feature |
+|---|---|---|---|---|---|
+| R-01 | An invoice cannot be paid twice | Invoice.status | InvoiceError.alreadyPaid | Invoice.markPaid() | Invoices |
+| R-02 | Total = sum(lines) + VAT, rounded to 2 decimals | [InvoiceLine], VATRate | Money | InvoiceTotalCalculator | Invoices |
+```
+
+Home decision:
+- Rule touches one entity's own state: entity method (mutating or computed)
+- Rule touches several entities or needs a policy: domain service in `Domain/Services/<Feature>/<Name>.swift`
+- Rule is a pure calculation: `struct <Name>Calculator` with a single `calculate` method, stateless
+
+Call AskUserQuestion to approve the table. Iterate, maximum 3 rounds.
+
+## Step 3. Implement
+
+Entity methods are added to the existing entity file, or to `<Entity>+Rules.swift` next to it if the entity file would exceed 150 lines.
+
+Domain services:
+
+```swift
+// InvoiceTotalCalculator.swift
+// Layer: Domain
+// Purpose: R-02 invoice total with VAT
+
+import Foundation
+
+struct InvoiceTotalCalculator: Sendable {
+    func calculate(lines: [InvoiceLine], vatRate: VATRate) -> Money {
+        let subtotal = lines.reduce(Money.zero) { $0 + $1.amount }
+        return subtotal.applying(vatRate).rounded(scale: 2)
+    }
+}
+```
+
+Every rule implementation carries its rule ID in the Purpose line. No rule without an ID. No ID without a test (test-generator reads this table).
+
+If a rule needs data the entity does not have, stop and say which field is missing. Do not add fields silently. Send the user to domain-modeler.
+
+## Step 4. Remove extracted duplicates
+
+If Step 1 found rules in ViewModels or Views: after the domain implementation exists, replace the original code with a call to the domain method. Show every replacement as before and after in chat before applying. Never leave the old logic in place.
+
+## Step 5. Update Docs/domain-model.md
+
+Add or update a `## Business rules` section with the approved table. Register new files in `Docs/file-map.md`.
+
+## Step 6. Hand off
+
+Tell the user:
+
+> [n] rules implemented in Domain, all traceable by ID. Say "generate the use cases" to wire them, or "generate tests" to cover every rule.
+
+## What this skill produces
+
+1. Entity methods and domain services under `Domain/`
+2. `## Business rules` table in `Docs/domain-model.md`
+
+## Dependencies
+
+- Requires: `Docs/domain-model.md` (domain-modeler), `Docs/conventions.md`
+- Feeds: use-case-generator, test-generator, code-deduplicator
+
+## Rules
+
+- Always give every rule an ID before implementing it.
+- Always keep rules in Domain. Never in a ViewModel, never in a View, never in Data.
+- Never add a field to an entity here. Redirect to domain-modeler.
+- Never import anything but Foundation.
+- Domain services are stateless structs. If it needs state, it is an entity.
+- Never leave extracted logic duplicated at its original site.
+- Never use em dashes in any output file.
+################ use-case-generator ################
+---
+name: use-case-generator
+description: >
+  Generate use cases (interactors) for the Domain layer: one protocol plus one default implementation per user action, orchestrating repositories and business rules. Produces Domain/UseCases/<Feature>/ files. Use this skill whenever the user says "generate the use cases", "create a use case for", "interactor", "application logic for", "wire the domain", "génère les use cases", "crée un use case", "cas d'utilisation", or when viewmodel-generator needs an action that has no use case yet. Requires domain-modeler.
+---
+
+# Use Case Generator
+
+## Prerequisites check
+
+Check for `Docs/conventions.md` and `Docs/domain-model.md`. If missing, say:
+
+> Use cases orchestrate entities and repositories. Run domain-modeler first.
+
+Then stop. If present, read both plus `Docs/Features/*.md`, `Docs/file-map.md`, and the `## Business rules` table if it exists. Go straight to Step 1.
+
+## Step 1. Scope
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Which use cases?",
+    "header": "Scope",
+    "multiSelect": false,
+    "options": [
+      {"label": "All for one feature", "description": "Derive from the feature spec's screens and acceptance criteria"},
+      {"label": "One use case", "description": "I will name the action"},
+      {"label": "Whole product", "description": "Every feature in Docs/Features/"}
+    ]
+  }
+]
+```
+
+## Step 2. Derive the use case list
+
+From the acceptance criteria and screens, list every user-initiated or system-initiated action. Naming per conventions.md: `<Verb><Noun>UseCase`. Allowed verbs: Fetch, Create, Update, Delete, Search, Sync, Validate, Submit, Toggle, Export, Import. Propose a new verb only with a reason.
+
+Before listing, search `Docs/file-map.md` and `Domain/UseCases/` for each name. Mark existing ones. Existing use cases are never regenerated.
+
+Present:
+
+```
+| Use case | Input | Output | Repositories | Rules applied | Error |
+|---|---|---|---|---|---|
+| FetchInvoicesUseCase | none | [Invoice] | InvoiceRepository | none | InvoiceError |
+| CreateInvoiceUseCase | CreateInvoiceInput | Invoice | InvoiceRepository, ClientRepository | R-02 | InvoiceError |
+```
+
+Call AskUserQuestion to approve. Maximum 3 rounds.
+
+## Step 3. Generate
+
+One protocol and one implementation per use case. Two files.
+
+`Domain/UseCases/<Feature>/<Verb><Noun>UseCase.swift`:
+
+```swift
+// CreateInvoiceUseCase.swift
+// Layer: Domain
+// Purpose: Create an invoice for a client applying R-02
+
+import Foundation
+
+protocol CreateInvoiceUseCase: Sendable {
+    func execute(_ input: CreateInvoiceInput) async throws(InvoiceError) -> Invoice
+}
+
+struct CreateInvoiceInput: Sendable, Equatable {
+    let clientID: ClientID
+    let lines: [InvoiceLine]
+    let vatRate: VATRate
+}
+```
+
+`Domain/UseCases/<Feature>/Default<Verb><Noun>UseCase.swift`:
+
+```swift
+// DefaultCreateInvoiceUseCase.swift
+// Layer: Domain
+// Purpose: Default implementation of CreateInvoiceUseCase
+
+import Foundation
+
+struct DefaultCreateInvoiceUseCase: CreateInvoiceUseCase {
+    private let invoices: InvoiceRepository
+    private let clients: ClientRepository
+    private let calculator: InvoiceTotalCalculator
+
+    init(invoices: InvoiceRepository, clients: ClientRepository, calculator: InvoiceTotalCalculator) {
+        self.invoices = invoices
+        self.clients = clients
+        self.calculator = calculator
+    }
+
+    func execute(_ input: CreateInvoiceInput) async throws(InvoiceError) -> Invoice {
+        _ = try await clients.fetch(id: input.clientID).mapError(InvoiceError.init)
+        let total = calculator.calculate(lines: input.lines, vatRate: input.vatRate)
+        let invoice = Invoice(id: InvoiceID(), clientID: input.clientID, lines: input.lines, total: total, status: .draft)
+        try await invoices.save(invoice)
+        return invoice
+    }
+}
+```
+
+Rules for the body:
+- One `execute` method. Exactly one.
+- All dependencies are protocols, injected via `init`.
+- Input is a dedicated `<Verb><Noun>Input` struct when more than one parameter. Defined in the protocol file.
+- No formatting, no UI state, no logging framework.
+- Cross-feature reads go through the other feature's repository protocol, never its use case, unless composition is explicit in architecture.md.
+
+If a use case needs a rule not in the rules table, stop and redirect to business-logic-engine. If it needs a repository method that does not exist, stop and redirect to domain-modeler.
+
+## Step 4. Register
+
+Append every file to `Docs/file-map.md`. Add a `## Use cases` section to `Docs/domain-model.md` with the approved table if not present, or merge rows.
+
+## Step 5. Hand off
+
+Tell the user:
+
+> [n] use cases generated under Domain/UseCases/. Say "generate the data layer" to implement the repositories, or "generate the viewmodel for [screen]" to consume them.
+
+## What this skill produces
+
+1. `Domain/UseCases/<Feature>/<Name>UseCase.swift` (protocol and input)
+2. `Domain/UseCases/<Feature>/Default<Name>UseCase.swift` (implementation)
+3. `## Use cases` table in `Docs/domain-model.md`
+
+## Dependencies
+
+- Requires: `Docs/domain-model.md`, `Docs/conventions.md`
+- Feeds: viewmodel-generator, dependency-injector, test-generator
+
+## Rules
+
+- Always search file-map.md before naming a use case.
+- Always one protocol plus one default implementation. Never a concrete class alone.
+- Never put UI concerns, formatting, or navigation in a use case.
+- Never instantiate a repository inside a use case.
+- Never let a use case call a ViewModel or a coordinator.
+- Never use em dashes in any output file.
+################ data-layer-generator ################
+---
+name: data-layer-generator
+description: >
+  Implement the Data layer for a feature: repository implementations, remote and local data sources, DTOs and mappers, honouring the repository protocols in Domain. Produces Data/ files. Use this skill whenever the user says "generate the data layer", "implement the repository", "API client for", "persistence for", "SwiftData model for", "CloudKit for", "mapper", "DTO", "génère la couche data", "implémente le repository", "client API", "persistance", or when dependency-injector finds a repository protocol with no implementation. Requires domain-modeler and architecture-designer.
+---
+
+# Data Layer Generator
+
+## Prerequisites check
+
+Check for `Docs/conventions.md`, `Docs/domain-model.md` and `Docs/architecture.md`. If any is missing, say:
+
+> The data layer implements Domain protocols under the persistence decisions in architecture.md. Run domain-modeler and architecture-designer first.
+
+Then stop. If present, read all three plus `Docs/file-map.md`. Go straight to Step 1.
+
+## Step 1. Scope and sources
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Which repository?",
+    "header": "Scope",
+    "multiSelect": false,
+    "options": [
+      {"label": "All for one feature", "description": "Every repository protocol of the feature"},
+      {"label": "One repository", "description": "I will name it"},
+      {"label": "Whole product", "description": "Every protocol without an implementation"}
+    ]
+  },
+  {
+    "question": "Data sources for this scope?",
+    "header": "Sources",
+    "multiSelect": true,
+    "options": [
+      {"label": "Remote", "description": "REST/GraphQL per architecture.md networking ADR"},
+      {"label": "Local", "description": "SwiftData/CoreData/files per persistence ADR"},
+      {"label": "Remote with local cache", "description": "Both, remote is source of truth"},
+      {"label": "In-memory", "description": "For prototypes and previews"}
+    ]
+  }
+]
+```
+
+If Remote is chosen and no API contract is in the project (`Docs/api.md` or an OpenAPI file), ask the user to paste the endpoints and one sample JSON per endpoint. Do not invent field names.
+
+Search `Docs/file-map.md` and `Data/` for every target type name. Existing implementations are never regenerated.
+
+## Step 2. Design per repository
+
+For each repository protocol, present in chat:
+
+```
+InvoiceRepository
+  Impl:        InvoiceRepositoryImpl
+  Remote:      InvoiceRemoteDataSource (protocol) ← URLSessionInvoiceRemoteDataSource
+  Local:       InvoiceLocalDataSource (protocol) ← SwiftDataInvoiceLocalDataSource
+  DTOs:        InvoiceDTO (Codable), InvoiceLineDTO
+  Model:       InvoiceModel (@Model, SwiftData) if local
+  Mapper:      InvoiceMapper (DTO ↔ Invoice, Model ↔ Invoice)
+  Strategy:    remote first, write-through cache, local on offline
+  Error map:   URLError → InvoiceError.network, DecodingError → InvoiceError.corruptData
+```
+
+Call AskUserQuestion to approve. Maximum 3 rounds.
+
+## Step 3. Generate
+
+Files, one type each, under the paths from conventions.md:
+
+- `Data/DTOs/<Feature>/<Noun>DTO.swift`: `Codable`, `Sendable`, field names match the API exactly, `CodingKeys` when they differ from Swift style
+- `Data/DataSources/Remote/<Feature>/<Noun>RemoteDataSource.swift`: protocol
+- `Data/DataSources/Remote/<Feature>/URLSession<Noun>RemoteDataSource.swift`: implementation using the shared `HTTPClient` from `Core/Networking/` (create it once if absent, register it)
+- `Data/DataSources/Local/<Feature>/<Noun>LocalDataSource.swift`: protocol
+- `Data/DataSources/Local/<Feature>/<Engine><Noun>LocalDataSource.swift`: implementation
+- `Data/DataSources/Local/<Feature>/<Noun>Model.swift`: `@Model` class if SwiftData
+- `Data/Mappers/<Feature>/<Noun>Mapper.swift`: static pure functions `toDomain` and `toDTO` / `toModel`
+- `Data/Repositories/<Feature>/<Noun>RepositoryImpl.swift`
+
+Repository implementation shape:
+
+```swift
+// InvoiceRepositoryImpl.swift
+// Layer: Data
+// Purpose: InvoiceRepository over remote API with local cache
+
+import Foundation
+
+final class InvoiceRepositoryImpl: InvoiceRepository {
+    private let remote: InvoiceRemoteDataSource
+    private let local: InvoiceLocalDataSource
+    private let mapper: InvoiceMapper
+
+    init(remote: InvoiceRemoteDataSource, local: InvoiceLocalDataSource, mapper: InvoiceMapper = InvoiceMapper()) {
+        self.remote = remote
+        self.local = local
+        self.mapper = mapper
+    }
+
+    func fetchAll() async throws(InvoiceError) -> [Invoice] {
+        do {
+            let dtos = try await remote.fetchAll()
+            let invoices = dtos.map(mapper.toDomain)
+            try await local.replaceAll(invoices.map(mapper.toModel))
+            return invoices
+        } catch let error as URLError where error.code == .notConnectedToInternet {
+            return try await local.fetchAll().map(mapper.toDomain)
+        } catch {
+            throw InvoiceError.storage(underlying: String(describing: error))
+        }
+    }
+}
+```
+
+Rules for bodies:
+- Every external error is mapped to the feature's domain error. Nothing else crosses the boundary.
+- Mappers are pure. No async, no side effects, tested by test-generator.
+- No business rule in Data. If a rule is needed, redirect to business-logic-engine.
+- SwiftData `@Model` classes never leave Data. Domain sees entities only.
+
+## Step 4. Register and document
+
+Append every file to `Docs/file-map.md`. Add a `## Data strategy` section per feature to `Docs/architecture.md` with the Step 2 block.
+
+## Step 5. Hand off
+
+Tell the user:
+
+> Data layer for [scope] is implemented and mapped to domain errors. Say "wire the dependencies" to register everything in AppContainer, or "generate tests" for mapper and repository tests.
+
+## What this skill produces
+
+1. DTOs, data sources, models, mappers and repository implementations under `Data/`
+2. `## Data strategy` blocks in `Docs/architecture.md`
+
+## Dependencies
+
+- Requires: `Docs/domain-model.md`, `Docs/architecture.md`, `Docs/conventions.md`
+- Feeds: dependency-injector, test-generator
+
+## Rules
+
+- Always honour the exact repository protocol signature. Never change a Domain protocol from here.
+- Always map external errors to the domain error enum.
+- Never expose a DTO or @Model outside Data.
+- Never invent API field names. Ask for a sample payload.
+- Never put caching policy in a use case. It belongs in the repository implementation.
+- Never use em dashes in any output file.
+################ viewmodel-generator ################
+---
+name: viewmodel-generator
+description: >
+  Generate MVVM ViewModels for SwiftUI screens: observable state, explicit actions, use case orchestration, error to user-message mapping and navigation intents sent to a coordinator. Produces Features/<Name>/Presentation/ViewModels/ files. Use this skill whenever the user says "generate the viewmodel", "viewmodel for [screen]", "screen state", "MVVM for this view", "génère le viewmodel", "état de l'écran", "logique de présentation", or when view-generator needs a ViewModel that does not exist. Requires use-case-generator output for the actions the screen needs.
+---
+
+# ViewModel Generator
+
+## Prerequisites check
+
+Check for `Docs/conventions.md` and `Docs/domain-model.md`. If missing, say:
+
+> ViewModels consume use cases. Run domain-modeler and use-case-generator first.
+
+Then stop. If present, read both plus `Docs/Features/<Feature>.md`, `Docs/architecture.md`, `Docs/file-map.md`. Note the Observation mode in conventions.md (`@Observable` or `ObservableObject`). Go straight to Step 1.
+
+## Step 1. Identify the screen
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Which screen?",
+    "header": "Screen",
+    "multiSelect": false,
+    "options": [
+      {"label": "Pick from feature spec", "description": "I will choose from the Screens list in Docs/Features/"},
+      {"label": "Describe a new screen", "description": "Not yet in a spec, I will describe it"},
+      {"label": "All screens of a feature", "description": "Generate every ViewModel of one feature"}
+    ]
+  }
+]
+```
+
+For each target screen, search `Docs/file-map.md` for `<Screen>ViewModel`. If it exists, read it and switch to extend mode: only add missing state or actions, never rewrite.
+
+## Step 2. Design the state and actions
+
+Present in chat before writing:
+
+```
+InvoiceListViewModel
+  State:
+    phase: Phase (.idle | .loading | .loaded([InvoiceRowItem]) | .empty | .failed(message: String))
+    searchQuery: String
+    isRefreshing: Bool
+  Derived:
+    filteredItems: [InvoiceRowItem]   (computed, no stored duplicate)
+  Actions:
+    load()          → FetchInvoicesUseCase
+    refresh()       → FetchInvoicesUseCase
+    delete(id:)     → DeleteInvoiceUseCase
+    select(id:)     → coordinator.navigate(.detail(id))   [navigation intent]
+    tapCreate()     → coordinator.navigate(.create)       [navigation intent]
+  Presentation models:
+    InvoiceRowItem (id, title, amountText, statusBadge)  built from Invoice in Presentation, not in Domain
+  Error mapping:
+    InvoiceError.notFound → "This invoice no longer exists."
+    InvoiceError.storage  → "Could not load invoices. Pull to retry."
+```
+
+Rules for the design:
+- State is a single `Phase` enum for the main content plus flat properties for controls. Never several booleans that can contradict (`isLoading` and `hasError` both true).
+- Every use case the screen needs must exist. If one is missing, stop and redirect to use-case-generator.
+- Navigation is an intent sent to a coordinator protocol. The ViewModel never knows the destination View.
+- Presentation models (row items, formatted strings) are structs in `Features/<Name>/Presentation/ViewModels/<Screen>+Models.swift` or a dedicated file if reused across screens of the feature.
+
+Call AskUserQuestion to approve. Maximum 3 rounds.
+
+## Step 3. Generate
+
+`@Observable` mode (iOS 17+):
+
+```swift
+// InvoiceListViewModel.swift
+// Layer: Presentation
+// Purpose: State and actions for the invoice list screen
+
+import Foundation
+import Observation
+
+@MainActor
+@Observable
+final class InvoiceListViewModel {
+    enum Phase: Equatable {
+        case idle, loading, empty
+        case loaded([InvoiceRowItem])
+        case failed(message: String)
+    }
+
+    private(set) var phase: Phase = .idle
+    var searchQuery = ""
+    private(set) var isRefreshing = false
+
+    var filteredItems: [InvoiceRowItem] {
+        guard case .loaded(let items) = phase else { return [] }
+        guard !searchQuery.isEmpty else { return items }
+        return items.filter { $0.title.localizedCaseInsensitiveContains(searchQuery) }
+    }
+
+    private let fetchInvoices: FetchInvoicesUseCase
+    private let deleteInvoice: DeleteInvoiceUseCase
+    private weak var coordinator: (any InvoicesNavigating)?
+
+    init(fetchInvoices: FetchInvoicesUseCase, deleteInvoice: DeleteInvoiceUseCase, coordinator: any InvoicesNavigating) {
+        self.fetchInvoices = fetchInvoices
+        self.deleteInvoice = deleteInvoice
+        self.coordinator = coordinator
+    }
+
+    func load() async {
+        phase = .loading
+        await fetch()
+    }
+
+    func refresh() async {
+        isRefreshing = true
+        defer { isRefreshing = false }
+        await fetch()
+    }
+
+    func delete(id: InvoiceID) async {
+        do {
+            try await deleteInvoice.execute(id)
+            await fetch()
+        } catch {
+            phase = .failed(message: Self.message(for: error))
+        }
+    }
+
+    func select(id: InvoiceID) {
+        coordinator?.navigate(to: .detail(id))
+    }
+
+    func tapCreate() {
+        coordinator?.navigate(to: .create)
+    }
+
+    private func fetch() async {
+        do {
+            let invoices = try await fetchInvoices.execute()
+            phase = invoices.isEmpty ? .empty : .loaded(invoices.map(InvoiceRowItem.init))
+        } catch {
+            phase = .failed(message: Self.message(for: error))
+        }
+    }
+
+    private static func message(for error: InvoiceError) -> String {
+        switch error {
+        case .notFound: String(localized: "invoice.error.notFound")
+        case .storage: String(localized: "invoice.error.storage")
+        default: String(localized: "error.generic")
+        }
+    }
+}
+```
+
+`ObservableObject` mode (iOS 16): same structure with `final class X: ObservableObject`, `@Published private(set) var`, and no `import Observation`.
+
+Rules for the body:
+- `@MainActor` always.
+- Setters of state are `private(set)`. Only the ViewModel mutates its state.
+- No `import SwiftUI`. Foundation and Observation only.
+- No direct repository access. Use cases only.
+- No `Task { }` inside the ViewModel. Actions are `async`, the View owns the task.
+- Strings come from the String Catalog when conventions.md says catalog mode.
+
+Write `<Screen>+Models.swift` for presentation models, with `init(_ entity:)` mapping from the domain entity. Number and date formatting happens here, once.
+
+## Step 4. Coordinator protocol
+
+If `Features/<Name>/Coordinator/<Name>Navigating.swift` does not exist, create it with the routes the ViewModel needs and register it. coordinator-navigator will implement it. Never implement navigation in this skill.
+
+```swift
+protocol InvoicesNavigating: AnyObject {
+    func navigate(to route: InvoicesRoute)
+}
+```
+
+## Step 5. Register and hand off
+
+Append every file to `Docs/file-map.md`. Update the Screens section of `Docs/Features/<Name>.md` with `ViewModel: done`.
+
+Tell the user:
+
+> [n] ViewModel(s) generated. Say "generate the view for [screen]" to build the SwiftUI view, or "generate tests" to cover the state transitions.
+
+## What this skill produces
+
+1. `Features/<Name>/Presentation/ViewModels/<Screen>ViewModel.swift`
+2. `Features/<Name>/Presentation/ViewModels/<Screen>+Models.swift`
+3. `Features/<Name>/Coordinator/<Name>Navigating.swift` if absent
+
+## Dependencies
+
+- Requires: `Docs/conventions.md`, `Docs/domain-model.md`, use cases from use-case-generator
+- Feeds: view-generator, coordinator-navigator, dependency-injector, test-generator
+
+## Rules
+
+- Always design state and actions in chat and get approval before generating.
+- Always one Phase enum for main content. Never contradictory booleans.
+- Never import SwiftUI in a ViewModel.
+- Never call a repository, a data source or another ViewModel.
+- Never create a Task inside the ViewModel.
+- Never hold a destination View. Navigation is an intent.
+- Never format in the View what the ViewModel can format in a presentation model.
+- Never use em dashes in any output file.
+################ view-generator ################
+---
+name: view-generator
+description: >
+  Generate SwiftUI views bound to an existing ViewModel, using only DesignSystem tokens and components, with previews for every state. Produces Features/<Name>/Presentation/Views/ files. Use this skill whenever the user says "generate the view", "build the screen", "SwiftUI for [screen]", "make the UI for", "génère la vue", "construis l'écran", "fais l'interface de", "écran SwiftUI", or after viewmodel-generator finishes a screen. Requires viewmodel-generator and ui-ux-designer output (Docs/design-system.md).
+---
+
+# View Generator
+
+## Prerequisites check
+
+Check for `Docs/conventions.md`, `Docs/design-system.md` and the target `<Screen>ViewModel.swift`. If any is missing, say which one:
+
+> Views bind to a ViewModel and use the design system. Run [viewmodel-generator | ui-ux-designer] first.
+
+Then stop. If all present, read them plus `Docs/Features/<Feature>.md` and `Docs/file-map.md`. Go straight to Step 1.
+
+## Step 1. Identify the screen and layout
+
+Read the ViewModel's `Phase` enum and actions. Then call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "Layout pattern?",
+    "header": "Layout",
+    "multiSelect": false,
+    "options": [
+      {"label": "List", "description": "Scrollable list with rows, search, pull to refresh"},
+      {"label": "Detail", "description": "Single item, sections, actions bar"},
+      {"label": "Form", "description": "Inputs, validation feedback, submit"},
+      {"label": "Dashboard", "description": "Cards and summary blocks"}
+    ]
+  },
+  {
+    "question": "Design reference?",
+    "header": "Reference",
+    "multiSelect": false,
+    "options": [
+      {"label": "Design system only", "description": "Compose from DesignSystem/Components"},
+      {"label": "I will paste a wireframe or screenshot", "description": "Match a mockup"},
+      {"label": "Mirror an existing screen", "description": "Same structure as a screen already in the app"}
+    ]
+  }
+]
+```
+
+Search `Docs/file-map.md` for `<Screen>View`. If it exists, switch to extend mode.
+
+## Step 2. Map states to UI
+
+Present a table before writing:
+
+```
+| Phase | UI |
+|---|---|
+| .idle / .loading | DSLoadingView (design system) |
+| .empty | DSEmptyState(title:, action:) |
+| .loaded(items) | List of InvoiceRow inside DSScreen |
+| .failed(message) | DSErrorState(message:, retry:) |
+```
+
+List every design system component the view will use. For each, confirm it exists in `DesignSystem/Components/` via `file-map.md`. If one is missing, stop and redirect to swiftui-component-library. Never inline a component the design system should own.
+
+Call AskUserQuestion to approve. Maximum 3 rounds.
+
+## Step 3. Generate
+
+```swift
+// InvoiceListView.swift
+// Layer: Presentation
+// Purpose: Invoice list screen bound to InvoiceListViewModel
+
+import SwiftUI
+
+struct InvoiceListView: View {
+    @State private var viewModel: InvoiceListViewModel
+
+    init(viewModel: InvoiceListViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
+
+    var body: some View {
+        DSScreen(title: String(localized: "invoices.title")) {
+            content
+        }
+        .searchable(text: $viewModel.searchQuery)
+        .refreshable { await viewModel.refresh() }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                DSIconButton(icon: .plus, label: String(localized: "invoices.create")) {
+                    viewModel.tapCreate()
+                }
+            }
+        }
+        .task { await viewModel.load() }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch viewModel.phase {
+        case .idle, .loading:
+            DSLoadingView()
+        case .empty:
+            DSEmptyState(title: String(localized: "invoices.empty"), actionTitle: String(localized: "invoices.create")) {
+                viewModel.tapCreate()
+            }
+        case .loaded:
+            List(viewModel.filteredItems) { item in
+                InvoiceRow(item: item)
+                    .contentShape(Rectangle())
+                    .onTapGesture { viewModel.select(id: item.id) }
+                    .swipeActions { deleteButton(for: item.id) }
+            }
+            .listStyle(.plain)
+        case .failed(let message):
+            DSErrorState(message: message) {
+                Task { await viewModel.load() }
+            }
+        }
+    }
+
+    private func deleteButton(for id: InvoiceID) -> some View {
+        Button(role: .destructive) {
+            Task { await viewModel.delete(id: id) }
+        } label: {
+            Label(String(localized: "common.delete"), systemImage: "trash")
+        }
+    }
+}
+
+#Preview("Loaded") {
+    InvoiceListView(viewModel: .preview(phase: .loaded(InvoiceRowItem.samples)))
+}
+
+#Preview("Empty") {
+    InvoiceListView(viewModel: .preview(phase: .empty))
+}
+
+#Preview("Failed") {
+    InvoiceListView(viewModel: .preview(phase: .failed(message: "Could not load invoices.")))
+}
+```
+
+For `ObservableObject` mode: `@StateObject private var viewModel` and `_viewModel = StateObject(wrappedValue:)`.
+
+Feature-only subviews (`InvoiceRow`) go in `Features/<Name>/Presentation/Components/`, one file each. If a subview is generic (no feature type in its signature), it belongs in `DesignSystem/Components/` instead, and you redirect to swiftui-component-library.
+
+Previews need a `.preview(phase:)` factory. Create `Features/<Name>/Presentation/ViewModels/<Screen>ViewModel+Preview.swift` with mock use cases from `Tests/UnitTests/Mocks/` if they exist, otherwise minimal inline stubs marked `#if DEBUG`.
+
+Rules for the body:
+- No colours, fonts, spacing literals. Tokens only (`DSColor`, `DSFont`, `DSSpacing`).
+- No business logic. No formatting. No `if` on domain values beyond switching on Phase.
+- No `NavigationLink` with a destination. Navigation is `viewModel.select(...)`.
+- Every user-facing string via `String(localized:)` when catalog mode. Add the keys to `Localizable.xcstrings` with base-language values.
+- `body` under 40 lines. Extract `@ViewBuilder` properties.
+- Accessibility: every interactive element has a label. Every image has a description or is decorative.
+
+## Step 4. Register and hand off
+
+Append every file to `Docs/file-map.md`. Add new localisation keys to the String Catalog. Update `Docs/Features/<Name>.md` Screens section with `View: done`.
+
+Tell the user:
+
+> [Screen]View generated with [n] previews. Say "wire the navigation" for coordinator-navigator, or "generate UI tests" for test-generator.
+
+## What this skill produces
+
+1. `Features/<Name>/Presentation/Views/<Screen>View.swift`
+2. `Features/<Name>/Presentation/Components/<Row|Card|Section>.swift` as needed
+3. `Features/<Name>/Presentation/ViewModels/<Screen>ViewModel+Preview.swift`
+4. String Catalog keys
+
+## Dependencies
+
+- Requires: `<Screen>ViewModel.swift` (viewmodel-generator), `Docs/design-system.md` (ui-ux-designer), `DesignSystem/Components/` (swiftui-component-library)
+- Feeds: coordinator-navigator, test-generator
+
+## Rules
+
+- Always map every Phase case to a UI. A missing case is a bug.
+- Always use design system tokens and components. Never a raw `Color`, `Font` or numeric padding.
+- Never put navigation destinations in a View.
+- Never put logic in a View beyond switching on state.
+- Never inline a reusable component. Redirect to swiftui-component-library.
+- Always ship at least three previews: loaded, empty, failed.
+- Never use em dashes in any output file.
+################ coordinator-navigator ################
+---
+name: coordinator-navigator
+description: >
+  Implement navigation with the Coordinator pattern on top of NavigationStack: route enums, feature coordinators, AppCoordinator, tab and modal management, deep link routing, all outside the Views. Produces Core/Navigation/ and Features/<Name>/Coordinator/ files. Use this skill whenever the user says "wire the navigation", "coordinator for", "add a route", "deep link", "navigate from X to Y", "tab bar setup", "câble la navigation", "coordinateur", "ajoute une route", "lien profond", "navigation entre écrans", or when a ViewModel emits a navigation intent with no coordinator implementation. Requires architecture-designer (navigation topology) and viewmodel-generator (Navigating protocols).
+---
+
+# Coordinator Navigator
+
+## Prerequisites check
+
+Check for `Docs/conventions.md` and `Docs/architecture.md`. If missing, say:
+
+> Navigation follows the topology in architecture.md. Run architecture-designer first.
+
+Then stop. If present, read both, plus `Docs/file-map.md` and every `Features/*/Coordinator/*Navigating.swift`. Go straight to Step 1.
+
+## Step 1. Scope
+
+Call AskUserQuestion:
+
+```json
+[
+  {
+    "question": "What to wire?",
+    "header": "Scope",
+    "multiSelect": false,
+    "options": [
+      {"label": "App root", "description": "AppCoordinator, tabs, root stack, first launch"},
+      {"label": "One feature", "description": "Routes and coordinator for one feature"},
+      {"label": "Add a route", "description": "One new destination in an existing coordinator"},
+      {"label": "Deep links", "description": "URL scheme and universal links to routes"}
+    ]
+  }
+]
+```
+
+Search `Docs/file-map.md` for existing `AppCoordinator`, `<Feature>Coordinator`, `<Feature>Route`. Existing coordinators are extended, never rewritten.
+
+## Step 2. Define routes
+
+For the feature, one `enum <Feature>Route: Hashable` with one case per destination, carrying only IDs or value types, never entities:
+
+```swift
+// InvoicesRoute.swift
+// Layer: Presentation
+// Purpose: Every destination reachable inside the Invoices feature
+
+import Foundation
+
+enum InvoicesRoute: Hashable {
+    case list
+    case detail(InvoiceID)
+    case create
+    case edit(InvoiceID)
+}
+```
+
+Sheets and full-screen covers get their own enum `enum <Feature>Modal: Identifiable`. Present the routes and the presentation style (push, sheet, cover) per route in a table. Call AskUserQuestion to approve.
+
+## Step 3. Generate the feature coordinator
+
+```swift
+// InvoicesCoordinator.swift
+// Layer: Presentation
+// Purpose: Owns the Invoices navigation stack and builds its screens
+
+import SwiftUI
+import Observation
+
+@MainActor
+@Observable
+final class InvoicesCoordinator: InvoicesNavigating {
+    var path = NavigationPath()
+    var modal: InvoicesModal?
+
+    private let container: AppContainer
+
+    init(container: AppContainer) {
+        self.container = container
+    }
+
+    func navigate(to route: InvoicesRoute) {
+        switch route {
+        case .list: path = NavigationPath()
+        case .detail(let id): path.append(InvoicesRoute.detail(id))
+        case .create: modal = .create
+        case .edit(let id): path.append(InvoicesRoute.edit(id))
+        }
+    }
+
+    func pop() { if !path.isEmpty { path.removeLast() } }
+    func dismissModal() { modal = nil }
+
+    @ViewBuilder
+    func view(for route: InvoicesRoute) -> some View {
+        switch route {
+        case .list: InvoiceListView(viewModel: container.makeInvoiceListViewModel(coordinator: self))
+        case .detail(let id): InvoiceDetailView(viewModel: container.makeInvoiceDetailViewModel(id: id, coordinator: self))
+        case .create: InvoiceFormView(viewModel: container.makeInvoiceFormViewModel(mode: .create, coordinator: self))
+        case .edit(let id): InvoiceFormView(viewModel: container.makeInvoiceFormViewModel(mode: .edit(id), coordinator: self))
+        }
+    }
+}
+```
+
+Plus a root view `Features/<Name>/Coordinator/<Feature>CoordinatorView.swift` that owns the `NavigationStack(path:)`, `.navigationDestination(for: <Feature>Route.self)` and `.sheet(item:)` bindings, and nothing else.
+
+The `container.make...` factories must exist. If not, stop and redirect to dependency-injector with the exact list of factories needed.
+
+## Step 4. Generate the app coordinator
+
+`Core/Navigation/AppCoordinator.swift`: owns `selectedTab`, one child coordinator per tab (from the topology in architecture.md), the onboarding or auth gate, and `handle(url:)` for deep links. `Core/Navigation/AppRoute.swift`: top-level routes (tab selection, global modals). `App/<AppName>App.swift` instantiates `AppCoordinator(container: .shared)` once and renders `AppCoordinatorView`.
+
+Deep links: `handle(url:)` parses the URL into an `AppRoute` and forwards to the right child coordinator. Parsing lives in `Core/Navigation/DeepLinkParser.swift`, pure and testable.
+
+## Step 5. Register and hand off
+
+Append every file to `Docs/file-map.md`. Update the Navigation topology in `Docs/architecture.md` if a route was added.
+
+Tell the user:
+
+> Navigation wired for [scope]. [n] routes, [n] modals. Say "wire the dependencies" if factories are missing, or "generate UI tests" to cover the flows.
+
+## What this skill produces
+
+1. `Features/<Name>/Coordinator/<Feature>Route.swift`, `<Feature>Modal.swift`, `<Feature>Coordinator.swift`, `<Feature>CoordinatorView.swift`
+2. `Core/Navigation/AppCoordinator.swift`, `AppRoute.swift`, `AppCoordinatorView.swift`, `DeepLinkParser.swift`
+
+## Dependencies
+
+- Requires: `Docs/architecture.md`, `*Navigating.swift` protocols (viewmodel-generator), `AppContainer` factories (dependency-injector)
+- Feeds: test-generator, feature-builder
+
+## Rules
+
+- Always one route enum per feature. Routes carry IDs, never entities.
+- Always build screens through AppContainer factories. Never `SomeViewModel(...)` inline in a coordinator.
+- Never let a View hold a NavigationPath or a destination.
+- Never let a coordinator call a use case or a repository.
+- Never let two coordinators reference each other directly. Parent to child only, child talks up through a protocol.
+- Never use em dashes in any output file.
