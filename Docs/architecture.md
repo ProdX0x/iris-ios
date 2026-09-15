@@ -262,7 +262,7 @@ Consequences: an interface colour set can change without changing a chapter; the
 Status: accepted (foundation; no screen migrated)
 Context: iOS 26 draws Liquid Glass natively while Iris still supports iOS 17; screens must not each test the system version, and glass must neither colour the game nor cost frames above the 60 Hz canvas.
 Decision: `DSGlassRole` (clearControl, regularPanel, chrome, prominentAction) and `DSGlassRendering` decide in one place: native `glassEffect` on iOS 26, a translucent surface of Identity colours before, an opaque surface under Reduce Transparency on every version. `DSGlassGroup` wraps `GlassEffectContainer`; `dsGlassID` morphs, or only fades under Reduce Motion. The glass is neutral: only the prominent action carries a light Navigation tint. System bars keep the system's own glass. The development gallery lives in the test target, over a demonstration ground that is not Iris's background.
-Consequences: a screen writes `.dsGlass(role)` and never `#available`; the fallback is a plain surface, not an imitation of glass; the gallery is judged by a human before any screen migrates.
+Consequences: a screen writes `.dsGlass(role)` and never `#available`; the fallback is a plain surface, not an imitation of glass; the gallery is judged by a human before any screen migrates. Phase 2B: each role holds a `DSGlassRecipe`; candidate recipes are compared in the test-target gallery through the same fallback and accessibility surfaces, and none replaces a role before a human choice.
 
 ## Forbidden
 - Showing or scoring a head direction that has not gone through the calibration's axis mapping.

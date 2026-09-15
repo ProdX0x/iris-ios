@@ -16,19 +16,42 @@ private let glassCaptureDirectory = ProcessInfo.processInfo.environment["IRIS_GL
 struct DSGlassGalleryCaptureTests {
     private struct Shot {
         let name: String
-        let page: DSGlassGallery.Page
-        let ground: DSGlassGallery.Ground
         let typeSize: DynamicTypeSize
+        let view: AnyView
     }
 
-    /// Pages of one run; the simulator's accessibility settings change between runs, outside the test.
+    private func selection(_ name: String, _ page: DSGlassSelectionGallery.Page, _ ground: GalleryDemoGround.Intensity,
+                           _ typeSize: DynamicTypeSize = .large) -> Shot {
+        Shot(name: name, typeSize: typeSize, view: AnyView(DSGlassSelectionGallery(page: page, ground: ground)))
+    }
+
+    private func reference(_ name: String, _ page: DSGlassGallery.Page, _ ground: DSGlassGallery.Ground,
+                           _ typeSize: DynamicTypeSize = .large) -> Shot {
+        Shot(name: name, typeSize: typeSize, view: AnyView(DSGlassGallery(page: page, ground: ground)))
+    }
+
+    /// Pages of one run; the simulator's accessibility settings change between runs, outside the test. The
+    /// "phase2" run redraws the phase 2 pages under their original names, to compare them with their first captures.
     private func shots(for set: String) -> [Shot] {
-        let rich = [Shot(name: "roles-riche", page: .roles, ground: .riche, typeSize: .large),
-                    Shot(name: "comparaison-riche", page: .comparaison, ground: .riche, typeSize: .large),
-                    Shot(name: "texte-grand-riche", page: .texte, ground: .riche, typeSize: .accessibility2)]
-        guard set == "normal" else { return rich }
-        return [Shot(name: "roles-simple", page: .roles, ground: .simple, typeSize: .large),
-                Shot(name: "comparaison-simple", page: .comparaison, ground: .simple, typeSize: .large)] + rich
+        switch set {
+        case "normal":
+            [selection("selection-iris-rich-normal", .selection, .rich),
+             selection("selection-iris-calm-normal", .selection, .calm),
+             selection("selection-iris-rich-large-text", .largeText, .rich, .accessibility2),
+             selection("panels-comparison", .panels, .rich),
+             selection("chrome-comparison", .chrome, .rich),
+             selection("prominent-comparison", .prominent, .rich)]
+        case "contraste":
+            [selection("selection-iris-rich-high-contrast", .selection, .rich)]
+        case "transparence":
+            [selection("selection-iris-rich-reduce-transparency", .selection, .rich)]
+        default:
+            [reference("normal-roles-simple", .roles, .simple),
+             reference("normal-comparaison-simple", .comparaison, .simple),
+             reference("normal-roles-riche", .roles, .riche),
+             reference("normal-comparaison-riche", .comparaison, .riche),
+             reference("normal-texte-grand-riche", .texte, .riche, .accessibility2)]
+        }
     }
 
     @Test("gallery pages wait on screen for an outside screenshot (only when IRIS_GLASS_CAPTURE_DIR is set)",
@@ -47,18 +70,17 @@ struct DSGlassGalleryCaptureTests {
                      + " · réduire les animations \(UIAccessibility.isReduceMotionEnabled)"
                      + " · taille système \(UIApplication.shared.preferredContentSizeCategory.rawValue)"]
         for shot in shots(for: set) {
-            let name = "\(set)-\(shot.name)"
-            window.rootViewController = UIHostingController(rootView: DSGlassGallery(page: shot.page, ground: shot.ground).dynamicTypeSize(shot.typeSize))
+            window.rootViewController = UIHostingController(rootView: shot.view.dynamicTypeSize(shot.typeSize))
             try await Task.sleep(for: .milliseconds(1_500))
-            let image = directory.appendingPathComponent("\(name).png")
-            try Data().write(to: directory.appendingPathComponent("ready-\(name)"))
+            let image = directory.appendingPathComponent("\(shot.name).png")
+            try Data().write(to: directory.appendingPathComponent("ready-\(shot.name)"))
             var waited = 0
             while !FileManager.default.fileExists(atPath: image.path), waited < 150 {
                 try await Task.sleep(for: .milliseconds(200))
                 waited += 1
             }
-            #expect(FileManager.default.fileExists(atPath: image.path), "\(name) was captured")
-            lines.append("\(name) · page \(shot.page.rawValue) · fond \(shot.ground.rawValue) · texte \(shot.typeSize)")
+            #expect(FileManager.default.fileExists(atPath: image.path), "\(shot.name) was captured")
+            lines.append("\(shot.name) · texte \(shot.typeSize)")
         }
         window.isHidden = true
         window.rootViewController = nil

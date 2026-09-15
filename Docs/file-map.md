@@ -273,7 +273,9 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassGallery.swift | struct | Tests | Development gallery of the Liquid Glass roles over a plain ground and a richer demonstration ground, shown | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassGalleryCaptureTests.swift | struct | Tests | Shows the Liquid Glass gallery pages one by one in a window of the test host, so that screenshots of the | Claude (mission Iris) |
+| Tests/IrisTests/DesignSystem/DSGlassSelectionGallery.swift | struct | Tests | « Sélection Iris Liquid Glass »: the validated clear control beside candidate panels, chrome and prominent | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassTests.swift | struct | Tests | The Liquid Glass roles: native glass where the system has it, the plain fallback elsewhere, opaque under | Claude (mission Iris) |
+| Tests/IrisTests/DesignSystem/GalleryDemoGround.swift | struct | Tests | Demonstration grounds behind the Liquid Glass galleries: a rich one (blue-black and indigo areas, diffuse | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CampaignProgressTests.swift | struct | Tests | Éclats, records and unlock rules of the campaign | Claude (mission Iris) |
 | Tests/IrisTests/Domain/CascadeRuleTests.swift | struct | Tests | R-11 losing a validation invalidates every higher rank, never a lower one | Claude (mission Iris) |
 | Tests/IrisTests/Domain/LinearCongruentialGeneratorTests.swift | struct | Tests | The generator reproduces the reference JavaScript sequence exactly | Claude (mission Iris) |

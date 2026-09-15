@@ -89,6 +89,7 @@
 		448C53D729EB3506CC1BD216 /* MiroirStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F061D9D2BB0F72563AE2FAA /* MiroirStageState.swift */; };
 		45A329FD8E6538E48B05C907 /* FilStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2A5330F4339EF7D4926004 /* FilStageState.swift */; };
 		4630F1348E42703E785FC415 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E1853F864597AC12F94F5E /* AudioService.swift */; };
+		47703B9C7A700352CE3D2539 /* DSGlassSelectionGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7631AA27C56AC6DDD66FF9A /* DSGlassSelectionGallery.swift */; };
 		487AF592B1BDAC573E873ED3 /* GameSceneRenderer+Ancre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9FEEA3CF4D86613B2B2BCE /* GameSceneRenderer+Ancre.swift */; };
 		4968A2DA681B1E8C642A8EE6 /* OculoFilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B51B335C41E3CF366584F /* OculoFilTests.swift */; };
 		49AC7C52D4263EAD2867FF51 /* IrisPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A19970A39C36C9149697807 /* IrisPath.swift */; };
@@ -259,6 +260,7 @@
 		CAE67280BDAD54355AA10C2F /* ARKitGazeTrackingService+Observation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4985532B1F3B6F52D059D8 /* ARKitGazeTrackingService+Observation.swift */; };
 		CAFF97F65B9D19B9B9D9688C /* CalibrationProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B9A8A9490F67F3E264AEDE /* CalibrationProfile.swift */; };
 		CC0932AC2311A9F61BD5C8D1 /* DSGlassRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CCA417536DE3BA63BEB4E1 /* DSGlassRendering.swift */; };
+		CE4D79CDF40AF6F7ED8709B4 /* GalleryDemoGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C89B8BD652068ADCFD0E71 /* GalleryDemoGround.swift */; };
 		CF65FD63B2C917E88C91153E /* DSRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9DAD6F4BB5E7D64B01B9C2 /* DSRadius.swift */; };
 		CFE3AD1A393BF86B178406F6 /* LevelHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BA17B940F074D716DFE9C6 /* LevelHint.swift */; };
 		CFF2D00899F00B76C21B75B1 /* GazeReadinessEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E47576FE9A465F3D18C714 /* GazeReadinessEvaluator.swift */; };
@@ -566,6 +568,7 @@
 		B7D242A860A1DDC94DA38992 /* ManualGameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualGameClock.swift; sourceTree = "<group>"; };
 		B84D34F447B4F3C0EA253386 /* GazeObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeObservation.swift; sourceTree = "<group>"; };
 		B8BDD61E13554EDC6C8012B4 /* LevelID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelID.swift; sourceTree = "<group>"; };
+		B8C89B8BD652068ADCFD0E71 /* GalleryDemoGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryDemoGround.swift; sourceTree = "<group>"; };
 		BC7AFC7016A275147A164D9A /* ConstellationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstellationTests.swift; sourceTree = "<group>"; };
 		BD8342C32E0848D650DFC63B /* CameraAccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessViewModel.swift; sourceTree = "<group>"; };
 		BEC252F5F0A638A25E8B4CFF /* DSGlassGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassGallery.swift; sourceTree = "<group>"; };
@@ -628,6 +631,7 @@
 		F579BD2430AB6DD15CFA21C3 /* ChaptersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChaptersView.swift; sourceTree = "<group>"; };
 		F5FAD02B8EF1F88A61052749 /* TargetID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetID.swift; sourceTree = "<group>"; };
 		F708CAA576C3EE37C2E1A181 /* JourneyCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCompleteView.swift; sourceTree = "<group>"; };
+		F7631AA27C56AC6DDD66FF9A /* DSGlassSelectionGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassSelectionGallery.swift; sourceTree = "<group>"; };
 		F852E6862756E54E16CB195B /* OculoDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoDefinition.swift; sourceTree = "<group>"; };
 		F888AF8EFFC2A1C549E4C75E /* Campaign+Courants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Courants.swift"; sourceTree = "<group>"; };
 		F8D2BE518F2A9E6465F98B1B /* Temperament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperament.swift; sourceTree = "<group>"; };
@@ -1125,7 +1129,9 @@
 			children = (
 				BEC252F5F0A638A25E8B4CFF /* DSGlassGallery.swift */,
 				5E01E0039DFC2A667EDC1ACD /* DSGlassGalleryCaptureTests.swift */,
+				F7631AA27C56AC6DDD66FF9A /* DSGlassSelectionGallery.swift */,
 				9916BB997E5EC86BFD97BC98 /* DSGlassTests.swift */,
+				B8C89B8BD652068ADCFD0E71 /* GalleryDemoGround.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -1657,11 +1663,13 @@
 				D9EE06F17C0640DED9245696 /* ConstellationTests.swift in Sources */,
 				387EC8B6184DA4D7CDBCF4B5 /* DSGlassGallery.swift in Sources */,
 				8A07A66E61D51F4D83DE5FCA /* DSGlassGalleryCaptureTests.swift in Sources */,
+				47703B9C7A700352CE3D2539 /* DSGlassSelectionGallery.swift in Sources */,
 				4A7A7DDA6BA9E9FED178E91B /* DSGlassTests.swift in Sources */,
 				BF7C448EACA8BCD7EE6331D7 /* EchosTests.swift in Sources */,
 				7A36EE0CA845984F54892152 /* ExpansionCampaignDump.swift in Sources */,
 				AE4BBABCCFB8D8C048234A0A /* ExpansionCampaignFingerprintTests.swift in Sources */,
 				61C97E1EB62CA5D90E388225 /* FixationSequenceTests.swift in Sources */,
+				CE4D79CDF40AF6F7ED8709B4 /* GalleryDemoGround.swift in Sources */,
 				0CCC1042EA3CAB770197EF6B /* GameContentFreezeTests.swift in Sources */,
 				0356557DEF48AB58EE5661CE /* GameSessionGoldenTests.swift in Sources */,
 				A40C75B67EF1D24460337C5B /* GameSessionTests.swift in Sources */,
