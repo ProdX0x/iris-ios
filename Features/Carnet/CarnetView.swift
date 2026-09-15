@@ -9,12 +9,6 @@ struct CarnetView: View {
 
     var body: some View {
         DSScreen {
-            Button { coordinator.openChapters() } label: {
-                Label("Chapitres", systemImage: "chevron.left")
-                    .font(DSFont.callout)
-                    .foregroundStyle(DSColor.Identity.textSecondary)
-                    .frame(minHeight: 44)
-            }
             Text("carnet")
                 .font(DSFont.display)
                 .foregroundStyle(DSColor.Identity.textPrimary)

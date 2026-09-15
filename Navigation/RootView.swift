@@ -1,6 +1,7 @@
 // RootView.swift
 // Layer: Presentation (Navigation)
-// Purpose: Renders the coordinator's route and sheet, forwards scene phase changes to the running game
+// Purpose: Renders the coordinator's route: the three destinations inside the system's tab bar, every immersive
+// route full screen without navigation chrome, and the settings sheet; forwards scene phase changes to the game
 
 import SwiftUI
 
@@ -15,36 +16,11 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
-            switch coordinator.route {
-            case .home:
-                HomeView()
+            if let destination = AppDestination(route: coordinator.route) {
+                destinations(selection: destination)
                     .transition(transition)
-            case .cameraAccess:
-                if let viewModel = coordinator.cameraAccessViewModel {
-                    CameraAccessView(viewModel: viewModel)
-                        .transition(transition)
-                }
-            case .gazeSetup:
-                if let viewModel = coordinator.gazeSetupViewModel {
-                    GazeSetupView(viewModel: viewModel)
-                        .transition(transition)
-                }
-            case .chapters:
-                ChaptersView()
-                    .transition(transition)
-            case .carnet:
-                CarnetView()
-                    .transition(transition)
-            case .game:
-                if let viewModel = coordinator.gameViewModel {
-                    GameView(viewModel: viewModel)
-                        .transition(transition)
-                }
-            case let .journeyComplete(summary):
-                JourneyCompleteView(summary: summary)
-                    .transition(transition)
-            case let .unavailable(reason):
-                UnavailableView(reason: reason)
+            } else {
+                immersive
                     .transition(transition)
             }
         }
@@ -56,7 +32,6 @@ struct RootView: View {
             case .settings:
                 SettingsView()
                     .environment(coordinator)
-                    .presentationBackground(DSColor.Identity.surface)
                     .presentationDragIndicator(.visible)
             }
         }
@@ -70,6 +45,64 @@ struct RootView: View {
                 break
             }
         }
+    }
+
+    /// Seuil, Chapitres and Carnet in the system's tab bar: it draws its own glass and steps aside while scrolling.
+    private func destinations(selection: AppDestination) -> some View {
+        TabView(selection: destinationBinding(current: selection)) {
+            NavigationStack {
+                HomeView()
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button { coordinator.showSettings() } label: {
+                                Label(AppSheet.settings.title, systemImage: "slider.horizontal.3")
+                            }
+                            .accessibilityLabel(AppSheet.settings.title)
+                        }
+                    }
+                    .toolbarBackground(.hidden, for: .navigationBar)
+            }
+            .tabItem { Label(AppDestination.seuil.title, systemImage: AppDestination.seuil.systemImage) }
+            .tag(AppDestination.seuil)
+
+            ChaptersView()
+                .tabItem { Label(AppDestination.chapitres.title, systemImage: AppDestination.chapitres.systemImage) }
+                .tag(AppDestination.chapitres)
+
+            CarnetView()
+                .tabItem { Label(AppDestination.carnet.title, systemImage: AppDestination.carnet.systemImage) }
+                .tag(AppDestination.carnet)
+        }
+        .dsTabBarMinimizesOnScroll()
+    }
+
+    /// Permission, calibration, game, journey end and unavailability take the whole screen: no tab bar, no toolbar.
+    @ViewBuilder
+    private var immersive: some View {
+        switch coordinator.route {
+        case .cameraAccess:
+            if let viewModel = coordinator.cameraAccessViewModel {
+                CameraAccessView(viewModel: viewModel)
+            }
+        case .gazeSetup:
+            if let viewModel = coordinator.gazeSetupViewModel {
+                GazeSetupView(viewModel: viewModel)
+            }
+        case .game:
+            if let viewModel = coordinator.gameViewModel {
+                GameView(viewModel: viewModel)
+            }
+        case let .journeyComplete(summary):
+            JourneyCompleteView(summary: summary)
+        case let .unavailable(reason):
+            UnavailableView(reason: reason)
+        case .home, .chapters, .carnet:
+            EmptyView()
+        }
+    }
+
+    private func destinationBinding(current: AppDestination) -> Binding<AppDestination> {
+        Binding(get: { current }, set: { coordinator.show($0) })
     }
 
     private var sheetBinding: Binding<AppSheet?> {

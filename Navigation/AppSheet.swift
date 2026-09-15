@@ -8,4 +8,10 @@ enum AppSheet: String, Identifiable, Hashable, Sendable {
     case settings
 
     var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .settings: "Réglages"
+        }
+    }
 }

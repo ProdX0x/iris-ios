@@ -83,6 +83,15 @@ final class AppCoordinator {
         route = .carnet
     }
 
+    /// Switches to one of the three permanent destinations of the tab bar.
+    func show(_ destination: AppDestination) {
+        switch destination {
+        case .seuil: returnHome()
+        case .chapitres: openChapters()
+        case .carnet: openCarnet()
+        }
+    }
+
     func showSettings() {
         sheet = .settings
     }

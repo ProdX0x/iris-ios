@@ -1,6 +1,7 @@
 // HomeView.swift
 // Layer: Presentation
-// Purpose: The threshold: emblem, promise, one main action (begin or continue), chapters, settings
+// Purpose: The threshold: emblem, promise, one main action (begin or continue). Settings live in the navigation
+// toolbar and the other destinations in the tab bar, both drawn by the system
 
 import SwiftUI
 
@@ -12,16 +13,6 @@ struct HomeView: View {
         ZStack {
             DSBackground(intensity: .vivid)
             VStack(spacing: DSSpacing.l) {
-                HStack {
-                    Spacer()
-                    Button { coordinator.showSettings() } label: {
-                        Image(systemName: "slider.horizontal.3")
-                            .font(DSFont.headline)
-                            .foregroundStyle(DSColor.Identity.textSecondary)
-                            .frame(width: 44, height: 44)
-                    }
-                    .accessibilityLabel("Réglages")
-                }
                 Spacer(minLength: DSSpacing.l)
                 DSIrisMark(size: 132, isBreathing: true)
                 VStack(spacing: DSSpacing.s) {
@@ -42,8 +33,6 @@ struct HomeView: View {
                             .foregroundStyle(DSColor.Identity.textTertiary)
                             .multilineTextAlignment(.center)
                     }
-                    DSButton("Chapitres", variant: .secondary) { coordinator.openChapters() }
-                        .padding(.top, DSSpacing.xs)
                     if summary.eclats > 0 {
                         Text("\(summary.eclats) éclats sur \(summary.maxEclats)")
                             .dsEyebrowStyle(tint: DSColor.State.success)

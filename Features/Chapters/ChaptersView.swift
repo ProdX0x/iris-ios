@@ -9,21 +9,6 @@ struct ChaptersView: View {
 
     var body: some View {
         DSScreen {
-            HStack {
-                Button { coordinator.returnHome() } label: {
-                    Label("Seuil", systemImage: "chevron.left")
-                        .font(DSFont.callout)
-                        .foregroundStyle(DSColor.Identity.textSecondary)
-                        .frame(minHeight: 44)
-                }
-                Spacer()
-                Button { coordinator.openCarnet() } label: {
-                    Text("Carnet")
-                        .font(DSFont.callout)
-                        .foregroundStyle(DSColor.Identity.textSecondary)
-                        .frame(minHeight: 44)
-                }
-            }
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text("\(coordinator.homeSummary.eclats) éclats sur \(coordinator.homeSummary.maxEclats)")
                     .dsEyebrowStyle(tint: DSColor.State.success)
