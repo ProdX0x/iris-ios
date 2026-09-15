@@ -74,8 +74,14 @@ Feature: Unavailable
 
 ## Navigation topology
 ```
+AppCoordinator.route, shown by RootView:
+  three destinations in the system's TabView (ADR-24)     immersive routes, no navigation chrome
+  ├── .home     -> AppDestination.seuil     HomeView      ├── .cameraAccess, .gazeSetup(intent)
+  ├── .chapters -> .chapitres  ChaptersView               ├── .game
+  └── .carnet   -> .carnet     CarnetView                 └── .journeyComplete, .unavailable
+
 AppCoordinator.route
-├── .home                      HomeView
+├── .home                      HomeView (Seuil tab, settings in the navigation toolbar)
 ├── .cameraAccess              CameraAccessView (explain, requesting, denied, restricted)
 ├── .gazeSetup(intent)         GazeSetupView: starting, readiness, calibrating, validating, insufficient, ready, failed
 │                                intent firstRun (no valid profile), revalidate (stored profile), recalibrate (from pause)
@@ -258,16 +264,24 @@ Context: the interface and the game world read the same flat tokens (`DSColor.ac
 Decision: `DSColor` holds four families, each token backed by its own colour set: `Identity` (grounds, surfaces, lines, text, accent, emblem), `Navigation` (primary and secondary actions, controls, selection, veils), `State` (success, danger, warning, info) and `Chapter` (field, attention, lueurs, currents, veils, neutral strokes, outcomes in the world, ranks, palettes of chapters VII to XII). The renderer, `DSThemePalette`, `DSThemeWash`, `GameView` and its `GameFieldBackground` read only `Chapter`; the interface reads the other three, and a chapter's palette only where it shows that chapter's own colour (card numeral, intro eyebrow). No value changed: the colour sets of the world were renamed byte for byte, the interface received identical copies of the colours it shared with the world.
 Consequences: an interface colour set can change without changing a chapter; the same value now lives in several colour sets on purpose; `AccentColor` and `LaunchBackground` remain system assets outside the families.
 
+### ADR-24: The production interface stands on Apple's own Liquid Glass
+Status: accepted
+Context: phase 2B compared Iris-made glass recipes (tinted panels, a bronze prominent capsule) in a gallery; the human review rejected the tinted capsule and the massive chrome, and the product decision is that Apple provides the material while Iris provides identity and content. Meanwhile the interface still built its own navigation: hand-made back buttons, a settings button drawn in the threshold, translucent surfaces imitating a material (`DSCard(style: .glass)`, `surface.opacity(0.6…0.88)`, a `veil` capsule).
+Decision: the production chrome adopts the system's components. `RootView` shows the three destinations (Seuil, Chapitres, Carnet) in a native `TabView` whose bar draws its own glass and minimises on scroll, and presents every immersive route (permission, calibration, game, journey end, unavailability) full screen with no navigation chrome; the settings sheet takes a `NavigationStack` with the system's title and close action. Actions use `.glassProminent` (tinted with `Navigation.primary`) and `.glass`; floating controls and panels use the roles of ADR-23 through `.dsGlass(role)` and `DSGlassPanel`; scroll views soften their edges under the system bars. No role tints a material any more. Two files know the system version: `DSGlassButtonStyle` and `DSGlassBarBehaviour`.
+Consequences: the interface follows the platform's own behaviour and accessibility without imitation; the fallback before iOS 26 and under Reduce Transparency is the role's plain surface, visually the historical interface; the phase 2B recipes stay in the test-target gallery as history; gameplay, Gaze Engine, calibration, progression and the chapter palettes are untouched, and their frozen fingerprints still hold.
+
 ### ADR-23: Liquid Glass through four design-system roles and one fallback
 Status: accepted (foundation; no screen migrated)
 Context: iOS 26 draws Liquid Glass natively while Iris still supports iOS 17; screens must not each test the system version, and glass must neither colour the game nor cost frames above the 60 Hz canvas.
 Decision: `DSGlassRole` (clearControl, regularPanel, chrome, prominentAction) and `DSGlassRendering` decide in one place: native `glassEffect` on iOS 26, a translucent surface of Identity colours before, an opaque surface under Reduce Transparency on every version. `DSGlassGroup` wraps `GlassEffectContainer`; `dsGlassID` morphs, or only fades under Reduce Motion. The glass is neutral: only the prominent action carries a light Navigation tint. System bars keep the system's own glass. The development gallery lives in the test target, over a demonstration ground that is not Iris's background.
-Consequences: a screen writes `.dsGlass(role)` and never `#available`; the fallback is a plain surface, not an imitation of glass; the gallery is judged by a human before any screen migrates. Phase 2B: each role holds a `DSGlassRecipe`; candidate recipes are compared in the test-target gallery through the same fallback and accessibility surfaces, and none replaces a role before a human choice.
+Consequences: a screen writes `.dsGlass(role)` and never `#available`; the fallback is a plain surface, not an imitation of glass; the gallery is judged by a human before any screen migrates. Phase 2B: each role holds a `DSGlassRecipe`; candidate recipes are compared in the test-target gallery through the same fallback and accessibility surfaces, and none replaces a role before a human choice. Superseded in part by ADR-24: the production interface now uses the system's own components, and no role tints its material.
 
 ## Forbidden
 - Showing or scoring a head direction that has not gone through the calibration's axis mapping.
 - An oculomotor final that gates progression, edits a validated level, reads anything but the smoothed gaze, its activity and the head pose, or shows the player a clinical term or measure.
-- In app code, `glassEffect`, `GlassEffectContainer`, a glass button style or an `#available(iOS 26…)` check for glass outside `DesignSystem/Glass`.
+- In app code, `glassEffect`, `GlassEffectContainer`, a glass button style, a tab bar or scroll edge behaviour, or an `#available(iOS 26…)` check for glass outside `DesignSystem/Glass`.
+- A hand-made translucent surface imitating a material in the production chrome (`DSCard(style: .glass)`, a `surface`/`veil` opacity used as a background, a blur, a system `Material`).
+- A screen building its own tab bar, back button or settings entry point instead of the system's navigation (ADR-24).
 - Glass tinted with a chapter colour, glass reading game state, or a large glass surface animating over the running game canvas.
 - The game world (renderer, chapter palettes and wash, game field) reading an `Identity`, `Navigation` or `State` colour, or a colour set shared by `Chapter` and another family.
 - Editing a historical chapter file, the Gaze Engine, `GazeFilter` or `TargetPhysics` without deliberately updating `HistoricalCampaignFingerprintTests` and its fixture, with a reason recorded in the README.

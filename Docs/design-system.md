@@ -29,8 +29,9 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 |---|---|---|
 | DSBackground (+ DSIrisFibers) | Chambre noire ground, fibres, slow breathing, identity tokens | every interface screen (the game draws GameFieldBackground) |
 | DSScreen | Scrolling page container with gutters | chapters, carnet, journey end, camera, unavailable |
-| DSButton, DSPressableButtonStyle | Primary, secondary, ghost actions, 52 pt | everywhere |
-| DSCard | flat, elevated, glass surfaces | chapters, carnet, settings, result, pause |
+| DSButton, DSPressableButtonStyle | Primary, secondary, ghost actions, 52 pt; the system's glass button styles on iOS 26, the painted capsule before | everywhere |
+| DSCard | flat and elevated content surfaces; it never imitates a material | chapters, carnet, settings, result, unavailability |
+| DSGlassPanel | panel of text and controls on the glass of `regularPanel` | pause readout, gaze readiness, gaze verdict |
 | DSBadge | status pill (nouveau, diagnostics) | intro, result, HUD diagnostics |
 | DSStatusRow | capability row | camera, gaze readiness, unavailable |
 | DSIrisMark, DSApertureBlades | six-blade diaphragm emblem and iris shape | home, initialising, journey end, game irises, éclats |
@@ -42,18 +43,21 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 
 Feature components: LevelIntroCard, LevelResultView (EclatBadge), GameHUDView, ChapterCard, LevelNode, FixationMark (gaze setup), GameSceneRenderer and GameFieldBackground (world, chapter tokens only).
 
-## Liquid Glass (ADR-23)
-Foundation only: roles in `DesignSystem/Glass`, used by no screen yet.
-| Role | iOS 26, native | iOS 17–25, translucent | Reduce Transparency, opaque | Shape |
-|---|---|---|---|---|
-| clearControl | `Glass.clear`, interactive | Identity.surface 60 % | Identity.surfaceElevated | circle |
-| regularPanel | `Glass.regular` | Identity.surface 88 % | Identity.surface | rounded, DSRadius.l |
-| chrome | `Glass.regular` (system bars keep their own glass) | Identity.surfaceElevated 92 % | Identity.surfaceElevated | capsule |
-| prominentAction | `Glass.regular` tinted Navigation.primary 40 %, interactive | Navigation.primary | Navigation.primary | capsule |
+## Liquid Glass (ADR-23, ADR-24)
+Apple provides the material, Iris provides identity and content. The production interface uses the system's own components; the roles below dress Iris's own surfaces, and nothing imitates a material anywhere.
 
-API: `.dsGlass(role)`, or `.dsGlass(role, in: .rounded(DSRadius.m))`; `DSGlassGroup(spacing:)` around neighbouring glass (`GlassEffectContainer` on iOS 26); `.dsGlassID(_:in:)` to morph, a fade under Reduce Motion. The modifier sets the content colour for its surface, turns the touch response off under Reduce Motion, and strengthens the edge of plain surfaces under Increase Contrast (Identity.textTertiary). Glass stays neutral; no blur, timer or display link; no large glass animating over the running game canvas. The development gallery (`Tests/IrisTests/DesignSystem/DSGlassGallery.swift`) is shown by `DSGlassGalleryCaptureTests` for screenshots and is not part of the app.
+| Role | iOS 26, native | iOS 17–25, translucent | Reduce Transparency, opaque | Shape | Used by |
+|---|---|---|---|---|---|
+| clearControl | `Glass.clear`, interactive | Identity.surface 60 % | Identity.surfaceElevated | circle | pause control, calibration close |
+| regularPanel | `Glass.regular` | Identity.surface 88 % | Identity.surface | rounded, DSRadius.l | level intro card, DSGlassPanel |
+| chrome | `Glass.regular` | Identity.surfaceElevated 92 % | Identity.surfaceElevated | capsule | the hint above the running level |
+| prominentAction | `Glass.regular`, interactive | Navigation.primary | Navigation.primary | capsule | the capsule painted where the system draws no glass button |
 
-Each role owns a `DSGlassRecipe` (clear or regular variant, optional tint, content colour and edge, touch response). `DSGlassModifier(role:shape:recipe:)` lets the gallery draw a candidate recipe with the role's own fallback and accessibility surfaces. The page « Sélection Iris Liquid Glass » (`DSGlassSelectionGallery`, grounds rich and calm) compares panel candidates (current, airy, balanced), chrome (current, clear, balanced), prominent actions (current, neutral, spectral, the system's `glassProminent`) and panel radii 22 and 16 pt. The roles keep their first recipes until a human choice; candidate recipes and the exploratory spectral colour live only in the test target.
+System surfaces, never a role: the tab bar (`TabView`, `dsTabBarMinimizesOnScroll()`), navigation toolbars, sheets, `ProgressView`, `Toggle`, `confirmationDialog`. Actions: `DSButton` maps primary to `.glassProminent` tinted with `Navigation.primary`, secondary to `.glass`, ghost to plain text; before iOS 26 and under Reduce Transparency it paints the capsule of `prominentAction` and its own secondary surface. Scroll views soften their edges under the system bars with `dsSoftScrollEdges()`.
+
+API: `.dsGlass(role)` or `.dsGlass(role, in: .capsule)`; `DSGlassPanel { }` for a panel; `.dsGlassButton(role, rendering:)` behind `DSButton`; `DSGlassGroup(spacing:)` around neighbouring glass (`GlassEffectContainer`); `.dsGlassID(_:in:)` to morph, a fade under Reduce Motion. Only `DSGlassRendering`, `DSGlassModifier`, `DSGlassButtonStyle` and `DSGlassBarBehaviour` know the system version; no screen writes `#available`.
+
+Phase 2B history: each role still owns a `DSGlassRecipe` (variant, optional tint, content colour, edge, touch response) so the development gallery (`Tests/IrisTests/DesignSystem/`) can compare candidates through the same fallback. Those candidates — panel airy/balanced, chrome clear/balanced, prominent neutral/spectral — were experiments; production keeps Apple's untinted materials.
 
 ## Accessibility
 Dynamic Type on every interface text; 44 pt minimum targets; VoiceOver labels on chapters, nodes, éclats and HUD; hints are posted as accessibility announcements; the game canvas is hidden from VoiceOver; rank never relies on colour alone; Reduce Motion removes breathing, filaments motion, shimmer and ripples.

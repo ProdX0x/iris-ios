@@ -46,18 +46,21 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
 | DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The interface's chambre noire (identity tokens): ink ground, abyss centre, faint iris fibres, vignette; | Claude (mission Iris) |
 | DesignSystem/Components/DSBadge.swift | struct | DesignSystem | Small status pill (success, danger, info, neutral, accent) | Claude (mission Iris) |
-| DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions with press feedback, 52 pt minimum height | Claude (mission Iris) |
-| DesignSystem/Components/DSCard.swift | struct | DesignSystem | Elevated surface with hairline border for grouped content and overlays | Claude (mission Iris) |
+| DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions, 52 pt minimum height: the system's Liquid Glass button styles where | Claude (mission Iris) |
+| DesignSystem/Components/DSCard.swift | struct | DesignSystem | Elevated surface with hairline border for grouped content. Panels that stand on glass use DSGlassPanel: | Claude (mission Iris) |
 | DesignSystem/Components/DSEclats.swift | struct | DesignSystem | Three arcs around a circle, lit or unlit: the mastery marks of a level | Claude (mission Iris) |
 | DesignSystem/Components/DSGlyph.swift | struct | DesignSystem | Hand-drawn glyphs of the game's ideas (no SF Symbols in the game vocabulary) | Claude (mission Iris) |
 | DesignSystem/Components/DSIrisMark.swift | struct | DesignSystem | The Iris emblem: a six-blade amber diaphragm around a pearl lueur, optionally breathing | Claude (mission Iris) |
 | DesignSystem/Components/DSOverlayPanel.swift | struct | DesignSystem | Veil over the game with a centred title, subtitle and actions | Claude (mission Iris) |
 | DesignSystem/Components/DSProgressRing.swift | struct | DesignSystem | Circular progress used for journey completion and hold progress readouts | Claude (mission Iris) |
-| DesignSystem/Components/DSScreen.swift | struct | DesignSystem | Page container: atmosphere background, safe-area aware column, consistent gutters | Claude (mission Iris) |
+| DesignSystem/Components/DSScreen.swift | struct | DesignSystem | Page container: atmosphere background, safe-area aware column, consistent gutters, and content softened | Claude (mission Iris) |
 | DesignSystem/Components/DSStatusRow.swift | struct | DesignSystem | Icon, title, detail and a coloured state dot; used for capability and permission lists | Claude (mission Iris) |
 | DesignSystem/Components/DSThemeWash.swift | struct | DesignSystem | Tints the chambre noire with a chapter's wash and a soft glow at the top; draws nothing for the historical palette | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassBarBehaviour.swift | struct | DesignSystem | The behaviours the system's own bars offer (a tab bar that steps aside while scrolling, softened edges | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassButtonStyle.swift | struct | DesignSystem | Actions on Apple's own glass: the system's `.glass` and `.glassProminent` button styles on iOS 26, the | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassGroup.swift | struct | DesignSystem | Neighbouring glass elements share one glass layer on iOS 26 (no glass on glass, coherent morphing, fewer | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassModifier.swift | struct | DesignSystem | `.dsGlass(role)`: draws a view on the glass of its role (its recipe), native Liquid Glass on iOS 26 and | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassPanel.swift | struct | DesignSystem | A panel of text and controls laid on the glass of its role: native Liquid Glass on iOS 26, the role's | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassRecipe.swift | struct | DesignSystem | The native Liquid Glass a surface uses: the system variant (clear or regular), an optional tint laid in | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassRendering.swift | enum | DesignSystem | The one place deciding how glass is drawn: native Liquid Glass on iOS 26, a light plain surface before, | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassRole.swift | enum | DesignSystem | The four intentions of glass in Iris (clear control, regular panel, chrome, prominent action): each role | Claude (mission Iris) |
@@ -167,22 +170,22 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/ViewModels/LevelResult.swift | struct | Presentation | What the result screen shows after a level: measurements, éclats and what comes next | Claude (mission Iris) |
 | Features/Game/Views/GameCanvasView.swift | struct | Presentation | Draws one scene snapshot; re-evaluated only when the snapshot changes | Claude (mission Iris) |
 | Features/Game/Views/GameFieldBackground.swift | struct | Presentation | The field behind a level: the chambre noire drawn from chapter tokens only, so a new interface background | Claude (mission Iris) |
-| Features/Game/Views/GameHUDView.swift | struct | Presentation | Peripheral HUD: level mark, pause, contextual hint at the bottom, diagnostic badges when enabled | Claude (mission Iris) |
+| Features/Game/Views/GameHUDView.swift | struct | Presentation | Peripheral HUD over the running level: level mark, the pause control and the contextual hint on the | Claude (mission Iris) |
 | Features/Game/Views/GameOverlayView.swift | struct | Presentation | One overlay per game phase: intro, pause, result, interruption, face lost, resume, suspension, failure | Claude (mission Iris) |
 | Features/Game/Views/GameView.swift | struct | Presentation | The game screen: chambre noire background, chapter wash, world canvas, peripheral HUD and phase overlays | Claude (mission Iris) |
-| Features/Game/Views/LevelIntroCard.swift | struct | Presentation | What the level asks, in three seconds; a compact translucent card so the level stays readable behind it | Claude (mission Iris) |
+| Features/Game/Views/LevelIntroCard.swift | struct | Presentation | What the level asks, in three seconds; a compact panel on the system's glass so the level stays readable | Claude (mission Iris) |
 | Features/Game/Views/LevelResultView.swift | struct | Presentation | "atteint": three éclats lighting one after the other, measurements, next / replay / chapters | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupIntent.swift | enum | Presentation | Why the gaze setup runs: first launch, quick revalidation of a stored profile, or manual recalibration | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupNavigating.swift | protocol | Presentation | Navigation intents emitted by the gaze setup screen | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupPhase.swift | struct | Presentation | Single state of the gaze setup screen: readiness, calibration, validation, verdicts and failures | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupViewModel.swift | class | Presentation | Runs diagnostic, nine-point calibration, five-point validation and persists the profile | Claude (mission Iris) |
-| Features/GazeSetup/Views/FixationTargetView.swift | struct | Presentation | One calibration or validation target positioned in normalized coordinates, with progress and stage label | Claude (mission Iris) |
+| Features/GazeSetup/Views/FixationTargetView.swift | struct | Presentation | One calibration or validation target positioned in normalized coordinates, with progress, stage label and | Claude (mission Iris) |
 | Features/GazeSetup/Views/GazeReadinessView.swift | struct | Presentation | Diagnostic checklist with a central fixation mark | Claude (mission Iris) |
 | Features/GazeSetup/Views/GazeSetupView.swift | struct | Presentation | Gaze diagnostic, calibration targets, validation and verdict screens | Claude (mission Iris) |
 | Features/GazeSetup/Views/GazeVerdictView.swift | struct | Presentation | "Regard prêt" or "La précision peut être améliorée" with measured errors and actions | Claude (mission Iris) |
-| Features/Home/HomeView.swift | struct | Presentation | The threshold: emblem, promise, one main action (begin or continue), chapters, settings | Claude (mission Iris) |
+| Features/Home/HomeView.swift | struct | Presentation | The threshold: emblem, promise, one main action (begin or continue). Settings live in the navigation | Claude (mission Iris) |
 | Features/JourneyComplete/JourneyCompleteView.swift | struct | Presentation | The end of the campaign: the last iris closed, éclats and play time, replay a chapter | Claude (mission Iris) |
-| Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, Carnet, progress reset, privacy note | Claude (mission Iris) |
+| Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, progress reset, privacy note; the | Claude (mission Iris) |
 | Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
 | Features/Unavailable/UnavailableView.swift | struct | Presentation | Shown when the device cannot track faces (no TrueDepth / ARFaceTracking unsupported) | Claude (mission Iris) |
@@ -227,10 +230,11 @@ Registry of every source file in the project. One row per file. Updated by every
 | Haptics/Services/SilentHapticFeedbackService.swift | class | Haptics | No-op touch feedback used by previews | Claude (mission Iris) |
 | Haptics/Services/UIKitHapticFeedbackService.swift | class | Haptics | UIKit feedback generators kept alive for the session: medium impact for a validation, soft impact for a loss, | Claude (mission Iris) |
 | Navigation/AppCoordinator.swift | class | Presentation | Deterministic route state machine and owner of the campaign progress | Claude (mission Iris) |
+| Navigation/AppDestination.swift | enum | Presentation | The three permanent destinations of the tab bar and the routes they stand for; every other route is | Claude (mission Iris) |
 | Navigation/AppRoute.swift | struct | Presentation | Every top-level screen of Iris as one explicit state | Claude (mission Iris) |
 | Navigation/AppSheet.swift | enum | Presentation | Modal sheets presented above the current route | Claude (mission Iris) |
 | Navigation/HomeSummary.swift | struct | Presentation | What the threshold screen proposes: begin, continue with the next level, or replay | Claude (mission Iris) |
-| Navigation/RootView.swift | struct | Presentation | Renders the coordinator's route and sheet, forwards scene phase changes to the running game | Claude (mission Iris) |
+| Navigation/RootView.swift | struct | Presentation | Renders the coordinator's route: the three destinations inside the system's tab bar, every immersive | Claude (mission Iris) |
 | Tests/IrisTests/AR/AffineTransform2DTests.swift | struct | Tests | Affine calibration model: identity, offsets, scales, flips, synthetic recovery, residuals, failures | Claude (mission Iris) |
 | Tests/IrisTests/AR/AxisMappingTests.swift | struct | Tests | Axis resolution from the eye line and gravity, including the "phone flipped 180 degrees" case | Claude (mission Iris) |
 | Tests/IrisTests/AR/CalibrationProfileTests.swift | struct | Tests | Persistence and compatibility rules of the calibration profile | Claude (mission Iris) |
@@ -271,6 +275,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/OculoTournerTests.swift | struct | Tests | Chapter XI final « d'abord les yeux »: eyes first then the head gives full warmth, the head first half, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
+| Tests/IrisTests/DesignSystem/DSGlassAdoptionTests.swift | struct | Tests | The production interface really stands on Apple's glass: each migrated surface asks the design system for | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassGallery.swift | struct | Tests | Development gallery of the Liquid Glass roles over a plain ground and a richer demonstration ground, shown | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassGalleryCaptureTests.swift | struct | Tests | Shows the Liquid Glass gallery pages one by one in a window of the test host, so that screenshots of the | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassSelectionGallery.swift | struct | Tests | « Sélection Iris Liquid Glass »: the validated clear control beside candidate panels, chrome and prominent | Claude (mission Iris) |

@@ -620,3 +620,29 @@ Protection : les chapitres VII à XII et le niveau 1-6 ont désormais leur empre
 Depuis `e29cae7`, qui descend de `iris-expansion-human-validated-v1` et contient X·7 (au tag, le chapitre X n'a que six niveaux). Le niveau 10-7 devient deux boucles de tête guidées autour d'un point fixé des yeux, au centre d'une silhouette tracée depuis `x7_silhouette_reference.png` : ancrage de face, un cercle continu en partant vers la droite, retour face, poussière d'étoiles, puis le même cercle vers la gauche ; la lueur rejoint ensuite seule son iris. La progression suit le parcours de la tête (en avant, sans saut, à allure bornée) ; le regard doit seulement rester près du point et une perte de suivi ne fait que suspendre. La tête est lue dans le repère de l'écran grâce à la correspondance d'axes de la calibration, sans signe supposé. Capture DEBUG JSON Lines avec `--iris-capture`. Détails : `Design/X7_ANCRE_CORRECTION.md`. Gaze Engine, calibration, décrochage, audio, haptique et autres niveaux : inchangés. Statut : **TECHNIQUEMENT VALIDÉ / À JOUER HUMAINEMENT**.
 
 **Option A (branche `fix/x7-head-only-circling`).** Le test sur iPhone 14 Pro a montré que le regard projeté dérive fortement quand la tête tourne, alors que le visage reste suivi. Le regard ne compte donc plus qu'avant chaque cercle (fixation d'ouverture, re-fixation) et après le dernier (fixation finale) ; pendant le départ, le cercle et le retour, seule la pose de tête compte, et elle est lue même sans projection du regard pour ce niveau. Point et anneau restent fixes, l'indicateur de regard DEBUG est masqué pendant les cercles, les erreurs `String(format:)` de la trace sont corrigées. Gaze Engine, ARKit, calibration et autres niveaux : inchangés.
+
+## 23. Liquid Glass natif Apple — interface de production (16 septembre 2026)
+
+Décision humaine du 15 septembre : **Apple fournit le matériau, Iris fournit l'identité et le contenu.** Les variantes Current / Airy / Balanced / Spectral de la phase 2B restent des expériences historiques (cible de tests) ; aucune n'est l'architecture finale. Plus aucune imitation de verre n'existe dans le chrome de production.
+
+**Ce que le système dessine maintenant lui-même**
+
+| Zone | Avant | Après |
+|---|---|---|
+| Navigation principale | `RootView` commutait les routes, chaque écran portait ses propres boutons « Seuil » / « Chapitres » / « Carnet » | `TabView` système à trois destinations (Seuil, Chapitres, Carnet), verre et repli au défilement fournis par iOS 26 |
+| Réglages | en-tête et bouton « Fermer » dessinés à la main | `NavigationStack` + `toolbar` système dans la feuille |
+| Action principale | capsule ambre peinte | `buttonStyle(.glassProminent)` teinté de l'ambre Iris |
+| Actions secondaires | capsule ardoise peinte | `buttonStyle(.glass)` |
+| Pause, fermeture de calibration | cercle `surface` à 60–70 % + liseré | verre clair natif (rôle `clearControl`, validé humainement en phase 2) |
+| Indice du jeu | capsule `veil` à 55 % | verre natif en capsule (rôle `chrome`) |
+| Carte d'introduction de niveau | surface à 80 % + liseré | verre natif (rôle `regularPanel`) |
+| Panneaux « regard » (pause, diagnostic, verdict) | `DSCard(style: .glass)` à 88 % | `DSGlassPanel` sur verre natif |
+| Bords de défilement | coupe nette | `scrollEdgeEffectStyle(.soft)` sous les barres système |
+
+**Ce qui ne change pas.** Gameplay, Gaze Engine, calibration (calcul, points, seuils, validation), physique, progression, 82 niveaux, palettes de chapitres, rendu du monde, audio et haptique : aucun fichier gelé n'est modifié. Le contenu reste du contenu : cartes de chapitre, carnet, lignes d'état, pastilles, emblème et éclats ne deviennent pas des cartes de verre (§11 de la mission).
+
+**Où vit la connaissance du système.** Deux fichiers seulement testent la version d'iOS : `DesignSystem/Glass/DSGlassButtonStyle.swift` (styles de boutons) et `DesignSystem/Glass/DSGlassBarBehaviour.swift` (barre d'onglets, bords de défilement), en plus du socle `DSGlassRendering` / `DSGlassModifier`. Aucun écran n'écrit `#available(iOS 26…)`.
+
+**Repli iOS 17–25 et accessibilité.** Sous iOS 17–25 et sous Réduire la transparence, chaque surface retombe sur la surface pleine de son rôle, identique à l'apparence historique : aucun faux Liquid Glass n'est fabriqué. Réduire la transparence rend tout opaque, Augmenter le contraste renforce les liserés, Réduire les animations supprime la réponse tactile du verre et les morphings, Dynamic Type et VoiceOver sont inchangés.
+
+**Protection.** `DSGlassTests` (A–K, K regèle les six sources de navigation) et `DSGlassAdoptionTests` (A–H) : chaque surface migrée demande son verre au design system, aucune imitation ne subsiste, les destinations sont celles du système, les replis restent lisibles.
