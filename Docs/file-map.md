@@ -57,7 +57,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Components/DSStatusRow.swift | struct | DesignSystem | Icon, title, detail and a coloured state dot; used for capability and permission lists | Claude (mission Iris) |
 | DesignSystem/Components/DSThemeWash.swift | struct | DesignSystem | Tints the chambre noire with a chapter's wash and a soft glow at the top; draws nothing for the historical palette | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassGroup.swift | struct | DesignSystem | Neighbouring glass elements share one glass layer on iOS 26 (no glass on glass, coherent morphing, fewer | Claude (mission Iris) |
-| DesignSystem/Glass/DSGlassModifier.swift | struct | DesignSystem | `.dsGlass(role)`: draws a view on the glass of its role, native Liquid Glass on iOS 26 and the plain | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassModifier.swift | struct | DesignSystem | `.dsGlass(role)`: draws a view on the glass of its role (its recipe), native Liquid Glass on iOS 26 and | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassRecipe.swift | struct | DesignSystem | The native Liquid Glass a surface uses: the system variant (clear or regular), an optional tint laid in | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassRendering.swift | enum | DesignSystem | The one place deciding how glass is drawn: native Liquid Glass on iOS 26, a light plain surface before, | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassRole.swift | enum | DesignSystem | The four intentions of glass in Iris (clear control, regular panel, chrome, prominent action): each role | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassShape.swift | enum | DesignSystem | The few shapes glass may take: a circle for icons, a capsule where it means something, a moderately | Claude (mission Iris) |

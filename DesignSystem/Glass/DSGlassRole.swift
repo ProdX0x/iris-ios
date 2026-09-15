@@ -1,7 +1,7 @@
 // DSGlassRole.swift
 // Layer: DesignSystem
 // Purpose: The four intentions of glass in Iris (clear control, regular panel, chrome, prominent action): each role
-// fixes its glass variant, touch response, tint and shape, and the plain surfaces that stand in for it
+// owns its native glass recipe, its shape, and the plain surfaces that stand in for it
 
 import SwiftUI
 
@@ -12,27 +12,18 @@ enum DSGlassRole: CaseIterable, Hashable, Sendable {
     case regularPanel
     /// A custom container of navigation controls. System bars (tab bar, toolbars) draw their own glass: no role.
     case chrome
-    /// The one main action of a screen, glass lightly tinted with the navigation colour. Never two on one screen.
+    /// The one main action of a screen. Never two on one screen.
     case prominentAction
 
-    /// Variant of the system glass a role uses.
-    enum Variant: Hashable, Sendable {
-        case clear
-        case regular
-    }
-
-    var variant: Variant {
-        self == .clearControl ? .clear : .regular
-    }
-
-    /// Controls answer touch with the system's glass response (the modifier turns it off under Reduce Motion).
-    var isInteractive: Bool {
-        self == .clearControl || self == .prominentAction
-    }
-
-    /// Only the prominent action carries a colour, and lightly: the glass itself stays neutral.
-    var tint: Color? {
-        self == .prominentAction ? DSColor.Navigation.primary.opacity(0.4) : nil
+    /// The native glass of the role. The clear control is validated; the three other roles keep their first recipes
+    /// until one of the candidates compared in the development gallery is chosen.
+    var recipe: DSGlassRecipe {
+        switch self {
+        case .clearControl: DSGlassRecipe(.clear, interactive: true)
+        case .regularPanel: DSGlassRecipe(.regular)
+        case .chrome: DSGlassRecipe(.regular)
+        case .prominentAction: DSGlassRecipe(.regular, tint: DSColor.Navigation.primary.opacity(0.4), interactive: true)
+        }
     }
 
     var defaultShape: DSGlassShape {
@@ -68,14 +59,5 @@ enum DSGlassRole: CaseIterable, Hashable, Sendable {
     func hairline(_ contrast: ColorSchemeContrast) -> Color {
         guard self != .prominentAction else { return .clear }
         return contrast == .increased ? DSColor.Identity.textTertiary : DSColor.Identity.line
-    }
-}
-
-@available(iOS 26.0, *)
-extension DSGlassRole {
-    /// The system material of this role; `interactive` is false under Reduce Motion.
-    func glass(interactive: Bool) -> Glass {
-        let base: Glass = variant == .clear ? .clear : .regular
-        return base.tint(tint).interactive(isInteractive && interactive)
     }
 }

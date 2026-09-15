@@ -188,6 +188,7 @@
 		96BC5A32CD9911521A3D062A /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FF0E21DD6DE5B24C6D77E5 /* AppRoute.swift */; };
 		9894CF51C532682A5A6E2156 /* GazeCalibrationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */; };
 		9896EA5F3CF8D128E8F8C011 /* OculoSequenceClockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A963E98146E928B8F6DA725 /* OculoSequenceClockTests.swift */; };
+		9936489399B86FA089EA7132 /* DSGlassRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26008741A453F18D27284360 /* DSGlassRecipe.swift */; };
 		9A711B9C7A79821B956497A5 /* DeviceAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C9CB7057C2619954A15D6 /* DeviceAxis.swift */; };
 		9AAC26DB72AD6F49D3A7E608 /* Campaign+FinalVeilleuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF5190E0706C0C8E025567 /* Campaign+FinalVeilleuses.swift */; };
 		9AC4C195616DC896137DF12F /* LinearCongruentialGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272C51EEF33C3FE08A938E8E /* LinearCongruentialGenerator.swift */; };
@@ -386,6 +387,7 @@
 		24094EAB27C60B8810B9EAB9 /* CampaignProgressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignProgressTests.swift; sourceTree = "<group>"; };
 		249B00C73A72410C16B0C647 /* OculomotorTraceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculomotorTraceTests.swift; sourceTree = "<group>"; };
 		250F3A8E08643A58456E9E21 /* NormalizedCoordinatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedCoordinatesTests.swift; sourceTree = "<group>"; };
+		26008741A453F18D27284360 /* DSGlassRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassRecipe.swift; sourceTree = "<group>"; };
 		272C51EEF33C3FE08A938E8E /* LinearCongruentialGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearCongruentialGenerator.swift; sourceTree = "<group>"; };
 		27E22A056627411114A2EEA7 /* GazeReadinessReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeReadinessReport.swift; sourceTree = "<group>"; };
 		28266A50B279488EF3049A90 /* DeviceIdiom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceIdiom.swift; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 			children = (
 				4FEEB57B712C891375DD5E55 /* DSGlassGroup.swift */,
 				B086D3FDE9EDCB770EDCE313 /* DSGlassModifier.swift */,
+				26008741A453F18D27284360 /* DSGlassRecipe.swift */,
 				70CCA417536DE3BA63BEB4E1 /* DSGlassRendering.swift */,
 				5173C173F4B4677CBD220068 /* DSGlassRole.swift */,
 				A4BB40886407980F62E22F80 /* DSGlassShape.swift */,
@@ -1799,6 +1802,7 @@
 				0EA8738AC9494778D067B17B /* DSFont.swift in Sources */,
 				29A1D91803FB66E7A7834745 /* DSGlassGroup.swift in Sources */,
 				CA52A36C48373FF95DCACF3A /* DSGlassModifier.swift in Sources */,
+				9936489399B86FA089EA7132 /* DSGlassRecipe.swift in Sources */,
 				CC0932AC2311A9F61BD5C8D1 /* DSGlassRendering.swift in Sources */,
 				2EF41BB5F9486F5AABCD966A /* DSGlassRole.swift in Sources */,
 				3FDF564DAB3D622C9D66AFFF /* DSGlassShape.swift in Sources */,

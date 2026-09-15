@@ -1,24 +1,38 @@
 // DSGlassModifier.swift
 // Layer: DesignSystem
-// Purpose: `.dsGlass(role)`: draws a view on the glass of its role, native Liquid Glass on iOS 26 and the plain
-// surface of DSGlassSurface elsewhere or under Reduce Transparency; the touch response follows Reduce Motion
+// Purpose: `.dsGlass(role)`: draws a view on the glass of its role (its recipe), native Liquid Glass on iOS 26 and
+// the plain surface of DSGlassSurface elsewhere or under Reduce Transparency; the touch response follows Reduce Motion
 
 import SwiftUI
 
 struct DSGlassModifier: ViewModifier {
     let role: DSGlassRole
     let shape: DSGlassShape
+    let recipe: DSGlassRecipe
 
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// `recipe` replaces the role's native glass (the development gallery compares candidates this way); the role
+    /// still decides the plain surfaces drawn without Liquid Glass or under Reduce Transparency.
+    init(role: DSGlassRole, shape: DSGlassShape? = nil, recipe: DSGlassRecipe? = nil) {
+        self.role = role
+        self.shape = shape ?? role.defaultShape
+        self.recipe = recipe ?? role.recipe
+    }
 
     func body(content: Content) -> some View {
         let rendering = DSGlassRendering.resolve(reduceTransparency: reduceTransparency)
         if rendering == .native {
             if #available(iOS 26.0, *) {
                 content
-                    .foregroundStyle(role.foreground(.native))
-                    .glassEffect(role.glass(interactive: !reduceMotion), in: shape.shape)
+                    .foregroundStyle(recipe.foreground ?? role.foreground(.native))
+                    .glassEffect(recipe.glass(interactive: !reduceMotion), in: shape.shape)
+                    .overlay {
+                        if let edge = recipe.edge {
+                            shape.hairline(edge).allowsHitTesting(false)
+                        }
+                    }
             } else {
                 content.modifier(DSGlassSurface(role: role, shape: shape, rendering: .translucent))
             }
@@ -31,7 +45,7 @@ struct DSGlassModifier: ViewModifier {
 extension View {
     /// Draws this view on the glass of `role`, in the role's own shape unless another one is given.
     func dsGlass(_ role: DSGlassRole, in shape: DSGlassShape? = nil) -> some View {
-        modifier(DSGlassModifier(role: role, shape: shape ?? role.defaultShape))
+        modifier(DSGlassModifier(role: role, shape: shape))
     }
 }
 
