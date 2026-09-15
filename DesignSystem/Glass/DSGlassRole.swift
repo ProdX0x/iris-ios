@@ -1,7 +1,8 @@
 // DSGlassRole.swift
 // Layer: DesignSystem
 // Purpose: The four intentions of glass in Iris (clear control, regular panel, chrome, prominent action): each role
-// owns its native glass recipe, its shape, and the plain surfaces that stand in for it
+// owns its native glass, its shape, and the plain surfaces that stand in for it before iOS 26. Apple's own surfaces
+// (tab bar, toolbars, glass button styles) carry the system's glass and take no role
 
 import SwiftUI
 
@@ -10,19 +11,21 @@ enum DSGlassRole: CaseIterable, Hashable, Sendable {
     case clearControl
     /// Panels holding text (pause, introduction, result): more present than a control, the ground still perceptible.
     case regularPanel
-    /// A custom container of navigation controls. System bars (tab bar, toolbars) draw their own glass: no role.
+    /// One of Iris's own floating containers over live content (the hint above the game). System bars draw their
+    /// own glass and never use this role.
     case chrome
-    /// The one main action of a screen. Never two on one screen.
+    /// The one main action of a screen. Native prominence comes from the system's `.glassProminent` button style;
+    /// this role describes the capsule painted in its place before iOS 26 and under Reduce Transparency.
     case prominentAction
 
-    /// The native glass of the role. The clear control is validated; the three other roles keep their first recipes
-    /// until one of the candidates compared in the development gallery is chosen.
+    /// The native glass of the role: Apple's two variants, untinted. Iris tints the system's prominent button style,
+    /// never the material of a panel (the tinted capsule compared in the phase 2B gallery was rejected).
     var recipe: DSGlassRecipe {
         switch self {
         case .clearControl: DSGlassRecipe(.clear, interactive: true)
         case .regularPanel: DSGlassRecipe(.regular)
         case .chrome: DSGlassRecipe(.regular)
-        case .prominentAction: DSGlassRecipe(.regular, tint: DSColor.Navigation.primary.opacity(0.4), interactive: true)
+        case .prominentAction: DSGlassRecipe(.regular, interactive: true)
         }
     }
 

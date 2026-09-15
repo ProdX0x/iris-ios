@@ -92,6 +92,7 @@
 		47703B9C7A700352CE3D2539 /* DSGlassSelectionGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7631AA27C56AC6DDD66FF9A /* DSGlassSelectionGallery.swift */; };
 		487AF592B1BDAC573E873ED3 /* GameSceneRenderer+Ancre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9FEEA3CF4D86613B2B2BCE /* GameSceneRenderer+Ancre.swift */; };
 		4968A2DA681B1E8C642A8EE6 /* OculoFilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B51B335C41E3CF366584F /* OculoFilTests.swift */; };
+		49709D552C820F5350120577 /* AppDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4172BA605351432B53638D /* AppDestination.swift */; };
 		49AC7C52D4263EAD2867FF51 /* IrisPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A19970A39C36C9149697807 /* IrisPath.swift */; };
 		4A7A7DDA6BA9E9FED178E91B /* DSGlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9916BB997E5EC86BFD97BC98 /* DSGlassTests.swift */; };
 		4BC9DDCA7627B2CD60477C0B /* HintTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81319801731883FA33B5955D /* HintTracker.swift */; };
@@ -187,6 +188,7 @@
 		96330B0B167B8038C4326B23 /* IrisMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ABDF9A8FDA336DCA7ABFBF /* IrisMotion.swift */; };
 		9658C2037D3723BA84000866 /* NormalizedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AAB1AD7637B02F6DC1DB75 /* NormalizedPoint.swift */; };
 		96BC5A32CD9911521A3D062A /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FF0E21DD6DE5B24C6D77E5 /* AppRoute.swift */; };
+		972F969A73C289C61C1FB8B2 /* DSGlassButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6AF8740F9532BAF37FD367 /* DSGlassButtonStyle.swift */; };
 		9894CF51C532682A5A6E2156 /* GazeCalibrationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */; };
 		9896EA5F3CF8D128E8F8C011 /* OculoSequenceClockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A963E98146E928B8F6DA725 /* OculoSequenceClockTests.swift */; };
 		9936489399B86FA089EA7132 /* DSGlassRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26008741A453F18D27284360 /* DSGlassRecipe.swift */; };
@@ -239,9 +241,11 @@
 		BCF44144872EAA8A9102D385 /* SystemLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777642381FD1AC6F4BA72575 /* SystemLinks.swift */; };
 		BD72D57E425710FDBA47A7F3 /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3966B0FEFA78E7847455C3 /* GameSession.swift */; };
 		BD8B02607C5B7BD96BD8144D /* CameraAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05108E912AA61A75A8C03718 /* CameraAuthorizationService.swift */; };
+		BE01E22DB696BE06523352FD /* DSGlassAdoptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D7CBF3D905DE1A5DD890A5 /* DSGlassAdoptionTests.swift */; };
 		BF7C448EACA8BCD7EE6331D7 /* EchosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0E9AA581484A2D2EEE6A2 /* EchosTests.swift */; };
 		C08E69FB668DB35B80C89AEF /* NormalizedCoordinatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250F3A8E08643A58456E9E21 /* NormalizedCoordinatesTests.swift */; };
 		C16FBF8B2991993EFC0C4F63 /* BraisesChapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B014AB35FAB6D3D2359656C /* BraisesChapterTests.swift */; };
+		C1C6BEE85AC60D68B4D83660 /* DSGlassPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9073F5F5C3F0789FB5804 /* DSGlassPanel.swift */; };
 		C1E0FA499287DC6BFF42BE9A /* VisualCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51669757A8638E5981E3BCD6 /* VisualCaptureTests.swift */; };
 		C2F19F8ED6C85829DE9AEAC1 /* ValueNoise1DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13148145B6DC04089A15C179 /* ValueNoise1DTests.swift */; };
 		C305DD983671F9B578093C05 /* DSMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D2FA928060E55713CF584 /* DSMotion.swift */; };
@@ -289,6 +293,7 @@
 		E39B3226EBF79333423FEBB0 /* DisplayLinkGameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2C07EDCB5EBFACEC9C3A /* DisplayLinkGameClock.swift */; };
 		E3CA33AD91F5CE0C465FF15E /* CascadeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490735E24BFA02393F0D0DDD /* CascadeRule.swift */; };
 		E4556BF3DE266AF3790359D2 /* Campaign+Echos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4B98802AAE50E44934AAEF /* Campaign+Echos.swift */; };
+		E4912844D69F87BEEBF5562E /* DSGlassBarBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF504565D372F4CF97135EE /* DSGlassBarBehaviour.swift */; };
 		E5537C214B1224B49BD1FD3C /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1F43684A42004D2CE7A08 /* GameEvent.swift */; };
 		E59F613932A23B3AFAC1B6D1 /* GameElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86C859F466557ECCA36EC1 /* GameElement.swift */; };
 		E69E0FC6D75097FC7302A789 /* GazeMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6F2B86A70F4BF776DD9DB9 /* GazeMapperTests.swift */; };
@@ -395,6 +400,7 @@
 		28266A50B279488EF3049A90 /* DeviceIdiom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceIdiom.swift; sourceTree = "<group>"; };
 		294A4A3C6F8935D0485A0695 /* NormalizedCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizedCoordinates.swift; sourceTree = "<group>"; };
 		2A19970A39C36C9149697807 /* IrisPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrisPath.swift; sourceTree = "<group>"; };
+		2AC9073F5F5C3F0789FB5804 /* DSGlassPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassPanel.swift; sourceTree = "<group>"; };
 		2B4370C5816485971C45535B /* GameFieldBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFieldBackground.swift; sourceTree = "<group>"; };
 		2B6C2B4408A7403D78FDEC03 /* HeadPose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadPose.swift; sourceTree = "<group>"; };
 		2BE71772397FBA20FFC05309 /* AdaptiveLevelRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLevelRow.swift; sourceTree = "<group>"; };
@@ -427,6 +433,7 @@
 		485C1759F027CED5CD819B1D /* GameSceneRenderer+Oculo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameSceneRenderer+Oculo.swift"; sourceTree = "<group>"; };
 		488DDA9F02F27EF2583681DA /* CoeurStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoeurStageState.swift; sourceTree = "<group>"; };
 		48979C2D7ABD521591659B54 /* DSEclats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEclats.swift; sourceTree = "<group>"; };
+		48D7CBF3D905DE1A5DD890A5 /* DSGlassAdoptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassAdoptionTests.swift; sourceTree = "<group>"; };
 		48EFF1D68AD1035A2E6EEDFF /* GazeCalibrationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeCalibrationStatus.swift; sourceTree = "<group>"; };
 		490735E24BFA02393F0D0DDD /* CascadeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeRule.swift; sourceTree = "<group>"; };
 		49456847B3BA1C184F35F7CB /* HistoricalCampaignFingerprintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalCampaignFingerprintTests.swift; sourceTree = "<group>"; };
@@ -537,6 +544,7 @@
 		9DF77AE1F41D398E8C51E742 /* BraiseDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseDefinition.swift; sourceTree = "<group>"; };
 		9F337E175FB7D36A09AC4FE2 /* golden_generator.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = golden_generator.js; sourceTree = "<group>"; };
 		9FC6C35F2B3670EF05BC8871 /* DSScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSScreen.swift; sourceTree = "<group>"; };
+		9FF504565D372F4CF97135EE /* DSGlassBarBehaviour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassBarBehaviour.swift; sourceTree = "<group>"; };
 		A149778CB2D807A315CFB89E /* FeedbackTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackTiming.swift; sourceTree = "<group>"; };
 		A4048210861D4E9A13EAACA7 /* GameNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNavigating.swift; sourceTree = "<group>"; };
 		A43FC81E44C06EF82C25045A /* expansion_campaign.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = expansion_campaign.txt; sourceTree = "<group>"; };
@@ -604,8 +612,10 @@
 		D7BC02F89C47E8DB96F852E1 /* GazeSetupNavigating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupNavigating.swift; sourceTree = "<group>"; };
 		D95ADD54A9E6D7BF0E893EAB /* LevelEnvironmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelEnvironmentTests.swift; sourceTree = "<group>"; };
 		DA3EA6296DB64CBC82A728AD /* AffineTransform2DTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransform2DTests.swift; sourceTree = "<group>"; };
+		DA4172BA605351432B53638D /* AppDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDestination.swift; sourceTree = "<group>"; };
 		DA43BED00D42931EF2764F82 /* OculoEtoilesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoEtoilesTests.swift; sourceTree = "<group>"; };
 		DA4985532B1F3B6F52D059D8 /* ARKitGazeTrackingService+Observation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARKitGazeTrackingService+Observation.swift"; sourceTree = "<group>"; };
+		DC6AF8740F9532BAF37FD367 /* DSGlassButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassButtonStyle.swift; sourceTree = "<group>"; };
 		DF2A5330F4339EF7D4926004 /* FilStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilStageState.swift; sourceTree = "<group>"; };
 		DF8765C67309C58F38118479 /* GouffreField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GouffreField.swift; sourceTree = "<group>"; };
 		DF9F9EFA1251797938463FF3 /* TargetBlueprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetBlueprint.swift; sourceTree = "<group>"; };
@@ -815,6 +825,7 @@
 			isa = PBXGroup;
 			children = (
 				B32A02AF64361BD90B66A9C3 /* AppCoordinator.swift */,
+				DA4172BA605351432B53638D /* AppDestination.swift */,
 				C1FF0E21DD6DE5B24C6D77E5 /* AppRoute.swift */,
 				54B361F6FB2CAF7BCBAFF1B9 /* AppSheet.swift */,
 				6B9177E8AB3CDA6C63662C56 /* HomeSummary.swift */,
@@ -826,8 +837,11 @@
 		457D15CA0EAE47688123E4BF /* Glass */ = {
 			isa = PBXGroup;
 			children = (
+				9FF504565D372F4CF97135EE /* DSGlassBarBehaviour.swift */,
+				DC6AF8740F9532BAF37FD367 /* DSGlassButtonStyle.swift */,
 				4FEEB57B712C891375DD5E55 /* DSGlassGroup.swift */,
 				B086D3FDE9EDCB770EDCE313 /* DSGlassModifier.swift */,
+				2AC9073F5F5C3F0789FB5804 /* DSGlassPanel.swift */,
 				26008741A453F18D27284360 /* DSGlassRecipe.swift */,
 				70CCA417536DE3BA63BEB4E1 /* DSGlassRendering.swift */,
 				5173C173F4B4677CBD220068 /* DSGlassRole.swift */,
@@ -1127,6 +1141,7 @@
 		9CB36B19C618BAB3B763B746 /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
+				48D7CBF3D905DE1A5DD890A5 /* DSGlassAdoptionTests.swift */,
 				BEC252F5F0A638A25E8B4CFF /* DSGlassGallery.swift */,
 				5E01E0039DFC2A667EDC1ACD /* DSGlassGalleryCaptureTests.swift */,
 				F7631AA27C56AC6DDD66FF9A /* DSGlassSelectionGallery.swift */,
@@ -1661,6 +1676,7 @@
 				A8097378F5A1835CDCC1FD95 /* ChapterCardLayoutTests.swift in Sources */,
 				C566AF573325910989E2EC16 /* ColorRoleBoundaryTests.swift in Sources */,
 				D9EE06F17C0640DED9245696 /* ConstellationTests.swift in Sources */,
+				BE01E22DB696BE06523352FD /* DSGlassAdoptionTests.swift in Sources */,
 				387EC8B6184DA4D7CDBCF4B5 /* DSGlassGallery.swift in Sources */,
 				8A07A66E61D51F4D83DE5FCA /* DSGlassGalleryCaptureTests.swift in Sources */,
 				47703B9C7A700352CE3D2539 /* DSGlassSelectionGallery.swift in Sources */,
@@ -1740,6 +1756,7 @@
 				E284F0F7641DBA0B63613A3E /* AncreStageState.swift in Sources */,
 				0C2B5B24A9B1CBE33DE030DF /* AppContainer.swift in Sources */,
 				B6A60F462EAA944F4E931633 /* AppCoordinator.swift in Sources */,
+				49709D552C820F5350120577 /* AppDestination.swift in Sources */,
 				FAF2CB7CEE4D891C0D67700A /* AppEnvironment.swift in Sources */,
 				96BC5A32CD9911521A3D062A /* AppRoute.swift in Sources */,
 				9607EC9D2DEFB42CE039B0B4 /* AppSheet.swift in Sources */,
@@ -1808,8 +1825,11 @@
 				160FD176A69BB21054FDE0FB /* DSEclats.swift in Sources */,
 				841583BF77B1C572479AED82 /* DSEyebrowStyle.swift in Sources */,
 				0EA8738AC9494778D067B17B /* DSFont.swift in Sources */,
+				E4912844D69F87BEEBF5562E /* DSGlassBarBehaviour.swift in Sources */,
+				972F969A73C289C61C1FB8B2 /* DSGlassButtonStyle.swift in Sources */,
 				29A1D91803FB66E7A7834745 /* DSGlassGroup.swift in Sources */,
 				CA52A36C48373FF95DCACF3A /* DSGlassModifier.swift in Sources */,
+				C1C6BEE85AC60D68B4D83660 /* DSGlassPanel.swift in Sources */,
 				9936489399B86FA089EA7132 /* DSGlassRecipe.swift in Sources */,
 				CC0932AC2311A9F61BD5C8D1 /* DSGlassRendering.swift in Sources */,
 				2EF41BB5F9486F5AABCD966A /* DSGlassRole.swift in Sources */,
