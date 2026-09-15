@@ -125,6 +125,20 @@ struct VisualCaptureTests {
         try sheet.writeManifest("manifest-window.txt")
     }
 
+    @Test("the navigation shell as the app draws it: the system's tab bar over the three destinations (only when IRIS_CAPTURE_DIR is set)",
+          .enabled(if: captureDirectory != nil))
+    func shell() async throws {
+        let sheet = CaptureSheet()
+        for destination in AppDestination.allCases {
+            let coordinator = coordinator(seeded: .through("7-4"))
+            coordinator.show(destination)
+            try await sheet.host("coquille-\(destination.rawValue)", note: "shell \(destination.rawValue)",
+                                 AnyView(RootView(coordinator: coordinator)))
+        }
+        #expect(sheet.count == 3)
+        try sheet.writeManifest("manifest-shell.txt")
+    }
+
     @Test("every level of the campaign a moment after it starts (only when IRIS_CAPTURE_DIR is set)",
           .enabled(if: captureDirectory != nil))
     func everyLevel() throws {

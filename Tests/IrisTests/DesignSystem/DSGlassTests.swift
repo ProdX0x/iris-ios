@@ -2,7 +2,8 @@
 // Layer: Tests
 // Purpose: The Liquid Glass roles: native glass where the system has it, the plain fallback elsewhere, opaque under
 // Reduce Transparency, distinct roles, the validated clear control unchanged, no chapter colour, no game, gaze or
-// physics dependency, gallery candidates kept out of the app, no screen using glass, navigation untouched
+// physics dependency, gallery candidates kept out of the app, every native call confined to DesignSystem/Glass, and
+// navigation built from the system's own tab bar and toolbar
 
 import CryptoKit
 import Foundation
@@ -13,13 +14,15 @@ import Testing
 @Suite("Liquid Glass design roles")
 @MainActor
 struct DSGlassTests {
-    /// Navigation sources, frozen until the navigation phase deliberately changes them and this table.
+    /// Navigation sources, re-frozen by the native Liquid Glass migration (the tab bar, the toolbar and the three
+    /// destinations); they change again only with a deliberate navigation decision and this table.
     static let navigationSources: [String: String] = [
-        "Navigation/AppCoordinator.swift": "f1ab4c6ea4b38d53aec57fbe468afd875ee960a63334ecb46e5fa83ee43094dc",
+        "Navigation/AppCoordinator.swift": "4e7f7364fc1310df952baa9e3045163468f1d8cb5a8728840f201ff5949e641c",
+        "Navigation/AppDestination.swift": "57ee608cdd0b66bd907ac0f7d9368004510b28e40e77e2009484c391f1d5828f",
         "Navigation/AppRoute.swift": "8d05c60e7f49851d4c37fbc045e9c7c6aa6361b15681a5fb13ddf930d77fb73e",
-        "Navigation/AppSheet.swift": "733f9eb726836c874599b2d55a431971ff497a3aafdc819759dadaf95668264d",
+        "Navigation/AppSheet.swift": "c3c0020839cf05cc9bf69436f3dabb88737c1e25746a1fec60734385964f2f92",
         "Navigation/HomeSummary.swift": "ad8b42102791d939250b8663085566d85336845280b74d5257efc92eb9dfb2e9",
-        "Navigation/RootView.swift": "76f11432d05662e634fb2c055b1ed6539645bc2efeb6698deefac048a13757f7",
+        "Navigation/RootView.swift": "b0819af995c28b7e489621f6cc0221a90a48b617400c116338bc7dd37feb64ca",
     ]
 
     /// Project root, derived from this file's compile-time path (Tests/IrisTests/DesignSystem/...).
@@ -62,7 +65,7 @@ struct DSGlassTests {
         return (lighter + 0.05) / (darker + 0.05)
     }
 
-    @Test("A: on iOS 26 every role draws the system's Liquid Glass with its own variant, tint and touch response")
+    @Test("A: on iOS 26 every role draws the system's Liquid Glass with its own variant and touch response, and no material of its own is tinted")
     func nativeGlass() throws {
         #expect(DSGlassRendering.resolve(nativeGlassAvailable: true, reduceTransparency: false) == .native)
         if #available(iOS 26.0, *) {
@@ -71,8 +74,7 @@ struct DSGlassTests {
             #expect(DSGlassRole.clearControl.recipe.glass(interactive: true) == Glass.clear.tint(nil).interactive(true))
             #expect(DSGlassRole.regularPanel.recipe.glass(interactive: true) == Glass.regular.tint(nil).interactive(false))
             #expect(DSGlassRole.chrome.recipe.glass(interactive: true) == Glass.regular.tint(nil).interactive(false))
-            #expect(DSGlassRole.prominentAction.recipe.glass(interactive: true)
-                    == Glass.regular.tint(DSColor.Navigation.primary.opacity(0.4)).interactive(true))
+            #expect(DSGlassRole.prominentAction.recipe.glass(interactive: true) == Glass.regular.tint(nil).interactive(true))
             #expect(DSGlassRole.clearControl.recipe.glass(interactive: false) == Glass.clear.tint(nil).interactive(false))
         } else {
             #expect(!DSGlassRendering.isNativeGlassAvailable)
@@ -111,7 +113,7 @@ struct DSGlassTests {
         #expect(DSGlassRendering.transition(reduceMotion: true) == .fade)
     }
 
-    @Test("D: the four roles stay distinct: clear glass only for controls, a tint only for the prominent action, their own shapes")
+    @Test("D: the four roles stay distinct: clear glass only for controls, no tinted material, their own shapes")
     func distinctRoles() {
         struct Signature: Hashable {
             let variant: DSGlassRecipe.Variant
@@ -122,7 +124,7 @@ struct DSGlassTests {
         }
         #expect(DSGlassRole.allCases == [.clearControl, .regularPanel, .chrome, .prominentAction])
         #expect(DSGlassRole.allCases.filter { $0.recipe.variant == .clear } == [.clearControl])
-        #expect(DSGlassRole.allCases.filter { $0.recipe.tint != nil } == [.prominentAction])
+        #expect(DSGlassRole.allCases.allSatisfy { $0.recipe.tint == nil }, "Iris tints the system's button style, never a material")
         #expect(DSGlassRole.allCases.filter { $0.recipe.isInteractive } == [.clearControl, .prominentAction])
         #expect(DSGlassRole.clearControl.defaultShape == .circle)
         #expect(DSGlassRole.regularPanel.defaultShape == .rounded(DSRadius.l))
@@ -168,19 +170,24 @@ struct DSGlassTests {
         }
     }
 
-    @Test("H: no production screen uses glass yet: roles, recipes, group, surfaces and native glass calls live only in DesignSystem/Glass")
-    func noProductionScreenUsesGlass() throws {
-        let calls = ["dsGlass", "DSGlass", "glassEffect", "GlassEffectContainer", "buttonStyle(.glass", ".glassProminent"]
+    @Test("H: production screens reach Apple's glass only through the design system: no native call and no version check outside DesignSystem/Glass")
+    func glassStaysInTheDesignSystem() throws {
+        let nativeCalls = ["glassEffect(", "GlassEffectContainer(", "glassEffectID(", "buttonStyle(.glass", ".glassProminent",
+                           "tabBarMinimizeBehavior", "scrollEdgeEffectStyle"]
         let sources = try appSources()
         for (path, text) in sources {
-            for call in calls {
-                #expect(!text.contains(call), "\(path) uses \(call)")
+            for call in nativeCalls {
+                #expect(!text.contains(call), "\(path) calls \(call) itself")
             }
         }
         #expect(sources.count > 150)
+        let glass = try glassSources().map(\.text).joined()
+        #expect(glass.contains(".glassEffect(") && glass.contains("GlassEffectContainer(") && glass.contains(".glassEffectID("))
+        #expect(glass.contains("buttonStyle(.glassProminent)") && glass.contains("buttonStyle(.glass)"))
+        #expect(glass.contains("tabBarMinimizeBehavior(.onScrollDown)") && glass.contains("scrollEdgeEffectStyle(.soft"))
     }
 
-    @Test("I: the validated clear control keeps its exact glass, shape and surfaces; the other roles keep their phase 2 recipes until a candidate is chosen")
+    @Test("I: the validated clear control keeps its exact glass, shape and surfaces; the other roles hold Apple's untinted materials")
     func clearControlUnchanged() {
         let clear = DSGlassRole.clearControl
         #expect(clear.recipe == DSGlassRecipe(.clear, interactive: true))
@@ -195,7 +202,7 @@ struct DSGlassTests {
         }
         #expect(DSGlassRole.regularPanel.recipe == DSGlassRecipe(.regular))
         #expect(DSGlassRole.chrome.recipe == DSGlassRecipe(.regular))
-        #expect(DSGlassRole.prominentAction.recipe == DSGlassRecipe(.regular, tint: DSColor.Navigation.primary.opacity(0.4), interactive: true))
+        #expect(DSGlassRole.prominentAction.recipe == DSGlassRecipe(.regular, interactive: true))
     }
 
     @Test("J: the gallery's candidate recipes, demonstration grounds and experimental colours never reach the app")
@@ -211,18 +218,25 @@ struct DSGlassTests {
         #expect(sources.contains { $0.path == "DesignSystem/Glass/DSGlassRecipe.swift" })
     }
 
-    @Test("K: navigation stays untouched in this phase: no tab view, navigation stack or toolbar, navigation sources unchanged")
-    func navigationUntouched() throws {
-        for (path, text) in try appSources() {
-            for word in ["TabView", "NavigationStack", ".toolbar"] {
-                #expect(!text.contains(word), "\(path) uses \(word)")
+    @Test("K: navigation is the system's own: one tab view of three destinations in Navigation, the sheet's chrome in Settings, nothing hand-made elsewhere")
+    func navigationIsNative() throws {
+        let allowed = ["Navigation/", "Features/Settings/SettingsView.swift"]
+        for (path, text) in try appSources() where !allowed.contains(where: { path.hasPrefix($0) }) {
+            for word in ["TabView", "NavigationStack", ".toolbar", ".tabItem"] {
+                #expect(!text.contains(word), "\(path) builds navigation chrome itself")
             }
         }
+        let root = try String(contentsOf: Self.projectRoot.appendingPathComponent("Navigation/RootView.swift"), encoding: .utf8)
+        #expect(root.contains("TabView(selection:") && root.contains(".tabItem") && root.contains("NavigationStack"))
+        #expect(root.contains("dsTabBarMinimizesOnScroll()"), "the tab bar keeps the system's minimise behaviour")
+        let settings = try String(contentsOf: Self.projectRoot.appendingPathComponent("Features/Settings/SettingsView.swift"), encoding: .utf8)
+        #expect(settings.contains("NavigationStack") && settings.contains(".toolbar"), "the sheet's title and close action are the system's")
+        #expect(AppDestination.allCases == [.seuil, .chapitres, .carnet])
         for (path, expected) in Self.navigationSources.sorted(by: { $0.key < $1.key }) {
             let data = try Data(contentsOf: Self.projectRoot.appendingPathComponent(path))
             let digest: String = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
             #expect(digest == expected, "\(path) changed")
         }
-        #expect(Self.navigationSources.count == 5)
+        #expect(Self.navigationSources.count == 6)
     }
 }
