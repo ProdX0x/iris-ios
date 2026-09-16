@@ -24,6 +24,12 @@ enum DSColor {
         static let textTertiary = Color("ds.identity.text.tertiary")
         static let textWarm = Color("ds.identity.text.warm")
 
+        // The light Iris puts behind Apple's glass: three very dark spectral fields (ADR-26), never a surface of
+        // their own, never drawn over the material
+        static let spectralIndigo = Color("ds.identity.spectral.indigo")
+        static let spectralViolet = Color("ds.identity.spectral.violet")
+        static let spectralFrost = Color("ds.identity.spectral.frost")
+
         // Attention (ambre) and the emblem's pearl lueur
         static let accent = Color("ds.identity.accent")
         static let emblemCore = Color("ds.identity.emblem.core")
