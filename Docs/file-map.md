@@ -135,6 +135,10 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/Entities/TargetBlueprint.swift | struct | Domain | Static description of one target of a level (the reference engine's level target config) | Claude (mission Iris) |
 | Domain/Entities/TargetID.swift | struct | Domain | Typed identity of a target inside a level; the sequence number is unique per level | Claude (mission Iris) |
 | Domain/Feedback/FeedbackTiming.swift | enum | Domain | Spacing shared by every loss feedback (tone and pulse): one perceptible loss event, never a burst (R-15) | Claude (mission Iris) |
+| Domain/GazeAssistance/GazeAssistanceMode.swift | enum | Domain | How much help the player wants seeing where Iris thinks they are looking. A product choice, not a | Claude (mission Iris) |
+| Domain/GazeAssistance/GazeAssistancePolicy.swift | enum | Domain | THE single place that decides how visible the gaze marker is. It takes the player's mode, where they | Claude (mission Iris) |
+| Domain/GazeAssistance/GazeEdgeGuidance.swift | struct | Domain | Which edge the gaze has left the playfield by, and how far — using only what the pipeline really | Claude (mission Iris) |
+| Domain/GazeAssistance/GazeMarkerPresentation.swift | struct | Domain | What the interface should do with the gaze marker right now: how visible it is, and whether the edge | Claude (mission Iris) |
 | Domain/Levels/LevelDifficulty.swift | struct | Domain | Difficulty band parameters exactly as defined by the reference engine's `buildLevel` | Claude (mission Iris) |
 | Domain/Levels/PrototypeLevelCatalog.swift | enum | Domain | The prototype's fourteen levels (historical reference for golden traces), generated exactly like the reference engine (same seeds, same order of draws) | Claude (mission Iris) |
 | Domain/Physics/PhysicsConstants.swift | struct | Domain | Physical constants of the reference engine, expressed per 60 Hz reference frame | Claude (mission Iris) |
@@ -175,9 +179,9 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/Rendering/OculoSnapshot.swift | enum | Presentation | OCULOMOTOR EXPANSION: plain scene description of the current gaze stage, built from the engine state once | Claude (mission Iris) |
 | Features/Game/ViewModels/GameNavigating.swift | protocol | Presentation | Intents and progress reports emitted by the game screen | Claude (mission Iris) |
 | Features/Game/ViewModels/GamePhase.swift | enum | Presentation | Single state of the game screen; every overlay derives from it | Claude (mission Iris) |
-| Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound effects, ambience, haptics, gaze diagnostics). No gaze data is ever stored. | Claude (mission Iris) |
+| Features/Game/ViewModels/GameSettingsStore.swift | class | Presentation | Small persisted preferences (sound effects, ambience, haptics, gaze assistance). No gaze data is ever stored. | Claude (mission Iris) |
 | Features/Game/ViewModels/GameViewModel.swift | class | Presentation | Owns one play session: campaign level, engine loop, gaze mapping, hints, audio, haptics, results and phases | Claude (mission Iris) |
-| Features/Game/ViewModels/GazeCalibrationStatus.swift | enum | Presentation | What the game knows about the calibration in use (pause panel readout) | Claude (mission Iris) |
+| Features/Game/ViewModels/GazeCalibrationStatus.swift | enum | Presentation | What the game knows about the calibration in use, said in the player's words. The figure is the | Claude (mission Iris) |
 | Features/Game/ViewModels/LevelResult.swift | struct | Presentation | What the result screen shows after a level: measurements, éclats and what comes next | Claude (mission Iris) |
 | Features/Game/Views/GameCanvasView.swift | struct | Presentation | Draws one scene snapshot; re-evaluated only when the snapshot changes | Claude (mission Iris) |
 | Features/Game/Views/GameFieldBackground.swift | struct | Presentation | The field behind a level: the chambre noire drawn from chapter tokens only, so a new interface background | Claude (mission Iris) |
@@ -186,6 +190,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/Views/GameView.swift | struct | Presentation | The game screen: chambre noire background, chapter wash, world canvas, peripheral HUD and phase overlays | Claude (mission Iris) |
 | Features/Game/Views/LevelIntroCard.swift | struct | Presentation | What the level asks, in three seconds; a compact panel on the system's glass so the level stays readable | Claude (mission Iris) |
 | Features/Game/Views/LevelResultView.swift | struct | Presentation | "atteint": three éclats lighting one after the other, measurements, next / replay / chapters | Claude (mission Iris) |
+| Features/GazeLearning/GazeIntroductionPage.swift | struct | Presentation | The three things a player must understand before the very first level: the marker is an estimate, Iris | Claude (mission Iris) |
+| Features/GazeLearning/GazeIntroductionView.swift | struct | Presentation | The three screens shown once, before the very first level, explaining the gaze marker. No navigation | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupIntent.swift | enum | Presentation | Why the gaze setup runs: first launch, quick revalidation of a stored profile, or manual recalibration | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupNavigating.swift | protocol | Presentation | Navigation intents emitted by the gaze setup screen | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupPhase.swift | struct | Presentation | Single state of the gaze setup screen: readiness, calibration, validation, verdicts and failures | Claude (mission Iris) |
@@ -199,11 +205,12 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/JourneyComplete/JourneyCompleteView.swift | struct | Presentation | The end of the campaign: the last iris closed, éclats and play time, replay a chapter | Claude (mission Iris) |
 | Features/Onboarding/OnboardingFigure.swift | struct | Presentation | The drawing that explains one rule of Iris: a gaze, its attention zone, a sphere and the iris waiting for | Claude (mission Iris) |
 | Features/Onboarding/OnboardingPage.swift | struct | Presentation | The four things a new player must understand before the first level, each one a figure and two lines. | Claude (mission Iris) |
-| Features/Onboarding/OnboardingStore.swift | class | Presentation | Whether the four explanation screens have already been shown. One flag on the device, nothing else | Claude (mission Iris) |
+| Features/Onboarding/OnboardingStore.swift | class | Presentation | Whether the explanations have already been shown: the four screens of the first launch, and the three | Claude (mission Iris) |
 | Features/Onboarding/OnboardingView.swift | struct | Presentation | The four screens shown once, at the first launch: how the gaze moves a sphere, and where it must go. | Claude (mission Iris) |
 | Features/Paywall/OfferCodeRedemption.swift | struct | Presentation | Apple's own code redemption sheet, and the ONLY place in the interface that reaches StoreKit. Iris has no | Claude (mission Iris) |
 | Features/Paywall/PaywallCopy.swift | enum | Presentation | The sentences of the commercial screens, every one of them derived from the access policy and from the | Claude (mission Iris) |
 | Features/Paywall/PaywallView.swift | struct | Presentation | What the full access is, what it costs according to the store, and the three ways in: buy once, restore, | Claude (mission Iris) |
+| Features/Settings/GazeAssistanceSection.swift | struct | Presentation | The one place a player chooses how much help they want seeing the gaze marker. Three rows rather than a | Claude (mission Iris) |
 | Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, progress reset, privacy note; the | Claude (mission Iris) |
 | Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
@@ -322,6 +329,10 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/GameEngine/OculoSequenceClockTests.swift | struct | Tests | OCULOMOTOR EXPANSION: a stage placed after others starts on its own clock, after the breath, and behaves | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/TargetPhysicsTests.swift | struct | Tests | R-01...R-07 and R-14: attraction, repulsion, friction, cap, bounce and frame-rate independence | Claude (mission Iris) |
 | Tests/IrisTests/GameEngine/ValueNoise1DTests.swift | struct | Tests | R-03 organic noise port: table values, smoothstep interpolation, wrap-around, subtle range | Claude (mission Iris) |
+| Tests/IrisTests/GazeAssistance/ChapterIIISevenFeedbackTests.swift | struct | Tests | Chapter III level 7 answers the gaze with light — and changes nothing else. The signal is the engine's | Claude (mission Iris) |
+| Tests/IrisTests/GazeAssistance/GazeAssistanceModeTests.swift | struct | Tests | The three modes as a rule: what a new player gets, what each mode shows during ordinary play, that the | Claude (mission Iris) |
+| Tests/IrisTests/GazeAssistance/GazeEdgeGuidanceTests.swift | struct | Tests | The halo says a side and only a side it can measure: nothing inside the playfield, the right edge or | Claude (mission Iris) |
+| Tests/IrisTests/GazeAssistance/GazeLearningFlowTests.swift | struct | Tests | The first three levels teach the marker and then let go: visible, visible, fading; from the fourth the | Claude (mission Iris) |
 | Tests/IrisTests/Haptics/HapticCuePolicyTests.swift | struct | Tests | Touch policy: one pulse per logical event, one loss per cascade, shared retrigger guard, prepare hint | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockAudioService.swift | class | Tests | Recording mock for AudioService | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |
