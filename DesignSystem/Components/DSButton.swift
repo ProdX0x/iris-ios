@@ -1,8 +1,8 @@
 // DSButton.swift
 // Layer: DesignSystem
 // Purpose: Primary, secondary and ghost actions, 52 pt minimum height: on the system's Liquid Glass the material is
-// the same for every action and the Iris colour of the label carries the hierarchy; before iOS 26 and under Reduce
-// Transparency the historical painted capsule comes back
+// the same for every action, the Iris colour of the label carries the hierarchy and only the main action spans the
+// column; before iOS 26 and under Reduce Transparency the historical painted capsule comes back
 
 import SwiftUI
 
@@ -18,6 +18,15 @@ struct DSButton: View {
             case .primary: .prominent
             case .secondary: .standard
             case .ghost: .plain
+            }
+        }
+
+        /// Only the one main action spans the column. A secondary action takes the width of what it says, so a
+        /// screen never stacks several slabs of material, and a text action takes none at all.
+        var fillsWidth: Bool {
+            switch self {
+            case .primary: true
+            case .secondary, .ghost: false
             }
         }
     }
@@ -50,8 +59,8 @@ struct DSButton: View {
                 Text(title)
             }
             .font(DSFont.headline)
-            .frame(maxWidth: .infinity, minHeight: 52)
-            .padding(.horizontal, DSSpacing.l)
+            .frame(maxWidth: variant.fillsWidth ? .infinity : nil, minHeight: 52)
+            .padding(.horizontal, variant.fillsWidth ? DSSpacing.l : DSSpacing.xl)
             .foregroundStyle(foreground(rendering))
             .background(paintsSurface ? background(rendering) : .clear, in: Capsule())
             .overlay {
