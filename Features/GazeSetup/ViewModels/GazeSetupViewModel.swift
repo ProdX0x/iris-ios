@@ -17,11 +17,6 @@ final class GazeSetupViewModel {
     private(set) var liveCalibrated: SIMD2<Double>?
     let intent: GazeSetupIntent
 
-    var showsDiagnostics: Bool {
-        get { settings.showsGazeIndicator }
-        set { settings.showsGazeIndicator = newValue }
-    }
-
     var isSimulatedGaze: Bool { gaze is SimulatedGazeTrackingService }
 
     /// Readiness must stay green this long before the calibration starts by itself.
@@ -209,7 +204,8 @@ final class GazeSetupViewModel {
         let wantsLive: Bool
         switch phase {
         case .ready: wantsLive = true
-        default: wantsLive = settings.showsGazeIndicator
+        // Outside the verification step the live marks follow the player's own choice: they are the same help.
+        default: wantsLive = settings.gazeAssistance == .visible
         }
         guard wantsLive else {
             if liveRaw != nil { liveRaw = nil; liveCalibrated = nil }

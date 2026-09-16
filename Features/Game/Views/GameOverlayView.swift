@@ -69,12 +69,13 @@ struct GameOverlayView: View {
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textSecondary)
                 DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { viewModel.requestRecalibration() }
-                Toggle("Points de regard (diagnostic)", isOn: $viewModel.showsGazeIndicator)
-                    .tint(DSColor.Navigation.control)
-                    .foregroundStyle(DSColor.Identity.textPrimary)
-                Text("Corail : brut. Menthe : calibré. Ambre : curseur lissé utilisé par le jeu.")
+                Text("Aide au regard : \(viewModel.gazeAssistance.title)")
+                    .font(DSFont.footnote)
+                    .foregroundStyle(DSColor.Identity.textSecondary)
+                Text(viewModel.gazeAssistance.summary)
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }

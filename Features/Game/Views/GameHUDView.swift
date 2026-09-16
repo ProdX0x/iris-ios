@@ -70,11 +70,22 @@ struct GameHUDHost: View {
         GameHUDView(levelMark: "\(viewModel.chapter.numeral) · \(viewModel.level.index)",
                     hint: viewModel.phase == .playing ? viewModel.hint : nil,
                     showsPause: viewModel.phase == .playing,
-                    diagnostics: viewModel.showsGazeIndicator ? diagnosticLabels : nil,
+                    diagnostics: diagnosticLabels,
                     onPause: { viewModel.pause() })
     }
 
-    private var diagnosticLabels: [String] {
+    /// Developer overlay only: tracking and sound state in words. Release builds show nothing here.
+    private var diagnosticLabels: [String]? {
+        #if DEBUG
+        guard viewModel.showsDeveloperGazeDiagnostics else { return nil }
+        return developerLabels
+        #else
+        return nil
+        #endif
+    }
+
+    #if DEBUG
+    private var developerLabels: [String] {
         let gaze: String
         if viewModel.isSimulatedGaze {
             gaze = "regard : simulé"
@@ -96,11 +107,10 @@ struct GameHUDHost: View {
         case .unavailable: sound = "son : indisponible"
         }
         var labels = [gaze, sound]
-        #if DEBUG
         if let oculo = viewModel.oculoStatus { labels.append(oculo) }
-        #endif
         return labels
     }
+    #endif
 }
 
 #Preview {

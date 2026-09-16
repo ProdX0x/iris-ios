@@ -19,10 +19,10 @@ struct SettingsView: View {
                         Toggle("Effets sonores", isOn: $settings.soundEffectsEnabled)
                         Toggle("Ambiance sonore", isOn: $settings.ambienceEnabled)
                         Toggle("Vibrations", isOn: $settings.hapticsEnabled)
-                        Toggle("Points de regard (diagnostic)", isOn: $settings.showsGazeIndicator)
                     }
                     .tint(DSColor.Navigation.control)
                     .foregroundStyle(DSColor.Identity.textPrimary)
+                    GazeAssistanceSection(mode: $settings.gazeAssistance) { coordinator.showGazeIntroduction() }
                     DSGlassPanel {
                         Text("regard").dsEyebrowStyle()
                         DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { coordinator.recalibrate() }
@@ -58,6 +58,15 @@ struct SettingsView: View {
                             .foregroundStyle(DSColor.Identity.textSecondary)
                     }
                     #if DEBUG
+                    DSGlassPanel {
+                        Text("diagnostics (debug)").dsEyebrowStyle()
+                        Toggle("Points bruts et calibrés", isOn: $settings.showsDeveloperGazeDiagnostics)
+                            .tint(DSColor.Navigation.control)
+                            .foregroundStyle(DSColor.Identity.textPrimary)
+                        Text("Corail : brut. Menthe : calibré. Outil de développement, absent des versions publiées.")
+                            .font(DSFont.footnote)
+                            .foregroundStyle(DSColor.Identity.textSecondary)
+                    }
                     DSGlassPanel {
                         Text("prototypes (debug)").dsEyebrowStyle()
                         Text("Hors campagne. Rien n'est enregistré.")
