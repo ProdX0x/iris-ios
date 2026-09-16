@@ -17,6 +17,9 @@ final class AppCoordinator {
     private(set) var isGazeReady = false
     private(set) var progress: CampaignProgress
 
+    /// The chapter whose lock opened the paywall, for the sheet to name it.
+    private(set) var paywallChapter: ChapterDefinition?
+
     @ObservationIgnored private var pendingLevel: LevelDefinition?
     @ObservationIgnored private var routeBeforeSetup: AppRoute = .home
     private let container: AppContainer
@@ -30,6 +33,33 @@ final class AppCoordinator {
     }
 
     var settings: GameSettingsStore { container.settings }
+    /// The store, for the commercial screens only. Everything else asks `entitlement`.
+    var store: any StorePurchasing { container.store }
+    var onboarding: OnboardingStore { container.onboarding }
+
+    /// The strongest commercial right the player holds right now.
+    var entitlement: AccessEntitlement { container.store.entitlement }
+
+    /// Called once the interface is on screen: the store starts listening off the first frame, never before it.
+    func activate() {
+        container.store.start()
+    }
+
+    // MARK: Access queries
+
+    /// True when the player's rights open this chapter; progression is a separate question.
+    func isAccessible(_ chapter: ChapterDefinition) -> Bool {
+        AccessPolicy.isAccessible(chapter, with: entitlement)
+    }
+
+    func isAccessible(_ level: LevelDefinition) -> Bool {
+        AccessPolicy.isAccessible(level, with: entitlement)
+    }
+
+    /// True when the level may be started right now: reached in the campaign, and open to the player's rights.
+    func isPlayable(_ level: LevelDefinition) -> Bool {
+        isUnlocked(level) && isAccessible(level)
+    }
 
     // MARK: Progress queries
 
@@ -96,6 +126,20 @@ final class AppCoordinator {
         sheet = .settings
     }
 
+    func showHowToPlay() {
+        sheet = .howToPlay
+    }
+
+    /// Opens the full access screen, naming the chapter that led there when there is one.
+    func presentPaywall(for chapter: ChapterDefinition? = nil) {
+        paywallChapter = chapter
+        sheet = .paywall
+    }
+
+    func completeOnboarding() {
+        container.onboarding.complete()
+    }
+
     func dismissSheet() {
         sheet = nil
     }
@@ -108,9 +152,14 @@ final class AppCoordinator {
         route = .home
     }
 
-    /// Starts a level once hardware, camera permission and gaze are ready. Locked levels are ignored.
+    /// Starts a level once hardware, camera permission and gaze are ready. A level the campaign has not opened yet is
+    /// ignored; a level the player's rights do not open leads to the full access screen instead.
     func play(_ level: LevelDefinition) {
         guard isUnlocked(level) else { return }
+        guard isAccessible(level) else {
+            presentPaywall(for: Campaign.chapter(of: level))
+            return
+        }
         pendingLevel = level
         proceedToLevel()
     }
@@ -258,6 +307,18 @@ extension AppCoordinator: GazeSetupNavigating {
 }
 
 extension AppCoordinator: GameNavigating {
+    /// The game screen asks before moving on by itself; it never knows why the answer is no.
+    func gameMayContinue(to level: LevelDefinition) -> Bool {
+        isAccessible(level)
+    }
+
+    /// The campaign continues into a chapter the player's rights do not open: leave the game and say so.
+    func gameDidReachLockedLevel(_ level: LevelDefinition) {
+        gameViewModel = nil
+        route = .chapters
+        presentPaywall(for: Campaign.chapter(of: level))
+    }
+
     func gameDidStart(level: LevelDefinition) {
         guard !level.introduces.allSatisfy(progress.encounteredElements.contains) else { return }
         progress.encounter(level.introduces)

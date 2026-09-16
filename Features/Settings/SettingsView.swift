@@ -28,6 +28,30 @@ struct SettingsView: View {
                         DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { coordinator.recalibrate() }
                     }
                     DSGlassPanel {
+                        Text("comprendre iris").dsEyebrowStyle()
+                        DSButton("Comment jouer", systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
+                    }
+                    DSGlassPanel {
+                        Text("accès").dsEyebrowStyle()
+                        Text(accessSummary)
+                            .font(DSFont.footnote)
+                            .foregroundStyle(DSColor.Identity.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        if coordinator.entitlement != .fullAccess {
+                            DSButton("Accès complet", systemImage: "lock.open", variant: .secondary) { coordinator.presentPaywall() }
+                        }
+                        DSButton(PaywallCopy.restore, variant: .ghost) {
+                            Task { await coordinator.store.restorePurchases() }
+                        }
+                        .disabled(coordinator.store.isWorking)
+                        if let notice = coordinator.store.lastOutcome?.notice {
+                            Text(notice)
+                                .font(DSFont.caption)
+                                .foregroundStyle(coordinator.store.lastOutcome?.isFailure == true ? DSColor.State.danger : DSColor.State.success)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    DSGlassPanel {
                         Text("confidentialité").dsEyebrowStyle()
                         Text("Le regard est calculé sur l'iPhone, en temps réel. Aucune image, aucune vidéo et aucune donnée du visage n'est enregistrée ni envoyée. Seuls les coefficients de calibration et votre progression sont gardés sur l'appareil.")
                             .font(DSFont.footnote)
@@ -63,6 +87,15 @@ struct SettingsView: View {
             }
         }
         .preferredColorScheme(.dark)
+    }
+
+    /// What the player holds right now, in one sentence; the chapters that stay free are read from the policy.
+    private var accessSummary: String {
+        switch coordinator.entitlement {
+        case .fullAccess: "Iris est ouvert en entier sur ce compte Apple."
+        case .promotionalAccess: "Un accès temporaire ouvre Iris en entier. À sa fin, les chapitres gratuits restent ouverts."
+        case .free: PaywallCopy.freeChapters
+        }
     }
 }
 

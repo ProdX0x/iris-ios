@@ -1,7 +1,8 @@
 // RootView.swift
 // Layer: Presentation (Navigation)
 // Purpose: Renders the coordinator's route: the three destinations inside the system's tab bar, every immersive
-// route full screen without navigation chrome, and the settings sheet; forwards scene phase changes to the game
+// route full screen without navigation chrome, the sheets (settings, full access, how to play) and the first-launch
+// explanation; forwards scene phase changes to the game and starts the store once the interface is up
 
 import SwiftUI
 
@@ -33,8 +34,22 @@ struct RootView: View {
                 SettingsView()
                     .environment(coordinator)
                     .presentationDragIndicator(.visible)
+            case .paywall:
+                PaywallView()
+                    .environment(coordinator)
+                    .presentationDragIndicator(.visible)
+            case .howToPlay:
+                HowToPlayView()
+                    .environment(coordinator)
+                    .presentationDragIndicator(.visible)
             }
         }
+        // First launch only, and only over a destination: it explains the game and may be skipped at once.
+        .fullScreenCover(isPresented: onboardingBinding) {
+            OnboardingView { coordinator.completeOnboarding() }
+        }
+        // The store starts here, after the first frame: it never delays the interface coming up.
+        .task { coordinator.activate() }
         .onChange(of: scenePhase) { _, phase in
             switch phase {
             case .background, .inactive:
@@ -107,6 +122,12 @@ struct RootView: View {
 
     private var sheetBinding: Binding<AppSheet?> {
         Binding(get: { coordinator.sheet }, set: { coordinator.sheet = $0 })
+    }
+
+    /// The explanation opens by itself only before it has been gone through, and never over an immersive route.
+    private var onboardingBinding: Binding<Bool> {
+        Binding(get: { !coordinator.onboarding.hasCompletedOnboarding && AppDestination(route: coordinator.route) != nil },
+                set: { if !$0 { coordinator.completeOnboarding() } })
     }
 
     private var transition: AnyTransition {

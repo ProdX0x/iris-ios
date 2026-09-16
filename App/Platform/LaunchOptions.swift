@@ -21,11 +21,17 @@ struct LaunchOptions: Hashable, Sendable {
     var oracleGaze = false
     /// Volatile progress used instead of the stored one.
     var seededProgress: SeededProgress?
+    /// Opens the four explanation screens again, whatever this device remembers, without erasing what it remembers.
+    var forcesOnboarding = false
+    /// Replaces the store by a fixed right, to reach a commercial state deterministically (screenshots, manual QA).
+    /// DEBUG only, like every option here: `AppContainer.live()` parses none of them in a Release build.
+    var entitlement: AccessEntitlement?
 
     static let none = LaunchOptions()
 
     /// Recognised arguments: `--iris-route <home|cameraAccess|gazeSetup|chapters|carnet|game|journeyComplete|unavailable>`,
-    /// `--iris-level <c-i>`, `--iris-autoplay`, `--iris-gaze <x,y>`, `--iris-oracle-gaze`, `--iris-progress <all|c-i>`.
+    /// `--iris-level <c-i>`, `--iris-autoplay`, `--iris-gaze <x,y>`, `--iris-oracle-gaze`, `--iris-progress <all|c-i>`,
+    /// `--iris-onboarding`, `--iris-entitlement <free|promotional|full>`.
     static func parse(_ arguments: [String]) -> LaunchOptions {
         var options = LaunchOptions()
         var iterator = arguments.makeIterator()
@@ -43,6 +49,10 @@ struct LaunchOptions: Hashable, Sendable {
                 options.oracleGaze = true
             case "--iris-progress":
                 options.seededProgress = iterator.next().flatMap(seed(named:))
+            case "--iris-onboarding":
+                options.forcesOnboarding = true
+            case "--iris-entitlement":
+                options.entitlement = iterator.next().flatMap(right(named:))
             default:
                 continue
             }
@@ -79,6 +89,15 @@ struct LaunchOptions: Hashable, Sendable {
         #else
         return false
         #endif
+    }
+
+    private static func right(named name: String) -> AccessEntitlement? {
+        switch name {
+        case "free": .free
+        case "promotional", "promo": .promotionalAccess
+        case "full": .fullAccess
+        default: nil
+        }
     }
 
     private static func seed(named name: String) -> SeededProgress? {

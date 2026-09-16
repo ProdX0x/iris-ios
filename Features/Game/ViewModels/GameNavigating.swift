@@ -10,6 +10,10 @@ protocol GameNavigating: AnyObject {
     func gameDidStart(level: LevelDefinition)
     /// A level is completed; the navigator records the outcome and returns the record as it was before.
     func gameDidComplete(level: LevelDefinition, outcome: LevelOutcome) -> LevelRecord
+    /// May the campaign continue into this level? The game asks; it never knows what decides the answer.
+    func gameMayContinue(to level: LevelDefinition) -> Bool
+    /// The campaign continues into a level this player may not open: the navigator takes over.
+    func gameDidReachLockedLevel(_ level: LevelDefinition)
     func gameDidRequestChapters()
     func gameDidFinishCampaign()
     func gameDidRequestExit()

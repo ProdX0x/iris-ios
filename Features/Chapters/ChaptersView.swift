@@ -20,10 +20,13 @@ struct ChaptersView: View {
             ForEach(Campaign.chapters) { chapter in
                 ChapterCard(chapter: chapter,
                             isUnlocked: coordinator.isUnlocked(chapter),
+                            isAccessible: coordinator.isAccessible(chapter),
                             completed: coordinator.progress.completedCount(in: chapter.levels),
                             nodes: chapter.levels.map { level in (level, state(of: level), coordinator.record(for: level).eclats) },
                             lockedHint: lockedHint(for: chapter),
-                            onSelect: { coordinator.play($0) })
+                            fullAccessPrice: coordinator.store.fullGameDisplayPrice,
+                            onSelect: { coordinator.play($0) },
+                            onUnlock: { coordinator.presentPaywall(for: chapter) })
             }
         }
     }

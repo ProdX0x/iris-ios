@@ -191,6 +191,12 @@ final class GameViewModel {
 
     func playNext() {
         guard case .levelComplete = phase, let next = Self.next(after: level) else { return }
+        // The next level may belong to a chapter this player has not opened: the navigator decides, the game does not.
+        guard navigator?.gameMayContinue(to: next) ?? true else {
+            teardown()
+            navigator?.gameDidReachLockedLevel(next)
+            return
+        }
         let chapterChanged = next.chapter != level.chapter
         loadLevel(next)
         if chapterChanged && settings.ambienceEnabled {

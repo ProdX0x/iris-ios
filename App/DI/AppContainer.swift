@@ -10,6 +10,10 @@ final class AppContainer {
     let capabilities: any DeviceCapabilities
     let cameraAuthorization: any CameraAuthorizationService
     let settings: GameSettingsStore
+    /// The store of commercial rights: the only object in Iris that may talk to StoreKit.
+    let store: any StorePurchasing
+    /// Whether the four explanation screens have already been shown.
+    let onboarding: OnboardingStore
     let calibrationStore: any CalibrationStore
     let progressStore: any ProgressStore
     let orientationProvider: any InterfaceOrientationProvider
@@ -23,6 +27,8 @@ final class AppContainer {
          capabilities: any DeviceCapabilities,
          cameraAuthorization: any CameraAuthorizationService,
          settings: GameSettingsStore,
+         store: any StorePurchasing,
+         onboarding: OnboardingStore,
          calibrationStore: any CalibrationStore,
          progressStore: any ProgressStore,
          orientationProvider: any InterfaceOrientationProvider,
@@ -32,6 +38,8 @@ final class AppContainer {
         self.capabilities = capabilities
         self.cameraAuthorization = cameraAuthorization
         self.settings = settings
+        self.store = store
+        self.onboarding = onboarding
         self.calibrationStore = calibrationStore
         self.progressStore = progressStore
         self.orientationProvider = orientationProvider
@@ -50,11 +58,26 @@ final class AppContainer {
         let progressStore: any ProgressStore = launchOptions.seededProgress.map {
             InMemoryProgressStore(progress: LaunchOptions.progress(for: $0))
         } ?? UserDefaultsProgressStore()
+        // The store is the real one in every build. In DEBUG a launch argument may stand a fixed right in its place,
+        // to reach a commercial state deterministically; Release parses no launch argument at all, so this cannot
+        // exist there (CommerceBoundaryTests holds the guarantee).
+        #if DEBUG
+        let store: any StorePurchasing = launchOptions.entitlement
+            .map { StaticEntitlementService(entitlement: $0) } ?? StoreKitEntitlementService()
+        let onboarding = launchOptions.forcesOnboarding
+            ? OnboardingStore(defaults: UserDefaults(suiteName: "iris.onboarding.debug.\(UUID().uuidString)") ?? .standard)
+            : OnboardingStore()
+        #else
+        let store: any StorePurchasing = StoreKitEntitlementService()
+        let onboarding = OnboardingStore()
+        #endif
         #if targetEnvironment(simulator)
         return AppContainer(environment: .simulator,
                             capabilities: StaticDeviceCapabilities(supportsFaceTracking: true),
                             cameraAuthorization: StubCameraAuthorizationService(status: .authorized),
                             settings: GameSettingsStore(),
+                            store: store,
+                            onboarding: onboarding,
                             calibrationStore: UserDefaultsCalibrationStore(),
                             progressStore: progressStore,
                             orientationProvider: WindowSceneOrientationProvider(),
@@ -65,6 +88,8 @@ final class AppContainer {
                             capabilities: ARKitDeviceCapabilities(),
                             cameraAuthorization: AVCaptureCameraAuthorizationService(),
                             settings: GameSettingsStore(),
+                            store: store,
+                            onboarding: onboarding,
                             calibrationStore: UserDefaultsCalibrationStore(),
                             progressStore: progressStore,
                             orientationProvider: WindowSceneOrientationProvider(),
@@ -77,11 +102,19 @@ final class AppContainer {
                         cameraStatus: CameraAuthorizationStatus = .authorized,
                         calibrationStore: any CalibrationStore = InMemoryCalibrationStore(),
                         progressStore: any ProgressStore = InMemoryProgressStore(),
+                        store: any StorePurchasing = StaticEntitlementService(),
+                        hasCompletedOnboarding: Bool = true,
                         launchOptions: LaunchOptions = .none) -> AppContainer {
-        AppContainer(environment: .preview,
+        // Previews and tests never touch the device's own defaults: settings and onboarding live in a throwaway suite.
+        let defaults = UserDefaults(suiteName: "iris.preview.\(UUID().uuidString)") ?? .standard
+        let onboarding = OnboardingStore(defaults: defaults)
+        onboarding.hasCompletedOnboarding = hasCompletedOnboarding
+        return AppContainer(environment: .preview,
                      capabilities: StaticDeviceCapabilities(supportsFaceTracking: supportsFaceTracking),
                      cameraAuthorization: StubCameraAuthorizationService(status: cameraStatus),
-                     settings: GameSettingsStore(defaults: UserDefaults(suiteName: "iris.preview.\(UUID().uuidString)") ?? .standard),
+                     settings: GameSettingsStore(defaults: defaults),
+                     store: store,
+                     onboarding: onboarding,
                      calibrationStore: calibrationStore,
                      progressStore: progressStore,
                      orientationProvider: FixedOrientationProvider(),
