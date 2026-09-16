@@ -33,6 +33,8 @@ struct HomeView: View {
                             .foregroundStyle(DSColor.Identity.textTertiary)
                             .multilineTextAlignment(.center)
                     }
+                    DSButton("Comment jouer", systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
+                        .padding(.top, DSSpacing.xs)
                     if summary.eclats > 0 {
                         Text("\(summary.eclats) éclats sur \(summary.maxEclats)")
                             .dsEyebrowStyle(tint: DSColor.State.success)
