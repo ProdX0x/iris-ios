@@ -21,6 +21,10 @@ final class StoreKitEntitlementService: StorePurchasing {
     @ObservationIgnored private var updates: Task<Void, Never>?
     @ObservationIgnored private var hasStarted = false
     @ObservationIgnored private let logger = Logger(subsystem: "net.steve-s.iris", category: "commerce")
+    #if DEBUG
+    /// Kept only so the DEBUG store report can say why a read came back empty.
+    @ObservationIgnored private var lastLoadFailure: (any Error)?
+    #endif
 
     init() {}
 
@@ -45,6 +49,13 @@ final class StoreKitEntitlementService: StorePurchasing {
     func refresh() async {
         await loadProducts()
         await refreshEntitlements()
+        #if DEBUG
+        await StoreDiagnostics.report(requested: StoreProductID.all,
+                                      returned: Array(products.values),
+                                      fullGameDisplayPrice: fullGameDisplayPrice,
+                                      failure: lastLoadFailure,
+                                      entitlement: entitlement)
+        #endif
     }
 
     // MARK: Reading the rights
@@ -89,9 +100,15 @@ final class StoreKitEntitlementService: StorePurchasing {
             let loaded = try await Product.products(for: StoreProductID.all)
             products = Dictionary(loaded.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
             fullGameDisplayPrice = products[StoreProductID.fullGameUnlock]?.displayPrice
+            #if DEBUG
+            lastLoadFailure = nil
+            #endif
         } catch {
             logger.error("the store did not return its products: \(error.localizedDescription, privacy: .public)")
             fullGameDisplayPrice = nil
+            #if DEBUG
+            lastLoadFailure = error
+            #endif
         }
     }
 

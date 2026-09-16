@@ -47,7 +47,8 @@ struct CommerceBoundaryTests {
         for (path, text) in try productionSources() where text.contains("import StoreKit") {
             importers.append(path)
         }
-        #expect(Set(importers) == ["Commerce/Services/StoreKitEntitlementService.swift", Self.redemptionFile],
+        #expect(Set(importers) == ["Commerce/Diagnostics/StoreDiagnostics.swift",
+                                  "Commerce/Services/StoreKitEntitlementService.swift", Self.redemptionFile],
                 "StoreKit is imported by \(importers.sorted())")
     }
 

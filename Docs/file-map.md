@@ -44,6 +44,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Services/NotificationObserverBag.swift | class | Audio | Owns NotificationCenter observer tokens and removes them when its owner is deallocated | Claude (mission Iris) |
 | Audio/Services/SilentAudioService.swift | class | Audio | No-op audio used by previews and by the app when the audio engine cannot start | Claude (mission Iris) |
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
+| Commerce/Diagnostics/StoreDiagnostics.swift | enum | Commerce | One structured line per store read, written to standard output so that `devicectl … --console` can | Claude (mission Iris) |
 | Commerce/Products/StoreProductID.swift | enum | Commerce | The App Store product identifiers of Iris, written once and nowhere else, and the right each one grants | Claude (mission Iris) |
 | Commerce/Services/StaticEntitlementService.swift | class | Commerce | A store that answers from a fixed right: previews and tests exercise the interface and the access rules | Claude (mission Iris) |
 | Commerce/Services/StoreKitEntitlementService.swift | class | Commerce | The only place in Iris that talks to StoreKit. It reads the rights the player holds (verified | Claude (mission Iris) |
@@ -255,6 +256,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/AR/AffineTransform2DTests.swift | struct | Tests | Affine calibration model: identity, offsets, scales, flips, synthetic recovery, residuals, failures | Claude (mission Iris) |
 | Tests/IrisTests/AR/AxisMappingTests.swift | struct | Tests | Axis resolution from the eye line and gravity, including the "phone flipped 180 degrees" case | Claude (mission Iris) |
 | Tests/IrisTests/AR/CalibrationProfileTests.swift | struct | Tests | Persistence and compatibility rules of the calibration profile | Claude (mission Iris) |
+| Tests/IrisTests/AR/DeviceCapabilityReportTests.swift | struct | Tests | Reads what ARKit really exposes on the running device and prints it as one greppable block, so that two | Claude (mission Iris) |
 | Tests/IrisTests/AR/FixationSequenceTests.swift | struct | Tests | Time-based fixation protocol: settling, collection, blink exclusion, retry, completion and failure | Claude (mission Iris) |
 | Tests/IrisTests/AR/GazeMapperTests.swift | struct | Tests | Raw sample to points pipeline, nominal geometry inverse, ray-plane intersection, blink detector | Claude (mission Iris) |
 | Tests/IrisTests/AR/GazeReadinessEvaluatorTests.swift | struct | Tests | Readiness checks pass for a stable signal and flag distance, direction, stability and hardware problems | Claude (mission Iris) |
