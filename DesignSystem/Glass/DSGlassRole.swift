@@ -14,8 +14,8 @@ enum DSGlassRole: CaseIterable, Hashable, Sendable {
     /// One of Iris's own floating containers over live content (the hint above the game). System bars draw their
     /// own glass and never use this role.
     case chrome
-    /// The one main action of a screen. Native prominence comes from the system's `.glassProminent` button style;
-    /// this role describes the capsule painted in its place before iOS 26 and under Reduce Transparency.
+    /// The one main action of a screen. On the system's glass the action is told by the Iris colour of its label,
+    /// never by a filled surface; this role describes the capsule painted before iOS 26 and under Reduce Transparency.
     case prominentAction
 
     /// The native glass of the role: Apple's two variants, untinted. Iris tints the system's prominent button style,

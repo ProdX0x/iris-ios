@@ -1,7 +1,8 @@
 // DSButton.swift
 // Layer: DesignSystem
-// Purpose: Primary, secondary and ghost actions, 52 pt minimum height: the system's Liquid Glass button styles where
-// the platform draws them, the historical painted capsule before iOS 26 and under Reduce Transparency
+// Purpose: Primary, secondary and ghost actions, 52 pt minimum height: on the system's Liquid Glass the material is
+// the same for every action and the Iris colour of the label carries the hierarchy; before iOS 26 and under Reduce
+// Transparency the historical painted capsule comes back
 
 import SwiftUI
 
@@ -73,9 +74,11 @@ struct DSButton: View {
         }
     }
 
+    /// On Apple's glass the main action is told by its amber label; on the painted capsule it keeps the text laid
+    /// on the navigation colour.
     private func foreground(_ rendering: DSGlassRendering) -> Color {
         switch variant {
-        case .primary: DSColor.Navigation.onPrimary
+        case .primary: rendering == .native ? DSColor.Navigation.primary : DSColor.Navigation.onPrimary
         case .secondary: DSColor.Identity.textPrimary
         case .ghost: DSColor.Identity.textSecondary
         }
