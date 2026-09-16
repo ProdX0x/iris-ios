@@ -50,13 +50,26 @@ Tools/audit.py : C1 C2 C8 C9 C10 C12 — tous verts
 Aucun diagnostic technique n'atteint Release : 0 symbole pour `drawDiagnostics`, `drawEdgeIndicator`,
 `showsDeveloperGazeDiagnostics`, `oculoStatus` ; 0 occurrence de « Corail » et « (diagnostic) ».
 
-## Ce qui n'est pas validé
+## Validation humaine — passée le 17 septembre 2026
 
-**Rien n'a été vu par un humain.** Les installations ne sont pas une validation visuelle. Les modes, les fondus, le
-halo, le feedback de l'étincelle et la fluidité doivent être jugés physiquement : checklist au document 07.
+Le Gate 3 a été joué sur appareil et déclaré **passé** : validation visuelle PASSED, validation gameplay PASSED.
+Le verdict est d'ensemble ; le document 07 le consigne sans inventer de résultat ligne par ligne. Le comportement
+validé est désormais figé.
 
-Les constantes réglables — `guidedPeriod`, `guidedHold`, `guidedFade`, `learningHold`, `learningFade` — sont
-réunies dans `GazeAssistancePolicy` précisément pour être ajustées après ce test.
+Les constantes réglables — `guidedPeriod`, `guidedHold`, `guidedFade`, `learningHold`, `learningFade` — n'ont pas
+eu besoin d'être touchées.
+
+## Ce qui a suivi
+
+Un seul raffinement a été approuvé après cette validation : l'aide au regard devient accessible depuis le panneau
+de pause, sur la même valeur, sans nouvelle clé et sans toucher à l'apprentissage. Document 09, branche
+`feature/iris-gaze-assistance-pause-access`. Il reste à valider humainement (points S à Z du document 07).
+
+## Correction du décompte des tests
+
+Le total annoncé, 36, était exact et mesuré. Le détail par suite ne l'était pas : il annonçait 7 + 9 + 10 + 7 = 33.
+Les nombres réels, comptés à l'exécution, sont 8 + 10 + 11 + 7 = 36. Le document 06 est corrigé ; aucun test n'a
+été ajouté, retiré ni modifié à cette occasion.
 
 ## Contexte de publication, inchangé depuis le Gate 2
 
