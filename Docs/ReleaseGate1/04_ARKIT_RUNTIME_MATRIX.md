@@ -49,14 +49,32 @@ réelle ; c'est une **INFERENCE** fondée sur la convention ARKit, à confirmer 
 
 ## 3. Mesure — iPhone 15 Pro
 
-**UNKNOWN — non mesuré.** Appareil **verrouillé** pendant toute la fenêtre. Erreur exacte renvoyée par Xcode :
+**NOT DETERMINED — non mesuré.** Écran verrouillé pendant toute la fenêtre de mesure. État relevé, et non supposé :
+
+```
+xcrun devicectl device info lockState --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A
+→ passcodeRequired: true    unlockedSinceBoot: true
+```
+
+`xcodebuild` attend puis abandonne, avec l'erreur exacte :
 
 ```
 Error Domain=com.apple.dt.deviceprep Code=-3 "Unlock The Grey to Continue"
 Xcode cannot launch IrisTests on The Grey because the device is locked.
 ```
 
-La commande du §1 avec l'UDID `00008130-000819961498001C` produira la mesure dès l'appareil déverrouillé.
+Contrairement à la capture StoreKit — qui n'a besoin que d'un lancement d'une seconde, son rapport étant ensuite
+récupérable écran verrouillé — **ce test exige que l'écran reste déverrouillé pendant toute son exécution**
+(installation du support de test, lancement, exécution : de l'ordre de quarante secondes). C'est la mesure la plus
+exigeante des deux.
+
+Commande à rejouer, écran déverrouillé et maintenu allumé :
+
+```sh
+xcodebuild -project Iris.xcodeproj -scheme Iris -configuration Debug \
+  -destination 'platform=iOS,id=00008130-000819961498001C' \
+  test -only-testing:IrisTests/DeviceCapabilityReportTests 2>&1 | grep IRIS-ARKIT
+```
 
 ## 4. Matrice
 

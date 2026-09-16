@@ -16,13 +16,35 @@ journal n'est possible, même si un journal existait.
 
 | Piste | Commande | Résultat |
 |---|---|---|
-| Rapports d'incident iPhone synchronisés sur le Mac | `ls ~/Library/Logs/CrashReporter/MobileDevice/` | **répertoire vide** — aucun appareil n'y a déposé de rapport |
-| Tout fichier `.ips` récent sur le Mac | `find ~/Library/Logs ~/Downloads ~/Desktop <dépôt> -name "*.ips" -newermt 2026-09-16` | 7 fichiers, **tous macOS** (`TypeToSiriWidgetExtension`, `ExcUserFault_Xcode`, `ExcUserFault_TestFlightServiceExtension`) ; **aucun venant d'un iPhone**, sauf le JetsamEvent déjà connu |
-| Diagnostic complet de l'appareil | `xcrun devicectl device sysdiagnose --device <14 Pro>` | **échec** : `CoreDeviceCLISupport.DiagnoseError error 0` — aucun fichier produit |
-| Journal de la console pendant un lancement | `devicectl device process launch --console` | ne transmet que la sortie standard du processus, **pas** `os_log` ; aucun événement graphique système n'y apparaît |
+| Rapports d'incident iPhone synchronisés sur le Mac | `ls ~/Library/Logs/CrashReporter/MobileDevice/` | **répertoire vide** |
+| Tout fichier `.ips` récent sur le Mac | `find … -name "*.ips" -newermt 2026-09-16` | 7 fichiers, **tous macOS** ; aucun venant d'un iPhone |
+| Diagnostic complet de l'appareil | `devicectl device sysdiagnose` | **échec** : `CoreDeviceCLISupport.DiagnoseError error 0` |
+| **Magasin de rapports d'incident de l'iPhone 14 Pro lui-même** | `devicectl device copy from --domain-type systemCrashLogs --source .` | **succès : 149 fichiers récupérés** |
 
-**NEW EVIDENCE FOUND : NO.**
-**NEW JETSAM/CRASH REPORT : NO** (côté Mac ; l'appareil n'a pas été consulté, voir §4).
+La quatrième piste est celle qui tranche. **MEASUREMENT**, 16 septembre 2026 : le magasin de rapports d'incident de
+l'appareil a été copié en entier et inventorié.
+
+| Recherche dans les 149 fichiers | Résultat |
+|---|---|
+| Fichiers datés du **2026-09-16** | **exactement un** : `JetsamEvent-2026-09-16-045447.ips` — celui déjà connu |
+| `JetsamEvent-…` postérieur à 04:54:47 | **aucun** |
+| Rapport d'incident nommant **Iris** | **aucun** |
+| Rapport nommant `backboardd` ou `SpringBoard` | **aucun** |
+| Jetsam les plus récents avant celui-ci | 2026-09-10, 09-09, 09-08, 09-07 (×2), 09-06, 09-05 |
+
+```
+NEW EVIDENCE FOUND: NO
+NEW JETSAM/CRASH REPORT: NO   (recherche exhaustive sur l'appareil, pas seulement sur le Mac)
+```
+
+**Nuance indispensable.** « Aucun nouveau rapport » ne veut pas dire « rien ne s'est passé ». Un `JetsamEvent`
+n'est écrit que si le noyau tue un processus pour cause de mémoire. Un flash qui n'aurait tué aucun processus ne
+laisse, par construction, aucun rapport. L'absence mesurée ici **écarte une seule hypothèse** — celle d'un nouveau
+jetsam — et n'en confirme aucune.
+
+**Note de confidentialité.** Les 149 fichiers récupérés concernent tout l'appareil, pas seulement Iris, et
+contiennent des informations personnelles. Ils ont été gardés hors du dépôt, dans le répertoire de travail
+temporaire de la session, et **ne sont pas versionnés**. Seul l'inventaire ci-dessus est conservé.
 
 ## 3. Preuve précédente — préservée et revérifiée
 
@@ -46,19 +68,17 @@ rallumage de l'interface sans plantage de l'app est exactement la signature d'un
 laissé **un nouveau `JetsamEvent-…​.ips` sur l'appareil**, et non un rapport de plantage d'Iris — ce qui explique
 qu'aucun rapport d'Iris n'existe. **Cela ne peut pas être affirmé sans le fichier.**
 
-## 4. La seule action qui peut trancher, et elle est humaine
+## 4. Ce qui reste à faire, et qui est humain
 
-Le `sysdiagnose` a échoué et, même réussi, il collecte des données personnelles (Apple lui-même prévient qu'il
-contient nom, numéros de série, position des deux derniers jours, adresses IP, adresse e-mail). Il n'a pas été
-insisté.
+La recherche automatique est **terminée et exhaustive** pour ce que l'appareil conserve : il n'y a rien de nouveau.
+Ce qui manque n'est donc plus un fichier, c'est **l'heure de l'épisode**.
 
-La voie sûre est celle déjà employée pour le fichier précédent :
+> Demande à la personne qui l'a observé : **à quelle heure, à la minute près si possible, le flash est-il survenu**,
+> et **que faisait Iris à ce moment** (menu, calibration, jeu, mise en pause, retour d'arrière-plan) ?
 
-> Sur l'iPhone 14 Pro : **Réglages → Confidentialité et sécurité → Analyse et améliorations → Données d'analyse**.
-> Chercher un fichier dont le nom commence par **`JetsamEvent-2026-09-16-`** (ou une date ultérieure) **postérieur
-> à 04:54:47**. S'il existe, le partager tel quel.
-
-Chercher également, dans la même liste, tout fichier au nom de `backboardd`, `SpringBoard` ou `Iris` daté du jour.
+Avec une heure, la corrélation redevient possible au Gate 2 — par exemple par un `xctrace` enregistré pendant une
+session de jeu, ou par le journal unifié de l'appareil restreint à cette fenêtre. Sans elle, aucune corrélation ne
+peut être tentée, même sur des données qui existeraient.
 
 ## 5. Conclusion
 

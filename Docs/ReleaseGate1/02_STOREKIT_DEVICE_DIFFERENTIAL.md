@@ -39,16 +39,23 @@ IRIS-STOREKIT device.model=iPhone15,2 device.ios=26.5.2 app.version=1.0 app.buil
   appTransaction.environment=(unavailable) appTransaction.error=StoreKit.StoreKitError/2
 ```
 
-Trois faits s'en dégagent :
+Ce qui est **PROUVÉ** par cette mesure, et rien de plus :
 
-1. **`result.count=0` avec `error.domain=(none)`.** `Product.products(for:)` **n'a pas échoué** : elle a réussi et
-   rendu une liste vide. C'est la réponse de l'App Store quand il ne connaît pas les identifiants demandés — ce
-   n'est ni une panne réseau, ni un refus.
-2. **Le storefront est lu normalement** (France, id 143442) : la connexion au magasin fonctionne.
-3. **`AppTransaction.shared` est indisponible** (`StoreKitError` code 2 ; par l'ordre de déclaration du type dans le
-   SDK — `unknown, userCancelled, networkError, systemError, notAvailableInStorefront, notEntitled, unsupported` —
-   le code 2 correspond à `networkError`). Attendu : une build installée par `devicectl` n'a pas de reçu d'App
-   Store à présenter.
+1. **`Product.products(for:)` s'est terminée avec succès et a rendu zéro produit**, en dehors de la configuration
+   StoreKit locale. `error.domain=(none)` : aucune erreur n'a été levée. Ce n'est ni une panne, ni un refus, ni un
+   délai dépassé.
+2. **Le storefront est lu normalement** : France, identifiant 143442. La liaison au magasin fonctionne.
+3. **`AppTransaction.shared` est indisponible** : `StoreKit.StoreKitError`, code 2,
+   `appTransaction.errorDescription=unknown` — donc le cas **`.unknown`**.
+
+**Correction d'une inférence antérieure.** Une version antérieure de ce document déduisait « code 2 =
+`networkError` » de l'ordre de déclaration du type dans le SDK. La description mesurée dit `unknown` : la
+numérotation NSError de `StoreKitError` ne suit pas l'ordre de déclaration. L'inférence était fausse et est retirée.
+
+**Ce qui N'EST PAS prouvé, et n'est donc plus écrit ici :** que « l'App Store ne connaît pas ces identifiants ».
+Une liste vide est *compatible* avec cette explication, mais elle l'est aussi avec d'autres. Seul App Store Connect,
+ou une autre source Apple faisant autorité, pourrait l'établir — et aucun accès n'a été utilisé. Statut :
+**NOT DETERMINED**.
 
 ## 4. Mesure réelle — avec une configuration StoreKit active
 
@@ -63,43 +70,90 @@ Donc : le code d'Iris lit correctement le magasin **dès qu'une source de produi
 
 ## 5. Mesure — iPhone 15 Pro
 
-**UNKNOWN — non mesuré.** L'iPhone 15 Pro (« The Grey », `iPhone16,1`, iOS 26.6.1, UDID matériel
-`00008130-000819961498001C`) était **verrouillé** pendant toute la fenêtre de mesure. Les deux tentatives ont
-échoué avec l'erreur exacte du système :
+**NOT DETERMINED — non mesuré.** L'iPhone 15 Pro (« The Grey », `iPhone16,1`, iOS 26.6.1, identifiant CoreDevice
+`21ABC186-DEFC-59C7-9671-85E4FA69DA9A`, UDID matériel `00008130-000819961498001C`) n'a pas pu être mesuré.
+
+**Cause, mesurée et non supposée :**
 
 ```
-FBSOpenApplicationServiceErrorDomain error 1 — RequestDenied
+xcrun devicectl device info lockState --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A
+→ passcodeRequired: true      unlockedSinceBoot: true
+
+(pour comparaison, au même instant)
+xcrun devicectl device info lockState --device CD9242BD-9650-52C9-BBA6-A30490C6DFA8
+→ passcodeRequired: false     unlockedSinceBoot: true
+```
+
+L'écran du 15 Pro est verrouillé. iOS refuse alors tout lancement d'application :
+
+```
+FBSOpenApplicationServiceErrorDomain error 1 — RequestDenied — BSErrorCodeDescription = Locked
 "Unable to launch net.steve-s.iris because the device was not, or could not be, unlocked."
-Error Domain=com.apple.dt.deviceprep Code=-3 "Unlock The Grey to Continue"
 ```
 
-La build instrumentée **est installée** sur l'appareil (conteneur `4C316378-C0AA-445A-A2D0-ABABB9D8F08B`) : il ne
-manque que le déverrouillage. Commande à rejouer, telle quelle :
+Plus de cinquante tentatives ont été faites sur environ trente minutes ; **une seule** a réussi, immédiatement après
+un déverrouillage humain, avant que le verrouillage automatique ne reprenne. La build instrumentée **est installée**
+(conteneur `762A6828-119D-4F75-8B7E-5F73561F64EB`), et son répertoire `Documents` a été relu : **il est vide**,
+l'application n'y a jamais été lancée avec cette build.
+
+**Ce qui n'est pas bloquant :** la lecture de fichiers sur l'appareil fonctionne **même verrouillé**
+(`unlockedSinceBoot: true`). Un **seul** lancement suffit donc : l'instrument écrit son rapport dans le conteneur, et
+le fichier peut être récupéré ensuite à tout moment.
+
+### Procédure exacte, à exécuter une fois l'écran déverrouillé
 
 ```sh
-xcrun devicectl device process launch --console \
+# 1. déverrouiller l'écran de l'iPhone 15 Pro et le garder allumé
+xcrun devicectl device info lockState --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A   # attendre passcodeRequired: false
+
+# 2. lancer l'application (une seule fois suffit)
+xcrun devicectl device process launch \
   --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A --terminate-existing net.steve-s.iris
-# puis, dans la sortie :  grep IRIS-STOREKIT
+
+# 3. récupérer le rapport — fonctionne ensuite même écran verrouillé
+mkdir -p /tmp/iris-pull
+xcrun devicectl device copy from --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A \
+  --domain-type appDataContainer --domain-identifier net.steve-s.iris \
+  --source Documents/iris-storekit.log --destination /tmp/iris-pull/15Pro-storekit.log
+cat /tmp/iris-pull/15Pro-storekit.log
 ```
 
 ## 6. Matrice
 
+Les deux appareils portent **le même binaire** : `Iris.debug.dylib` SHA-256 `64968a8e660b0cefdfc69e0338d24e04…`,
+installé par la même commande `devicectl device install app`.
+
 | | iPhone 14 Pro | iPhone 15 Pro |
 |---|---|---|
-| MODEL IDENTIFIER | `iPhone15,2` **(mesuré)** | `iPhone16,1` **(mesuré, `devicectl info details`)** |
-| iOS | 26.5.2 (23F84) **(mesuré)** | 26.6.1 (23G83) **(mesuré)** |
-| BUILD Iris | 1.0 (1), Debug, `527b9ae` + instrumentation | identique, installée |
-| INSTALL METHOD | `devicectl device install app` | `devicectl device install app` |
-| SCHEME | aucun (lancement hors Xcode) | aucun (lancement hors Xcode) |
-| CONFIGURATION | Debug | Debug |
-| STOREKIT CONFIG FILE | **aucune** | **aucune** |
-| PRODUCT REQUEST | 2 identifiants | *non mesuré (appareil verrouillé)* |
-| PRODUCT RETURNED | **0** | *non mesuré* |
-| DISPLAY PRICE | **(none)** | *non mesuré* |
-| PURCHASE SHEET | non atteignable (bouton désactivé) | *non mesuré* |
-| ENTITLEMENT | `free` | *non mesuré* |
-| ERROR | **aucune** (liste vide, succès) | *non mesuré* |
-| STOREFRONT | FRA / 143442 | *non mesuré* |
+| MODEL IDENTIFIER | `iPhone15,2` — **MEASURED** | `iPhone16,1` — **MEASURED** |
+| iOS | 26.5.2 (23F84) — **MEASURED** | 26.6.1 (23G83) — **MEASURED** |
+| BUILD Iris | 1.0 (1) Debug, même dylib — **CONTROLLED** | 1.0 (1) Debug, même dylib — **CONTROLLED** |
+| INSTALL METHOD | `devicectl device install app` — **CONTROLLED** | `devicectl device install app` — **CONTROLLED** |
+| SCHEME | aucun (lancé hors Xcode) — **MEASURED** | **NOT DETERMINED** (jamais lancé avec cette build) |
+| CONFIGURATION | Debug — **MEASURED** (`app.configuration=DEBUG`) | **NOT DETERMINED** |
+| STOREKIT CONFIG FILE | aucune — **MEASURED** | **NOT DETERMINED** |
+| PRODUCT REQUEST | 2 identifiants — **MEASURED** | **NOT DETERMINED** |
+| PRODUCTS RETURNED | **0** — **MEASURED** | **NOT DETERMINED** |
+| DISPLAY PRICE | **(none)** — **MEASURED** | **NOT DETERMINED** |
+| PURCHASE SHEET | non atteignable (bouton désactivé) — **MEASURED** | **NOT DETERMINED** |
+| ENTITLEMENT | `free` — **MEASURED** | **NOT DETERMINED** |
+| ERROR | aucune — **MEASURED** | **NOT DETERMINED** |
+| STOREFRONT | FRA / 143442 — **MEASURED** | **NOT DETERMINED** |
+| APP TRANSACTION ENV. | `(unavailable)`, `StoreKitError` code 2 = `unknown` — **MEASURED** | **NOT DETERMINED** |
+
+### Environnement d'exécution identique ?
+
+```
+EXECUTION ENVIRONMENT IDENTICAL: NOT DETERMINED
+```
+
+**Ce qui est maîtrisé** (donc identique par construction) : le binaire, la méthode d'installation, la configuration
+de compilation du paquet installé.
+
+**Ce qui n'est pas vérifié** : ce que l'environnement d'exécution du 15 Pro renvoie réellement — aucune ligne
+`IRIS-STOREKIT` n'en provient. Tant que cette ligne n'existe pas, écrire « environnement identique : OUI » serait
+une affirmation non prouvée. Deux différences subsistent d'ailleurs, connues et non contrôlables : la **version
+d'iOS** (26.5.2 / 26.6.1) et l'**état de session App Store** de chaque appareil.
 
 ## 7. Le mécanisme, établi par le dépôt
 
@@ -124,32 +178,45 @@ pas : ils activent le test eux-mêmes avec `SKTestSession(contentsOf:)`.
 
 ## 8. Cause
 
-**CAUSE RACINE : PROUVÉE pour l'appareil 14 Pro, INFÉRÉE pour la différence entre les deux appareils.**
+```
+STOREKIT DIFFERENCE ROOT CAUSE: NOT PROVEN
+```
 
-Ce qui est **prouvé** :
+### Ce qui est PROUVÉ
 
-- sur l'iPhone 14 Pro, lancé hors Xcode, le magasin répond **succès avec zéro produit** — l'App Store ne connaît pas
-  ces identifiants dans cet environnement ;
-- le même code rend 2 produits et un prix dès qu'une configuration StoreKit est active ;
-- la configuration StoreKit d'Iris n'est branchée que sur l'action Run de Xcode ;
-- aucun produit n'a jamais été créé dans App Store Connect (registre de la mission 9 ; aucun accès à App Store
-  Connect n'a été utilisé depuis cette machine, ni alors ni maintenant).
-
-Ce qui est **inféré**, faute de la mesure sur le 15 Pro : que l'iPhone 15 Pro affichait 2,99 € **parce qu'il avait
-été lancé depuis Xcode**, donc avec `Config/Iris.storekit` actif. L'observation humaine le soutient fortement —
-« la feuille StoreKit/Xcode de test apparaît » et « le message indique explicitement un environnement de test » sont
-la signature exacte du test StoreKit, qui sur un appareil n'existe que lancé par Xcode. Mais tant que la ligne
-`IRIS-STOREKIT` du 15 Pro n'est pas capturée, **ce n'est pas une preuve**.
-
-**Ce qui n'est PAS la cause, et peut être écarté :**
-
-| Hypothèse | Statut |
+| Énoncé | Fondement |
 |---|---|
-| Le matériel du 14 Pro | **écartée** : la lecture du magasin ne dépend d'aucune capacité matérielle, et le storefront a répondu normalement |
-| Un défaut réseau sur le 14 Pro | **écartée par mesure** : `Storefront.current` a répondu (FRA/143442) et `Product.products` n'a pas levé d'erreur |
-| Un bundle identifier différent | **écartée par mesure** : `app.bundle=net.steve-s.iris` sur le 14 Pro, et l'inventaire des apps montre le même identifiant sur les deux |
-| Un code Iris différent entre les deux appareils | **écartée** : la même build a été installée sur les deux |
-| Une différence de version d'iOS (26.5.2 / 26.6.1) | **non écartée mais improbable** : aucune mesure ne l'implique ; elle deviendra vérifiable dès la capture du 15 Pro |
+| Sur l'iPhone 14 Pro, hors Xcode, `Product.products(for:)` **se termine avec succès et rend zéro produit**, sans lever d'erreur | ligne `IRIS-STOREKIT` capturée deux fois, deux builds |
+| Sur ce même appareil, la liaison au magasin fonctionne | `storefront.country=FRA storefront.id=143442` |
+| Le **même code** rend 2 produits et un `displayPrice` dès qu'une configuration StoreKit est active | `IrisTests/StoreKitEntitlementTests`, 17 tests verts sur un runtime iOS 18.6 |
+| La configuration `Config/Iris.storekit` n'est attachée **qu'à l'action Run** du schéma | inspection du schéma généré (§7) |
+| Un lancement par `devicectl`, depuis l'écran d'accueil, par TestFlight ou par l'App Store n'utilise aucune action de schéma | fait de plateforme |
+| Iris se comporte correctement dans ce cas : prix inconnu, achat désactivé, message explicite, chapitres gratuits ouverts | test « when the store cannot be reached the price is unknown, the free chapters stay open » |
+
+### Ce qui est INFÉRÉ, et le reste
+
+Que l'iPhone 15 Pro affichait 2,99 € **parce qu'il tournait depuis Xcode**, donc avec `Config/Iris.storekit` actif.
+
+L'observation humaine va dans ce sens — « la feuille StoreKit/Xcode de test apparaît », « le message indique
+explicitement un environnement de test » sont la signature du test StoreKit, qui sur un appareil n'existe que
+lancé par Xcode. **Cela reste une inférence** : aucune mesure ne provient du 15 Pro.
+
+### Ce qui est NOT DETERMINED, et qui ne doit pas être écrit autrement
+
+- **Que l'App Store « ne connaisse pas » ces identifiants.** Une liste vide sans erreur est compatible avec cette
+  explication, mais aussi avec d'autres. Seul App Store Connect, ou une autre source Apple faisant autorité,
+  pourrait l'établir ; aucun accès n'a été utilisé.
+- **Que l'environnement d'exécution des deux appareils soit identique** (§6).
+- **Le rôle éventuel de la différence de version d'iOS.**
+
+### Ce qui est ÉCARTÉ PAR MESURE
+
+| Hypothèse | Pourquoi elle tombe |
+|---|---|
+| Le matériel du 14 Pro | la lecture du magasin ne dépend d'aucune capacité matérielle, et le storefront a répondu |
+| Un défaut réseau sur le 14 Pro | `Storefront.current` a répondu et `Product.products` n'a levé aucune erreur |
+| Un bundle identifier différent | `app.bundle=net.steve-s.iris` mesuré, et l'inventaire des apps le confirme des deux côtés |
+| Un code Iris différent entre les deux appareils | le **même binaire** a été installé sur les deux (§6) |
 
 ## 9. Ce qui reste inconnu
 
