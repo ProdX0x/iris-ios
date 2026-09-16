@@ -107,11 +107,13 @@ final class AppContainer {
                         progressStore: any ProgressStore = InMemoryProgressStore(),
                         store: any StorePurchasing = StaticEntitlementService(),
                         hasCompletedOnboarding: Bool = true,
+                        hasSeenGazeIntroduction: Bool = true,
                         launchOptions: LaunchOptions = .none) -> AppContainer {
         // Previews and tests never touch the device's own defaults: settings and onboarding live in a throwaway suite.
         let defaults = UserDefaults(suiteName: "iris.preview.\(UUID().uuidString)") ?? .standard
         let onboarding = OnboardingStore(defaults: defaults)
         onboarding.hasCompletedOnboarding = hasCompletedOnboarding
+        onboarding.hasSeenGazeIntroduction = hasSeenGazeIntroduction
         return AppContainer(environment: .preview,
                      capabilities: StaticDeviceCapabilities(supportsFaceTracking: supportsFaceTracking),
                      cameraAuthorization: StubCameraAuthorizationService(status: cameraStatus),

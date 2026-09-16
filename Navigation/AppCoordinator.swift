@@ -19,6 +19,8 @@ final class AppCoordinator {
 
     /// The chapter whose lock opened the paywall, for the sheet to name it.
     private(set) var paywallChapter: ChapterDefinition?
+    /// The level waiting behind the gaze introduction, started as soon as it is read.
+    @ObservationIgnored private var levelAfterGazeIntroduction: LevelDefinition?
 
     @ObservationIgnored private var pendingLevel: LevelDefinition?
     @ObservationIgnored private var routeBeforeSetup: AppRoute = .home
@@ -43,6 +45,13 @@ final class AppCoordinator {
     /// Called once the interface is on screen: the store starts listening off the first frame, never before it.
     func activate() {
         container.store.start()
+    }
+
+    /// The levels that teach the gaze marker are behind the player once the last of them is completed. This is
+    /// derived from the campaign progress rather than stored again, so it survives exactly as the progress does.
+    var hasCompletedGazeLearning: Bool {
+        guard let final = Campaign.level(id: GazeAssistancePolicy.learningFinalLevelID) else { return true }
+        return progress.isCompleted(final)
     }
 
     // MARK: Access queries
@@ -130,6 +139,22 @@ final class AppCoordinator {
         sheet = .howToPlay
     }
 
+    /// Opens the gaze introduction on demand (from the settings); starting a level is not implied.
+    func showGazeIntroduction() {
+        levelAfterGazeIntroduction = nil
+        sheet = .gazeIntroduction
+    }
+
+    /// The three screens have been read: remember it, and start the level that was waiting behind them.
+    func completeGazeIntroduction() {
+        container.onboarding.completeGazeIntroduction()
+        sheet = nil
+        guard let level = levelAfterGazeIntroduction else { return }
+        levelAfterGazeIntroduction = nil
+        pendingLevel = level
+        proceedToLevel()
+    }
+
     /// Opens the full access screen, naming the chapter that led there when there is one.
     func presentPaywall(for chapter: ChapterDefinition? = nil) {
         paywallChapter = chapter
@@ -158,6 +183,12 @@ final class AppCoordinator {
         guard isUnlocked(level) else { return }
         guard isAccessible(level) else {
             presentPaywall(for: Campaign.chapter(of: level))
+            return
+        }
+        // The very first level explains the gaze marker once, before anything starts.
+        if level.id == GazeAssistancePolicy.learningLevelIDs.first, !container.onboarding.hasSeenGazeIntroduction {
+            levelAfterGazeIntroduction = level
+            sheet = .gazeIntroduction
             return
         }
         pendingLevel = level
@@ -317,6 +348,10 @@ extension AppCoordinator: GameNavigating {
         gameViewModel = nil
         route = .chapters
         presentPaywall(for: Campaign.chapter(of: level))
+    }
+
+    func gameHasCompletedGazeLearning() -> Bool {
+        hasCompletedGazeLearning
     }
 
     func gameDidStart(level: LevelDefinition) {

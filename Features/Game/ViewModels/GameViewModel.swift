@@ -21,13 +21,19 @@ final class GameViewModel {
     // Per-frame state read by the canvas only.
     private(set) var snapshot: GameSceneSnapshot
 
-    var showsGazeIndicator: Bool {
-        get { settings.showsGazeIndicator }
+    /// The player's gaze assistance mode. The game asks the policy what to show; it never decides for itself.
+    var gazeAssistance: GazeAssistanceMode {
+        get { settings.gazeAssistance }
         set {
-            settings.showsGazeIndicator = newValue
+            settings.gazeAssistance = newValue
             refreshSnapshot()
         }
     }
+
+    #if DEBUG
+    /// Developer overlay switch, read by the HUD. Not a product setting.
+    var showsDeveloperGazeDiagnostics: Bool { settings.showsDeveloperGazeDiagnostics }
+    #endif
 
     var isSimulatedGaze: Bool { gaze is SimulatedGazeTrackingService }
 
@@ -44,7 +50,10 @@ final class GameViewModel {
     @ObservationIgnored private var showsRoute = false
     @ObservationIgnored private var nominal: NominalDisplayGeometry?
     @ObservationIgnored private var mapper: GazeMapper?
-    @ObservationIgnored private var diagnostics = GazeDiagnostics()
+    #if DEBUG
+    /// Developer overlay only: the raw and calibrated points. A Release build never builds one.
+    @ObservationIgnored private var diagnostics: GazeDiagnostics?
+    #endif
     @ObservationIgnored private var cuePolicy = AudioCuePolicy()
     @ObservationIgnored private var hapticPolicy = HapticCuePolicy()
     @ObservationIgnored private var levelInProgress = false
@@ -66,6 +75,8 @@ final class GameViewModel {
     @ObservationIgnored private let isPad: Bool
     @ObservationIgnored private let autoplay: Bool
     @ObservationIgnored private weak var navigator: (any GameNavigating)?
+    /// Asked once when a level loads: the levels that teach the marker are already completed.
+    @ObservationIgnored private var hasCompletedGazeLearning = true
     @ObservationIgnored private let logger = Logger(subsystem: "net.steve-s.iris", category: "game")
     #if DEBUG
     /// PROTOTYPE (chapter I level 6): observation-only trace; nil for every other level. Never steers the game.
@@ -96,7 +107,7 @@ final class GameViewModel {
         self.session = session
         self.hints = HintTracker.forLevel(level, helpDelay: Self.helpDelay)
         self.snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false,
-                                          showsGaze: settings.showsGazeIndicator, diagnostics: nil, theme: chapter.theme)
+                                          marker: .hidden, diagnostics: nil, theme: chapter.theme)
         self.gaze = gaze
         self.audio = audio
         self.haptics = haptics
@@ -406,13 +417,27 @@ final class GameViewModel {
         ancreCapture?.stop(reason: "another level")
         ancreCapture = AncreCapture(level: definition)
         #endif
+        hasCompletedGazeLearning = navigator?.gameHasCompletedGazeLearning() ?? true
         refreshSnapshot()
         navigator?.gameDidStart(level: definition)
     }
 
+    /// What the interface should do with the gaze marker right now. One question, one answer, one place.
+    var gazeMarker: GazeMarkerPresentation {
+        GazeAssistancePolicy.presentation(mode: settings.gazeAssistance,
+                                          levelID: level.id,
+                                          hasCompletedLearning: hasCompletedGazeLearning,
+                                          activePlayTime: session.elapsed)
+    }
+
     private func refreshSnapshot() {
+        #if DEBUG
+        let developerDiagnostics = diagnostics
+        #else
+        let developerDiagnostics: GazeDiagnostics? = nil
+        #endif
         snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: showsRoute,
-                                     showsGaze: settings.showsGazeIndicator, diagnostics: diagnostics, theme: chapter.theme)
+                                     marker: gazeMarker, diagnostics: developerDiagnostics, theme: chapter.theme)
     }
 
     /// Stops ticking and silences every crescendo voice; the scene stays as it is.
@@ -482,7 +507,7 @@ final class GameViewModel {
         #if DEBUG
         if let oculoTrace {
             oculoTrace.observeSample(mapped: mapped, sample: sample, bounds: bounds)
-            if settings.showsGazeIndicator { oculoStatus = oculoTrace.statusLine }
+            if settings.showsDeveloperGazeDiagnostics { oculoStatus = oculoTrace.statusLine }
         }
         if let ancreCapture {
             var faceTracked: Bool?
@@ -493,14 +518,18 @@ final class GameViewModel {
                                        timestamp: sample.timestamp)
         }
         #endif
-        if settings.showsGazeIndicator {
-            var edge: GazeDiagnostics.Edge?
-            #if DEBUG
-            edge = oculoTrace?.lastEdge.flatMap { GazeDiagnostics.Edge(rawValue: $0.rawValue.lowercased()) }
-            #endif
+        #if DEBUG
+        if settings.showsDeveloperGazeDiagnostics {
+            let edge = oculoTrace?.lastEdge.flatMap { GazeDiagnostics.Edge(rawValue: $0.rawValue.lowercased()) }
             diagnostics = GazeDiagnostics(raw: mapper.rawScreenPoint(sample), calibrated: mapped, edge: edge)
+        } else if diagnostics != nil {
+            diagnostics = nil
+        }
+        #endif
+        // Between ticks the scene is only rebuilt when something gaze-driven is actually on screen.
+        if phase != .playing, gazeMarker.isMarkerVisible {
             sampleCounter += 1
-            if phase != .playing, sampleCounter.isMultiple(of: 3) {
+            if sampleCounter.isMultiple(of: 3) {
                 refreshSnapshot()
             }
         }
@@ -529,7 +558,7 @@ final class GameViewModel {
         case let .tracking(faceVisible):
             #if DEBUG
             oculoTrace?.observeFaceVisible(faceVisible)
-            if settings.showsGazeIndicator, let oculoTrace { oculoStatus = oculoTrace.statusLine }
+            if settings.showsDeveloperGazeDiagnostics, let oculoTrace { oculoStatus = oculoTrace.statusLine }
             ancreCapture?.mark(faceVisible ? "faceVisible" : "faceHidden", session: session, phase: phase, faceTracked: faceVisible)
             #endif
             if faceVisible {

@@ -42,6 +42,9 @@ struct RootView: View {
                 HowToPlayView()
                     .environment(coordinator)
                     .presentationDragIndicator(.visible)
+            case .gazeIntroduction:
+                GazeIntroductionView { coordinator.completeGazeIntroduction() }
+                    .presentationDragIndicator(.visible)
             }
         }
         // First launch only, and only over a destination: it explains the game and may be skipped at once.

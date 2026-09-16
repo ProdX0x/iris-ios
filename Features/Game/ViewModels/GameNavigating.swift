@@ -14,6 +14,8 @@ protocol GameNavigating: AnyObject {
     func gameMayContinue(to level: LevelDefinition) -> Bool
     /// The campaign continues into a level this player may not open: the navigator takes over.
     func gameDidReachLockedLevel(_ level: LevelDefinition)
+    /// Has the player finished the levels that teach the gaze marker? The game asks; it never knows why.
+    func gameHasCompletedGazeLearning() -> Bool
     func gameDidRequestChapters()
     func gameDidFinishCampaign()
     func gameDidRequestExit()
