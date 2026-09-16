@@ -44,6 +44,11 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Services/NotificationObserverBag.swift | class | Audio | Owns NotificationCenter observer tokens and removes them when its owner is deallocated | Claude (mission Iris) |
 | Audio/Services/SilentAudioService.swift | class | Audio | No-op audio used by previews and by the app when the audio engine cannot start | Claude (mission Iris) |
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
+| Commerce/Products/StoreProductID.swift | enum | Commerce | The App Store product identifiers of Iris, written once and nowhere else, and the right each one grants | Claude (mission Iris) |
+| Commerce/Services/StaticEntitlementService.swift | class | Commerce | A store that answers from a fixed right: previews and tests exercise the interface and the access rules | Claude (mission Iris) |
+| Commerce/Services/StoreKitEntitlementService.swift | class | Commerce | The only place in Iris that talks to StoreKit. It reads the rights the player holds (verified | Claude (mission Iris) |
+| Commerce/Services/StorePurchaseOutcome.swift | enum | Commerce | How the last store call ended, in words the interface can show without knowing StoreKit | Claude (mission Iris) |
+| Commerce/Services/StorePurchasing.swift | protocol | Commerce | What the paywall may ask of the store: the price as the store formats it, buy, restore, re-read the | Claude (mission Iris) |
 | DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The interface's chambre noire (identity tokens): ink ground, abyss centre, the spectral environment that | Claude (mission Iris) |
 | DesignSystem/Components/DSBadge.swift | struct | DesignSystem | Small status pill (success, danger, info, neutral, accent): the system's glass carries it on iOS 26, its | Claude (mission Iris) |
 | DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions, 52 pt minimum height: on the system's Liquid Glass the material is | Claude (mission Iris) |
@@ -74,6 +79,9 @@ Registry of every source file in the project. One row per file. Updated by every
 | DesignSystem/Tokens/DSRadius.swift | enum | DesignSystem | Corner radius scale | Claude (mission Iris) |
 | DesignSystem/Tokens/DSSpacing.swift | enum | DesignSystem | Spacing scale on a 4 pt grid | Claude (mission Iris) |
 | DesignSystem/Tokens/DSThemePalette.swift | struct | DesignSystem | The few colours a chapter identity adds to the chambre noire: its attention accent, its glow, and the | Claude (mission Iris) |
+| Domain/Access/AccessEntitlement.swift | enum | Domain | What the player is entitled to play: the free chapters only, a temporary promotional access, or the | Claude (mission Iris) |
+| Domain/Access/AccessPolicy.swift | enum | Domain | The one business rule of the commercial model: how many chapters are free, and whether a chapter or a | Claude (mission Iris) |
+| Domain/Access/EntitlementProviding.swift | protocol | Domain | All the rest of Iris may ask about the player's commercial rights: one value. Never a product, never a | Claude (mission Iris) |
 | Domain/Campaign/BaliseSequenceDefinition.swift | struct | Domain | PROTOTYPE (chapter I level 6): balises wake under a brief, steady gaze, one after the other along a | Claude (mission Iris) |
 | Domain/Campaign/BraiseDefinition.swift | struct | Domain | EXPERIMENTAL (prototype B1, not in the campaign): tuning of a braise, a cold lueur that the gaze warms and | Claude (mission Iris) |
 | Domain/Campaign/BraisesPrototype.swift | enum | Domain | EXPERIMENTAL, human-validated prototype Braises A: one level testing the braise idea, outside the campaign (chapter 0, DEBUG only) | Claude (mission Iris) |
@@ -151,6 +159,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Chapters/AdaptiveLevelRow.swift | struct | Presentation | Lays a chapter's level buttons out inside exactly the width it is offered (see AdaptiveLevelRowMetrics): | Claude (mission Iris) |
 | Features/Chapters/AdaptiveLevelRowMetrics.swift | struct | Presentation | Geometry of a chapter's level buttons inside the width the card gives them: as many per row as fit with | Claude (mission Iris) |
 | Features/Chapters/ChapterCard.swift | struct | Presentation | One chapter on the map: numeral, name, principle, level nodes, progress; locked state. Everything inside | Claude (mission Iris) |
+| Features/Chapters/ChapterLockNotice.swift | struct | Presentation | What a chapter says when it belongs to the full access: it stays visible and named, states its condition | Claude (mission Iris) |
 | Features/Chapters/ChaptersView.swift | struct | Presentation | The map: every chapter, its levels and éclats; choose a level to play | Claude (mission Iris) |
 | Features/Chapters/LevelNode.swift | struct | Presentation | One level on the chapter map: number, éclats arcs, locked / available / next / completed; a square touch | Claude (mission Iris) |
 | Features/Game/Diagnostics/AncreCapture.swift | class | Presentation | Chapter X final « l'ancre »: a short local JSON Lines capture, started only by the `--iris-capture` launch | Claude (mission Iris) |
@@ -184,7 +193,15 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/GazeSetup/Views/GazeSetupView.swift | struct | Presentation | Gaze diagnostic, calibration targets, validation and verdict screens | Claude (mission Iris) |
 | Features/GazeSetup/Views/GazeVerdictView.swift | struct | Presentation | "Regard prêt" or "La précision peut être améliorée" with measured errors and actions | Claude (mission Iris) |
 | Features/Home/HomeView.swift | struct | Presentation | The threshold: emblem, promise, one main action (begin or continue). Settings live in the navigation | Claude (mission Iris) |
+| Features/HowToPlay/HowToPlayView.swift | struct | Presentation | The same four explanations, available for good from the threshold and the settings; the sheet's title and | Claude (mission Iris) |
 | Features/JourneyComplete/JourneyCompleteView.swift | struct | Presentation | The end of the campaign: the last iris closed, éclats and play time, replay a chapter | Claude (mission Iris) |
+| Features/Onboarding/OnboardingFigure.swift | struct | Presentation | The drawing that explains one rule of Iris: a gaze, its attention zone, a sphere and the iris waiting for | Claude (mission Iris) |
+| Features/Onboarding/OnboardingPage.swift | struct | Presentation | The four things a new player must understand before the first level, each one a figure and two lines. | Claude (mission Iris) |
+| Features/Onboarding/OnboardingStore.swift | class | Presentation | Whether the four explanation screens have already been shown. One flag on the device, nothing else | Claude (mission Iris) |
+| Features/Onboarding/OnboardingView.swift | struct | Presentation | The four screens shown once, at the first launch: how the gaze moves a sphere, and where it must go. | Claude (mission Iris) |
+| Features/Paywall/OfferCodeRedemption.swift | struct | Presentation | Apple's own code redemption sheet, and the ONLY place in the interface that reaches StoreKit. Iris has no | Claude (mission Iris) |
+| Features/Paywall/PaywallCopy.swift | enum | Presentation | The sentences of the commercial screens, every one of them derived from the access policy and from the | Claude (mission Iris) |
+| Features/Paywall/PaywallView.swift | struct | Presentation | What the full access is, what it costs according to the store, and the three ways in: buy once, restore, | Claude (mission Iris) |
 | Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, progress reset, privacy note; the | Claude (mission Iris) |
 | Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
@@ -243,6 +260,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/AR/GazeReadinessEvaluatorTests.swift | struct | Tests | Readiness checks pass for a stable signal and flag distance, direction, stability and hardware problems | Claude (mission Iris) |
 | Tests/IrisTests/AR/NormalizedCoordinatesTests.swift | struct | Tests | Points to normalized conversions on several viewports | Claude (mission Iris) |
 | Tests/IrisTests/AR/RobustAggregatorTests.swift | struct | Tests | Median-based aggregation with outlier rejection | Claude (mission Iris) |
+| Tests/IrisTests/Access/AccessGatingTests.swift | struct | Tests | The eight journeys of the commercial model as the coordinator plays them out: the free chapters open, a | Claude (mission Iris) |
+| Tests/IrisTests/Access/AccessPolicyTests.swift | struct | Tests | The commercial model as a rule, not as an interface: three free chapters, everything else behind the full | Claude (mission Iris) |
 | Tests/IrisTests/Audio/AudioCuePolicyTests.swift | struct | Tests | Sound policy: crescendo per target, chime on validation, one loss tone per cascade | Claude (mission Iris) |
 | Tests/IrisTests/Audio/SineSynthTests.swift | struct | Tests | The synthesizer renders the crescendo, chime and loss tones with bounded amplitude and expected pitch | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/BraisesChapterTests.swift | struct | Tests | Chapter XI, braises: every braise of the campaign carries the frozen, human-validated tuning A; the chapter's | Claude (mission Iris) |
@@ -275,6 +294,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Campaign/OculoTournerTests.swift | struct | Tests | Chapter XI final « d'abord les yeux »: eyes first then the head gives full warmth, the head first half, | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/OculomotorLevelTests.swift | struct | Tests | PROTOTYPE chapter I level 6: the thread of balises (order, dwell, brevity, hysteresis, release of the latent | Claude (mission Iris) |
 | Tests/IrisTests/Campaign/SoufflesTests.swift | struct | Tests | Chapter VIII, souffles: the gust's motion and presence, carrying and lifting over veils, spilling by the | Claude (mission Iris) |
+| Tests/IrisTests/Commerce/CommerceBoundaryTests.swift | struct | Tests | Commerce stays where it belongs: the gameplay, the gaze engine, the calibration, the levels and the | Claude (mission Iris) |
+| Tests/IrisTests/Commerce/StoreKitEntitlementTests.swift | struct | Tests | The store layer against a real StoreKit test session: products and their price, a verified purchase, an | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassAdoptionTests.swift | struct | Tests | The production interface really stands on Apple's glass: each migrated surface asks the design system for | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassGallery.swift | struct | Tests | Development gallery of the Liquid Glass roles over a plain ground and a richer demonstration ground, shown | Claude (mission Iris) |
 | Tests/IrisTests/DesignSystem/DSGlassGalleryCaptureTests.swift | struct | Tests | Shows the Liquid Glass gallery pages one by one in a window of the test host, so that screenshots of the | Claude (mission Iris) |
@@ -313,4 +334,5 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/OnboardingTests.swift | struct | Tests | The four explanation screens: what they say, that they say it about a game and nothing else, that they | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/VisualCaptureTests.swift | struct | Tests | Deterministic images of representative screens (off screen and hosted in a window) and of every level, to | Claude (mission Iris) |

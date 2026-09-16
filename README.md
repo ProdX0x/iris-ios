@@ -685,3 +685,72 @@ La V2 utilisait déjà le matériau natif. Le défaut restant était **perceptif
 **Ce qui n'a pas changé.** Aucune API Liquid Glass modifiée : le matériau reste celui d'iOS 26, sans faux verre, sans flou maison, sans halo épousant la forme d'un bouton — la lumière appartient à l'environnement. Gameplay, Gaze Engine, calibration, campagne, audio et haptique : intacts. Le champ du jeu (`GameFieldBackground`) n'est pas touché : le gameplay reste prioritaire.
 
 **Coût.** Quatre dégradés statiques, aucune animation, aucun shader, aucun timer ajouté.
+
+## 26. Monétisation, onboarding et préparation App Store (branche `feature/iris-monetization-release`, 16 septembre 2026)
+
+Iris devient **gratuit au téléchargement**, avec les chapitres I à III ouverts pour toujours et un **achat unique**
+qui ouvre le reste. Aucun abonnement n'est vendu, aucun prix n'est écrit dans l'app, aucun code n'est reconnu
+localement.
+
+### Le modèle, tenu par une seule règle
+
+`Domain/Access/AccessPolicy.swift` porte `freeChapterCount = 3` — **la seule écriture de ce nombre dans tout le
+projet**, et `CommerceBoundaryTests` (test D) échoue si un second fichier le réécrit. Trois états seulement,
+strictement ordonnés :
+
+```
+fullAccess  >  promotionalAccess  >  free
+```
+
+`AccessEntitlement` est `Comparable` : la priorité n'est pas une suite de `if`, c'est l'ordre du type.
+
+### Trois couches, pas une de plus
+
+| Couche | Rôle | Ce qu'elle ignore |
+|---|---|---|
+| `Domain/Access` | `AccessEntitlement`, `AccessPolicy`, `EntitlementProviding` | StoreKit, les identifiants produit, les prix |
+| `Commerce` (nouvelle couche sœur de `AR`, `Audio`, `Haptics`) | `StoreProductID`, `StorePurchasing`, `StoreKitEntitlementService` | SwiftUI, UIKit, le gameplay |
+| `Features/Paywall`, `Features/Onboarding`, `Features/HowToPlay` | ce que le joueur voit | les transactions |
+
+`Tools/audit.py` interdit désormais `import StoreKit` partout sauf dans `Commerce`, et interdit SwiftUI dans
+`Commerce`. Un seul fichier de l'interface importe StoreKit : `Features/Paywall/OfferCodeRedemption.swift`, qui
+présente la feuille de rédemption d'Apple — exactement comme `DesignSystem/Glass` est le seul endroit qui connaît
+les API Liquid Glass.
+
+Le gameplay n'a appris qu'une chose : **demander**. `GameViewModel.playNext()` demande à son navigateur
+`gameMayContinue(to:)` avant de charger le niveau suivant — six lignes ajoutées, rien de supprimé, aucun paramètre
+de physique, de regard, de niveau ou d'équilibrage touché.
+
+### Le droit vient d'Apple, jamais d'Iris
+
+`StoreKitEntitlementService` est le seul objet qui parle à StoreKit. Il ouvre **un seul** écouteur
+`Transaction.updates`, relit `Transaction.currentEntitlements`, et refuse : une transaction non vérifiée, une
+transaction révoquée, une transaction remplacée (`isUpgraded`), une date d'expiration dépassée. Il n'écrit **rien**
+dans les préférences : aucun drapeau local ne peut survivre à une expiration.
+
+### Accès promotionnel de 7 jours — vérifié, pas supposé
+
+Un abonnement auto-renouvelable `net.steve-s.iris.access.promopass` sert **uniquement** de véhicule à un Offer Code
+Apple gratuit d'une semaine. La règle décisive a été lue chez Apple, pas devinée (App Store Connect Help, « Set up
+subscription offer codes », étape 8) : cocher la case qui **empêche la reconduction** donne « a commitment-free
+trial subscription », et n'autorise alors que des offres gratuites. Le droit expire donc réellement, sans
+facturation. Détails et citations : `Docs/AppStore/STOREKIT_PRODUCTS.md`.
+
+Iris ne connaît pas le code `IRIS7D` : il n'apparaît dans aucune source, et `CommerceBoundaryTests` (test E) le
+vérifie.
+
+### Onboarding
+
+Quatre écrans au premier lancement, passables, revoyables par « Comment jouer » (accueil et réglages) : le regard
+repousse · ne pas fixer · regarder autour · guider jusqu'à l'iris. Figures statiques, aucune animation, aucun timer,
+aucune session ARKit ouverte, aucun splash.
+
+### Ce qui a été mesuré, et ce qui ne l'a pas été
+
+- 503 tests, 73 suites, **0 échec** sur iOS 26.3 ; Debug, Release et build appareil signé réussis ; installé et
+  lancé sur l'iPhone 14 Pro dans les quatre états commerciaux.
+- Les 17 tests StoreKit s'exécutent **réellement** sur un runtime iOS 18.6. Le runtime iOS 26.3 installé sur cette
+  machine refuse les sessions de test StoreKit (`storekitd` répond `SKInternalErrorDomain 3`) : chaque test y
+  enregistre alors un *known issue* nommant la limite au lieu de prétendre avoir prouvé quelque chose.
+- **Aucune validation humaine visuelle n'a été faite.** Les deux sujets ouverts de la V3 — lenteur ressentie, et
+  l'incident Jetsam/backboardd — restent non résolus et interdisent de déclarer la publication prête.
