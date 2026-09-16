@@ -14,6 +14,7 @@
 		029DB412F436B6F67071A66E /* DeviceIdiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28266A50B279488EF3049A90 /* DeviceIdiom.swift */; };
 		0356557DEF48AB58EE5661CE /* GameSessionGoldenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB61564C7CCA8A2C7ADD305 /* GameSessionGoldenTests.swift */; };
 		041F87A387E4224B1E294386 /* TournerStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2CBE30E11C34B0E95B145C /* TournerStageState.swift */; };
+		058A990AA7823BF2C3EE4D47 /* PauseGazeCopyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D7E7A72039EBA53120DC6 /* PauseGazeCopyTests.swift */; };
 		059A4EE1996510869E9150F4 /* Campaign+FinalJumelles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570D48A5048CE93837E69F22 /* Campaign+FinalJumelles.swift */; };
 		06884C7CBB27A036176A64B5 /* GazeEdgeGuidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B838DF5AAF174390CFD75DFB /* GazeEdgeGuidance.swift */; };
 		071A0F494D75F747195D3BE3 /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0570071023A0432DA481FBB4 /* Target.swift */; };
@@ -387,6 +388,7 @@
 		0570071023A0432DA481FBB4 /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
 		05F3AFEB859D1239E0F3A0D8 /* OculomotorTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculomotorTrace.swift; sourceTree = "<group>"; };
 		0684F2CB40B511B7EEB19A9E /* NotificationObserverBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationObserverBag.swift; sourceTree = "<group>"; };
+		075D7E7A72039EBA53120DC6 /* PauseGazeCopyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseGazeCopyTests.swift; sourceTree = "<group>"; };
 		075E7F86F4D4AAC8E15851CF /* Campaign+Oculomoteur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Oculomoteur.swift"; sourceTree = "<group>"; };
 		0840221723714CD4C49A3903 /* HintTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintTrackerTests.swift; sourceTree = "<group>"; };
 		0876AF61255786B54E6B7CA1 /* SimulatedGazeTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedGazeTrackingService.swift; sourceTree = "<group>"; };
@@ -1330,6 +1332,7 @@
 				16E0AF2C0EE8B2990851DDF8 /* GazeEdgeGuidanceTests.swift */,
 				AF7C18EF6E49BC01A6386AB9 /* GazeLearningFlowTests.swift */,
 				AD11C8379E038C70C1F88964 /* PauseGazeAssistanceTests.swift */,
+				075D7E7A72039EBA53120DC6 /* PauseGazeCopyTests.swift */,
 			);
 			path = GazeAssistance;
 			sourceTree = "<group>";
@@ -1974,6 +1977,7 @@
 				279D2D211B2A935D764E1C0B /* OculomotorTraceTests.swift in Sources */,
 				51C5AABE2670E4FD731E946A /* OnboardingTests.swift in Sources */,
 				44784C9361B32D49B650F3A6 /* PauseGazeAssistanceTests.swift in Sources */,
+				058A990AA7823BF2C3EE4D47 /* PauseGazeCopyTests.swift in Sources */,
 				86F5CB215B1118F23A4FBC3A /* PrototypeLevelCatalogTests.swift in Sources */,
 				F67BA6FF0AA1824B95510070 /* RobustAggregatorTests.swift in Sources */,
 				5DF6C98C80CA871137E21684 /* SequenceOrderTests.swift in Sources */,

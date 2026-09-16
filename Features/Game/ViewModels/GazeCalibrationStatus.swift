@@ -21,13 +21,14 @@ enum GazeCalibrationStatus: Hashable, Sendable {
         }
     }
 
-    /// The sentence that explains the figure, when there is room for it.
+    /// The line under the figure. A percentage means nothing on its own: this says which way is better, without
+    /// suggesting that zero is required or that anyone reaches it.
     var explanation: String? {
         switch self {
         case .uncalibrated:
             return "Recalibrez pour qu'Iris suive votre regard plus précisément."
         case .calibrated:
-            return "Plus cette valeur est basse, plus la calibration correspond précisément à votre regard."
+            return "Plus l'écart est faible, plus le suivi du regard est précis."
         }
     }
 

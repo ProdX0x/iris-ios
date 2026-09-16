@@ -68,6 +68,14 @@ struct GameOverlayView: View {
                 Text(viewModel.calibrationStatus.description)
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                // A percentage says nothing by itself. One line, right under it, says which way is better.
+                if let explanation = viewModel.calibrationStatus.explanation {
+                    Text(explanation)
+                        .font(DSFont.footnote)
+                        .foregroundStyle(DSColor.Identity.textTertiary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { viewModel.requestRecalibration() }
                 // The same choice as the settings, over the same value: changing it here changes it there, and the
                 // level obeys as soon as play resumes. Compact, because a player in pause wants one tap, not a page.

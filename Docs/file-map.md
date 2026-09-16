@@ -335,6 +335,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/GazeAssistance/GazeEdgeGuidanceTests.swift | struct | Tests | The halo says a side and only a side it can measure: nothing inside the playfield, the right edge or | Claude (mission Iris) |
 | Tests/IrisTests/GazeAssistance/GazeLearningFlowTests.swift | struct | Tests | The first three levels teach the marker and then let go: visible, visible, fading; from the fourth the | Claude (mission Iris) |
 | Tests/IrisTests/GazeAssistance/PauseGazeAssistanceTests.swift | struct | Tests | The pause offers the same gaze assistance choice as the settings, over the same stored value, and it | Claude (mission Iris) |
+| Tests/IrisTests/GazeAssistance/PauseGazeCopyTests.swift | struct | Tests | The pause says what each mode does in three words and what the calibration figure means in one line, | Claude (mission Iris) |
 | Tests/IrisTests/Haptics/HapticCuePolicyTests.swift | struct | Tests | Touch policy: one pulse per logical event, one loss per cascade, shared retrigger guard, prepare hint | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockAudioService.swift | class | Tests | Recording mock for AudioService | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |

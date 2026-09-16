@@ -24,12 +24,23 @@ enum GazeAssistanceMode: String, CaseIterable, Hashable, Sendable, Codable {
         }
     }
 
-    /// One sentence, in the player's terms. Nothing here is a diagnostic name.
+    /// One sentence, in the player's terms. Nothing here is a diagnostic name. This is what the settings screen
+    /// shows: a player reading it there has time to read.
     var summary: String {
         switch self {
         case .classic: "Le repère reste masqué. Un halo discret vous indique seulement quand votre regard sort de la zone utile."
         case .guided: "Le repère apparaît brièvement, de temps en temps, pour vous aider à vous recaler."
         case .visible: "Le repère reste visible pendant le jeu."
+        }
+    }
+
+    /// Two or three words, for the pause: a player mid-level needs to recognise a mode, not to read about it.
+    /// The three names alone told a new player nothing; these say what each one does.
+    var compactSummary: String {
+        switch self {
+        case .classic: "Sans repère"
+        case .guided: "Repère ponctuel"
+        case .visible: "Repère permanent"
         }
     }
 }

@@ -16,6 +16,15 @@ struct GazeAssistancePicker: View {
     /// Why the choices are inert while chapter I is still teaching the marker. Said once, in the player's terms.
     static let learningNote = "L'aide au regard est guidée pendant les premiers niveaux d'apprentissage."
 
+    /// What a row says about a mode, at the length its screen can afford: the settings explain, the pause names.
+    /// One rule, used both to draw the row and to answer VoiceOver, so the two can never say different things.
+    static func meaning(for mode: GazeAssistanceMode, variant: Variant) -> String {
+        switch variant {
+        case .detailed: mode.summary
+        case .compact: mode.compactSummary
+        }
+    }
+
     @Binding var mode: GazeAssistanceMode
     var variant: Variant = .detailed
     /// True while the chapter I learning decides the marker for itself. The rows still show what the player chose
@@ -27,7 +36,7 @@ struct GazeAssistancePicker: View {
             ForEach(GazeAssistanceMode.allCases, id: \.self) { candidate in
                 GazeAssistanceRow(mode: candidate,
                                   isSelected: candidate == mode,
-                                  showsSummary: variant == .detailed) { mode = candidate }
+                                  variant: variant) { mode = candidate }
             }
             if isLearning {
                 Text(Self.learningNote)
@@ -44,13 +53,18 @@ struct GazeAssistancePicker: View {
     }
 }
 
-/// One choice. The selection is told by a filled mark and by the VoiceOver trait, never by colour alone. The
-/// sentence is always announced, even when the compact variant does not draw it.
+/// One choice: a name, what it does, and a mark that never relies on colour alone. Both variants say what the
+/// mode does — at the length their screen can afford — and VoiceOver announces exactly the words that are drawn.
 private struct GazeAssistanceRow: View {
     let mode: GazeAssistanceMode
     let isSelected: Bool
-    let showsSummary: Bool
+    let variant: GazeAssistancePicker.Variant
     let action: () -> Void
+
+    /// The sentence this row shows, and the one VoiceOver reads: never two different texts for one row.
+    private var meaning: String {
+        GazeAssistancePicker.meaning(for: mode, variant: variant)
+    }
 
     var body: some View {
         Button(action: action) {
@@ -63,23 +77,23 @@ private struct GazeAssistanceRow: View {
                     Text(mode.title)
                         .font(DSFont.headline)
                         .foregroundStyle(DSColor.Identity.textPrimary)
-                    if showsSummary {
-                        Text(mode.summary)
-                            .font(DSFont.footnote)
-                            .foregroundStyle(DSColor.Identity.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .multilineTextAlignment(.leading)
-                    }
+                    Text(meaning)
+                        .font(DSFont.footnote)
+                        .foregroundStyle(DSColor.Identity.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, showsSummary ? DSSpacing.s : DSSpacing.xs)
+            .padding(.vertical, variant == .detailed ? DSSpacing.s : DSSpacing.xs)
             .contentShape(Rectangle())
         }
         .buttonStyle(DSPressableButtonStyle())
+        // One element per choice: the mark is hidden, the two texts are merged into this label and value, and the
+        // selection is a trait rather than a spoken word.
         .accessibilityLabel(mode.title)
-        .accessibilityValue(mode.summary)
+        .accessibilityValue(meaning)
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }
