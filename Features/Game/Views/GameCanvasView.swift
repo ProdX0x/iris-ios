@@ -33,7 +33,7 @@ struct GameCanvasHost: View {
         let resolved = LevelResolver.resolve(level, in: bounds)
         ZStack {
             GameFieldBackground()
-            GameCanvasView(snapshot: GameSceneSnapshot(session: resolved.makeSession(), resolved: resolved, showsRoute: true, showsGaze: false, diagnostics: nil),
+            GameCanvasView(snapshot: GameSceneSnapshot(session: resolved.makeSession(), resolved: resolved, showsRoute: true, marker: .hidden, diagnostics: nil),
                            reduceMotion: false)
         }
         .ignoresSafeArea()

@@ -180,8 +180,13 @@ struct GameSceneSnapshot: Hashable, Sendable {
     var isAttentionOnField: Bool
     /// Visual identity of the chapter being played (chambre noire for the historical chapters).
     var theme: ChapterTheme
-    /// Smoothed cursor actually used by the physics (diagnostic display only).
+    /// Smoothed cursor actually used by the physics; the gaze marker the player may be shown.
     var gaze: Vector2?
+    /// How visible that marker is, 0 to 1: the policy decides, the renderer obeys.
+    var gazeMarkerOpacity: Double
+    /// Which edge the gaze has left the playfield by, when it has and when the policy allows saying so.
+    var edgeGuidance: GazeEdgeGuidance?
+    /// Developer overlay only (raw and calibrated points). Never populated in a Release build.
     var diagnostics: GazeDiagnostics?
 
     init(bounds: PlayfieldBounds) {
@@ -198,6 +203,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
         gouffres = []
         balises = []
         baliseThreads = []
+        gazeMarkerOpacity = 0
+        edgeGuidance = nil
         oculo = nil
         routes = []
         isSequential = false
@@ -208,8 +215,8 @@ struct GameSceneSnapshot: Hashable, Sendable {
         diagnostics = nil
     }
 
-    init(session: GameSession, resolved: ResolvedLevel, showsRoute: Bool, showsGaze: Bool, diagnostics: GazeDiagnostics?,
-         theme: ChapterTheme = .chambreNoire) {
+    init(session: GameSession, resolved: ResolvedLevel, showsRoute: Bool, marker: GazeMarkerPresentation,
+         diagnostics: GazeDiagnostics?, theme: ChapterTheme = .chambreNoire) {
         bounds = session.bounds
         scale = resolved.scale
         lueurs = session.targets.enumerated().map { index, target in
@@ -293,8 +300,15 @@ struct GameSceneSnapshot: Hashable, Sendable {
         self.theme = theme
         // Chapter X final: while the head alone draws a circle, no gaze mark is drawn (the projection drifts with the head).
         let headOnly = oculo?.ancre?.isHeadOnly == true
-        gaze = showsGaze && !headOnly ? session.gaze.position : nil
-        self.diagnostics = showsGaze && !headOnly ? diagnostics : nil
+        let showsMark = marker.isMarkerVisible && !headOnly
+        gaze = showsMark ? session.gaze.position : nil
+        gazeMarkerOpacity = showsMark ? marker.opacity : 0
+        // The halo speaks only from a cursor the tracking has really placed: without it there is no direction to
+        // point at, and Iris must not invent one.
+        edgeGuidance = marker.showsEdgeGuidance && !headOnly && session.gaze.isActive
+            ? GazeEdgeGuidance.from(point: session.gaze.position, in: session.bounds)
+            : nil
+        self.diagnostics = headOnly ? nil : diagnostics
     }
 
     /// Chapter X return to the start, or PROTOTYPE release from latency: a 0...1 bloom during half a second.

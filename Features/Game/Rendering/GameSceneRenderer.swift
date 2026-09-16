@@ -79,11 +79,18 @@ struct GameSceneRenderer {
                 drawTwinCrescent(lueur, toward: partner, in: &context, palette: palette)
             }
         }
+        #if DEBUG
+        // Developer overlay: the raw and calibrated points, and the chevron of the last observable direction. A
+        // player never sees these — the product marker is the cursor below, and the halo beside it.
         if let diagnostics = snapshot.diagnostics {
             drawDiagnostics(diagnostics, in: &context)
         }
-        if let gaze = snapshot.gaze {
-            drawCursor(at: gaze, in: &context)
+        #endif
+        if let guidance = snapshot.edgeGuidance {
+            drawEdgeHalo(guidance, in: &context)
+        }
+        if let gaze = snapshot.gaze, snapshot.gazeMarkerOpacity > 0 {
+            drawCursor(at: gaze, opacity: snapshot.gazeMarkerOpacity, in: &context)
         }
     }
 
@@ -570,8 +577,9 @@ struct GameSceneRenderer {
         }
     }
 
-    // MARK: Diagnostics
+    // MARK: Developer diagnostics (DEBUG only)
 
+    #if DEBUG
     private func drawDiagnostics(_ diagnostics: GazeDiagnostics, in context: inout GraphicsContext) {
         if let raw = diagnostics.raw {
             context.stroke(circle(CGPoint(x: raw.x, y: raw.y), 7), with: .color(DSColor.Chapter.trouble.opacity(0.8)), lineWidth: 1.5)
@@ -615,11 +623,41 @@ struct GameSceneRenderer {
         }
         context.stroke(chevron, with: .color(DSColor.Chapter.trouble.opacity(0.85)), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
     }
+    #endif
 
-    private func drawCursor(at gaze: Vector2, in context: inout GraphicsContext) {
+    /// The gaze marker: where Iris estimates the player is looking. Soft on purpose — it is an estimate, not a
+    /// surgical crosshair — and it fades with the opacity the policy asked for.
+    private func drawCursor(at gaze: Vector2, opacity: Double, in context: inout GraphicsContext) {
         let center = CGPoint(x: gaze.x, y: gaze.y)
-        context.stroke(circle(center, 14), with: .color(DSColor.Chapter.attention.opacity(0.7)), lineWidth: 1.5)
-        context.fill(circle(center, 2), with: .color(DSColor.Chapter.attention))
+        context.stroke(circle(center, 14), with: .color(DSColor.Chapter.attention.opacity(0.7 * opacity)), lineWidth: 1.5)
+        context.fill(circle(center, 2), with: .color(DSColor.Chapter.attention.opacity(opacity)))
+    }
+
+    /// A halo on the edge the gaze left by. It says a side, never a distance: beyond the mapper's own clamp the
+    /// intensity saturates, because nothing downstream knows any more than that.
+    private func drawEdgeHalo(_ guidance: GazeEdgeGuidance, in context: inout GraphicsContext) {
+        let bounds = context.clipBoundingRect
+        let reach = min(bounds.width, bounds.height) * 0.42
+        let strength = 0.16 + 0.34 * guidance.intensity
+        let anchor = Self.haloAnchor(guidance.direction, in: bounds)
+        let glow = Path(ellipseIn: CGRect(x: anchor.x - reach, y: anchor.y - reach, width: reach * 2, height: reach * 2))
+        context.fill(glow, with: .radialGradient(
+            Gradient(colors: [DSColor.Chapter.attention.opacity(strength), DSColor.Chapter.attention.opacity(0)]),
+            center: anchor, startRadius: 0, endRadius: reach))
+    }
+
+    /// Where the halo sits: the middle of a side, or the corner itself.
+    static func haloAnchor(_ direction: GazeEdgeGuidance.Direction, in bounds: CGRect) -> CGPoint {
+        switch direction {
+        case .left: CGPoint(x: bounds.minX, y: bounds.midY)
+        case .right: CGPoint(x: bounds.maxX, y: bounds.midY)
+        case .top: CGPoint(x: bounds.midX, y: bounds.minY)
+        case .bottom: CGPoint(x: bounds.midX, y: bounds.maxY)
+        case .topLeft: CGPoint(x: bounds.minX, y: bounds.minY)
+        case .topRight: CGPoint(x: bounds.maxX, y: bounds.minY)
+        case .bottomLeft: CGPoint(x: bounds.minX, y: bounds.maxY)
+        case .bottomRight: CGPoint(x: bounds.maxX, y: bounds.maxY)
+        }
     }
 
     // MARK: Shapes
