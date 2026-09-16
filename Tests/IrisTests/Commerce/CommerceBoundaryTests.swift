@@ -183,7 +183,10 @@ struct CommerceBoundaryTests {
         let app = try source("App/IrisApp.swift")
         #expect(!app.contains("store") && !app.contains("await"), "nothing commercial runs at the entry point")
         let container = try source("App/DI/AppContainer.swift")
-        #expect(!container.contains(".start()"), "the container builds the store, it does not start it")
+        // The guarantee is about the store, not about any object that happens to have a start(): the composition
+        // root may start a DEBUG diagnostic, but never the store.
+        #expect(!container.contains("store.start()"), "the container builds the store, it does not start it")
+        #expect(!container.contains("StoreKitEntitlementService().start"), "the container must not start the store")
         #expect(try source("Navigation/RootView.swift").contains(".task { coordinator.activate() }"))
         #expect(try source("Navigation/AppCoordinator.swift").contains("container.store.start()"))
     }

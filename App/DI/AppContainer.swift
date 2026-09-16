@@ -51,6 +51,9 @@ final class AppContainer {
     /// because no TrueDepth camera exists there; on a device every service is real.
     static func live() -> AppContainer {
         #if DEBUG
+        // Observes the system events a brief visual glitch could be correlated with. It draws nothing and changes
+        // nothing; Release contains none of it.
+        LifecycleTrace.shared.start()
         let launchOptions = LaunchOptions.parse(ProcessInfo.processInfo.arguments)
         #else
         let launchOptions = LaunchOptions.none

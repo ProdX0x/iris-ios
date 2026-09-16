@@ -149,6 +149,7 @@
 		69C6467DBC6B4E7A5B3AD355 /* BraisesPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */; };
 		6A2ECD935B33EC46F8FA53C4 /* DSThemeWash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B06250E3FB05DBFF96244A /* DSThemeWash.swift */; };
 		6B86C28C1AC98414AC28E39C /* GazeRay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F67B3E93111CBEC6533C7F /* GazeRay.swift */; };
+		6CCE38E615D43466234F601C /* LifecycleTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8725341E8853E48DBE85916C /* LifecycleTrace.swift */; };
 		6DD05EC21330E67B23E4192B /* StorePurchasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E624422FFD8D80056898051 /* StorePurchasing.swift */; };
 		6E1B86D42D6A513E5C2BE925 /* DSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173CFEFE85CFD6276C224FC1 /* DSBadge.swift */; };
 		6E581A04DAA346B1C4485098 /* DSGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7AD342653D374AF694FE25 /* DSGlyph.swift */; };
@@ -556,6 +557,7 @@
 		840AC50B21629B0BC2B95C81 /* ChapterTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTheme.swift; sourceTree = "<group>"; };
 		845FA0A2286891FCB6AA43F1 /* ChapterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterCard.swift; sourceTree = "<group>"; };
 		8646A4D90EA5D7F897967343 /* IrisTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = IrisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8725341E8853E48DBE85916C /* LifecycleTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleTrace.swift; sourceTree = "<group>"; };
 		876A49BAEBDC185967E33599 /* ExpansionCampaignDump.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpansionCampaignDump.swift; sourceTree = "<group>"; };
 		87BEAB6E28217487B8CEAF27 /* DSGlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlow.swift; sourceTree = "<group>"; };
 		87EC3AAB0C88BBD113DF08D0 /* GameHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHUDView.swift; sourceTree = "<group>"; };
@@ -838,6 +840,14 @@
 				D56088AD17DFF59C7E4E7516 /* Tests */,
 				D2070894243A80683C258643 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		25AFCBF89718A3B45F94DBF9 /* Diagnostics */ = {
+			isa = PBXGroup;
+			children = (
+				8725341E8853E48DBE85916C /* LifecycleTrace.swift */,
+			);
+			path = Diagnostics;
 			sourceTree = "<group>";
 		};
 		260F0E54DA7C8E0884B5E57A /* Services */ = {
@@ -1593,6 +1603,7 @@
 			isa = PBXGroup;
 			children = (
 				E5644985FC0224CD93544EAD /* DI */,
+				25AFCBF89718A3B45F94DBF9 /* Diagnostics */,
 				D2B2F2F842B6BCF2DF8949ED /* Persistence */,
 				2A9F72297845CA11102B4C0B /* Platform */,
 				10AEF31E8BBC05B9466DF100 /* IrisApp.swift */,
@@ -2090,6 +2101,7 @@
 				A6BAD0FA1B3E78B23AD7F448 /* LevelResolver.swift in Sources */,
 				5CB5203E5C6220A0968F129B /* LevelResult.swift in Sources */,
 				31A6DF6E53579DB40C9A503B /* LevelResultView.swift in Sources */,
+				6CCE38E615D43466234F601C /* LifecycleTrace.swift in Sources */,
 				9AC4C195616DC896137DF12F /* LinearCongruentialGenerator.swift in Sources */,
 				41B03A523A6DA13556C05E9D /* LueurDefinition.swift in Sources */,
 				6266836DB1BC1C40FC2AAEA4 /* ManualGameClock.swift in Sources */,

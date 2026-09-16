@@ -30,6 +30,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | AR/Services/SimulatedGazeTrackingService.swift | class | AR | Pointer-driven or scripted gaze for the simulator, previews and tests (no camera involved) | Claude (mission Iris) |
 | App/DI/AppContainer.swift | class | App | Composition root. The only place concrete services are chosen. | Claude (mission Iris) |
 | App/DI/AppEnvironment.swift | enum | App | Runtime flavour of the composition root | Claude (mission Iris) |
+| App/Diagnostics/LifecycleTrace.swift | class | App | Records the system events a brief visual glitch could be correlated with — scene lifecycle, memory | Claude (mission Iris) |
 | App/IrisApp.swift | struct | App | Application entry point: builds the composition root and the coordinator once | Claude (mission Iris) |
 | App/Persistence/InMemoryProgressStore.swift | class | App | Volatile progress for previews, tests and debug launches | Claude (mission Iris) |
 | App/Persistence/UserDefaultsProgressStore.swift | class | App | Campaign progress stored as JSON in UserDefaults (records and éclats only, no gaze data) | Claude (mission Iris) |
@@ -44,7 +45,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Services/NotificationObserverBag.swift | class | Audio | Owns NotificationCenter observer tokens and removes them when its owner is deallocated | Claude (mission Iris) |
 | Audio/Services/SilentAudioService.swift | class | Audio | No-op audio used by previews and by the app when the audio engine cannot start | Claude (mission Iris) |
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
-| Commerce/Diagnostics/StoreDiagnostics.swift | enum | Commerce | One structured line per store read, written to standard output so that `devicectl … --console` can | Claude (mission Iris) |
+| Commerce/Diagnostics/StoreDiagnostics.swift | enum | Commerce | One structured line per store read, written to standard output AND appended to a file in the app's own | Claude (mission Iris) |
 | Commerce/Products/StoreProductID.swift | enum | Commerce | The App Store product identifiers of Iris, written once and nowhere else, and the right each one grants | Claude (mission Iris) |
 | Commerce/Services/StaticEntitlementService.swift | class | Commerce | A store that answers from a fixed right: previews and tests exercise the interface and the access rules | Claude (mission Iris) |
 | Commerce/Services/StoreKitEntitlementService.swift | class | Commerce | The only place in Iris that talks to StoreKit. It reads the rights the player holds (verified | Claude (mission Iris) |
