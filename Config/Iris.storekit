@@ -1,0 +1,72 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6A1B2C3D",
+      "localizations" : [
+        {
+          "description" : "Débloque les douze chapitres d'Iris et tous les niveaux à venir. Achat unique, sans abonnement.",
+          "displayName" : "Iris — jeu complet",
+          "locale" : "fr_FR"
+        }
+      ],
+      "productID" : "net.steve-s.iris.unlock.fullgame",
+      "referenceName" : "Iris Full Game Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "fr_FR",
+    "_storefront" : "FRA"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "20000001",
+      "localizations" : [
+
+      ],
+      "name" : "Iris Access",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "0.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "7B2C3D4E",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Accès promotionnel temporaire à Iris.",
+              "displayName" : "Iris — accès promotionnel",
+              "locale" : "fr_FR"
+            }
+          ],
+          "productID" : "net.steve-s.iris.access.promopass",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Iris Promotional Access Pass",
+          "subscriptionGroupID" : "20000001",
+          "type" : "RecurringSubscription",
+          "winBackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

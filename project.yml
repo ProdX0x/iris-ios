@@ -48,6 +48,7 @@ targets:
       - path: Navigation
       - path: Features
       - path: DesignSystem
+      - path: Commerce
       - path: Resources
     settings:
       base:
@@ -85,8 +86,13 @@ schemes:
         IrisTests: [test]
     run:
       config: Debug
+      # Local products for StoreKit testing. It never creates anything in App Store Connect.
+      storeKitConfiguration: Config/Iris.storekit
     test:
       config: Debug
+      # The unit tests drive a real StoreKit test session; without this the test host has no StoreKit testing
+      # entitlement and every store call comes back `notEntitled`.
+      storeKitConfiguration: Config/Iris.storekit
       targets:
         - IrisTests
       gatherCoverageData: false

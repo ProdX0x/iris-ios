@@ -1,0 +1,40 @@
+// StorePurchaseOutcome.swift
+// Layer: Commerce
+// Purpose: How the last store call ended, in words the interface can show without knowing StoreKit
+
+import Foundation
+
+enum StorePurchaseOutcome: Hashable, Sendable {
+    case purchased
+    /// The purchase waits for someone else (Ask to Buy, a pending payment method).
+    case pending
+    case cancelled
+    /// The store returned a right whose signature could not be trusted: it was refused.
+    case unverified
+    /// The product could not be read from the store (no store, no network, product not yet approved).
+    case unavailable
+    case restored
+    case nothingToRestore
+    case failed
+
+    /// What the player is told. Nothing here names a price: the price always comes from the store itself.
+    var notice: String? {
+        switch self {
+        case .purchased: "Accès complet débloqué."
+        case .pending: "Achat en attente de validation."
+        case .cancelled: nil
+        case .unverified: "Cet achat n'a pas pu être vérifié par l'App Store."
+        case .unavailable: "L'App Store est injoignable pour le moment."
+        case .restored: "Vos achats ont été restaurés."
+        case .nothingToRestore: "Aucun achat à restaurer sur ce compte Apple."
+        case .failed: "L'achat n'a pas abouti."
+        }
+    }
+
+    var isFailure: Bool {
+        switch self {
+        case .unverified, .unavailable, .failed, .nothingToRestore: true
+        case .purchased, .pending, .cancelled, .restored: false
+        }
+    }
+}

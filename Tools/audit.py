@@ -8,15 +8,19 @@ import os, re, sys, subprocess
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LAYERS = {
     "App": "App", "Domain": "Domain", "GameEngine": "GameEngine", "AR": "AR", "Audio": "Audio", "Haptics": "Haptics",
-    "Navigation": "Presentation", "Features": "Presentation", "DesignSystem": "DesignSystem", "Tests": "Tests",
+    "Navigation": "Presentation", "Features": "Presentation", "DesignSystem": "DesignSystem", "Commerce": "Commerce",
+    "Tests": "Tests",
 }
+# C1 also keeps StoreKit out of everything but the Commerce layer and the one interface file that presents Apple's
+# own redemption sheet (Features/Paywall/OfferCodeRedemption.swift, checked by CommerceBoundaryTests).
 FORBIDDEN = {
-    "Domain": {"SwiftUI", "UIKit", "ARKit", "AVFoundation", "AVFAudio", "Combine", "SwiftData", "CoreData", "QuartzCore"},
-    "GameEngine": {"SwiftUI", "UIKit", "ARKit", "AVFoundation", "AVFAudio", "Combine", "SwiftData", "CoreData", "QuartzCore"},
-    "DesignSystem": set(),
-    "AR": {"SwiftUI"},
-    "Audio": {"SwiftUI", "UIKit", "ARKit"},
-    "Haptics": {"SwiftUI", "ARKit", "AVFoundation", "AVFAudio"},
+    "Domain": {"SwiftUI", "UIKit", "ARKit", "AVFoundation", "AVFAudio", "Combine", "SwiftData", "CoreData", "QuartzCore", "StoreKit"},
+    "GameEngine": {"SwiftUI", "UIKit", "ARKit", "AVFoundation", "AVFAudio", "Combine", "SwiftData", "CoreData", "QuartzCore", "StoreKit"},
+    "DesignSystem": {"StoreKit"},
+    "AR": {"SwiftUI", "StoreKit"},
+    "Audio": {"SwiftUI", "UIKit", "ARKit", "StoreKit"},
+    "Haptics": {"SwiftUI", "ARKit", "AVFoundation", "AVFAudio", "StoreKit"},
+    "Commerce": {"SwiftUI", "UIKit", "ARKit", "AVFoundation", "AVFAudio", "CoreData", "SwiftData"},
 }
 TYPE_DECL = re.compile(r"^(?:@\w+(?:\([^)]*\))?\s+)*(?:public |internal |private |fileprivate )?(?:final )?(struct|class|enum|protocol|actor)\s+(\w+)", re.M)
 
