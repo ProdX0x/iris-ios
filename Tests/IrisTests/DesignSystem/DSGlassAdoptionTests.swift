@@ -68,11 +68,14 @@ struct DSGlassAdoptionTests {
         }
     }
 
-    @Test("C: the card keeps no glass style; panels on glass go through DSGlassPanel")
-    func cardHasNoGlassStyle() throws {
-        let card = try source("DesignSystem/Components/DSCard.swift")
-        #expect(!card.contains("case glass"))
-        #expect(!card.contains("opacity(0.88)"))
+    @Test("C: the legacy opaque card is gone; every interface panel stands on the glass of DSGlassPanel")
+    func noLegacyCard() throws {
+        let legacy = Self.projectRoot.appendingPathComponent("DesignSystem/Components/DSCard.swift")
+        #expect(!FileManager.default.fileExists(atPath: legacy.path), "the legacy card component is back")
+        for (path, text) in try productionSources() {
+            #expect(!text.contains("DSCard"), "\(path) still references the legacy card")
+        }
+        #expect(try source("DesignSystem/Glass/DSGlassPanel.swift").contains("dsGlass(.regularPanel"))
     }
 
     @Test("D: the main action takes the system's prominent glass, secondary actions its plain glass, text actions none")

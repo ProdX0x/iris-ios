@@ -174,6 +174,7 @@ struct DSGlassTests {
     func glassStaysInTheDesignSystem() throws {
         let nativeCalls = ["glassEffect(", "GlassEffectContainer(", "glassEffectID(", "buttonStyle(.glass", ".glassProminent",
                            "tabBarMinimizeBehavior", "scrollEdgeEffectStyle"]
+        // Every screen reaches the material through the design system; none of them names a system style itself.
         let sources = try appSources()
         for (path, text) in sources {
             for call in nativeCalls {
@@ -183,7 +184,10 @@ struct DSGlassTests {
         #expect(sources.count > 150)
         let glass = try glassSources().map(\.text).joined()
         #expect(glass.contains(".glassEffect(") && glass.contains("GlassEffectContainer(") && glass.contains(".glassEffectID("))
-        #expect(glass.contains("buttonStyle(.glassProminent)") && glass.contains("buttonStyle(.glass)"))
+        #expect(glass.contains("buttonStyle(.glass)"))
+        // V2: the prominent style filled the material with a full amber tint and read as an opaque capsule; the main
+        // action now takes the same glass as the others and is told by the colour of its label.
+        #expect(!glass.contains("glassProminent"), "a filled prominent style is back")
         #expect(glass.contains("tabBarMinimizeBehavior(.onScrollDown)") && glass.contains("scrollEdgeEffectStyle(.soft"))
     }
 

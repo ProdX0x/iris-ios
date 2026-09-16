@@ -125,6 +125,38 @@ struct VisualCaptureTests {
         try sheet.writeManifest("manifest-window.txt")
     }
 
+    @Test("the game's state overlays as the app draws them: interruption, face lost, resuming, suspension (only when IRIS_CAPTURE_DIR is set)",
+          .enabled(if: captureDirectory != nil))
+    func gameStateOverlays() async throws {
+        let sheet = CaptureSheet()
+        let level = try #require(Campaign.level(id: "3-2"))
+
+        let interrupted = GameRig(level: level)
+        interrupted.play(frames: 60)
+        interrupted.gaze.simulate(state: .interrupted)
+        try await sheet.host("fenetre-jeu-interrompu", note: note(interrupted.model.phase), AnyView(GameView(viewModel: interrupted.model)))
+
+        let faceLost = GameRig(level: level)
+        faceLost.play(frames: 60)
+        faceLost.gaze.simulate(state: .tracking(faceVisible: false))
+        faceLost.tick(frames: 40)
+        try await sheet.host("fenetre-jeu-visage-perdu", note: note(faceLost.model.phase), AnyView(GameView(viewModel: faceLost.model)))
+
+        let resuming = GameRig(level: level)
+        resuming.play(frames: 60)
+        resuming.gaze.simulate(state: .interrupted)
+        resuming.gaze.simulate(state: .tracking(faceVisible: true))
+        try await sheet.host("fenetre-jeu-reprise", note: note(resuming.model.phase), AnyView(GameView(viewModel: resuming.model)))
+
+        let suspended = GameRig(level: level)
+        suspended.play(frames: 60)
+        suspended.model.suspend()
+        try await sheet.host("fenetre-jeu-suspendu", note: note(suspended.model.phase), AnyView(GameView(viewModel: suspended.model)))
+
+        #expect(sheet.count == 4)
+        try sheet.writeManifest("manifest-overlays.txt")
+    }
+
     @Test("the navigation shell as the app draws it: the system's tab bar over the three destinations (only when IRIS_CAPTURE_DIR is set)",
           .enabled(if: captureDirectory != nil))
     func shell() async throws {
@@ -233,6 +265,13 @@ private final class GameRig {
         model.primaryAction()
         for frame in 1...frames {
             gaze.inject(point: farGaze, timestamp: Double(frame) / 60)
+            clock.tick(1.0 / 60.0)
+        }
+    }
+
+    /// Advances the clock alone, without feeding the gaze: what the game sees when the face leaves.
+    func tick(frames: Int) {
+        for _ in 1...frames {
             clock.tick(1.0 / 60.0)
         }
     }
