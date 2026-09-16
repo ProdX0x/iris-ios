@@ -45,9 +45,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Services/SilentAudioService.swift | class | Audio | No-op audio used by previews and by the app when the audio engine cannot start | Claude (mission Iris) |
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
 | DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The interface's chambre noire (identity tokens): ink ground, abyss centre, faint iris fibres, vignette; | Claude (mission Iris) |
-| DesignSystem/Components/DSBadge.swift | struct | DesignSystem | Small status pill (success, danger, info, neutral, accent) | Claude (mission Iris) |
-| DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions, 52 pt minimum height: the system's Liquid Glass button styles where | Claude (mission Iris) |
-| DesignSystem/Components/DSCard.swift | struct | DesignSystem | Elevated surface with hairline border for grouped content. Panels that stand on glass use DSGlassPanel: | Claude (mission Iris) |
+| DesignSystem/Components/DSBadge.swift | struct | DesignSystem | Small status pill (success, danger, info, neutral, accent): the system's glass carries it on iOS 26, its | Claude (mission Iris) |
+| DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions, 52 pt minimum height: on the system's Liquid Glass the material is | Claude (mission Iris) |
 | DesignSystem/Components/DSEclats.swift | struct | DesignSystem | Three arcs around a circle, lit or unlit: the mastery marks of a level | Claude (mission Iris) |
 | DesignSystem/Components/DSGlyph.swift | struct | DesignSystem | Hand-drawn glyphs of the game's ideas (no SF Symbols in the game vocabulary) | Claude (mission Iris) |
 | DesignSystem/Components/DSIrisMark.swift | struct | DesignSystem | The Iris emblem: a six-blade amber diaphragm around a pearl lueur, optionally breathing | Claude (mission Iris) |

@@ -646,3 +646,21 @@ Décision humaine du 15 septembre : **Apple fournit le matériau, Iris fournit l
 **Repli iOS 17–25 et accessibilité.** Sous iOS 17–25 et sous Réduire la transparence, chaque surface retombe sur la surface pleine de son rôle, identique à l'apparence historique : aucun faux Liquid Glass n'est fabriqué. Réduire la transparence rend tout opaque, Augmenter le contraste renforce les liserés, Réduire les animations supprime la réponse tactile du verre et les morphings, Dynamic Type et VoiceOver sont inchangés.
 
 **Protection.** `DSGlassTests` (A–K, K regèle les six sources de navigation) et `DSGlassAdoptionTests` (A–H) : chaque surface migrée demande son verre au design system, aucune imitation ne subsiste, les destinations sont celles du système, les replis restent lisibles.
+
+## 24. Liquid Glass V2 — le matériau redevient perceptible (16 septembre 2026)
+
+La V1 (tag `iris-liquid-glass-human-validated-v1`) a montré l'écart entre **conformité du code** et **conformité du rendu** : des surfaces appelaient bien une API Liquid Glass tout en ressemblant encore à l'ancien langage Iris. Règle retenue : **présence d'une API glass ≠ validation Liquid Glass** ; seul le rendu réel fait foi.
+
+**Trois causes corrigées**
+
+| Cause | Avant (V1) | Après (V2) |
+|---|---|---|
+| Tint massif | `buttonStyle(.glassProminent)` teinté de l'ambre plein : le matériau disparaissait sous un aplat orange | toutes les actions prennent le **même** matériau `.glass` ; la hiérarchie vient de la **couleur du libellé** (ambre pour l'action principale, nacre pour la secondaire, cendre pour l'action texte) |
+| Carte opaque héritée | `DSCard` peignait `surface` / `surfaceElevated` pleines sur 10 écrans | `DSCard` **supprimé** ; `DSGlassPanel` est la seule surface de panneau, sur les 10 sites (chapitres, carnet, réglages, résultat, fin de voyage, calibration, caméra, indisponibilité) |
+| Chips teintés | pastille remplie à 14 % de la couleur de ton | chips sur le matériau système, le ton ne parlant plus que par le libellé |
+
+**Ce qui n'a pas bougé.** Navigation V1 validée humainement (onglets Seuil / Chapitres / Carnet, feuille Réglages à chrome système), comportement immersif du jeu, gameplay, Gaze Engine, calibration, campagne, audio et haptique : aucun fichier gelé modifié. Le repli iOS 17–25 et sous Réduire la transparence reste la surface pleine du rôle, identique à l'apparence historique.
+
+**Ce qui reste volontairement hors verre.** Canvas et rendu du niveau, sphères et cibles, silhouettes, éclats, emblème, glyphes, marque de fixation et points de mesure de la calibration, lignes d'état : ce sont du contenu, pas du chrome.
+
+**Protection.** `DSGlassTests` interdit désormais tout `glassProminent` dans la couche verre ; `DSGlassAdoptionTests` vérifie qu'aucune carte opaque héritée n'est revenue et que chaque surface migrée demande son verre au design system.

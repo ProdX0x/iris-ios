@@ -30,9 +30,8 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 | DSBackground (+ DSIrisFibers) | Chambre noire ground, fibres, slow breathing, identity tokens | every interface screen (the game draws GameFieldBackground) |
 | DSScreen | Scrolling page container with gutters | chapters, carnet, journey end, camera, unavailable |
 | DSButton, DSPressableButtonStyle | Primary, secondary, ghost actions, 52 pt; the system's glass button styles on iOS 26, the painted capsule before | everywhere |
-| DSCard | flat and elevated content surfaces; it never imitates a material | chapters, carnet, settings, result, unavailability |
-| DSGlassPanel | panel of text and controls on the glass of `regularPanel` | pause readout, gaze readiness, gaze verdict |
-| DSBadge | status pill (nouveau, diagnostics) | intro, result, HUD diagnostics |
+| DSGlassPanel | the single interface panel, on the glass of `regularPanel` (ADR-25) | chapter cards, carnet, settings, result, journey end, gaze readiness and verdict, camera, unavailability, pause readout |
+| DSBadge | status chip on the system material, the tone in its label | intro, result, HUD diagnostics |
 | DSStatusRow | capability row | camera, gaze readiness, unavailable |
 | DSIrisMark, DSApertureBlades | six-blade diaphragm emblem and iris shape | home, initialising, journey end, game irises, éclats |
 | DSEclats | three mastery arcs | level nodes, journey end |
@@ -53,7 +52,7 @@ Apple provides the material, Iris provides identity and content. The production 
 | chrome | `Glass.regular` | Identity.surfaceElevated 92 % | Identity.surfaceElevated | capsule | the hint above the running level |
 | prominentAction | `Glass.regular`, interactive | Navigation.primary | Navigation.primary | capsule | the capsule painted where the system draws no glass button |
 
-System surfaces, never a role: the tab bar (`TabView`, `dsTabBarMinimizesOnScroll()`), navigation toolbars, sheets, `ProgressView`, `Toggle`, `confirmationDialog`. Actions: `DSButton` maps primary to `.glassProminent` tinted with `Navigation.primary`, secondary to `.glass`, ghost to plain text; before iOS 26 and under Reduce Transparency it paints the capsule of `prominentAction` and its own secondary surface. Scroll views soften their edges under the system bars with `dsSoftScrollEdges()`.
+System surfaces, never a role: the tab bar (`TabView`, `dsTabBarMinimizesOnScroll()`), navigation toolbars, sheets, `ProgressView`, `Toggle`, `confirmationDialog`. Actions (ADR-25): every button takes the system's `.glass` style and says its rank with the colour of its label — `Navigation.primary` (amber) for the one main action, `Identity.textPrimary` for a secondary one, `Identity.textSecondary` for a text action. No material is tinted: the filled `.glassProminent` style read as an opaque amber capsule and is forbidden in the glass layer. Before iOS 26 and under Reduce Transparency the button paints the capsule of `prominentAction` and its own secondary surface, exactly as before. Scroll views soften their edges under the system bars with `dsSoftScrollEdges()`.
 
 API: `.dsGlass(role)` or `.dsGlass(role, in: .capsule)`; `DSGlassPanel { }` for a panel; `.dsGlassButton(role, rendering:)` behind `DSButton`; `DSGlassGroup(spacing:)` around neighbouring glass (`GlassEffectContainer`); `.dsGlassID(_:in:)` to morph, a fade under Reduce Motion. Only `DSGlassRendering`, `DSGlassModifier`, `DSGlassButtonStyle` and `DSGlassBarBehaviour` know the system version; no screen writes `#available`.
 
