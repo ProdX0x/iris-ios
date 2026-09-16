@@ -4,7 +4,11 @@
 
 **36 tests**, en quatre suites, sous `Tests/IrisTests/GazeAssistance/`.
 
-### `GazeAssistanceModeTests` — les trois modes (7 tests)
+> **Correction du 17 septembre 2026.** Le total, 36, était juste ; le détail par suite ne l'était pas
+> (7 + 9 + 10 + 7 = 33). Les nombres ci-dessous sont ceux comptés à l'exécution :
+> `Test run with 36 tests in 4 suites passed`.
+
+### `GazeAssistanceModeTests` — les trois modes (8 tests)
 
 | Test | Ce qu'il démontre |
 |---|---|
@@ -17,7 +21,7 @@
 | priorité | un mode enregistré l'emporte toujours sur l'ancienne clé |
 | vocabulaire | aucun nom ni résumé ne contient « diagnostic », « debug », « capteur », « pointeur », `VALID`, `YAW`, `PITCH` |
 
-### `GazeLearningFlowTests` — l'apprentissage (9 tests)
+### `GazeLearningFlowTests` — l’apprentissage (10 tests)
 
 | Test | Ce qu'il démontre |
 |---|---|
@@ -32,7 +36,7 @@
 | introduction à la demande | rouvrable sans lancer de niveau |
 | texte | les trois titres, la référence 0 %, et aucun mot de jargon ni promesse de santé |
 
-### `GazeEdgeGuidanceTests` — le halo (10 tests)
+### `GazeEdgeGuidanceTests` — le halo (11 tests)
 
 Intérieur (5 points, coins compris) · les 4 côtés · les 4 coins · intensité croissante · **saturation exacte au
 clamp et au-delà** · intensité d'un coin · **aucune direction sans curseur placé** · le snapshot porte la direction ·
