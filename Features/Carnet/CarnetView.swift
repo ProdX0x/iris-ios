@@ -13,7 +13,7 @@ struct CarnetView: View {
                 .font(DSFont.display)
                 .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
-            DSCard(style: .flat) {
+            DSGlassPanel {
                 ForEach(GameElement.allCases, id: \.self) { element in
                     CarnetRow(element: element, isKnown: coordinator.progress.encounteredElements.contains(element))
                 }

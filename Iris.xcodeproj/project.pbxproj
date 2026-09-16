@@ -158,7 +158,6 @@
 		7A9A3BE3F24B7E157BE9A5FA /* EchoField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F54241A5B401B86942BD776 /* EchoField.swift */; };
 		7AD27DD50D75210CBFDA09B7 /* OculoAbsenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF2346F08593F8201FA94C /* OculoAbsenceTests.swift */; };
 		7B90774E3772B72DC5B979C9 /* AdaptiveLevelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE71772397FBA20FFC05309 /* AdaptiveLevelRow.swift */; };
-		7CC6BC64019F774AACF315D8 /* DSCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B81D2F724067717A73CFE /* DSCard.swift */; };
 		7CD998A3B1323AF710CD78CA /* DSScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC6C35F2B3670EF05BC8871 /* DSScreen.swift */; };
 		7D0EC98B563033D5776A8F93 /* Campaign+FinalBraises.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464D09E42ECABB1A88075F82 /* Campaign+FinalBraises.swift */; };
 		7EC7391F5F39896E5A8F1ECB /* NotificationObserverBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0684F2CB40B511B7EEB19A9E /* NotificationObserverBag.swift */; };
@@ -555,7 +554,6 @@
 		A9EC6889539833A43AA3C24D /* HapticCue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticCue.swift; sourceTree = "<group>"; };
 		AA83F5A055F5EAF728EA344F /* DeviceCapabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCapabilities.swift; sourceTree = "<group>"; };
 		AAA8A3EBFC406F28A58A915A /* GameSceneSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSnapshot.swift; sourceTree = "<group>"; };
-		AB1B81D2F724067717A73CFE /* DSCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCard.swift; sourceTree = "<group>"; };
 		AD476A1C7BB5980BAF8164CD /* Campaign+Souffles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+Souffles.swift"; sourceTree = "<group>"; };
 		ADA87ADA525EF1C50F514A53 /* CalibrationGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationGrid.swift; sourceTree = "<group>"; };
 		ADFA072445D5642AE998FB66 /* LevelAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelAnalysis.swift; sourceTree = "<group>"; };
@@ -1484,7 +1482,6 @@
 				9BC3328E37D3304076752C05 /* DSBackground.swift */,
 				173CFEFE85CFD6276C224FC1 /* DSBadge.swift */,
 				5475244795788D1DC0B6380F /* DSButton.swift */,
-				AB1B81D2F724067717A73CFE /* DSCard.swift */,
 				48979C2D7ABD521591659B54 /* DSEclats.swift */,
 				0B7AD342653D374AF694FE25 /* DSGlyph.swift */,
 				7A0CDB4B7032EB09FFB2F199 /* DSIrisMark.swift */,
@@ -1820,7 +1817,6 @@
 				9FFB45F06F8CCA74858F7E6B /* DSBackground.swift in Sources */,
 				6E1B86D42D6A513E5C2BE925 /* DSBadge.swift in Sources */,
 				B34BE855F05185DDBC26F3E0 /* DSButton.swift in Sources */,
-				7CC6BC64019F774AACF315D8 /* DSCard.swift in Sources */,
 				9CB34104705E561CEA9F5F2B /* DSColor.swift in Sources */,
 				160FD176A69BB21054FDE0FB /* DSEclats.swift in Sources */,
 				841583BF77B1C572479AED82 /* DSEyebrowStyle.swift in Sources */,

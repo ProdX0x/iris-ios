@@ -14,7 +14,7 @@ struct ChapterCard: View {
     let onSelect: (LevelDefinition) -> Void
 
     var body: some View {
-        DSCard(style: isUnlocked ? .elevated : .flat) {
+        DSGlassPanel {
             header
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Chapitre \(chapter.number), \(chapter.name), \(completed) niveaux sur \(chapter.levels.count) atteints")

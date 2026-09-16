@@ -26,7 +26,7 @@ struct LevelResultView: View {
                                isNew: result.newlyEarned.contains(eclat) && revealed > index)
                 }
             }
-            DSCard(style: .flat) {
+            DSGlassPanel {
                 HStack {
                     metric("temps", "\(result.outcome.time.formatted(.number.precision(.fractionLength(1)))) s")
                     Spacer()

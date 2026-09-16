@@ -19,7 +19,7 @@ struct UnavailableView: View {
             Text(message)
                 .font(DSFont.body)
                 .foregroundStyle(DSColor.Identity.textSecondary)
-            DSCard(style: .flat) {
+            DSGlassPanel {
                 DSStatusRow(systemImage: "faceid", title: "Suivi facial ARKit", detail: "Non pris en charge sur cet appareil", state: .error)
                 DSStatusRow(systemImage: "iphone", title: "Appareils compatibles",
                             detail: "iPhone et iPad équipés de Face ID (caméra TrueDepth)", state: .warning)

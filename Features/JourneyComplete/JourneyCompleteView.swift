@@ -28,7 +28,7 @@ struct JourneyCompleteView: View {
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.Identity.textSecondary)
             }
-            DSCard(style: .flat) {
+            DSGlassPanel {
                 HStack {
                     metric("niveaux", "\(summary.levelCount)")
                     Spacer()

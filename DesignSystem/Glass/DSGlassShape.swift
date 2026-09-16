@@ -18,7 +18,7 @@ enum DSGlassShape: Hashable, Sendable {
         }
     }
 
-    /// A one-point line inside the edge, like the hairlines of DSCard and DSButton.
+    /// A one-point line inside the edge, drawn only on the plain surfaces that stand in for glass.
     @ViewBuilder
     func hairline(_ color: Color) -> some View {
         switch self {

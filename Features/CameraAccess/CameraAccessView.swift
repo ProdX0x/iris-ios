@@ -18,7 +18,7 @@ struct CameraAccessView: View {
                 .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
 
-            DSCard {
+            DSGlassPanel {
                 DSStatusRow(systemImage: "faceid", title: "Caméra TrueDepth",
                             detail: "Estime la direction du regard, environ soixante fois par seconde.", state: rowState)
                 DSStatusRow(systemImage: "lock.shield", title: "Traitement local",

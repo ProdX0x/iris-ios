@@ -14,7 +14,7 @@ struct SettingsView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: DSSpacing.l) {
-                    DSCard(style: .flat) {
+                    DSGlassPanel {
                         Toggle("Effets sonores", isOn: $settings.soundEffectsEnabled)
                         Toggle("Ambiance sonore", isOn: $settings.ambienceEnabled)
                         Toggle("Vibrations", isOn: $settings.hapticsEnabled)
@@ -22,18 +22,18 @@ struct SettingsView: View {
                     }
                     .tint(DSColor.Navigation.control)
                     .foregroundStyle(DSColor.Identity.textPrimary)
-                    DSCard(style: .flat) {
+                    DSGlassPanel {
                         Text("regard").dsEyebrowStyle()
                         DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { coordinator.recalibrate() }
                     }
-                    DSCard(style: .flat) {
+                    DSGlassPanel {
                         Text("confidentialité").dsEyebrowStyle()
                         Text("Le regard est calculé sur l'iPhone, en temps réel. Aucune image, aucune vidéo et aucune donnée du visage n'est enregistrée ni envoyée. Seuls les coefficients de calibration et votre progression sont gardés sur l'appareil.")
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textSecondary)
                     }
                     #if DEBUG
-                    DSCard(style: .flat) {
+                    DSGlassPanel {
                         Text("prototypes (debug)").dsEyebrowStyle()
                         Text("Hors campagne. Rien n'est enregistré.")
                             .font(DSFont.footnote)
