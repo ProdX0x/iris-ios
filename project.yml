@@ -90,9 +90,9 @@ schemes:
       storeKitConfiguration: Config/Iris.storekit
     test:
       config: Debug
-      # The unit tests drive a real StoreKit test session; without this the test host has no StoreKit testing
-      # entitlement and every store call comes back `notEntitled`.
-      storeKitConfiguration: Config/Iris.storekit
+      # NOTE: XcodeGen 2.45.4 silently ignores `storeKitConfiguration` here — the generated TestAction carries no
+      # StoreKitConfigurationFileReference (verified on the generated scheme). The unit tests do not need it: they
+      # enable StoreKit testing themselves with `SKTestSession(contentsOf:)`. The key is left out deliberately.
       targets:
         - IrisTests
       gatherCoverageData: false
