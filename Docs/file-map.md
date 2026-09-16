@@ -190,6 +190,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Game/Views/GameView.swift | struct | Presentation | The game screen: chambre noire background, chapter wash, world canvas, peripheral HUD and phase overlays | Claude (mission Iris) |
 | Features/Game/Views/LevelIntroCard.swift | struct | Presentation | What the level asks, in three seconds; a compact panel on the system's glass so the level stays readable | Claude (mission Iris) |
 | Features/Game/Views/LevelResultView.swift | struct | Presentation | "atteint": three éclats lighting one after the other, measurements, next / replay / chapters | Claude (mission Iris) |
+| Features/GazeAssistance/GazeAssistancePicker.swift | struct | Presentation | The one way a player chooses how much help they want seeing the gaze marker. Two presentations — | Claude (mission Iris) |
 | Features/GazeLearning/GazeIntroductionPage.swift | struct | Presentation | The three things a player must understand before the very first level: the marker is an estimate, Iris | Claude (mission Iris) |
 | Features/GazeLearning/GazeIntroductionView.swift | struct | Presentation | The three screens shown once, before the very first level, explaining the gaze marker. No navigation | Claude (mission Iris) |
 | Features/GazeSetup/ViewModels/GazeSetupIntent.swift | enum | Presentation | Why the gaze setup runs: first launch, quick revalidation of a stored profile, or manual recalibration | Claude (mission Iris) |
@@ -210,7 +211,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Paywall/OfferCodeRedemption.swift | struct | Presentation | Apple's own code redemption sheet, and the ONLY place in the interface that reaches StoreKit. Iris has no | Claude (mission Iris) |
 | Features/Paywall/PaywallCopy.swift | enum | Presentation | The sentences of the commercial screens, every one of them derived from the access policy and from the | Claude (mission Iris) |
 | Features/Paywall/PaywallView.swift | struct | Presentation | What the full access is, what it costs according to the store, and the three ways in: buy once, restore, | Claude (mission Iris) |
-| Features/Settings/GazeAssistanceSection.swift | struct | Presentation | The one place a player chooses how much help they want seeing the gaze marker. Three rows rather than a | Claude (mission Iris) |
+| Features/Settings/GazeAssistanceSection.swift | struct | Presentation | The settings home of the gaze assistance choice: the detailed picker, its one line of context, and the | Claude (mission Iris) |
 | Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, progress reset, privacy note; the | Claude (mission Iris) |
 | Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
@@ -333,6 +334,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/GazeAssistance/GazeAssistanceModeTests.swift | struct | Tests | The three modes as a rule: what a new player gets, what each mode shows during ordinary play, that the | Claude (mission Iris) |
 | Tests/IrisTests/GazeAssistance/GazeEdgeGuidanceTests.swift | struct | Tests | The halo says a side and only a side it can measure: nothing inside the playfield, the right edge or | Claude (mission Iris) |
 | Tests/IrisTests/GazeAssistance/GazeLearningFlowTests.swift | struct | Tests | The first three levels teach the marker and then let go: visible, visible, fading; from the fourth the | Claude (mission Iris) |
+| Tests/IrisTests/GazeAssistance/PauseGazeAssistanceTests.swift | struct | Tests | The pause offers the same gaze assistance choice as the settings, over the same stored value, and it | Claude (mission Iris) |
 | Tests/IrisTests/Haptics/HapticCuePolicyTests.swift | struct | Tests | Touch policy: one pulse per logical event, one loss per cascade, shared retrigger guard, prepare hint | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockAudioService.swift | class | Tests | Recording mock for AudioService | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |

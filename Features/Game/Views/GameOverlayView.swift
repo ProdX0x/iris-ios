@@ -69,13 +69,12 @@ struct GameOverlayView: View {
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textSecondary)
                 DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { viewModel.requestRecalibration() }
-                Text("Aide au regard : \(viewModel.gazeAssistance.title)")
-                    .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.Identity.textSecondary)
-                Text(viewModel.gazeAssistance.summary)
-                    .font(DSFont.footnote)
-                    .foregroundStyle(DSColor.Identity.textTertiary)
-                    .fixedSize(horizontal: false, vertical: true)
+                // The same choice as the settings, over the same value: changing it here changes it there, and the
+                // level obeys as soon as play resumes. Compact, because a player in pause wants one tap, not a page.
+                Text("aide au regard").dsEyebrowStyle()
+                GazeAssistancePicker(mode: $viewModel.gazeAssistance,
+                                     variant: .compact,
+                                     isLearning: viewModel.isGazeLearningActive)
             }
         }
     }

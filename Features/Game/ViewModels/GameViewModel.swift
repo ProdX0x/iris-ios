@@ -422,6 +422,12 @@ final class GameViewModel {
         navigator?.gameDidStart(level: definition)
     }
 
+    /// True while the first three levels of chapter I are still teaching the marker. The pause reads this to say
+    /// so, and to stop offering a choice it could not honour on this level.
+    var isGazeLearningActive: Bool {
+        GazeAssistancePolicy.isLearning(levelID: level.id, hasCompletedLearning: hasCompletedGazeLearning)
+    }
+
     /// What the interface should do with the gaze marker right now. One question, one answer, one place.
     var gazeMarker: GazeMarkerPresentation {
         GazeAssistancePolicy.presentation(mode: settings.gazeAssistance,
