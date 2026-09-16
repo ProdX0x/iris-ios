@@ -44,19 +44,20 @@ Registry of every source file in the project. One row per file. Updated by every
 | Audio/Services/NotificationObserverBag.swift | class | Audio | Owns NotificationCenter observer tokens and removes them when its owner is deallocated | Claude (mission Iris) |
 | Audio/Services/SilentAudioService.swift | class | Audio | No-op audio used by previews and by the app when the audio engine cannot start | Claude (mission Iris) |
 | Audio/Synth/SineSynth.swift | class | Audio | Allocation-free sine synthesizer reproducing the reference engine's Web Audio graph | Claude (mission Iris) |
-| DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The interface's chambre noire (identity tokens): ink ground, abyss centre, faint iris fibres, vignette; | Claude (mission Iris) |
+| DesignSystem/Components/DSBackground.swift | struct | DesignSystem | The interface's chambre noire (identity tokens): ink ground, abyss centre, the spectral environment that | Claude (mission Iris) |
 | DesignSystem/Components/DSBadge.swift | struct | DesignSystem | Small status pill (success, danger, info, neutral, accent): the system's glass carries it on iOS 26, its | Claude (mission Iris) |
 | DesignSystem/Components/DSButton.swift | struct | DesignSystem | Primary, secondary and ghost actions, 52 pt minimum height: on the system's Liquid Glass the material is | Claude (mission Iris) |
 | DesignSystem/Components/DSEclats.swift | struct | DesignSystem | Three arcs around a circle, lit or unlit: the mastery marks of a level | Claude (mission Iris) |
 | DesignSystem/Components/DSGlyph.swift | struct | DesignSystem | Hand-drawn glyphs of the game's ideas (no SF Symbols in the game vocabulary) | Claude (mission Iris) |
 | DesignSystem/Components/DSIrisMark.swift | struct | DesignSystem | The Iris emblem: a six-blade amber diaphragm around a pearl lueur, optionally breathing | Claude (mission Iris) |
-| DesignSystem/Components/DSOverlayPanel.swift | struct | DesignSystem | Veil over the game with a centred title, subtitle and actions | Claude (mission Iris) |
+| DesignSystem/Components/DSOverlayPanel.swift | struct | DesignSystem | Veil over the game, lit by the spectral environment, with a centred title, subtitle and actions | Claude (mission Iris) |
 | DesignSystem/Components/DSProgressRing.swift | struct | DesignSystem | Circular progress used for journey completion and hold progress readouts | Claude (mission Iris) |
 | DesignSystem/Components/DSScreen.swift | struct | DesignSystem | Page container: atmosphere background, safe-area aware column, consistent gutters, and content softened | Claude (mission Iris) |
+| DesignSystem/Components/DSSpectralEnvironment.swift | struct | DesignSystem | The light Iris puts behind Apple's glass. A few very dark spectral fields — indigo low on the screen, | Claude (mission Iris) |
 | DesignSystem/Components/DSStatusRow.swift | struct | DesignSystem | Icon, title, detail and a coloured state dot; used for capability and permission lists | Claude (mission Iris) |
 | DesignSystem/Components/DSThemeWash.swift | struct | DesignSystem | Tints the chambre noire with a chapter's wash and a soft glow at the top; draws nothing for the historical palette | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassBarBehaviour.swift | struct | DesignSystem | The behaviours the system's own bars offer (a tab bar that steps aside while scrolling, softened edges | Claude (mission Iris) |
-| DesignSystem/Glass/DSGlassButtonStyle.swift | struct | DesignSystem | Actions on Apple's own glass: the system's `.glass` and `.glassProminent` button styles on iOS 26, the | Claude (mission Iris) |
+| DesignSystem/Glass/DSGlassButtonStyle.swift | struct | DesignSystem | Actions on Apple's own glass: the system's `.glass` button style on iOS 26, the historical painted | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassGroup.swift | struct | DesignSystem | Neighbouring glass elements share one glass layer on iOS 26 (no glass on glass, coherent morphing, fewer | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassModifier.swift | struct | DesignSystem | `.dsGlass(role)`: draws a view on the glass of its role (its recipe), native Liquid Glass on iOS 26 and | Claude (mission Iris) |
 | DesignSystem/Glass/DSGlassPanel.swift | struct | DesignSystem | A panel of text and controls laid on the glass of its role: native Liquid Glass on iOS 26, the role's | Claude (mission Iris) |

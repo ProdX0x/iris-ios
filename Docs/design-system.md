@@ -12,6 +12,7 @@ Identity    ds.identity.ground #07080B (encre)   ds.identity.ground.abyss #12162
             ds.identity.line #262A35   ds.identity.text.primary #ECE7DC (nacre)   ds.identity.text.secondary #A7A399 (brume)
             ds.identity.text.tertiary #85817A (cendre, ≥ 4.5:1 on encre)   ds.identity.text.warm #D9D2C3
             ds.identity.accent #F2B35A (ambre)   ds.identity.emblem.core #F4EFE4   ds.identity.emblem.glow #F7E6C4
+            ds.identity.spectral.indigo #1A2142   ds.identity.spectral.violet #241A3D   ds.identity.spectral.frost #16293D (environment only, ADR-26)
 Navigation  ds.navigation.primary #F2B35A   ds.navigation.onPrimary #1A1206   ds.navigation.secondary #161922
             ds.navigation.control #F2B35A (switches, text actions, progress)   ds.navigation.selection #F2B35A   ds.navigation.veil #07080B
 State       ds.state.success #7FE0C0 (menthe)   ds.state.danger #FF7A5C (corail)   ds.state.warning #F2B35A   ds.state.info #9CC3E6
@@ -28,6 +29,7 @@ Spacing 2 · 4 · 8 · 16 · 24 · 32 · 48 · 72, gutter 24 · Radius 8 · 14 �
 | Component | Purpose | Used by |
 |---|---|---|
 | DSBackground (+ DSIrisFibers) | Chambre noire ground, fibres, slow breathing, identity tokens | every interface screen (the game draws GameFieldBackground) |
+| DSSpectralEnvironment | the light behind Apple's glass (ADR-26): indigo pool, cold drift, violet breath, soft bottom lift; static, never above the material | inside DSBackground and above the overlay veil |
 | DSScreen | Scrolling page container with gutters | chapters, carnet, journey end, camera, unavailable |
 | DSButton, DSPressableButtonStyle | Primary, secondary, ghost actions, 52 pt; the system's glass button styles on iOS 26, the painted capsule before | everywhere |
 | DSGlassPanel | the single interface panel, on the glass of `regularPanel` (ADR-25) | chapter cards, carnet, settings, result, journey end, gaze readiness and verdict, camera, unavailability, pause readout |
@@ -52,7 +54,7 @@ Apple provides the material, Iris provides identity and content. The production 
 | chrome | `Glass.regular` | Identity.surfaceElevated 92 % | Identity.surfaceElevated | capsule | the hint above the running level |
 | prominentAction | `Glass.regular`, interactive | Navigation.primary | Navigation.primary | capsule | the capsule painted where the system draws no glass button |
 
-System surfaces, never a role: the tab bar (`TabView`, `dsTabBarMinimizesOnScroll()`), navigation toolbars, sheets, `ProgressView`, `Toggle`, `confirmationDialog`. Actions (ADR-25): every button takes the system's `.glass` style and says its rank with the colour of its label — `Navigation.primary` (amber) for the one main action, `Identity.textPrimary` for a secondary one, `Identity.textSecondary` for a text action. No material is tinted: the filled `.glassProminent` style read as an opaque amber capsule and is forbidden in the glass layer. Before iOS 26 and under Reduce Transparency the button paints the capsule of `prominentAction` and its own secondary surface, exactly as before. Scroll views soften their edges under the system bars with `dsSoftScrollEdges()`.
+System surfaces, never a role: the tab bar (`TabView`, `dsTabBarMinimizesOnScroll()`), navigation toolbars, sheets, `ProgressView`, `Toggle`, `confirmationDialog`. Actions (ADR-25, ADR-26): only the main action spans the column, a secondary one takes the width of its label; every button takes the system's `.glass` style and says its rank with the colour of its label — `Navigation.primary` (amber) for the one main action, `Identity.textPrimary` for a secondary one, `Identity.textSecondary` for a text action. No material is tinted: the filled `.glassProminent` style read as an opaque amber capsule and is forbidden in the glass layer. Before iOS 26 and under Reduce Transparency the button paints the capsule of `prominentAction` and its own secondary surface, exactly as before. Scroll views soften their edges under the system bars with `dsSoftScrollEdges()`.
 
 API: `.dsGlass(role)` or `.dsGlass(role, in: .capsule)`; `DSGlassPanel { }` for a panel; `.dsGlassButton(role, rendering:)` behind `DSButton`; `DSGlassGroup(spacing:)` around neighbouring glass (`GlassEffectContainer`); `.dsGlassID(_:in:)` to morph, a fade under Reduce Motion. Only `DSGlassRendering`, `DSGlassModifier`, `DSGlassButtonStyle` and `DSGlassBarBehaviour` know the system version; no screen writes `#available`.
 

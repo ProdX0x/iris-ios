@@ -664,3 +664,24 @@ La V1 (tag `iris-liquid-glass-human-validated-v1`) a montré l'écart entre **co
 **Ce qui reste volontairement hors verre.** Canvas et rendu du niveau, sphères et cibles, silhouettes, éclats, emblème, glyphes, marque de fixation et points de mesure de la calibration, lignes d'état : ce sont du contenu, pas du chrome.
 
 **Protection.** `DSGlassTests` interdit désormais tout `glassProminent` dans la couche verre ; `DSGlassAdoptionTests` vérifie qu'aucune carte opaque héritée n'est revenue et que chaque surface migrée demande son verre au design system.
+
+## 25. Liquid Glass V3 — révéler le matériau dans l'univers sombre (16 septembre 2026)
+
+La V2 utilisait déjà le matériau natif. Le défaut restant était **perceptif** : derrière les grandes surfaces de verre, le fond Iris était si sombre et si uniforme que le Liquid Glass n'avait rien à transmettre et se lisait comme une plaque gris anthracite.
+
+**Cause mesurée, pas supposée.** Sur les captures V2, l'écart-type de luminance derrière les grandes actions valait **0,1 à 2,0** sur 255 (résultat, pause, Seuil, fin de voyage) — un champ mathématiquement plat — alors qu'il atteint 20 à 47 là où le verre se lisait déjà bien (centre du Seuil, écran Chapitres). Deux sources : les bandes basses et les bords des écrans, et le voile plein des overlays de jeu, qui écrasait le champ à 0,1.
+
+**Correction : agir derrière le verre, jamais sur le verre.**
+
+| Élément | Avant | Après |
+|---|---|---|
+| Environnement | chambre noire : encre, abysse, rayons | + `DSSpectralEnvironment` : bassin indigo bas, dérive givre haute, souffle violet opposé, élévation douce vers le bas |
+| Voile des overlays | aplat `veil` à 0,86–0,94 : champ plat | même assombrissement, l'environnement spectral au-dessus rend sa structure |
+| Feuille Réglages | `Identity.surface` opaque | chambre noire, comme tout autre écran |
+| Grandes actions | toutes pleine largeur | seule l'action principale occupe la colonne ; les secondaires prennent la largeur de leur texte, 52 pt conservés |
+
+**Gain mesuré** (échantillonnage complet) : bande de la grande capsule en fin de voyage **20,3/13,7 → 27,6/17,7** ; bande basse du Seuil **20,8/23,8 → 29,5/21,4**. L'application reste sombre : les moyennes montent de 5 à 10 points sur 255, pas davantage.
+
+**Ce qui n'a pas changé.** Aucune API Liquid Glass modifiée : le matériau reste celui d'iOS 26, sans faux verre, sans flou maison, sans halo épousant la forme d'un bouton — la lumière appartient à l'environnement. Gameplay, Gaze Engine, calibration, campagne, audio et haptique : intacts. Le champ du jeu (`GameFieldBackground`) n'est pas touché : le gameplay reste prioritaire.
+
+**Coût.** Quatre dégradés statiques, aucune animation, aucun shader, aucun timer ajouté.
