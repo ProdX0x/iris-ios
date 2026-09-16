@@ -10,7 +10,8 @@ Rien ici n'est créé automatiquement : App Store Connect reste une action humai
 | Téléchargement de l'app | Gratuit |
 | Chapitres gratuits | I, II, III |
 | Chapitres de l'accès complet | IV à XII (et tout chapitre ajouté ensuite) |
-| Niveaux au total aujourd'hui | 82, en 12 chapitres |
+| Niveaux au total aujourd'hui | 82, en 12 chapitres (6, 6, 7, puis 7 par chapitre) |
+| Niveaux jouables sans achat | 19 |
 
 Le nombre de chapitres gratuits est écrit **une seule fois** dans le code, dans
 `Domain/Access/AccessPolicy.swift` (`freeChapterCount = 3`). `CommerceBoundaryTests` (test D) échoue si un autre
@@ -132,3 +133,16 @@ expiration de l'accès promotionnel · achat permanent survivant à l'expiration
 
 `Tests/IrisTests/Access/AccessPolicyTests.swift` et `AccessGatingTests.swift` couvrent la règle métier et les huit
 parcours joueur sans toucher à StoreKit.
+
+## 8. Comment rejouer les tests StoreKit
+
+Le runtime iOS 26.3 de cette machine refuse les sessions de test StoreKit. Un simulateur iOS 18.x les accepte :
+
+```
+xcrun simctl create "Iris-SK-18" "iPhone 16" com.apple.CoreSimulator.SimRuntime.iOS-18-6
+xcodebuild -project Iris.xcodeproj -scheme Iris -destination 'platform=iOS Simulator,name=Iris-SK-18' \
+  test -only-testing:IrisTests/StoreKitEntitlementTests
+```
+
+Un simulateur `Iris-SK-18` a été créé sur cette machine pour cette vérification ; il peut être supprimé avec
+`xcrun simctl delete "Iris-SK-18"` et recréé à l'identique par la commande ci-dessus.

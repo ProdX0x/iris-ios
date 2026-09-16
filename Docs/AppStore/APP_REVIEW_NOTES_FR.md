@@ -23,7 +23,7 @@ Iris ne promet aucun effet de santé, aucun soin, aucun bénéfice médical. C'e
 ## Modèle commercial
 
 - L'app est **gratuite** au téléchargement.
-- Les **chapitres I, II et III** (20 niveaux) sont jouables sans aucun achat, pour toujours.
+- Les **chapitres I, II et III** (19 niveaux sur 82) sont jouables sans aucun achat, pour toujours.
 - Les chapitres **IV à XII** demandent l'accès complet.
 - L'accès complet est un **achat unique non consommable** : `net.steve-s.iris.unlock.fullgame`.
   Ce n'est pas un abonnement, et l'interface le dit explicitement (« Achat unique. Aucun abonnement, aucun
