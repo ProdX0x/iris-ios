@@ -18,7 +18,7 @@ struct GameSettingsStoreTests {
         #expect(store.soundEffectsEnabled)
         #expect(!store.ambienceEnabled)
         #expect(store.wantsAudio)
-        #expect(!store.showsGazeIndicator)
+        #expect(store.gazeAssistance == .classic)
     }
 
     @Test("the old single sound switch migrates without switching anything back on: off stays fully off, on keeps its ambience")
@@ -51,13 +51,13 @@ struct GameSettingsStoreTests {
         store.hapticsEnabled = false
         store.soundEffectsEnabled = false
         store.ambienceEnabled = true
-        store.showsGazeIndicator = true
+        store.gazeAssistance = .guided
 
         let reloaded = GameSettingsStore(defaults: defaults)
 
         #expect(!reloaded.hapticsEnabled)
         #expect(!reloaded.soundEffectsEnabled)
         #expect(reloaded.ambienceEnabled)
-        #expect(reloaded.showsGazeIndicator)
+        #expect(reloaded.gazeAssistance == .guided)
     }
 }

@@ -122,7 +122,7 @@ struct OculoCourantTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise()])
         session.placeGaze(at: Vector2(x: 30, y: 830))
         while session.elapsed < hiddenAt + 0.05 { _ = session.advance(by: Support.frame) }
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let oculo = try #require(snapshot.oculo)
         let relays = oculo.elements.filter { $0.role == .relay }.count
         let lanterns = oculo.elements.filter { $0.role == .lantern }.count

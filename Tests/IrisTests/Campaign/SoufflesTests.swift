@@ -190,7 +190,7 @@ struct SoufflesTests {
         let level = chapter.levels[0]
         let resolved = LevelResolver.resolve(level, in: bounds)
         let session = resolved.makeSession()
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil, theme: .brume)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil, theme: .brume)
         #expect(snapshot.souffles.count == 1 && snapshot.souffles[0].path.count == 2 && snapshot.souffles[0].position != nil)
         #expect(!snapshot.lueurs[0].isCarried)
     }

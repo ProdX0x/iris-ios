@@ -88,18 +88,18 @@ struct OculoOrchestreTests {
             let newly = events.filter { if case .oculoStageCompleted = $0 { return true } else { return false } }.count
             if newly > 0 {
                 completed += newly
-                let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+                let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
                 let lit = snapshot.oculo?.constellation.filter(\.isLit).count ?? -1
                 #expect(lit == completed, "after \(completed) passages")
             }
             if events.contains(.oculoCompleted) {
-                let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+                let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
                 radiusAtEnd = snapshot.oculo?.constellation.first.map { $0.position.distance(to: Support.bounds.center) }
             }
             if session.isComplete { break }
         }
         #expect(completed == 7)
-        let final = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let final = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let stars = try #require(final.oculo?.constellation)
         let lit = stars.filter { $0.isLit }.count
         #expect(stars.count == 7 && lit == 7 && final.oculo?.constellationLinks?.isClosed == true)

@@ -182,7 +182,7 @@ struct EchosTests {
         var session = resolved.makeSession()
         session.placeGaze(at: Vector2(x: 20, y: 830))
         _ = run(&session, seconds: 4)
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil, theme: .echo)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil, theme: .echo)
         #expect(snapshot.echoReach == 0.45 * 393)
         #expect(snapshot.lueurs[0].echoes && !snapshot.lueurs[0].isAsleep)
         #expect(!snapshot.waves.isEmpty || !snapshot.lueurs[1].isAsleep)

@@ -199,7 +199,7 @@ struct JumellesTests {
         let level = chapter.levels[2]
         let resolved = LevelResolver.resolve(level, in: bounds)
         let session = resolved.makeSession()
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: true, showsGaze: false, diagnostics: nil, theme: .jumelles)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: true, marker: .hidden, diagnostics: nil, theme: .jumelles)
         #expect(snapshot.theme == .jumelles)
         #expect(snapshot.lueurs[0].isTwin && snapshot.lueurs[1].isTwin && !snapshot.lueurs[2].isTwin)
         #expect(snapshot.lueurs[0].partner == session.targets[1].position)

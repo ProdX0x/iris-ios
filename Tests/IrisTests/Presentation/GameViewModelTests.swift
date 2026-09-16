@@ -294,7 +294,7 @@ struct GameViewModelTests {
     func cursor() {
         let sut = makeSUT(level: restingLevel())
         prepared(sut)
-        sut.showsGazeIndicator = true
+        sut.gazeAssistance = .visible
         gaze.inject(point: Vector2(x: 10, y: 10), timestamp: 0)
 
         sut.primaryAction()
@@ -317,7 +317,7 @@ struct GameViewModelTests {
                                       createdAt: Date(), validationMeanError: 0.07, validationMaxError: 0.12, isValid: true))
         let sut = makeSUT(level: restingLevel())
         prepared(sut)
-        sut.showsGazeIndicator = true
+        sut.gazeAssistance = .visible
         gaze.inject(point: Vector2(x: 100, y: 700), timestamp: 0)
 
         sut.primaryAction()

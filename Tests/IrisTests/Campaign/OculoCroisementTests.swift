@@ -97,7 +97,7 @@ struct OculoCroisementTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise(), SilentNoise()])
         session.placeGaze(at: Vector2(x: 30, y: 830))
         _ = session.advance(by: Support.frame)
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let cradles = try #require(snapshot.oculo?.elements.filter { $0.role == .cradle })
         let breathing = cradles.filter { $0.isActive }.count
         let threads = snapshot.oculo?.polylines.count ?? 0

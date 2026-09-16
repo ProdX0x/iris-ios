@@ -21,6 +21,8 @@ final class MockNavigator: GameNavigating, CameraAccessNavigating, GazeSetupNavi
     var recordToReturn = LevelRecord()
     /// Levels the navigator refuses to continue into; empty means everything is open.
     var lockedLevelIDs: Set<String> = []
+    /// What the navigator answers about the gaze learning; true by default, as for a seasoned player.
+    var hasCompletedGazeLearning = true
 
     func gameDidStart(level: LevelDefinition) {
         startedLevels.append(level.id)
@@ -37,6 +39,10 @@ final class MockNavigator: GameNavigating, CameraAccessNavigating, GazeSetupNavi
 
     func gameDidReachLockedLevel(_ level: LevelDefinition) {
         lockedLevels.append(level.id)
+    }
+
+    func gameHasCompletedGazeLearning() -> Bool {
+        hasCompletedGazeLearning
     }
 
     func gameDidRequestChapters() {

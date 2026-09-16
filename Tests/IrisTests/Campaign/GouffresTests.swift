@@ -180,7 +180,7 @@ struct GouffresTests {
         var rebirthSeen = false
         for _ in 0..<(6 * 60) {
             _ = session.advance(by: frame)
-            let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil, theme: .gouffres)
+            let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil, theme: .gouffres)
             #expect(snapshot.gouffres.count == 1)
             if snapshot.lueurs[0].swallow != nil { swallowSeen = true }
             if snapshot.lueurs[0].rebirth != nil { rebirthSeen = true }

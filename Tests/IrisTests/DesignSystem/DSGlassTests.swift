@@ -14,16 +14,17 @@ import Testing
 @Suite("Liquid Glass design roles")
 @MainActor
 struct DSGlassTests {
-    /// Navigation sources, re-frozen by the monetisation release (the coordinator now answers access questions, the
-    /// sheets are three, and the root view carries the first-launch explanation and starts the store off the first
-    /// frame); they change again only with a deliberate navigation decision and this table.
+    /// Navigation sources, re-frozen by the gaze assistance release: the coordinator answers whether the levels
+    /// that teach the gaze marker are behind the player and holds the first level behind its introduction, there is
+    /// a fourth sheet, and the root view presents it. They change again only with a deliberate navigation decision
+    /// and this table.
     static let navigationSources: [String: String] = [
-        "Navigation/AppCoordinator.swift": "798929a4bcf3f1612373b788a6871934b7f9619c047636ed0b76d1945ec1900b",
+        "Navigation/AppCoordinator.swift": "15550e59be78db1139228fd976b375cc3ff1a61e8694a6ff2aa7ed8bb3aab412",
         "Navigation/AppDestination.swift": "57ee608cdd0b66bd907ac0f7d9368004510b28e40e77e2009484c391f1d5828f",
         "Navigation/AppRoute.swift": "8d05c60e7f49851d4c37fbc045e9c7c6aa6361b15681a5fb13ddf930d77fb73e",
-        "Navigation/AppSheet.swift": "06d85b8ecc6f8038d69388b79c28ba84b130a796789c3b7b5f1d590ca672f84b",
+        "Navigation/AppSheet.swift": "e33ba41e0c2b61f0340cac7085f6b4a579a2ec62866255df60a4235afbe1e0ae",
         "Navigation/HomeSummary.swift": "ad8b42102791d939250b8663085566d85336845280b74d5257efc92eb9dfb2e9",
-        "Navigation/RootView.swift": "677fd4ef56d4053d489a27ef3928e5ce3840876bf47d84eed97c11f38bfccd70",
+        "Navigation/RootView.swift": "27ef2994701cf181abf3a05f6d54b97e6e6937ca8cccf1284dfe9a17b2b1281a",
     ]
 
     /// Project root, derived from this file's compile-time path (Tests/IrisTests/DesignSystem/...).
@@ -248,7 +249,7 @@ struct DSGlassTests {
         let onboarding = try String(contentsOf: Self.projectRoot.appendingPathComponent("Features/Onboarding/OnboardingView.swift"), encoding: .utf8)
         #expect(!onboarding.contains("TabView") && !onboarding.contains("NavigationStack"))
         #expect(root.contains("fullScreenCover(isPresented: onboardingBinding)"))
-        #expect(AppSheet.allCases == [.settings, .paywall, .howToPlay])
+        #expect(AppSheet.allCases == [.settings, .paywall, .howToPlay, .gazeIntroduction])
         #expect(AppDestination.allCases == [.seuil, .chapitres, .carnet])
         for (path, expected) in Self.navigationSources.sorted(by: { $0.key < $1.key }) {
             let data = try Data(contentsOf: Self.projectRoot.appendingPathComponent(path))

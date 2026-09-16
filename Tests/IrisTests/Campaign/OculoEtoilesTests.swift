@@ -98,10 +98,10 @@ struct OculoEtoilesTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise()])
         session.placeGaze(at: Support.bounds.center)
         for _ in 0..<30 { _ = session.advance(by: Support.frame) }
-        let showing = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let showing = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         #expect(showing.oculo?.elements.filter { $0.role == .star && $0.intensity > 0 }.count == 2, "two stars shine")
         for _ in 0..<Int(2.2 * 60) { _ = session.advance(by: Support.frame) }
-        let recalling = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let recalling = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         #expect(recalling.oculo?.elements.allSatisfy { $0.role != .star || ($0.intensity == 0 && !$0.isLit && !$0.isActive) } == true, "nothing reveals the places")
     }
 }

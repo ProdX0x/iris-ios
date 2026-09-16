@@ -52,7 +52,7 @@ struct AncreSceneTests {
     }
 
     private func scene(_ session: GameSession, _ resolved: ResolvedLevel) -> AncreSceneSnapshot? {
-        GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil).oculo?.ancre
+        GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil).oculo?.ancre
     }
 
     @Test("the silhouette is symmetric and framed on the phone around the point, clear of the top bar and of the hint, with the ring inside the face")
@@ -136,7 +136,7 @@ struct AncreSceneTests {
             if b.center != start.center || b.ringRadius != start.ringRadius { moved += 1 }
             if b.isHeadOnly {
                 headOnlyFrames += 1
-                let snapshot = GameSceneSnapshot(session: wild, resolved: resolved, showsRoute: false, showsGaze: true,
+                let snapshot = GameSceneSnapshot(session: wild, resolved: resolved, showsRoute: false, marker: .shown,
                                                  diagnostics: GazeDiagnostics(raw: wild.gaze.position, calibrated: wild.gaze.position))
                 if snapshot.gaze != nil || snapshot.diagnostics != nil { marked += 1 }
             }
@@ -145,7 +145,7 @@ struct AncreSceneTests {
         #expect(headOnlyFrames > 600 && mismatches == 0 && moved == 0 && marked == 0,
                 "head-only frames \(headOnlyFrames), scene mismatches \(mismatches), moves \(moved), gaze marks \(marked)")
         let fresh = resolved.makeSession(noiseSources: [SilentNoise()])
-        let fixation = GameSceneSnapshot(session: fresh, resolved: resolved, showsRoute: false, showsGaze: true, diagnostics: GazeDiagnostics(raw: fresh.gaze.position))
+        let fixation = GameSceneSnapshot(session: fresh, resolved: resolved, showsRoute: false, marker: .shown, diagnostics: GazeDiagnostics(raw: fresh.gaze.position))
         #expect(fixation.gaze != nil && fixation.diagnostics != nil, "during a fixation the gaze mark is drawn as before")
     }
 
@@ -220,7 +220,7 @@ struct AncreSceneTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise()])
         var moments: [(String, GameSceneSnapshot)] = []
         func capture(_ name: String) {
-            moments.append((name, GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil,
+            moments.append((name, GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil,
                                                     theme: chapter.theme)))
         }
         Self.drive(&session, frames: 30)

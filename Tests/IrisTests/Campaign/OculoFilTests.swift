@@ -103,7 +103,7 @@ struct OculoFilTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise()])
         session.placeGaze(at: Vector2(x: 30, y: 830))
         for _ in 0..<120 { _ = session.advance(by: Support.frame) }
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let oculo = try #require(snapshot.oculo)
         #expect(oculo.elements.contains { $0.role == .spark } && oculo.polylines.first.map { $0.points.count > 5 } == true)
     }

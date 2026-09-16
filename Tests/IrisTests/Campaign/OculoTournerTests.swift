@@ -116,7 +116,7 @@ struct OculoTournerTests {
         session.placeGaze(at: Vector2(x: 30, y: 830))
         session.ingestHeadPose(.neutral)
         for _ in 0..<60 { _ = session.advance(by: Support.frame) }
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let oculo = try #require(snapshot.oculo)
         let announced = oculo.elements.filter { $0.role == .announce }.count
         #expect(announced == 1 && oculo.arcs.count == 1)

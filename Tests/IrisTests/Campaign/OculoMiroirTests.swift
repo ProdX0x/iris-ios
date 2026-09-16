@@ -100,7 +100,7 @@ struct OculoMiroirTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise()])
         session.placeGaze(at: Support.bounds.center)
         for _ in 0..<Int(1.2 * 60) { _ = session.advance(by: Support.frame) }
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let oculo = try #require(snapshot.oculo)
         #expect(oculo.elements.filter { $0.role == .window }.count == 4)
         #expect(oculo.elements.contains { $0.role == .flash }, "the first lure flashes at 1.0 s")

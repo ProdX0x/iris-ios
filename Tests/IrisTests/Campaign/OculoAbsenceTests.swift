@@ -115,7 +115,7 @@ struct OculoAbsenceTests {
         var session = resolved.makeSession(noiseSources: [SilentNoise(), SilentNoise()])
         session.placeGaze(at: Vector2(x: 30, y: 830))
         _ = session.advance(by: Support.frame)
-        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, showsGaze: false, diagnostics: nil)
+        let snapshot = GameSceneSnapshot(session: session, resolved: resolved, showsRoute: false, marker: .hidden, diagnostics: nil)
         let presences = try #require(snapshot.oculo?.elements.filter { $0.role == .presence })
         let held = presences.filter { $0.isActive && $0.intensity == 1 }.count
         #expect(presences.count == 1 && held == 1)
