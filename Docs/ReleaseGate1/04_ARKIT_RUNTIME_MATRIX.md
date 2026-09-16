@@ -49,46 +49,54 @@ réelle ; c'est une **INFERENCE** fondée sur la convention ARKit, à confirmer 
 
 ## 3. Mesure — iPhone 15 Pro
 
-**NOT DETERMINED — non mesuré.** Écran verrouillé pendant toute la fenêtre de mesure. État relevé, et non supposé :
+**MEASUREMENT**, 16 septembre 2026, test vert :
 
 ```
-xcrun devicectl device info lockState --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A
-→ passcodeRequired: true    unlockedSinceBoot: true
+IRIS-ARKIT device.model=iPhone16,1 device.ios=26.6.1
+IRIS-ARKIT faceTracking.isSupported=true
+IRIS-ARKIT faceTracking.supportedNumberOfTrackedFaces=3
+IRIS-ARKIT faceTracking.formatCount=4
+IRIS-ARKIT format[0] resolution=1440x1080 fps=60 capturePosition=2 captureDeviceType=AVCaptureDeviceTypeBuiltInTrueDepthCamera hdr=true highResCapture=false
+IRIS-ARKIT format[1] resolution=1440x1080 fps=30 capturePosition=2 captureDeviceType=AVCaptureDeviceTypeBuiltInTrueDepthCamera hdr=true highResCapture=false
+IRIS-ARKIT format[2] resolution=1280x720  fps=60 capturePosition=2 captureDeviceType=AVCaptureDeviceTypeBuiltInTrueDepthCamera hdr=true highResCapture=false
+IRIS-ARKIT format[3] resolution=1280x720  fps=30 capturePosition=2 captureDeviceType=AVCaptureDeviceTypeBuiltInTrueDepthCamera hdr=true highResCapture=false
 ```
 
-`xcodebuild` attend puis abandonne, avec l'erreur exacte :
-
-```
-Error Domain=com.apple.dt.deviceprep Code=-3 "Unlock The Grey to Continue"
-Xcode cannot launch IrisTests on The Grey because the device is locked.
-```
-
-Contrairement à la capture StoreKit — qui n'a besoin que d'un lancement d'une seconde, son rapport étant ensuite
-récupérable écran verrouillé — **ce test exige que l'écran reste déverrouillé pendant toute son exécution**
-(installation du support de test, lancement, exécution : de l'ordre de quarante secondes). C'est la mesure la plus
-exigeante des deux.
-
-Commande à rejouer, écran déverrouillé et maintenu allumé :
-
-```sh
-xcodebuild -project Iris.xcodeproj -scheme Iris -configuration Debug \
-  -destination 'platform=iOS,id=00008130-000819961498001C' \
-  test -only-testing:IrisTests/DeviceCapabilityReportTests 2>&1 | grep IRIS-ARKIT
-```
+Note d'exécution : une première tentative a échoué (`test runner exited with code 74 before establishing
+connection`) parce que l'écran s'est reverrouillé pendant l'installation du support de test. La reprise, écran
+déverrouillé et maintenu, a réussi en moins d'une seconde d'exécution.
 
 ## 4. Matrice
 
-| | iPhone 14 Pro | iPhone 15 Pro |
-|---|---|---|
-| AR FACE TRACKING SUPPORTED | **oui (mesuré)** | *non mesuré* |
-| supportedNumberOfTrackedFaces | **3 (mesuré)** | *non mesuré* |
-| Nombre de formats vidéo | **4 (mesuré)** | *non mesuré* |
-| Résolutions | **1440×1080 et 1280×720 (mesuré)** | *non mesuré* |
-| Cadences | **60 et 30 fps (mesuré)** | *non mesuré* |
-| Type de capteur | **TrueDepth frontal (mesuré)** | *non mesuré* |
-| SUPPORTED VIDEO FORMAT DIFFERENCE | **NOT MEASURED** (il faut les deux côtés) | |
-| MEASURED FRAME RATE DIFFERENCE | **NOT MEASURED** | |
-| TRACKING INTERRUPTION DIFFERENCE | **NOT MEASURED** | |
+| | iPhone 14 Pro | iPhone 15 Pro | Différence |
+|---|---|---|---|
+| Modèle | `iPhone15,2` | `iPhone16,1` | — |
+| iOS | 26.5.2 | 26.6.1 | oui |
+| AR FACE TRACKING SUPPORTED | **oui** | **oui** | **non** |
+| supportedNumberOfTrackedFaces | **3** | **3** | **non** |
+| Nombre de formats vidéo | **4** | **4** | **non** |
+| format[0] | 1440×1080 @ 60 | 1440×1080 @ 60 | **non** |
+| format[1] | 1440×1080 @ 30 | 1440×1080 @ 30 | **non** |
+| format[2] | 1280×720 @ 60 | 1280×720 @ 60 | **non** |
+| format[3] | 1280×720 @ 30 | 1280×720 @ 30 | **non** |
+| Position de capture | frontale (2) | frontale (2) | **non** |
+| Type de capteur | `BuiltInTrueDepthCamera` | `BuiltInTrueDepthCamera` | **non** |
+| HDR vidéo | `true` sur les 4 | `true` sur les 4 | **non** |
+| Capture haute résolution recommandée | `false` sur les 4 | `false` sur les 4 | **non** |
+
+```
+SUPPORTED VIDEO FORMAT DIFFERENCE: NONE MEASURED
+MEASURED FRAME RATE DIFFERENCE (formats exposés): NONE MEASURED
+ARKIT RUNTIME DIFFERENCE: NOT PROVEN — aucune différence n'a été mesurée
+TRACKING INTERRUPTION DIFFERENCE: NOT MEASURED (exige une session de jeu réelle)
+```
+
+**Lecture.** Sur ce que l'API publique expose pour le suivi de visage, les deux appareils sont **identiques, champ
+par champ**. Cela rejoint exactement ce qu'Apple publie (document 03) : même caméra TrueDepth, même écran.
+
+Iris ne fixe aucun `videoFormat` (`ARKitGazeTrackingService` ne l'assigne pas) : ARKit applique son format par
+défaut, le premier de la liste — **1440×1080 à 60 fps**, identique sur les deux appareils. Ce point est une
+**INFERENCE** fondée sur la convention ARKit ; il n'a pas été vérifié sur une session réelle.
 
 ## 5. Ce qui n'a délibérément pas été mesuré
 

@@ -68,92 +68,78 @@ ou une autre source Apple faisant autorité, pourrait l'établir — et aucun ac
 
 Donc : le code d'Iris lit correctement le magasin **dès qu'une source de produits existe**.
 
-## 5. Mesure — iPhone 15 Pro
+## 5. Mesure réelle — iPhone 15 Pro
 
-**NOT DETERMINED — non mesuré.** L'iPhone 15 Pro (« The Grey », `iPhone16,1`, iOS 26.6.1, identifiant CoreDevice
-`21ABC186-DEFC-59C7-9671-85E4FA69DA9A`, UDID matériel `00008130-000819961498001C`) n'a pas pu être mesuré.
-
-**Cause, mesurée et non supposée :**
+**MEASUREMENT**, 16 septembre 2026, **même binaire**, **même méthode de lancement** (`devicectl`, donc **hors
+Xcode**), rapport récupéré dans le conteneur de l'application :
 
 ```
-xcrun devicectl device info lockState --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A
-→ passcodeRequired: true      unlockedSinceBoot: true
-
-(pour comparaison, au même instant)
-xcrun devicectl device info lockState --device CD9242BD-9650-52C9-BBA6-A30490C6DFA8
-→ passcodeRequired: false     unlockedSinceBoot: true
+IRIS-STOREKIT device.model=iPhone16,1 device.ios=26.6.1 app.version=1.0 app.build=1
+  app.bundle=net.steve-s.iris app.configuration=DEBUG
+  request.ids=net.steve-s.iris.access.promopass|net.steve-s.iris.unlock.fullgame
+  result.count=2
+  result.ids=net.steve-s.iris.access.promopass|net.steve-s.iris.unlock.fullgame
+  result.types=net.steve-s.iris.access.promopass=Auto-Renewable Subscription
+              |net.steve-s.iris.unlock.fullgame=Non-Consumable
+  result.displayPrice=2,99 €
+  entitlement=fullAccess
+  error.domain=(none)
+IRIS-STOREKIT device.model=iPhone16,1 storefront.country=FRA storefront.id=143442
+IRIS-STOREKIT device.model=iPhone16,1 appTransaction.environment=Xcode appTransaction.verified=yes
 ```
 
-L'écran du 15 Pro est verrouillé. iOS refuse alors tout lancement d'application :
+Deux relevés indépendants (16:26:56 et 16:29:29 UTC+2) donnent le même résultat.
 
-```
-FBSOpenApplicationServiceErrorDomain error 1 — RequestDenied — BSErrorCodeDescription = Locked
-"Unable to launch net.steve-s.iris because the device was not, or could not be, unlocked."
-```
+**La ligne décisive est la troisième :** `appTransaction.environment=**Xcode**`, vérifiée. `AppStore.Environment`
+ne prend que trois valeurs — `production`, `sandbox`, `xcode`. L'appareil tourne donc dans un **environnement de
+test StoreKit**, et le 14 Pro n'en a aucun (`(unavailable)`).
 
-Plus de cinquante tentatives ont été faites sur environ trente minutes ; **une seule** a réussi, immédiatement après
-un déverrouillage humain, avant que le verrouillage automatique ne reprenne. La build instrumentée **est installée**
-(conteneur `762A6828-119D-4F75-8B7E-5F73561F64EB`), et son répertoire `Documents` a été relu : **il est vide**,
-l'application n'y a jamais été lancée avec cette build.
+**Correction d'une inférence antérieure, et elle est importante.** Ce document supposait que le 15 Pro affichait le
+prix « parce qu'il était lancé depuis Xcode ». C'est mécaniquement faux : ce lancement-ci s'est fait par
+`devicectl`, sans Xcode, et le prix est apparu quand même. Ce que la mesure établit est plus précis :
+**l'environnement de test StoreKit persiste sur l'appareil** une fois qu'Xcode l'y a installé, et s'applique aux
+lancements suivants, quelle qu'en soit l'origine. C'est un état de l'appareil, pas un état du lancement.
 
-**Ce qui n'est pas bloquant :** la lecture de fichiers sur l'appareil fonctionne **même verrouillé**
-(`unlockedSinceBoot: true`). Un **seul** lancement suffit donc : l'instrument écrit son rapport dans le conteneur, et
-le fichier peut être récupéré ensuite à tout moment.
-
-### Procédure exacte, à exécuter une fois l'écran déverrouillé
-
-```sh
-# 1. déverrouiller l'écran de l'iPhone 15 Pro et le garder allumé
-xcrun devicectl device info lockState --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A   # attendre passcodeRequired: false
-
-# 2. lancer l'application (une seule fois suffit)
-xcrun devicectl device process launch \
-  --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A --terminate-existing net.steve-s.iris
-
-# 3. récupérer le rapport — fonctionne ensuite même écran verrouillé
-mkdir -p /tmp/iris-pull
-xcrun devicectl device copy from --device 21ABC186-DEFC-59C7-9671-85E4FA69DA9A \
-  --domain-type appDataContainer --domain-identifier net.steve-s.iris \
-  --source Documents/iris-storekit.log --destination /tmp/iris-pull/15Pro-storekit.log
-cat /tmp/iris-pull/15Pro-storekit.log
-```
+`entitlement=fullAccess` est cohérent avec l'achat simulé réussi rapporté par l'utilisateur : le droit acquis dans
+cet environnement de test y persiste lui aussi.
 
 ## 6. Matrice
 
 Les deux appareils portent **le même binaire** : `Iris.debug.dylib` SHA-256 `64968a8e660b0cefdfc69e0338d24e04…`,
-installé par la même commande `devicectl device install app`.
+installé par la même commande `devicectl device install app`, lancé par la même commande `devicectl device process
+launch`. Aucune des deux exécutions ne passe par Xcode.
 
 | | iPhone 14 Pro | iPhone 15 Pro |
 |---|---|---|
-| MODEL IDENTIFIER | `iPhone15,2` — **MEASURED** | `iPhone16,1` — **MEASURED** |
-| iOS | 26.5.2 (23F84) — **MEASURED** | 26.6.1 (23G83) — **MEASURED** |
-| BUILD Iris | 1.0 (1) Debug, même dylib — **CONTROLLED** | 1.0 (1) Debug, même dylib — **CONTROLLED** |
-| INSTALL METHOD | `devicectl device install app` — **CONTROLLED** | `devicectl device install app` — **CONTROLLED** |
-| SCHEME | aucun (lancé hors Xcode) — **MEASURED** | **NOT DETERMINED** (jamais lancé avec cette build) |
-| CONFIGURATION | Debug — **MEASURED** (`app.configuration=DEBUG`) | **NOT DETERMINED** |
-| STOREKIT CONFIG FILE | aucune — **MEASURED** | **NOT DETERMINED** |
-| PRODUCT REQUEST | 2 identifiants — **MEASURED** | **NOT DETERMINED** |
-| PRODUCTS RETURNED | **0** — **MEASURED** | **NOT DETERMINED** |
-| DISPLAY PRICE | **(none)** — **MEASURED** | **NOT DETERMINED** |
-| PURCHASE SHEET | non atteignable (bouton désactivé) — **MEASURED** | **NOT DETERMINED** |
-| ENTITLEMENT | `free` — **MEASURED** | **NOT DETERMINED** |
-| ERROR | aucune — **MEASURED** | **NOT DETERMINED** |
-| STOREFRONT | FRA / 143442 — **MEASURED** | **NOT DETERMINED** |
-| APP TRANSACTION ENV. | `(unavailable)`, `StoreKitError` code 2 = `unknown` — **MEASURED** | **NOT DETERMINED** |
+| MODEL IDENTIFIER | `iPhone15,2` — MEASURED | `iPhone16,1` — MEASURED |
+| iOS | 26.5.2 (23F84) — MEASURED | 26.6.1 (23G83) — MEASURED |
+| BUILD Iris | 1.0 (1) Debug, même dylib — CONTROLLED | 1.0 (1) Debug, même dylib — CONTROLLED |
+| INSTALL METHOD | `devicectl device install app` — CONTROLLED | identique — CONTROLLED |
+| LAUNCH METHOD | `devicectl`, hors Xcode — CONTROLLED | identique — CONTROLLED |
+| CONFIGURATION | Debug — MEASURED | Debug — MEASURED |
+| **STOREKIT TEST ENVIRONMENT** | **aucun** (`appTransaction.environment=(unavailable)`) — MEASURED | **`Xcode`**, vérifié — MEASURED |
+| PRODUCT REQUEST | 2 identifiants — MEASURED | 2 identifiants — MEASURED |
+| **PRODUCTS RETURNED** | **0** — MEASURED | **2** — MEASURED |
+| PRODUCT TYPES | — | `Non-Consumable` + `Auto-Renewable Subscription` — MEASURED |
+| **DISPLAY PRICE** | **(none)** — MEASURED | **2,99 €** — MEASURED |
+| ENTITLEMENT | `free` — MEASURED | `fullAccess` — MEASURED |
+| ERROR | aucune — MEASURED | aucune — MEASURED |
+| STOREFRONT | FRA / 143442 — MEASURED | FRA / 143442 — MEASURED |
 
 ### Environnement d'exécution identique ?
 
 ```
-EXECUTION ENVIRONMENT IDENTICAL: NOT DETERMINED
+EXECUTION ENVIRONMENT IDENTICAL: NO   (MEASURED)
 ```
 
-**Ce qui est maîtrisé** (donc identique par construction) : le binaire, la méthode d'installation, la configuration
-de compilation du paquet installé.
+**Ce qui est identique, et vérifié :** le binaire, la méthode d'installation, la méthode de lancement, la
+configuration de compilation, le storefront (France / 143442).
 
-**Ce qui n'est pas vérifié** : ce que l'environnement d'exécution du 15 Pro renvoie réellement — aucune ligne
-`IRIS-STOREKIT` n'en provient. Tant que cette ligne n'existe pas, écrire « environnement identique : OUI » serait
-une affirmation non prouvée. Deux différences subsistent d'ailleurs, connues et non contrôlables : la **version
-d'iOS** (26.5.2 / 26.6.1) et l'**état de session App Store** de chaque appareil.
+**Ce qui diffère, et c'est la seule différence pertinente mesurée :** le 15 Pro porte un **environnement de test
+StoreKit persistant** (`Xcode`), le 14 Pro n'en a aucun.
+
+Deux différences secondaires subsistent, sans effet démontré : la version d'iOS (26.5.2 / 26.6.1) et l'état de
+session App Store de chaque appareil.
 
 ## 7. Le mécanisme, établi par le dépôt
 
@@ -179,53 +165,61 @@ pas : ils activent le test eux-mêmes avec `SKTestSession(contentsOf:)`.
 ## 8. Cause
 
 ```
-STOREKIT DIFFERENCE ROOT CAUSE: NOT PROVEN
+STOREKIT DIFFERENCE ROOT CAUSE: PROVEN
 ```
 
-### Ce qui est PROUVÉ
+**La cause est un environnement de test StoreKit persistant sur l'iPhone 15 Pro, absent de l'iPhone 14 Pro.**
 
-| Énoncé | Fondement |
-|---|---|
-| Sur l'iPhone 14 Pro, hors Xcode, `Product.products(for:)` **se termine avec succès et rend zéro produit**, sans lever d'erreur | ligne `IRIS-STOREKIT` capturée deux fois, deux builds |
-| Sur ce même appareil, la liaison au magasin fonctionne | `storefront.country=FRA storefront.id=143442` |
-| Le **même code** rend 2 produits et un `displayPrice` dès qu'une configuration StoreKit est active | `IrisTests/StoreKitEntitlementTests`, 17 tests verts sur un runtime iOS 18.6 |
-| La configuration `Config/Iris.storekit` n'est attachée **qu'à l'action Run** du schéma | inspection du schéma généré (§7) |
-| Un lancement par `devicectl`, depuis l'écran d'accueil, par TestFlight ou par l'App Store n'utilise aucune action de schéma | fait de plateforme |
-| Iris se comporte correctement dans ce cas : prix inconnu, achat désactivé, message explicite, chapitres gratuits ouverts | test « when the store cannot be reached the price is unknown, the free chapters stay open » |
+Le raisonnement tient en quatre mesures, toutes faites avec le **même binaire** et la **même méthode de lancement** :
 
-### Ce qui est INFÉRÉ, et le reste
+| # | Mesure | Appareil |
+|---|---|---|
+| 1 | `appTransaction.environment=Xcode`, vérifié → 2 produits, `displayPrice=2,99 €` | 15 Pro |
+| 2 | `appTransaction.environment=(unavailable)` → 0 produit, aucune erreur | 14 Pro |
+| 3 | Storefront identique des deux côtés : France / 143442 | les deux |
+| 4 | Le même code rend 2 produits sous `SKTestSession` (17 tests verts) | simulateur |
 
-Que l'iPhone 15 Pro affichait 2,99 € **parce qu'il tournait depuis Xcode**, donc avec `Config/Iris.storekit` actif.
+La variable explicative est isolée : **tout le reste est contrôlé et identique**, seul l'environnement StoreKit
+diffère, et il suffit à expliquer l'écart dans les deux sens.
 
-L'observation humaine va dans ce sens — « la feuille StoreKit/Xcode de test apparaît », « le message indique
-explicitement un environnement de test » sont la signature du test StoreKit, qui sur un appareil n'existe que
-lancé par Xcode. **Cela reste une inférence** : aucune mesure ne provient du 15 Pro.
+**Ce que la mesure a corrigé.** L'hypothèse antérieure — « le 15 Pro affiche le prix parce qu'il est lancé depuis
+Xcode » — est **fausse dans sa mécanique**. Le 15 Pro a ici été lancé par `devicectl`, sans Xcode, et a quand même
+vu les produits. L'environnement de test StoreKit **persiste sur l'appareil** après qu'Xcode l'y a installé : c'est
+un état de l'appareil, pas un état du lancement. La conclusion pratique change : **désinstaller Iris du 15 Pro, ou
+purger son environnement de test, est nécessaire avant toute validation représentative d'un utilisateur réel.**
 
-### Ce qui est NOT DETERMINED, et qui ne doit pas être écrit autrement
+### Ce qui reste NOT DETERMINED
 
-- **Que l'App Store « ne connaisse pas » ces identifiants.** Une liste vide sans erreur est compatible avec cette
-  explication, mais aussi avec d'autres. Seul App Store Connect, ou une autre source Apple faisant autorité,
-  pourrait l'établir ; aucun accès n'a été utilisé.
-- **Que l'environnement d'exécution des deux appareils soit identique** (§6).
-- **Le rôle éventuel de la différence de version d'iOS.**
+- **Que l'App Store « ne connaisse pas » ces identifiants.** Le 14 Pro rend une liste vide sans erreur : c'est
+  compatible avec cette explication, et avec d'autres. Seuls App Store Connect ou une autre source Apple faisant
+  autorité trancheraient ; aucun accès n'a été utilisé. La mesure du 15 Pro ne l'éclaire pas, puisque ses deux
+  produits viennent de la configuration locale, pas de l'App Store.
+- **Le comportement en production** : aucun des deux appareils n'a interrogé l'App Store réel pour ces produits.
 
 ### Ce qui est ÉCARTÉ PAR MESURE
 
 | Hypothèse | Pourquoi elle tombe |
 |---|---|
-| Le matériel du 14 Pro | la lecture du magasin ne dépend d'aucune capacité matérielle, et le storefront a répondu |
-| Un défaut réseau sur le 14 Pro | `Storefront.current` a répondu et `Product.products` n'a levé aucune erreur |
-| Un bundle identifier différent | `app.bundle=net.steve-s.iris` mesuré, et l'inventaire des apps le confirme des deux côtés |
-| Un code Iris différent entre les deux appareils | le **même binaire** a été installé sur les deux (§6) |
+| Le matériel du 14 Pro | même binaire, même méthode ; le 14 Pro lit le storefront sans erreur, et le 15 Pro n'a rien de matériellement différent qui touche StoreKit |
+| Un défaut réseau sur le 14 Pro | `Storefront.current` a répondu ; `Product.products` n'a levé aucune erreur |
+| Un bundle identifier différent | `net.steve-s.iris` mesuré des deux côtés |
+| Un code Iris différent | **même dylib**, empreinte SHA-256 identique |
+| La version d'iOS | non écartée formellement, mais l'environnement StoreKit suffit à expliquer l'écart : aucune mesure n'appelle une seconde cause |
+
+### Conséquence pour Iris
+
+**Aucun défaut d'Iris n'est en cause.** Le comportement du 14 Pro est exactement celui qui est spécifié et testé
+quand le magasin ne fournit aucun produit : prix inconnu, achat désactivé, message explicite, **et les trois
+chapitres gratuits restent ouverts**. Le comportement du 15 Pro est celui attendu quand des produits existent.
 
 ## 9. Ce qui reste inconnu
 
-1. **La ligne `IRIS-STOREKIT` de l'iPhone 15 Pro** — appareil verrouillé. Commande au §5.
-2. **L'état réel des produits dans App Store Connect.** Aucun accès n'a été utilisé. Si les produits y avaient été
-   créés et approuvés depuis la mission 9, un appareil sans configuration locale pourrait les recevoir — ce que le
-   14 Pro n'a pas fait, ce qui est cohérent avec « non créés », sans le prouver.
-3. **Aucun compte de bac à sable n'a été vérifié** : `AppTransaction` était indisponible sur le 14 Pro, et Iris ne
-   lit jamais l'Apple Account.
+1. **L'état réel des produits dans App Store Connect.** Aucun accès n'a été utilisé. C'est la seule chose qui
+   dirait ce qu'un appareil sans environnement de test recevra en production.
+2. **Le comportement en bac à sable**, sur un appareil **sans** environnement de test StoreKit, une fois les
+   produits créés. C'est la validation qui compte pour la publication.
+3. **Aucun compte de bac à sable n'a été vérifié** : Iris ne lit jamais l'Apple Account, et `AppTransaction` était
+   indisponible sur le 14 Pro.
 
 ## 10. Conséquence pour la publication
 

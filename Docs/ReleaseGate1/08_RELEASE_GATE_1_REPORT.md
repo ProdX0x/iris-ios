@@ -31,51 +31,66 @@ Classification **G — décision humaine**.
 ## 2. Pourquoi le prix diffère entre les deux appareils ?
 
 ```
-STOREKIT DIFFERENCE ROOT CAUSE: NOT PROVEN
+STOREKIT DIFFERENCE ROOT CAUSE: PROVEN
 ```
 
-**MEASURED — iPhone 14 Pro, hors Xcode, deux captures indépendantes :** `Product.products(for:)` **se termine avec
-succès et rend zéro produit**, `error.domain=(none)`, storefront lu normalement (FRA / 143442),
-`AppTransaction.shared` indisponible (`StoreKitError` code 2, description mesurée : **`unknown`**).
+**La cause est un environnement de test StoreKit persistant sur le 15 Pro, absent du 14 Pro.**
 
-**MEASURED — même code, configuration StoreKit active :** 2 produits, `displayPrice` présent (17 tests verts).
+Les deux appareils ont été mesurés avec **le même binaire** (`Iris.debug.dylib`, SHA-256
+`64968a8e660b0cefdfc69e0338d24e04…`), installés et lancés par **les mêmes commandes `devicectl`**, tous deux **hors
+Xcode** :
 
-**PROVEN — dans le dépôt :** `Config/Iris.storekit` n'est attachée qu'à l'action **Run** du schéma ; aucun lancement
-hors Xcode n'utilise d'action de schéma.
+| | iPhone 14 Pro | iPhone 15 Pro |
+|---|---|---|
+| `appTransaction.environment` | **`(unavailable)`** | **`Xcode`**, vérifié |
+| Produits rendus | **0** | **2** |
+| `displayPrice` | **(none)** | **2,99 €** |
+| Droit | `free` | `fullAccess` |
+| Erreur | aucune | aucune |
+| Storefront | FRA / 143442 | FRA / 143442 |
 
-**INFERRED, et cela le reste :** que le 15 Pro affichait 2,99 € parce qu'il tournait depuis Xcode. L'observation
-humaine (feuille de test StoreKit, message d'environnement de test) le soutient sans le démontrer.
+Tout le reste étant contrôlé et identique, la variable explicative est isolée — et elle suffit à expliquer l'écart
+dans les deux sens.
 
-**NOT DETERMINED, et désormais écrit comme tel :**
-- que « l'App Store ne connaît pas ces identifiants » — une liste vide sans erreur est compatible avec cette
-  explication comme avec d'autres ; seule une source Apple faisant autorité trancherait, et aucun accès n'a été
-  utilisé ;
-- que l'environnement d'exécution des deux appareils soit identique ;
-- le rôle éventuel de l'écart de version d'iOS.
+**Ce que la mesure a corrigé.** L'hypothèse précédente — « le 15 Pro affiche le prix parce qu'il est lancé depuis
+Xcode » — était **mécaniquement fausse**. Ce lancement-ci s'est fait par `devicectl`, sans Xcode, et les produits
+sont apparus quand même : **l'environnement de test StoreKit persiste sur l'appareil**. C'est un état de
+l'appareil, pas un état du lancement. Conséquence pratique : **il faudra purger cet état du 15 Pro avant toute
+validation représentative d'un utilisateur réel.**
 
-**ÉCARTÉ PAR MESURE :** le matériel, le réseau, le bundle identifier, une différence de code (le **même binaire**,
-`Iris.debug.dylib` SHA-256 `64968a8e660b0cefdfc69e0338d24e04…`, a été installé sur les deux appareils).
+**NOT DETERMINED, et écrit comme tel :** que « l'App Store ne connaisse pas ces identifiants ». Le 14 Pro rend une
+liste vide *sans erreur* — compatible avec cette explication et avec d'autres. Seule une source Apple faisant
+autorité trancherait ; aucun accès à App Store Connect n'a été utilisé. La mesure du 15 Pro n'éclaire pas ce point,
+puisque ses deux produits viennent de la configuration locale.
+
+**ÉCARTÉ PAR MESURE :** le matériel, le réseau, le bundle identifier, une différence de code.
+
+**Aucun défaut d'Iris n'est en cause :** le 14 Pro se comporte exactement comme spécifié et testé quand le magasin
+ne fournit rien — prix inconnu, achat désactivé, message explicite, **chapitres gratuits ouverts**.
 
 ## 3. Différence matérielle démontrable ?
 
 ```
 GAZE HARDWARE DIFFERENCE: NOT PROVEN
+ARKIT RUNTIME DIFFERENCE: NOT PROVEN — aucune différence n'a été mesurée
 ```
 
-**MEASURED, sources Apple :** caméra TrueDepth et écran décrits **dans les mêmes termes** pour les deux appareils
-(12 Mpx, ƒ/1.9, autofocus Focus Pixels ; 2556×1179 à 460 ppi, ProMotion 120 Hz, mêmes luminances). Seules
-différences publiées : A16 Bionic → A17 Pro, GPU 5 → 6 cœurs ; Neural Engine 16 cœurs des deux côtés, **sans débit
-publié**.
+**MEASURED, sources Apple :** caméra TrueDepth et écran décrits **dans les mêmes termes** pour les deux appareils.
+Seules différences publiées : A16 Bionic → A17 Pro, GPU 5 → 6 cœurs ; Neural Engine 16 cœurs des deux côtés, sans
+débit publié.
 
 **NOT PUBLISHED BY APPLE :** précision du regard, erreur angulaire, latence, précision des transformations
 oculaires — pour aucun des deux appareils.
 
-**MEASURED, ARKit sur le 14 Pro :** face tracking supporté, 3 visages, 4 formats TrueDepth frontaux, jusqu'à
-1440×1080 à 60 fps.
+**MEASURED, ARKit sur les deux appareils — identiques champ par champ :**
 
-```
-ARKIT RUNTIME DIFFERENCE: NOT PROVEN   (le 15 Pro n'a pas pu être mesuré)
-```
+| | 14 Pro | 15 Pro |
+|---|---|---|
+| `isSupported` | true | true |
+| visages suivis | 3 | 3 |
+| formats | 4 | 4 |
+| résolutions / cadences | 1440×1080 @ 60 et 30 ; 1280×720 @ 60 et 30 | **identiques** |
+| capteur | TrueDepth frontal | **identique** |
 
 ## 4. Que peut-on affirmer sur le suivi observé sur le 14 Pro ?
 
@@ -127,7 +142,11 @@ Chapitre III-7 non ouvert. Aucun mode d'aide, aucun viseur, aucun halo implémen
 
 | # | Blocage | Nature |
 |---|---|---|
-| 1 | **iPhone 15 Pro : écran verrouillé** (`passcodeRequired: true`, mesuré). Les deux mesures attendent un déverrouillage humain. | humaine |
-| 2 | **État réel des produits dans App Store Connect** — aucun accès utilisé. | humaine |
-| 3 | **Comparaison du regard non exécutée** — protocole prêt, exige une personne. | humaine |
-| 4 | **Heure de l'épisode de flash** — sans elle, aucune corrélation possible. | humaine |
+| 1 | **État réel des produits dans App Store Connect** — aucun accès utilisé. Seule chose qui dise ce qu'un appareil sans environnement de test recevra en production. | humaine |
+| 2 | **Achat en bac à sable sur un appareil sans environnement de test StoreKit**, une fois les produits créés. C'est la validation qui compte pour la publication. | humaine |
+| 3 | **Comparaison du regard non exécutée** — protocole prêt (document 05), exige une personne devant l'écran. | humaine |
+| 4 | **Heure de l'épisode de flash** — sans elle, aucune corrélation possible, même sur des données existantes. | humaine |
+
+**Note d'hygiène, découverte par la mesure :** l'iPhone 15 Pro porte un environnement de test StoreKit persistant et
+un droit `fullAccess` acquis par achat simulé. Tant qu'ils ne sont pas purgés, cet appareil **ne peut pas** servir à
+valider l'expérience d'un utilisateur réel.
