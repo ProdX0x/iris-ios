@@ -1,7 +1,8 @@
 // SettingsView.swift
 // Layer: Presentation
 // Purpose: Sound effects, ambience, haptics, gaze diagnostics, recalibration, progress reset, privacy note; the
-// sheet's title and close action are the system's navigation chrome (the Carnet has its own destination)
+// sheet's title and close action are the system's navigation chrome, and its panels stand in the chambre noire
+// (the Carnet has its own destination)
 
 import SwiftUI
 
@@ -50,7 +51,9 @@ struct SettingsView: View {
                 .padding(DSSpacing.gutter)
             }
             .dsSoftScrollEdges()
-            .background(DSColor.Identity.surface)
+            // The sheet stands in the chambre noire like every other screen: a flat opaque surface left the glass
+            // of its panels nothing to transmit.
+            .background { DSBackground(intensity: .calm) }
             .navigationTitle("réglages")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

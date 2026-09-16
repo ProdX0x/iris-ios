@@ -1,6 +1,6 @@
 // DSOverlayPanel.swift
 // Layer: DesignSystem
-// Purpose: Veil over the game with a centred title, subtitle and actions
+// Purpose: Veil over the game, lit by the spectral environment, with a centred title, subtitle and actions
 
 import SwiftUI
 
@@ -24,8 +24,11 @@ struct DSOverlayPanel<Actions: View>: View {
 
     var body: some View {
         ZStack {
+            // The veil dims the level; the spectral environment above it keeps the ground from becoming a
+            // mathematically flat black, which left the glass of the actions nothing to transmit.
             DSColor.Navigation.veil.opacity(dim)
                 .ignoresSafeArea()
+            DSSpectralEnvironment(intensity: .veiled)
             ScrollView(showsIndicators: false) {
                 VStack(spacing: DSSpacing.l) {
                     VStack(spacing: DSSpacing.s) {

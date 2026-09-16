@@ -1,7 +1,8 @@
 // DSBackground.swift
 // Layer: DesignSystem
-// Purpose: The interface's chambre noire (identity tokens): ink ground, abyss centre, faint iris fibres, vignette;
-// optionally breathing. The game draws its own field from chapter tokens (GameFieldBackground)
+// Purpose: The interface's chambre noire (identity tokens): ink ground, abyss centre, the spectral environment that
+// gives Apple's glass something to transmit, faint iris fibres, vignette; optionally breathing. The game draws its
+// own field from chapter tokens (GameFieldBackground)
 
 import SwiftUI
 
@@ -25,6 +26,7 @@ struct DSBackground: View {
             DSColor.Identity.ground
             RadialGradient(colors: [DSColor.Identity.groundAbyss, DSColor.Identity.ground], center: .center, startRadius: 0, endRadius: 520)
                 .opacity(breath ? 1 : 0.86)
+            DSSpectralEnvironment(intensity: intensity == .vivid ? .vivid : .calm)
             DSIrisFibers(opacity: intensity == .vivid ? 0.045 : 0.03, color: DSColor.Identity.textPrimary)
             RadialGradient(colors: [DSColor.Identity.accent.opacity(intensity == .vivid ? 0.07 : 0.035), .clear],
                            center: UnitPoint(x: 0.5, y: 0.42), startRadius: 0, endRadius: 360)
