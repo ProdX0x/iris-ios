@@ -17,7 +17,10 @@ final class MockNavigator: GameNavigating, CameraAccessNavigating, GazeSetupNavi
     private(set) var cameraAbandonedCount = 0
     private(set) var setupCompleted: [GazeSetupIntent] = []
     private(set) var setupCancelled: [GazeSetupIntent] = []
+    private(set) var lockedLevels: [String] = []
     var recordToReturn = LevelRecord()
+    /// Levels the navigator refuses to continue into; empty means everything is open.
+    var lockedLevelIDs: Set<String> = []
 
     func gameDidStart(level: LevelDefinition) {
         startedLevels.append(level.id)
@@ -26,6 +29,14 @@ final class MockNavigator: GameNavigating, CameraAccessNavigating, GazeSetupNavi
     func gameDidComplete(level: LevelDefinition, outcome: LevelOutcome) -> LevelRecord {
         completions.append((level.id, outcome))
         return recordToReturn
+    }
+
+    func gameMayContinue(to level: LevelDefinition) -> Bool {
+        !lockedLevelIDs.contains(level.id)
+    }
+
+    func gameDidReachLockedLevel(_ level: LevelDefinition) {
+        lockedLevels.append(level.id)
     }
 
     func gameDidRequestChapters() {

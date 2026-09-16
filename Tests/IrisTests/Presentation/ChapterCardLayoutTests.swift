@@ -14,12 +14,13 @@ struct ChapterCardLayoutTests {
     /// Width a card receives on each phone: screen width minus the two page gutters.
     static let cardWidths: [CGFloat] = [375 - 48, 393 - 48, 402 - 48, 430 - 48, 440 - 48]
 
-    private func card(_ chapter: ChapterDefinition, unlocked: Bool = true) -> ChapterCard {
+    private func card(_ chapter: ChapterDefinition, unlocked: Bool = true, accessible: Bool = true) -> ChapterCard {
         let nodes = chapter.levels.enumerated().map { index, level in
             (level: level, state: index == chapter.levels.count - 1 ? LevelNode.State.next : .completed, eclats: Set(Eclat.allCases))
         }
-        return ChapterCard(chapter: chapter, isUnlocked: unlocked, completed: chapter.levels.count - 1, nodes: nodes,
-                           lockedHint: "Terminez le chapitre précédent", onSelect: { _ in })
+        return ChapterCard(chapter: chapter, isUnlocked: unlocked, isAccessible: accessible, completed: chapter.levels.count - 1,
+                           nodes: nodes, lockedHint: "Terminez le chapitre précédent", fullAccessPrice: nil,
+                           onSelect: { _ in }, onUnlock: {})
     }
 
     private func fittingSize(_ view: some View, width: CGFloat) -> CGSize {

@@ -43,4 +43,21 @@ struct LaunchOptionsTests {
         #expect(counts.count >= 2)
         #expect(all.encounteredElements == Set(GameElement.allCases))
     }
+
+    @Test("the commercial debug options: the explanation again, and a fixed right")
+    func commercialOptions() {
+        let none = LaunchOptions.parse(["Iris"])
+        #expect(!none.forcesOnboarding)
+        #expect(none.entitlement == nil)
+
+        let forced = LaunchOptions.parse(["Iris", "--iris-onboarding"])
+        #expect(forced.forcesOnboarding)
+
+        #expect(LaunchOptions.parse(["Iris", "--iris-entitlement", "free"]).entitlement == .free)
+        #expect(LaunchOptions.parse(["Iris", "--iris-entitlement", "promotional"]).entitlement == .promotionalAccess)
+        #expect(LaunchOptions.parse(["Iris", "--iris-entitlement", "promo"]).entitlement == .promotionalAccess)
+        #expect(LaunchOptions.parse(["Iris", "--iris-entitlement", "full"]).entitlement == .fullAccess)
+        #expect(LaunchOptions.parse(["Iris", "--iris-entitlement", "gratuit"]).entitlement == nil)
+        #expect(LaunchOptions.parse(["Iris", "--iris-entitlement"]).entitlement == nil)
+    }
 }

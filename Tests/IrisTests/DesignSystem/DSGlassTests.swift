@@ -14,15 +14,16 @@ import Testing
 @Suite("Liquid Glass design roles")
 @MainActor
 struct DSGlassTests {
-    /// Navigation sources, re-frozen by the native Liquid Glass migration (the tab bar, the toolbar and the three
-    /// destinations); they change again only with a deliberate navigation decision and this table.
+    /// Navigation sources, re-frozen by the monetisation release (the coordinator now answers access questions, the
+    /// sheets are three, and the root view carries the first-launch explanation and starts the store off the first
+    /// frame); they change again only with a deliberate navigation decision and this table.
     static let navigationSources: [String: String] = [
-        "Navigation/AppCoordinator.swift": "4e7f7364fc1310df952baa9e3045163468f1d8cb5a8728840f201ff5949e641c",
+        "Navigation/AppCoordinator.swift": "798929a4bcf3f1612373b788a6871934b7f9619c047636ed0b76d1945ec1900b",
         "Navigation/AppDestination.swift": "57ee608cdd0b66bd907ac0f7d9368004510b28e40e77e2009484c391f1d5828f",
         "Navigation/AppRoute.swift": "8d05c60e7f49851d4c37fbc045e9c7c6aa6361b15681a5fb13ddf930d77fb73e",
-        "Navigation/AppSheet.swift": "c3c0020839cf05cc9bf69436f3dabb88737c1e25746a1fec60734385964f2f92",
+        "Navigation/AppSheet.swift": "06d85b8ecc6f8038d69388b79c28ba84b130a796789c3b7b5f1d590ca672f84b",
         "Navigation/HomeSummary.swift": "ad8b42102791d939250b8663085566d85336845280b74d5257efc92eb9dfb2e9",
-        "Navigation/RootView.swift": "b0819af995c28b7e489621f6cc0221a90a48b617400c116338bc7dd37feb64ca",
+        "Navigation/RootView.swift": "677fd4ef56d4053d489a27ef3928e5ce3840876bf47d84eed97c11f38bfccd70",
     ]
 
     /// Project root, derived from this file's compile-time path (Tests/IrisTests/DesignSystem/...).
@@ -38,7 +39,7 @@ struct DSGlassTests {
 
     private func appSources(includingGlass: Bool = false) throws -> [(path: String, text: String)] {
         var sources: [(path: String, text: String)] = []
-        for base in ["App", "AR", "Audio", "Domain", "GameEngine", "Haptics", "Navigation", "Features", "DesignSystem"] {
+        for base in ["App", "AR", "Audio", "Commerce", "Domain", "GameEngine", "Haptics", "Navigation", "Features", "DesignSystem"] {
             let files = FileManager.default.enumerator(atPath: Self.projectRoot.appendingPathComponent(base).path)?.allObjects as? [String] ?? []
             for relative in files.sorted() where relative.hasSuffix(".swift") {
                 let path = "\(base)/\(relative)"
@@ -222,9 +223,13 @@ struct DSGlassTests {
         #expect(sources.contains { $0.path == "DesignSystem/Glass/DSGlassRecipe.swift" })
     }
 
-    @Test("K: navigation is the system's own: one tab view of three destinations in Navigation, the sheet's chrome in Settings, nothing hand-made elsewhere")
+    @Test("K: navigation is the system's own: one tab view of three destinations in Navigation, the system's chrome in the three sheets, nothing hand-made elsewhere")
     func navigationIsNative() throws {
-        let allowed = ["Navigation/", "Features/Settings/SettingsView.swift"]
+        // The three sheets take the system's navigation chrome for their title and their close action, exactly as the
+        // settings sheet does; no other screen builds navigation of its own.
+        let sheetHosts = ["Features/Settings/SettingsView.swift", "Features/Paywall/PaywallView.swift",
+                          "Features/HowToPlay/HowToPlayView.swift"]
+        let allowed = ["Navigation/"] + sheetHosts
         for (path, text) in try appSources() where !allowed.contains(where: { path.hasPrefix($0) }) {
             for word in ["TabView", "NavigationStack", ".toolbar", ".tabItem"] {
                 #expect(!text.contains(word), "\(path) builds navigation chrome itself")
@@ -233,8 +238,17 @@ struct DSGlassTests {
         let root = try String(contentsOf: Self.projectRoot.appendingPathComponent("Navigation/RootView.swift"), encoding: .utf8)
         #expect(root.contains("TabView(selection:") && root.contains(".tabItem") && root.contains("NavigationStack"))
         #expect(root.contains("dsTabBarMinimizesOnScroll()"), "the tab bar keeps the system's minimise behaviour")
-        let settings = try String(contentsOf: Self.projectRoot.appendingPathComponent("Features/Settings/SettingsView.swift"), encoding: .utf8)
-        #expect(settings.contains("NavigationStack") && settings.contains(".toolbar"), "the sheet's title and close action are the system's")
+        for path in sheetHosts {
+            let text = try String(contentsOf: Self.projectRoot.appendingPathComponent(path), encoding: .utf8)
+            #expect(text.contains("NavigationStack") && text.contains(".toolbar"), "\(path): the title and close action must be the system's")
+            #expect(text.contains("navigationBarTitleDisplayMode(.inline)"), "\(path)")
+            #expect(!text.contains("TabView"), "\(path) builds a tab bar of its own")
+        }
+        // The onboarding is a full-screen explanation, not a navigation stack and not a tab view.
+        let onboarding = try String(contentsOf: Self.projectRoot.appendingPathComponent("Features/Onboarding/OnboardingView.swift"), encoding: .utf8)
+        #expect(!onboarding.contains("TabView") && !onboarding.contains("NavigationStack"))
+        #expect(root.contains("fullScreenCover(isPresented: onboardingBinding)"))
+        #expect(AppSheet.allCases == [.settings, .paywall, .howToPlay])
         #expect(AppDestination.allCases == [.seuil, .chapitres, .carnet])
         for (path, expected) in Self.navigationSources.sorted(by: { $0.key < $1.key }) {
             let data = try Data(contentsOf: Self.projectRoot.appendingPathComponent(path))

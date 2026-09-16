@@ -48,7 +48,7 @@ struct GameContentFreezeTests {
         "Domain/Progress/LevelOutcome.swift": "8b37a415ab6ea71fa193cd8f9eade1c3c829bd9d72c53c76863908e42efdaa38",
         "Domain/Progress/LevelRecord.swift": "32bc9e28fc7f96fbe0d9169bd2259454e678edc0bec1791a26e11d26c1064cf2",
         "Domain/Progress/ProgressStore.swift": "6319eb8305307d18d3562b89a9fc359e242f74728bd1ababd19a051bf07c231a",
-        "Features/Game/ViewModels/GameViewModel.swift": "5f7780048921e6dd0880c06658f0c20591beedaae509bea85b30b658d50016a9",
+        "Features/Game/ViewModels/GameViewModel.swift": "5617a3675415813f8165f97ebcad999c4e8c5007c5dbc132d41bbbd3860577cd",
         "Features/GazeSetup/ViewModels/GazeSetupViewModel.swift": "ae1a60cb3d9a28ecbbe3b19449d0e25b252b897056cba54fe5f4b2fe3c09ccbe",
         "App/Platform/DisplayLinkGameClock.swift": "7d2aa0eff275c972af2db3db34567fde506cf29ce13fe323af4844fbe501ee8e",
     ]
@@ -105,6 +105,9 @@ struct GameContentFreezeTests {
         "GameEngine/Environment/VeilleuseState.swift": "4699c7ac459384706e378ed397bc4f7bcfe7afaccef2a8f60c5218ea6df59b19",
     ]
 
+    /// GameViewModel was re-frozen once, by the monetisation release: `playNext()` now asks its navigator whether the
+    /// campaign may continue into the next level before loading it (six added lines, nothing removed). No physics,
+    /// no gaze, no audio, no haptic and no level parameter was touched; the game still knows nothing of any store.
     private func expectUnchanged(_ table: [String: String]) throws {
         for (path, expected) in table.sorted(by: { $0.key < $1.key }) {
             let data = try Data(contentsOf: Self.projectRoot.appendingPathComponent(path))

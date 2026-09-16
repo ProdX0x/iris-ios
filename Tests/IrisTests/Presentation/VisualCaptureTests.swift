@@ -58,8 +58,9 @@ struct VisualCaptureTests {
         let cards = VStack(spacing: 24) {
             ForEach(Array(Campaign.chapters.enumerated()), id: \.offset) { offset, chapter in
                 let open = offset < Campaign.chapters.count - 1
-                ChapterCard(chapter: chapter, isUnlocked: open, completed: open ? 2 : 0, nodes: nodes(chapter, open: open),
-                            lockedHint: "Terminez le chapitre précédent", onSelect: { _ in })
+                ChapterCard(chapter: chapter, isUnlocked: open, isAccessible: true, completed: open ? 2 : 0,
+                            nodes: nodes(chapter, open: open), lockedHint: "Terminez le chapitre précédent",
+                            fullAccessPrice: nil, onSelect: { _ in }, onUnlock: {})
             }
         }
         .padding(.horizontal, 24)
