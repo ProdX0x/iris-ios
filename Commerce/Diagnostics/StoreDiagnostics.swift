@@ -1,8 +1,9 @@
 // StoreDiagnostics.swift
 // Layer: Commerce (DEBUG instrumentation)
-// Purpose: One structured line per store read, written to standard output so that `devicectl … --console` can
-// capture it from a physical device. It answers one question: what did StoreKit actually return, on which device,
-// in which environment. It never prints an Apple Account, a token, a receipt or any part of one.
+// Purpose: One structured line per store read, written to standard output AND appended to a file in the app's own
+// container, so that a physical device can be measured either with `devicectl … --console` or by pulling the file
+// afterwards. It answers one question: what did StoreKit actually return, on which device, in which environment.
+// It never writes an Apple Account, a token, a receipt or any part of one.
 
 #if DEBUG
 import Foundation
@@ -11,13 +12,16 @@ import StoreKit
 enum StoreDiagnostics {
     /// Marker the capture scripts grep for.
     static let marker = "IRIS-STOREKIT"
+    /// File appended to inside the app's Documents directory, pullable with `devicectl device copy from`.
+    static let fileName = "iris-storekit.log"
 
-    /// Everything a differential between two devices needs, and nothing else.
+    /// The facts that must always be captured. This function performs **no await on StoreKit**: a store call that
+    /// hangs (a receipt refresh waiting on a sign-in, for instance) can never prevent the measurement from landing.
     static func report(requested: Set<String>,
                        returned: [Product],
                        fullGameDisplayPrice: String?,
                        failure: (any Error)?,
-                       entitlement: AccessEntitlement) async {
+                       entitlement: AccessEntitlement) {
         var fields: [(String, String)] = [
             ("device.model", hardwareModel),
             ("device.ios", systemVersion),
@@ -40,38 +44,65 @@ enum StoreDiagnostics {
         } else {
             fields.append(("error.domain", "(none)"))
         }
-        fields.append(contentsOf: await storeEnvironment())
-        let body = fields.map { "\($0.0)=\($0.1)" }.joined(separator: " ")
-        print("\(marker) \(body)")
+        emit(fields)
+        // The storefront and the transaction environment come from calls that may take their time, or never answer
+        // at all. They are reported on their own line, and their absence costs nothing.
+        Task { await reportEnvironment() }
     }
 
-    /// Storefront and transaction environment, when the public API can answer at all. `AppStore.Environment` is the
-    /// value that tells a StoreKit-testing run (`xcode`) apart from a sandbox or production one.
-    private static func storeEnvironment() async -> [(String, String)] {
-        var fields: [(String, String)] = []
+    /// Storefront and transaction environment, on a line of their own. `AppStore.Environment` is the value that
+    /// tells a StoreKit-testing run (`xcode`) apart from a sandbox or a production one.
+    private static func reportEnvironment() async {
+        var fields: [(String, String)] = [("device.model", hardwareModel)]
         if let storefront = await Storefront.current {
             fields.append(("storefront.country", storefront.countryCode))
             fields.append(("storefront.id", storefront.id))
         } else {
             fields.append(("storefront.country", "(none)"))
         }
+        emit(fields)
+
+        var environment: [(String, String)] = [("device.model", hardwareModel)]
         do {
-            let shared = try await AppTransaction.shared
-            switch shared {
+            switch try await AppTransaction.shared {
             case let .verified(appTransaction):
-                fields.append(("appTransaction.environment", appTransaction.environment.rawValue))
-                fields.append(("appTransaction.verified", "yes"))
+                environment.append(("appTransaction.environment", appTransaction.environment.rawValue))
+                environment.append(("appTransaction.verified", "yes"))
             case let .unverified(appTransaction, _):
-                fields.append(("appTransaction.environment", appTransaction.environment.rawValue))
-                fields.append(("appTransaction.verified", "no"))
+                environment.append(("appTransaction.environment", appTransaction.environment.rawValue))
+                environment.append(("appTransaction.verified", "no"))
             }
         } catch {
             let nsError = error as NSError
-            fields.append(("appTransaction.environment", "(unavailable)"))
-            fields.append(("appTransaction.error", "\(nsError.domain)/\(nsError.code)"))
-            fields.append(("appTransaction.errorDescription", String(describing: error)))
+            environment.append(("appTransaction.environment", "(unavailable)"))
+            environment.append(("appTransaction.error", "\(nsError.domain)/\(nsError.code)"))
+            environment.append(("appTransaction.errorDescription", String(describing: error)))
         }
-        return fields
+        emit(environment)
+    }
+
+    // MARK: Writing
+
+    private static func emit(_ fields: [(String, String)]) {
+        let line = "\(marker) " + fields.map { "\($0.0)=\($0.1)" }.joined(separator: " ")
+        print(line)
+        append(line)
+    }
+
+    /// Appends to the app's own Documents directory. Failure is silent: the printed line remains.
+    private static func append(_ line: String) {
+        let directories = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documents = directories.first else { return }
+        let url = documents.appendingPathComponent(fileName)
+        let stamped = "\(ISO8601DateFormatter().string(from: Date())) \(line)\n"
+        guard let data = stamped.data(using: .utf8) else { return }
+        if let handle = try? FileHandle(forWritingTo: url) {
+            defer { try? handle.close() }
+            _ = try? handle.seekToEnd()
+            try? handle.write(contentsOf: data)
+        } else {
+            try? data.write(to: url)
+        }
     }
 
     // MARK: Device facts
@@ -83,8 +114,7 @@ enum StoreDiagnostics {
         guard size > 0 else { return "(unknown)" }
         var buffer = [CChar](repeating: 0, count: size)
         sysctlbyname("hw.machine", &buffer, &size, nil, 0)
-        let bytes = buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }
-        return String(decoding: bytes, as: UTF8.self)
+        return String(decoding: buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }, as: UTF8.self)
     }
 
     private static var systemVersion: String {

@@ -50,11 +50,11 @@ final class StoreKitEntitlementService: StorePurchasing {
         await loadProducts()
         await refreshEntitlements()
         #if DEBUG
-        await StoreDiagnostics.report(requested: StoreProductID.all,
-                                      returned: Array(products.values),
-                                      fullGameDisplayPrice: fullGameDisplayPrice,
-                                      failure: lastLoadFailure,
-                                      entitlement: entitlement)
+        StoreDiagnostics.report(requested: StoreProductID.all,
+                                returned: Array(products.values),
+                                fullGameDisplayPrice: fullGameDisplayPrice,
+                                failure: lastLoadFailure,
+                                entitlement: entitlement)
         #endif
     }
 
