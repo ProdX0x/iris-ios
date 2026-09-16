@@ -197,13 +197,14 @@ struct PauseGazeAssistanceTests {
         }
     }
 
-    @Test("the pause offers exactly the three modes, and the compact variant drops only the long copy")
+    @Test("the pause offers exactly the three modes, each one saying what it does")
     func compactVariantKeepsTheChoices() {
         #expect(GazeAssistanceMode.allCases.map(\.title) == ["Classique", "Guidé", "Visible"])
-        // Both variants draw the same three rows from the same case list; only the summary is left out, and it
-        // stays available to VoiceOver as the row's accessibility value.
+        // Both variants draw the same three rows from the same case list. They differ only in how much of the
+        // mode they explain, and PauseGazeCopyTests holds that difference to its exact words.
         for mode in GazeAssistanceMode.allCases {
             #expect(mode.summary.isEmpty == false)
+            #expect(mode.compactSummary.isEmpty == false)
         }
     }
 }
