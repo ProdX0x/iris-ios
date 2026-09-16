@@ -70,3 +70,71 @@ Raffinement approuvé **après** la validation ci-dessus, donc **non validé** �
 | **Z** | Calme | le panneau de pause reste compact et lisible ; le verre n'est pas cassé ; rien n'est tronqué en gros caractères | ☐ |
 
 Aucun de ces points ne doit être marqué HUMAN PASS sans retour humain.
+
+
+---
+
+## Section finale : microcopie de la pause, calibration, accessibilité (17 septembre 2026)
+
+Ajoutée après le raffinement d'accès en pause. **Rien ici n'est validé.**
+
+### Taille de texte normale
+
+| # | À vérifier | Verdict |
+|---|---|---|
+| **A** | Pause → « aide au regard » est visible | ☐ |
+| **B** | Classique → **Sans repère** s'affiche dessous | ☐ |
+| **C** | Guidé → **Repère ponctuel** s'affiche dessous | ☐ |
+| **D** | Visible → **Repère permanent** s'affiche dessous | ☐ |
+| **E** | le mode sélectionné reste évident au premier coup d'œil | ☐ |
+| **F** | la ligne de calibration reste lisible | ☐ |
+| **G** | « Plus l'écart est faible, plus le suivi du regard est précis. » est lisible juste dessous | ☐ |
+| **H** | **Reprendre** reste visible et atteignable | ☐ |
+| **I** | **Recommencer** reste visible et atteignable | ☐ |
+| **J** | **Chapitres** reste visible et atteignable | ☐ |
+
+### Première traversée de l'apprentissage
+
+| # | À vérifier | Verdict |
+|---|---|---|
+| **K** | I-1 : les trois choix sont grisés | ☐ |
+| **L** | I-2 : les trois choix sont grisés | ☐ |
+| **M** | I-3 : les trois choix sont grisés | ☐ |
+| **N** | « L'aide au regard est guidée pendant les premiers niveaux d'apprentissage. » est lisible | ☐ |
+| **O** | après I-3 terminé, les choix redeviennent actifs | ☐ |
+
+### Taille de texte (Dynamic Type)
+
+Réglages iOS → Affichage et luminosité → Taille du texte, puis Accessibilité → Affichage et taille du texte.
+
+| # | À vérifier | Verdict |
+|---|---|---|
+| **P** | pause avec un texte iOS agrandi | ☐ |
+| **Q** | pause avec une taille d'accessibilité | ☐ |
+| **R** | aucun bouton principal ne devient inatteignable (le panneau défile) | ☐ |
+| **S** | aucun texte porteur de sens n'est coupé | ☐ |
+
+### VoiceOver
+
+| # | À vérifier | Attendu | Verdict |
+|---|---|---|---|
+| **T** | Classique | « Classique, sans repère » | ☐ |
+| **U** | Guidé | « Guidé, repère ponctuel » | ☐ |
+| **V** | Visible | « Visible, repère permanent » | ☐ |
+| **W** | sélection | le mode choisi est annoncé comme sélectionné | ☐ |
+| **X** | verrou d'apprentissage | pendant I-1/I-2/I-3 les choix s'annoncent comme indisponibles, et la raison est lue | ☐ |
+
+### Stabilité
+
+| # | À vérifier | Verdict |
+|---|---|---|
+| **Y** | aucune latence nouvelle à l'ouverture de la pause | ☐ |
+| **Z** | aucun flash nouveau attribuable à ce raffinement | ☐ |
+
+Aucun de ces points ne doit être marqué HUMAN PASS sans retour humain.
+
+**Ce qui a été vérifié techniquement, et ne vous demande donc que confirmation :** les trois libellés compacts,
+la phrase de calibration, la conservation des explications longues des Réglages, et le fait que le sélecteur
+— compact comme détaillé — tient dans la largeur de chaque iPhone jusqu'à `accessibility5` sans déborder.
+**Ce que la machine ne sait pas dire :** ce que VoiceOver prononce réellement, et si le panneau reste
+confortable une fois le texte agrandi. C'est P à X.
