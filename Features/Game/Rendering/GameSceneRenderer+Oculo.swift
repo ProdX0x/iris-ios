@@ -78,7 +78,19 @@ extension GameSceneRenderer {
         case .distractor:
             halo(18 * scale, DSColor.Chapter.trouble, 0.35 * element.intensity)
             context.fill(disc(4 * scale), with: .color(DSColor.Chapter.lueurCore.opacity(0.9 * element.intensity)))
-        case .spark, .lantern:
+        case .spark:
+            // CHAPTER III-7: `isLit` is the engine's own `isNear` — the accompaniment it already counts, with its
+            // hysteresis. The spark answers the gaze with light; it changes nothing about the rule.
+            let accompanied = element.isLit
+            halo(26 * scale * (accompanied ? 1.35 : 1), palette.glow, (accompanied ? 0.34 : 0.2) + 0.5 * element.intensity)
+            context.fill(disc((accompanied ? 7.5 : 6) * scale), with: .radialGradient(Gradient(colors: [DSColor.Chapter.lueurCore, palette.accent.opacity(0.8)]), center: center, startRadius: 0, endRadius: 7 * scale))
+            if accompanied {
+                context.stroke(disc(11 * scale), with: .color(DSColor.Chapter.lueurGlow.opacity(0.5)), lineWidth: 1.2 * scale)
+            }
+            if element.isActive {
+                context.stroke(disc(element.radius), with: .color(palette.accent.opacity(accompanied ? 0.2 : 0.1)), style: StrokeStyle(lineWidth: 1 * scale, dash: [2 * scale, 7 * scale]))
+            }
+        case .lantern:
             halo(26 * scale, palette.glow, 0.2 + 0.5 * element.intensity)
             context.fill(disc(6 * scale), with: .radialGradient(Gradient(colors: [DSColor.Chapter.lueurCore, palette.accent.opacity(0.8)]), center: center, startRadius: 0, endRadius: 7 * scale))
             if element.isActive {
