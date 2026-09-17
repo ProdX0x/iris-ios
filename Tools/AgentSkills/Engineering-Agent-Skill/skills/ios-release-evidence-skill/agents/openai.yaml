@@ -1,0 +1,3 @@
+interface:
+  display_name: "iOS Release Evidence"
+  short_description: "Prove what an Apple build, device or privacy claim actually does."

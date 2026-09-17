@@ -1,0 +1,23 @@
+name: engineering-expert
+version: "1.0.0"
+description: >-
+  Evidence discipline, reversible experimentation, frozen subsystems, release
+  gates and session handoff for software work — how to reason, verify, protect
+  and validate, alongside the domain skills that write the code.
+author:
+  name: Stéphane SAULNIER
+license: MIT
+keywords:
+  - engineering
+  - methodology
+  - evidence
+  - debugging
+  - root-cause
+  - release
+  - git-safety
+  - handoff
+  - verification
+  - risk
+skills:
+  - skills/engineering-expert-skill
+  - skills/ios-release-evidence-skill

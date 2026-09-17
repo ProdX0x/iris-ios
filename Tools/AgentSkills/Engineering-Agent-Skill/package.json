@@ -1,0 +1,11 @@
+{
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "skills": [
+      "./skills/engineering-expert-skill",
+      "./skills/ios-release-evidence-skill"
+    ]
+  }
+}

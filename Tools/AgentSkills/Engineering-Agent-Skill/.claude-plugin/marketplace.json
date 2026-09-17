@@ -1,0 +1,47 @@
+{
+  "name": "engineering-expert-skill",
+  "version": "1.0.0",
+  "owner": {
+    "name": "Stéphane SAULNIER"
+  },
+  "metadata": {
+    "description": "Evidence discipline, reversible experimentation, frozen subsystems, release gates and session handoff for software work — how to reason, verify, protect and validate, alongside the domain skills that write the code."
+  },
+  "plugins": [
+    {
+      "name": "engineering-expert",
+      "description": "Evidence discipline, reversible experimentation, frozen subsystems, release gates and session handoff for software work — how to reason, verify, protect and validate, alongside the domain skills that write the code.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Stéphane SAULNIER"
+      },
+      "license": "MIT",
+      "category": "development",
+      "keywords": [
+        "engineering",
+        "methodology",
+        "evidence",
+        "debugging",
+        "root-cause",
+        "release",
+        "git-safety",
+        "handoff",
+        "verification",
+        "risk"
+      ],
+      "tags": [
+        "engineering",
+        "methodology",
+        "evidence",
+        "debugging",
+        "root-cause",
+        "release",
+        "git-safety",
+        "handoff",
+        "verification",
+        "risk"
+      ],
+      "source": "./"
+    }
+  ]
+}
