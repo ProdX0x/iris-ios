@@ -355,3 +355,113 @@ PRODUCTION VERIFIED : NON — et rien dans ce test n'y touche
 ```
 
 La mission s'arrête ici, conformément au CAS B.
+
+---
+
+# Gate 4A — test à froid : Xcode fermé avant la modification du scheme
+
+Exécuté le 17 septembre 2026. **Résultat : CAS A — l'environnement Xcode a disparu.**
+
+Le test précédent était ambigu : Xcode était ouvert pendant la modification et pouvait servir un scheme gardé en
+mémoire. Cette reprise élimine cette ambiguïté en fermant Xcode **avant** de toucher au fichier.
+
+## Déroulé, dans l'ordre
+
+| | Étape | Vérification |
+|---|---|---|
+| 1 | État de départ | branche `release/iris-appstore-rc1`, HEAD `cfdd70b`, arbre propre, sauvegarde intacte (`56d1db6…`) |
+| 2 | iPhone 14 Pro | « iPhone Steve. », `00008120-0016341A2187C01E`, iOS 26.5.2, disponible, déverrouillé |
+| 3 | **Xcode fermé** | quitté par AppleScript, **fermé en ~2 s, sans dialogue** ; aucun processus `Xcode`, aucun `XCBBuildService`, aucun `SourceKitService` |
+| 4 | Scheme vérifié à froid | hash `56d1db6…`, **byte-identique** à la sauvegarde, référence `Iris.storekit` présente aux lignes 93-95 |
+| 5 | **Modification à froid** | suppression des trois lignes ; hash `c9758e99…` ; `git diff` ne contient **que** cette suppression |
+| 6 | Xcode rouvert | `open -a Xcode Iris.xcodeproj` ; chargé, scheme actif « Iris » ; l'édition **intacte** sur disque |
+| 7 | Run contrôlé | destination explicite `platform=iOS,id=00008120-0016341A2187C01E` |
+| 8 | Mesure | voir ci-dessous |
+| 9 | Restauration | Xcode fermé, fichier restauré depuis la sauvegarde |
+
+## La mesure — et elle change tout
+
+`2026-09-17T13:47:04Z` à `13:47:12Z`, les trois lignes produites par **ce** run :
+
+```
+result.count=0   result.ids=   result.types=   result.displayPrice=(none)
+entitlement=free   error.domain=(none)
+storefront.country=FRA   storefront.id=143442
+appTransaction.environment=(unavailable)
+appTransaction.error=StoreKit.StoreKitError/2
+appTransaction.errorDescription=unknown
+```
+
+À comparer aux douze lectures précédentes, toutes identiques entre elles :
+
+| | Avant (16 sept. 19:06 → 17 sept. 12:48) | **Après le test à froid** |
+|---|---|---|
+| `appTransaction.environment` | `Xcode`, verified=yes | **`(unavailable)`** |
+| erreur | aucune | `StoreKit.StoreKitError/2` |
+| `result.count` | 2 | **0** |
+| `result.displayPrice` | 2,99 € | **(none)** |
+| storefront | FRA / 143442 | FRA / 143442 — inchangé |
+
+C'est **exactement** la signature que le Gate 1 avait mesurée sur cet appareil avant la contamination.
+
+## Ce que cela établit
+
+**STRONGLY SUPPORTED : le test précédent était contaminé par un scheme conservé en mémoire par Xcode.**
+La seule différence entre les deux tests est l'ordre des opérations — Xcode ouvert pendant l'édition, puis Xcode
+fermé pendant l'édition — et le résultat bascule complètement. Ce n'est pas `PROVEN` au sens causal strict : rien
+n'a permis de lire directement le scheme qu'Xcode tenait en mémoire lors du premier test.
+
+**Par voie de conséquence, l'hypothèse B — un état StoreKit persistant au niveau de l'appareil — tombe.**
+L'environnement suivait la configuration StoreKit attachée à l'action *Run* du scheme. Un lancement avec « None »
+le fait disparaître. Aucune désinstallation, aucun redémarrage, aucune suppression de données n'aura été
+nécessaire.
+
+**ROOT CAUSE STATUS : STRONGLY SUPPORTED.** Le mécanisme est maintenant clair : un lancement depuis Xcode avec
+`Config/Iris.storekit` attaché au scheme installe l'environnement de test sur l'appareil, et il y reste jusqu'au
+prochain lancement fait avec « None ». Ce qui reste **NOT PROVEN**, faute d'enregistrement — Xcode avait purgé les
+siens — c'est *quand* et *par qui* ce premier lancement a eu lieu sur le 14 Pro entre le Gate 1 et le
+16 septembre 19:06 UTC.
+
+## Restauration et intégrité
+
+```
+hash original : 56d1db6ce21194f31dcee60b15e91dbe51d027adbc769b2f4f9f75fa1e074756
+hash final    : 56d1db6ce21194f31dcee60b15e91dbe51d027adbc769b2f4f9f75fa1e074756
+identiques    : OUI
+byte-compare avec la sauvegarde : IDENTIQUE
+référence Iris.storekit : restaurée aux lignes 93-95
+git diff : vide
+git status : seuls les trois fichiers non suivis préexistants
+```
+
+Une confirmation d'Xcode a bloqué la fermeture — « Are you sure you want to close the Project "Iris"? Closing this
+workspace will stop the task "Run Iris" », boutons *Cancel* / *Stop Tasks*. Ce n'est pas une autorisation système
+mais une confirmation applicative, cliquable par script ; la tâche visée était déjà terminée (`succeeded`, Iris
+plus en cours sur l'appareil). *Stop Tasks* a été cliqué pour achever la fermeture demandée. Xcode s'est fermé en
+4 secondes, et la restauration a eu lieu ensuite, à froid.
+
+## Aucune donnée perdue
+
+```
+Iris désinstallé : NON      appareil redémarré : NON
+conteneur effacé : NON      journal : 39 → 42 lignes, trois ajoutées, aucune perdue
+préférences intactes : iris.gaze.calibrationProfile ✓  iris.gazeAssistance ✓
+                       iris.onboarding.completed ✓     iris.onboarding.gazeIntroduction ✓
+iPhone 15 Pro : non connecté, aucune commande ne l'a visé
+code produit / Info.plist / entitlements / Iris.storekit / Product IDs : inchangés
+```
+
+## L'iPhone 14 Pro est propre — et fragile
+
+`appTransaction.environment=(unavailable)` : aucune trace d'environnement StoreKit simulé.
+
+**Zéro produit et aucun prix sont le résultat attendu**, pas un échec : App Store Connect n'est pas configuré, et
+c'est précisément ce qu'un client verrait aujourd'hui.
+
+`CLEAN FOR REAL STOREKIT VALIDATION : OUI`
+`PRODUCTION VERIFIED : NON` — et rien ici ne s'en approche.
+
+**Le point de vigilance.** Le scheme porte de nouveau `Config/Iris.storekit`. **Le prochain « Run » d'Iris depuis
+Xcode sur le 14 Pro le recontaminera immédiatement.** Pour garder cet appareil comme témoin : l'installer
+uniquement par `devicectl` — c'est ce que le Gate 1 faisait — ou mettre StoreKit Configuration à `None` avant tout
+lancement depuis Xcode vers lui. Le 15 Pro reste l'appareil de développement, avec son environnement simulé.
