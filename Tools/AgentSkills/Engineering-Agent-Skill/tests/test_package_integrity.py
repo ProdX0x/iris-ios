@@ -17,7 +17,7 @@ from pathlib import Path
 
 from support import PACKAGE_ROOT, SCRIPTS
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 MAIN_SKILL = PACKAGE_ROOT / "skills" / "engineering-expert-skill"
 IOS_SKILL = PACKAGE_ROOT / "skills" / "ios-release-evidence-skill"
 MAINTENANCE_SKILL = PACKAGE_ROOT / ".agents" / "skills" / "extract-validated-lessons"
@@ -176,12 +176,41 @@ class ToolSafety(unittest.TestCase):
     def test_the_activation_probe_never_grades_its_own_activation(self):
         """The probe's contract, asserted at package level so a rewrite cannot drop it."""
         source = read(SCRIPTS / "activation_probe.py")
-        for claim in ("SKILL_LOADED", "SKILL_INVOKED", "RUNTIME_VERIFIED"):
+        for claim in ("SKILL_LOADED", "SKILL_INVOKED", "RUNTIME_VERIFIED",
+                      "PERSISTENCE_VERIFIED"):
             with self.subTest(claim=claim):
                 self.assertIn(claim, source, "the probe must name the claim it withholds")
                 self.assertNotIn(f"{claim}=YES", source)
                 self.assertNotIn(f'"{claim}": True', source)
         self.assertIn("NOT DETERMINED", source)
+
+    def test_the_installed_skill_subtree_is_self_sufficient(self):
+        """An agent installs skills/engineering-expert-skill/ alone. It must work alone."""
+        required = ("SKILL.md",
+                    "scripts/activation_probe.py",
+                    "scripts/engineering_tools/__init__.py",
+                    "scripts/engineering_tools/errors.py",
+                    "scripts/engineering_tools/output.py",
+                    *(f"scripts/{tool}" for tool in TOOLS))
+        for relative in required:
+            with self.subTest(path=relative):
+                self.assertTrue((MAIN_SKILL / relative).is_file(),
+                                f"an installed skill would be missing {relative}")
+
+    def test_the_embedded_skill_version_agrees_with_the_package(self):
+        """The probe's installed-skill version source must not drift from the manifests."""
+        text = read(SCRIPTS / "engineering_tools" / "__init__.py")
+        found = re.search(r'^__version__\s*=\s*"([^"]+)"', text, re.M)
+        self.assertIsNotNone(found, "the skill carries no embedded version")
+        self.assertEqual(found.group(1), VERSION,
+                         "embedded skill version and package version must agree")
+
+    def test_the_probe_does_not_require_a_package_root_to_find_its_skill(self):
+        """The 1.0.1 defect, pinned at package level: no package-root dependency."""
+        source = read(SCRIPTS / "activation_probe.py")
+        self.assertNotIn("missing_tools = list(SIBLING_TOOLS)", source)
+        self.assertIn("find_skill_root", source)
+        self.assertIn("INSTALLED SKILL", source)
 
     def test_no_mutating_git_verb_is_reachable(self):
         from engineering_tools import gitio

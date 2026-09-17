@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "engineering-expert",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Evidence discipline, reversible experimentation, frozen subsystems, release gates and session handoff for software work — how to reason, verify, protect and validate, alongside the domain skills that write the code.",
   "author": {
     "name": "Stéphane SAULNIER"

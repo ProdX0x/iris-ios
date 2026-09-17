@@ -34,6 +34,9 @@ REQUIRED_FILES = (
     # The activation probe must survive packaging; a release without it silently
     # loses the only tool that reports what the package can and cannot claim.
     "skills/engineering-expert-skill/scripts/activation_probe.py",
+    # The probe reads its version from here when installed as a bare skill, with
+    # no package manifest above it. Lose this and the probe cannot verify itself.
+    "skills/engineering-expert-skill/scripts/engineering_tools/__init__.py",
     "skills/ios-release-evidence-skill/SKILL.md",
     ".agents/skills/extract-validated-lessons/SKILL.md",
 )

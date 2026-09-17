@@ -146,14 +146,26 @@ python3 skills/engineering-expert-skill/scripts/activation_probe.py --json
 
 ```
 SKILL_ID=engineering-expert-skill
-PACKAGE_VERSION=1.0.1
+VERSION=1.0.2
 PROBE_ID=ENGINEERING-EXPERT-ACTIVATION-PROBE-1
+MODE=INSTALLED SKILL
+SKILL_ROOT=/…/.claude/skills/engineering-expert-skill
+PACKAGE_ROOT=NOT PRESENT — INSTALLED SKILL MODE
 STATUS=AVAILABLE
 ```
 
-**What `STATUS=AVAILABLE` proves.** The probe file that ships with this package was executed by this
-interpreter, the tree around it is complete, and the version it declares agrees with the package manifest.
-`STATUS=DEGRADED` (exit 1) means the probe ran and one of those failed — which is a finding, not a crash.
+**Two layouts, and it detects which.** `MODE=PACKAGE` is the full tree, as shipped or extracted, where a
+`plugin.json` sits above the skill and its version is compared. `MODE=INSTALLED SKILL` is the skill on its own,
+the way an agent installs it — there is no package above it, and that is correct, not degraded. Version 1.0.1
+assumed the first layout always held: installed as a bare skill it reported `SKILL.md` missing while it sat two
+directories up, and reported all six sibling tools missing while every one of them was on disk beside it. The
+second was a false statement about the filesystem. Every check now reads the thing it describes.
+
+**What `STATUS=AVAILABLE` proves.** The probe that ships with this skill was executed by this interpreter; it
+sits in a real `engineering-expert-skill` directory whose `SKILL.md` declares that name; every tool the skill
+documents is present beside it; and the version it expects is the version the skill carries — plus, in package
+mode, the version the manifest declares. `STATUS=DEGRADED` (exit 1) means the probe ran and one of those
+failed — a finding, not a crash.
 
 **What it does not prove.** Three things, and the probe prints them as `NOT DETERMINED` rather than leaving
 them to be assumed:
@@ -162,7 +174,8 @@ them to be assumed:
 |---|---|
 | `SKILL_LOADED` | a file being readable says nothing about an agent having read it |
 | `SKILL_INVOKED` | the probe cannot see whether the skill shaped the answer to your task |
-| `RUNTIME_VERIFIED` | that needs behaviour observed under real use, not a manifest check |
+| `RUNTIME_VERIFIED` | that needs behaviour observed under real use, not a file check |
+| `PERSISTENCE_VERIFIED` | that needs a fresh session; nothing here carries over on its own |
 
 There is a deeper limit, and it is the point: **a probe's own output can never be the evidence that the probe's
 package is in use.** Anything that can print an answer can print a reassuring one. The probe is therefore a

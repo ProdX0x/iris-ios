@@ -208,12 +208,14 @@ Exit codes: `0` fine · `1` the check ran and the answer is negative · `2` usag
 Each takes `--json` for machine use and `--help` for its arguments.
 
 **On activation claims.** `activation_probe.py` reporting `STATUS=AVAILABLE` establishes one thing: the probe
-shipped with this package executed, against an intact copy of it. It does not establish that this skill was
-loaded, that it was invoked for the task at hand, or that it was verified at runtime — the probe reports those
-three as `NOT DETERMINED` and names what would settle them. Anything that can print an answer can print a
-reassuring one, so a probe's own output can never be the evidence that the probe's package is in use. Settling
-that needs an observation made outside the agent, a task whose correct answer only a loaded skill produces, and
-a negative control where the skill is absent and the answer differs.
+shipped with this skill executed, against a real and complete copy of it — in either layout, the full package or
+the skill installed on its own, which it detects and reports as `MODE=`. It does not establish that this skill
+was loaded, that it was invoked for the task at hand, that it was verified at runtime, or that it persists
+across sessions — the probe reports those four as `NOT DETERMINED` and names what would settle them. Anything
+that can print an answer can print a reassuring one, so a probe's own output can never be the evidence that the
+probe's skill is in use. Settling that needs an observation made outside the agent, a task whose correct answer
+only a loaded skill produces, a negative control where the skill is absent and the answer differs, and a fresh
+session for persistence.
 
 ## Human Validation Rules
 

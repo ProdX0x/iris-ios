@@ -1,6 +1,6 @@
 {
   "name": "engineering-expert-skill",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "owner": {
     "name": "Stéphane SAULNIER"
   },
@@ -11,7 +11,7 @@
     {
       "name": "engineering-expert",
       "description": "Evidence discipline, reversible experimentation, frozen subsystems, release gates and session handoff for software work — how to reason, verify, protect and validate, alongside the domain skills that write the code.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Stéphane SAULNIER"
       },
