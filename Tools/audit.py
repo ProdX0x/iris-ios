@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Layer audit for Iris (layer-auditor skill, checks C1, C2, C8, C9, C10, C12 plus dead-file and TODO scans).
-C12 locks the Apple identity: project.yml (XcodeGen source of truth), the generated pbxproj and the sources must agree on the bundle identifiers and the development team.
+C12 locks the Apple identity AND the signing policy: project.yml (XcodeGen source of truth), the generated pbxproj and the
+sources must agree on the bundle identifiers, the development team, and the mixed development/distribution signing validated
+by Release Gates 4C and 4D (Docs/ReleaseGate4/10_RELEASE_SIGNING.md).
 Run from the project root: python3 Tools/audit.py [--write-file-map]
 """
 import os, re, sys, subprocess
@@ -89,18 +91,103 @@ for path in files:
     kind = top_level and TYPE_DECL.search(text) and TYPE_DECL.search(text).group(1) or "-"
     rows.append((path, kind, layer, purpose))
 
-# C12: Apple identity lock (README, "Apple Signing"). project.yml is the source of truth; the pbxproj is generated from it.
+# --- C12 signing policy (pure, testable) ---
+# Iris signs with a MIXED policy, established and proven by Release Gates 4C and 4D
+# (Docs/ReleaseGate4/10_RELEASE_SIGNING.md). Anything outside it is a finding:
+#   development — project-level configurations, the Iris target in Debug, both test configurations:
+#       CODE_SIGN_STYLE = Automatic, CODE_SIGN_IDENTITY = Apple Development, NO provisioning profile pinned
+#   distribution — the Iris application target in Release, and nowhere else:
+#       CODE_SIGN_STYLE = Manual, CODE_SIGN_IDENTITY = Apple Distribution, DEVELOPMENT_TEAM = G4U9RG5GL7,
+#       PROVISIONING_PROFILE_SPECIFIER = Iris App Store Connect Distribution
+# `signing_findings` decides from settings alone — no file, no environment — so the policy can be exercised on
+# synthetic configurations without touching project.yml or the generated project.
 APP_BUNDLE_ID = "net.steve-s.iris"
 TESTS_BUNDLE_ID = "net.steve-s.iris.tests"
 TEAM_ID = "G4U9RG5GL7"
 RETIRED_PREFIX = "com.prodx0x"
+RELEASE_PROFILE = "Iris App Store Connect Distribution"
+DEV_IDENTITY = "Apple Development"
+DIST_IDENTITY = "Apple Distribution"
+
+def classify_target(settings):
+    """app, tests or project — read from what the configuration builds, never from its bundle identifier."""
+    if "TEST_HOST" in settings or "BUNDLE_LOADER" in settings:
+        return "tests"
+    if "INFOPLIST_FILE" in settings or settings.get("PRODUCT_NAME") == "Iris":
+        return "app"
+    return "project"
+
+def parse_build_configurations(pbx):
+    """[(configuration name, settings)] for every XCBuildConfiguration of a pbxproj."""
+    out = []
+    for body, name in re.findall(r"isa = XCBuildConfiguration;(.*?)name = ([A-Za-z0-9_]+);", pbx, re.S):
+        out.append((name, dict(re.findall(r'^\s*([A-Z_][A-Z0-9_]*) = "?([^";]*)"?;', body, re.M))))
+    return out
+
+def resolve_configurations(parsed):
+    """Apply Xcode inheritance: a target setting wins, else the project-level value of the same configuration."""
+    project_level = {name: s for name, s in parsed if classify_target(s) == "project"}
+    resolved = []
+    for name, settings in parsed:
+        target = classify_target(settings)
+        if target == "project":
+            continue
+        merged = dict(project_level.get(name, {}))
+        merged.update(settings)
+        resolved.append({"target": target, "config": name, "settings": merged})
+    for name, settings in project_level.items():
+        resolved.append({"target": "project", "config": name, "settings": dict(settings)})
+    return resolved
+
+def signing_findings(configurations, where="project.pbxproj"):
+    """Pure policy decision over [{"target", "config", "settings"}]. Empty list means the policy holds."""
+    out = []
+    for entry in configurations:
+        target, config, s = entry["target"], entry["config"], entry["settings"]
+        label = f"{where}: {target}/{config}"
+        style = s.get("CODE_SIGN_STYLE")
+        identity = s.get("CODE_SIGN_IDENTITY")
+        profile = s.get("PROVISIONING_PROFILE_SPECIFIER") or s.get("PROVISIONING_PROFILE")
+        team = s.get("DEVELOPMENT_TEAM")
+        bundle = s.get("PRODUCT_BUNDLE_IDENTIFIER")
+        if target == "app" and config == "Release":
+            if style != "Manual":
+                out.append(f"{label}: CODE_SIGN_STYLE = {style}; App Store distribution requires Manual")
+            if identity != DIST_IDENTITY:
+                out.append(f"{label}: CODE_SIGN_IDENTITY = {identity}; App Store distribution requires {DIST_IDENTITY}")
+            if profile != RELEASE_PROFILE:
+                out.append(f"{label}: provisioning profile = {profile}; the only allowed profile is `{RELEASE_PROFILE}`")
+            if team != TEAM_ID:
+                out.append(f"{label}: DEVELOPMENT_TEAM = {team}; expected {TEAM_ID}")
+        else:
+            if style not in (None, "Automatic"):
+                out.append(f"{label}: CODE_SIGN_STYLE = {style}; only the Iris Release configuration may leave Automatic")
+            if identity not in (None, DEV_IDENTITY):
+                out.append(f"{label}: CODE_SIGN_IDENTITY = {identity}; only the Iris Release configuration may leave {DEV_IDENTITY}")
+            if profile:
+                out.append(f"{label}: a provisioning profile is pinned ({profile}); only the Iris Release configuration may pin one")
+            if team not in (None, TEAM_ID):
+                out.append(f"{label}: DEVELOPMENT_TEAM = {team}; expected {TEAM_ID}")
+        if target == "app" and bundle not in (None, APP_BUNDLE_ID):
+            out.append(f"{label}: PRODUCT_BUNDLE_IDENTIFIER = {bundle}; expected {APP_BUNDLE_ID}")
+        if target == "tests" and bundle not in (None, TESTS_BUNDLE_ID):
+            out.append(f"{label}: PRODUCT_BUNDLE_IDENTIFIER = {bundle}; expected {TESTS_BUNDLE_ID}")
+    return out
+# --- end C12 signing policy ---
+
+# C12: Apple identity lock (README, "Apple Signing"). project.yml is the source of truth; the pbxproj is generated from it.
 spec = open(os.path.join(ROOT, "project.yml")).read()
 for expected in (f"bundleIdPrefix: net.steve-s\n", f"PRODUCT_BUNDLE_IDENTIFIER: {APP_BUNDLE_ID}\n", f"PRODUCT_BUNDLE_IDENTIFIER: {TESTS_BUNDLE_ID}\n",
-                 f"DEVELOPMENT_TEAM: {TEAM_ID}\n", "CODE_SIGN_STYLE: Automatic\n"):
+                 f"DEVELOPMENT_TEAM: {TEAM_ID}\n", "CODE_SIGN_STYLE: Automatic\n",
+                 f"CODE_SIGN_IDENTITY: {DIST_IDENTITY}\n", "CODE_SIGN_STYLE: Manual\n",
+                 f"PROVISIONING_PROFILE_SPECIFIER: {RELEASE_PROFILE}\n"):
     if expected not in spec:
         findings["C12"].append(f"project.yml: missing `{expected.strip()}`")
-if "PROVISIONING_PROFILE" in spec:
-    findings["C12"].append("project.yml: a provisioning profile is pinned; automatic signing must stay unpinned")
+for value in re.findall(r"PROVISIONING_PROFILE_SPECIFIER: *(.+)", spec):
+    if value.strip() != RELEASE_PROFILE:
+        findings["C12"].append(f"project.yml: provisioning profile `{value.strip()}`; the only allowed profile is `{RELEASE_PROFILE}`")
+if re.search(r"^\s*PROVISIONING_PROFILE:", spec, re.M):
+    findings["C12"].append("project.yml: PROVISIONING_PROFILE pins a profile by UUID; pin by name with PROVISIONING_PROFILE_SPECIFIER")
 pbx_path = os.path.join(ROOT, "Iris.xcodeproj", "project.pbxproj")
 if os.path.exists(pbx_path):
     pbx = open(pbx_path).read()
@@ -110,11 +197,7 @@ if os.path.exists(pbx_path):
     for value in re.findall(r"DEVELOPMENT_TEAM = \"?([^\";]+)\"?;", pbx):
         if value != TEAM_ID:
             findings["C12"].append(f"project.pbxproj: DEVELOPMENT_TEAM = {value} (regenerate with `xcodegen generate`)")
-    for value in re.findall(r"CODE_SIGN_STYLE = \"?([^\";]+)\"?;", pbx):
-        if value != "Automatic":
-            findings["C12"].append(f"project.pbxproj: CODE_SIGN_STYLE = {value}")
-    if "PROVISIONING_PROFILE" in pbx:
-        findings["C12"].append("project.pbxproj: a provisioning profile is pinned")
+    findings["C12"].extend(signing_findings(resolve_configurations(parse_build_configurations(pbx))))
 else:
     findings["C12"].append("Iris.xcodeproj/project.pbxproj is missing: run `xcodegen generate`")
 for path in files + ["project.yml", "Config/Info.plist"]:

@@ -1845,7 +1845,6 @@
 					};
 					DA6B0FE32874865F8A6DAF74 = {
 						DevelopmentTeam = G4U9RG5GL7;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -2399,8 +2398,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G4U9RG5GL7;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
@@ -2412,6 +2413,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.steve-s.iris";
 				PRODUCT_NAME = Iris;
+				PROVISIONING_PROFILE_SPECIFIER = "Iris App Store Connect Distribution";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
