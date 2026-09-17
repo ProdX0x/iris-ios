@@ -98,7 +98,7 @@ why a rule exists, or whether it applies to you.
 
 ## How the tools work
 
-Six read-only command-line tools under `skills/engineering-expert-skill/scripts/`:
+Seven read-only command-line tools under `skills/engineering-expert-skill/scripts/`:
 
 | Tool | Answers |
 |---|---|
@@ -108,6 +108,7 @@ Six read-only command-line tools under `skills/engineering-expert-skill/scripts/
 | `hash_manifest.py` | what exactly is here, before I touch it? |
 | `verify_restore.py` | did I really put it back? |
 | `handoff_check.py` | could someone resume from this document? |
+| `activation_probe.py` | is this package's probe executable here — and what does that *not* prove? |
 
 ```
 exit 0  fine
@@ -133,6 +134,53 @@ Five levels, and what each licenses:
 
 The rule that does the work: *"hypothesis B is no longer needed to explain the results"* is a different claim
 from *"hypothesis B is false"*, and only the first is usually earned.
+
+## How activation is proven
+
+`activation_probe.py` exists because "the skill is active" is the easiest false claim an agent can make, and the
+hardest to catch: it costs nothing to say and looks like a status report.
+
+```bash
+python3 skills/engineering-expert-skill/scripts/activation_probe.py --json
+```
+
+```
+SKILL_ID=engineering-expert-skill
+PACKAGE_VERSION=1.0.1
+PROBE_ID=ENGINEERING-EXPERT-ACTIVATION-PROBE-1
+STATUS=AVAILABLE
+```
+
+**What `STATUS=AVAILABLE` proves.** The probe file that ships with this package was executed by this
+interpreter, the tree around it is complete, and the version it declares agrees with the package manifest.
+`STATUS=DEGRADED` (exit 1) means the probe ran and one of those failed — which is a finding, not a crash.
+
+**What it does not prove.** Three things, and the probe prints them as `NOT DETERMINED` rather than leaving
+them to be assumed:
+
+| Claim | Why the probe cannot settle it |
+|---|---|
+| `SKILL_LOADED` | a file being readable says nothing about an agent having read it |
+| `SKILL_INVOKED` | the probe cannot see whether the skill shaped the answer to your task |
+| `RUNTIME_VERIFIED` | that needs behaviour observed under real use, not a manifest check |
+
+There is a deeper limit, and it is the point: **a probe's own output can never be the evidence that the probe's
+package is in use.** Anything that can print an answer can print a reassuring one. The probe is therefore a
+necessary piece of evidence, never a sufficient one.
+
+**What a full activation verdict needs**, of which the probe is one part:
+
+1. **The probe** — this package's own tool, run against this copy.
+2. **A system-level observation** — the run captured outside the agent, so its having happened is not taken on
+   the agent's word. `--nonce` echoes a token into the output for correlating the two; it authenticates
+   nothing on its own.
+3. **A distinctive runtime task** — a question whose correct answer only a loaded skill produces. Asking "is
+   this a regression?" without a baseline is one: the skill's answer refuses the premise and offers to measure
+   a baseline first.
+4. **A negative control** — the same task with the skill absent. If the answer does not change, the first three
+   proved the file exists, not that it was used.
+
+Steps 1 and 2 without 3 and 4 establish presence, not activation. Report it that way.
 
 ## Install
 

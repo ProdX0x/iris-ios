@@ -7,7 +7,7 @@ Support levels, stated honestly:
 | **STRUCTURALLY SUPPORTED** | the manifest exists and matches the layout the environment documents |
 | **RUNTIME VERIFIED** | it was installed and observed working |
 
-At version 1.0.0, **everything below is STRUCTURALLY SUPPORTED. Nothing is RUNTIME VERIFIED.** This package was
+At version 1.0.1, **everything below is STRUCTURALLY SUPPORTED. Nothing is RUNTIME VERIFIED.** This package was
 built and tested as a source tree; it has not been loaded into an agent environment. Treat installation as
 untested and report what happens.
 
@@ -56,6 +56,31 @@ python3 skills/engineering-expert-skill/scripts/repo_snapshot.py --repo . --json
 
 The first should pass. The second should print the state of whatever repository you run it in — proof the tools
 work in your environment.
+
+## Is it actually there?
+
+```bash
+python3 skills/engineering-expert-skill/scripts/activation_probe.py
+```
+
+Expect `STATUS=AVAILABLE` and exit 0. `STATUS=DEGRADED` and exit 1 mean the probe ran and found the package
+around it incomplete or inconsistent — the report names which check failed.
+
+Read the result narrowly. It proves the probe shipped with this package executed against an intact copy. It
+does **not** prove the skill was loaded, invoked, or verified at runtime; the probe prints those three as
+`NOT DETERMINED` rather than letting them be assumed, because a probe's own output can never be the evidence
+that its package is in use. Anything that can print an answer can print a reassuring one.
+
+A verdict of "activated" needs four things, of which the probe is one:
+
+| | Establishes |
+|---|---|
+| the probe, run against this copy | the package is present and intact |
+| the run observed outside the agent | it actually happened; `--nonce` correlates the two, and authenticates nothing by itself |
+| a distinctive runtime task | the skill shaped the answer — see **First use** below |
+| a negative control | the answer changes when the skill is absent |
+
+With the first two only, report **presence**, not activation. See `README.md` for the reasoning.
 
 ## First use
 

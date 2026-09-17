@@ -31,6 +31,9 @@ REQUIRED_FILES = (
     ".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".cursor-plugin/plugin.json",
     "agents/openai.yaml",
     "skills/engineering-expert-skill/SKILL.md",
+    # The activation probe must survive packaging; a release without it silently
+    # loses the only tool that reports what the package can and cannot claim.
+    "skills/engineering-expert-skill/scripts/activation_probe.py",
     "skills/ios-release-evidence-skill/SKILL.md",
     ".agents/skills/extract-validated-lessons/SKILL.md",
 )

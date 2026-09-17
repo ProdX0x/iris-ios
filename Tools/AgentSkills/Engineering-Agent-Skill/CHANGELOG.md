@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.0.1
+
+Adds an activation probe, and is careful about what it is allowed to mean.
+
+**Added**
+
+- `activation_probe.py`, a seventh read-only tool. It reports `SKILL_ID`, `PACKAGE_VERSION`, `PROBE_ID` and
+  `STATUS`, and cross-checks the version it declares against the package manifest.
+- Tests for the probe's contract, its read-only behaviour, and the agreement between the version it declares
+  and every manifest. The package integrity test and the release builder both now fail if the probe is
+  removed in a future version.
+
+**Deliberately not added**
+
+- Any output that would let `STATUS=AVAILABLE` be read as the skill being loaded, invoked or runtime verified.
+  The probe reports those three as `NOT DETERMINED` and names the evidence that would settle them. A probe
+  that graded its own activation would be the failure this package exists to prevent.
+
+**Changed**
+
+- Version raised to 1.0.1 across the six manifests, `agents/openai.yaml` and the tools package.
+
 ## 1.0.0
 
 First release. Extracted from a single project and marked accordingly — see `NOTICE.md` for what that means for

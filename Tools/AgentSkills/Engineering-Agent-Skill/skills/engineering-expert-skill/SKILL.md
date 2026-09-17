@@ -164,6 +164,7 @@ Violating one of these is a defect, not a style choice.
 - [ ] A conclusion from one environment is never generalised to all environments.
 - [ ] Changes outside the agreed boundary are reported, not committed quietly.
 - [ ] `PARTIAL` is never reported as `PASS`.
+- [ ] A probe reporting that it is available is never reported as the skill being loaded, invoked or verified.
 
 ## Optional Improvement Rules
 
@@ -201,9 +202,18 @@ All under `scripts/`. Every one is read-only, offline, free of telemetry, and re
 | `hash_manifest.py` | before an experiment touches files |
 | `verify_restore.py` | after restoring; turns "I restored it" into a checkable fact |
 | `handoff_check.py` | before a context reset; finds missing fields |
+| `activation_probe.py` | when asked whether this skill is present; reports only what a probe can settle |
 
 Exit codes: `0` fine · `1` the check ran and the answer is negative · `2` usage or environment error.
 Each takes `--json` for machine use and `--help` for its arguments.
+
+**On activation claims.** `activation_probe.py` reporting `STATUS=AVAILABLE` establishes one thing: the probe
+shipped with this package executed, against an intact copy of it. It does not establish that this skill was
+loaded, that it was invoked for the task at hand, or that it was verified at runtime — the probe reports those
+three as `NOT DETERMINED` and names what would settle them. Anything that can print an answer can print a
+reassuring one, so a probe's own output can never be the evidence that the probe's package is in use. Settling
+that needs an observation made outside the agent, a task whose correct answer only a loaded skill produces, and
+a negative control where the skill is absent and the answer differs.
 
 ## Human Validation Rules
 
