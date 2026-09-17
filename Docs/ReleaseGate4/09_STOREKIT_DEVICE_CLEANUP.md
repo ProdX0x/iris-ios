@@ -200,3 +200,158 @@ CODE PRODUIT MODIFIÉ : NON
 CONFIGURATION DU PROJET MODIFIÉE : NON
 GATE 4A : INTERROMPU — en attente d'autorisation humaine
 ```
+
+---
+
+# Gate 4A — test contrôlé « StoreKit Configuration = None »
+
+Autorisé et exécuté le 17 septembre 2026. **Résultat : CAS B — l'environnement Xcode n'a pas disparu.**
+
+| | |
+|---|---|
+| Branche | `release/iris-appstore-rc1` |
+| HEAD au départ | `03fab79af9c766b060eb61fbf4161453940df1ae` |
+| Appareil testé | iPhone 14 Pro, `00008120-0016341A2187C01E`, iOS 26.5.2 |
+| iPhone 15 Pro | **déconnecté pendant toute la mission — aucune action, aucune tentative de reconnexion** |
+
+## 1. Sauvegarde de précaution
+
+Hors du dépôt Git, dans `/Volumes/Steve Pro BlackSSD/Dev/App Mobile/.iris-gate4a-backup/` :
+
+| Fichier | Taille | SHA-256 |
+|---|---|---|
+| `net.steve-s.iris.plist` | 765 o | `c8aa57c7e0dfdd31740b4d975289a3f0d18502fe3bcdeaa3a7dc2a81621dbdcc` |
+| `iris-storekit.log` | 8 162 o | `0760015878dc9cf00e0a19ee82f1a017dfccd683b904457da42d1244f39c66e4` |
+| `iris-lifecycle.log` | 13 192 o | `6bd37badfc1502e744b4380f7e973d388153a266f189b1f0245104a2c9a2c63a` |
+| `Iris.xcscheme.ORIGINAL` | 4 595 o | `56d1db6ce21194f31dcee60b15e91dbe51d027adbc769b2f4f9f75fa1e074756` |
+
+Rien n'a été restauré, rien n'a été supprimé, rien n'a été modifié sur l'appareil pendant la sauvegarde.
+
+**Ce que la sauvegarde des préférences contient réellement** — et c'est une bonne nouvelle :
+
+```
+iris.gaze.calibrationProfile        ← le profil de calibration
+iris.gazeAssistance                 ← le mode d'aide au regard
+iris.onboarding.completed
+iris.onboarding.gazeIntroduction
+SKTransactionUpdatesLastChecked     ← géré par StoreKit
+```
+
+**`iris.campaign.progress` est absent** : aucune progression de campagne n'est enregistrée sur cet iPhone. Ce qui
+serait perdu par une désinstallation est donc plus petit que ce que le premier inventaire laissait craindre — la
+calibration et les réglages, pas des heures de jeu.
+
+## 2. Le scheme
+
+| | |
+|---|---|
+| Chemin | `Iris.xcodeproj/xcshareddata/xcschemes/Iris.xcscheme` |
+| Stockage | **xcshareddata** |
+| Suivi Git | **suivi**, non ignoré — `git diff` est donc ici une vérification valable, en plus du hash |
+| SHA-256 avant | `56d1db6ce21194f31dcee60b15e91dbe51d027adbc769b2f4f9f75fa1e074756` |
+
+État initial, lignes 93-95, dans `<LaunchAction>` :
+
+```xml
+<StoreKitConfigurationFileReference
+   identifier = "../../Config/Iris.storekit">
+</StoreKitConfigurationFileReference>
+```
+
+**Modification temporaire** : suppression de ces trois lignes — c'est ainsi que « None » se représente.
+SHA-256 pendant le test : `c9758e9920dffb1af45bbfd33596fdd9e1d0f262dd0e25c9849f58c00b96c9e0`.
+
+Vérifié en cours de build : Xcode **n'a pas réécrit** le fichier, l'édition est restée en place tout du long.
+
+## 3. Le lancement
+
+Piloté par AppleScript avec une destination explicite, pour ne dépendre d'aucune sélection d'interface :
+
+```applescript
+debug doc scheme "Iris" run destination specifier "platform=iOS,id=00008120-0016341A2187C01E"
+```
+
+Xcode a enregistré ce run, et son propre compte rendu nomme la destination :
+
+```
+Run-Iris-2026.09.17_14-41-07-+0200.xcresult
+deviceName = "iPhone Steve."   modelName = iPhone 14 Pro
+deviceId   = 00008120-0016341A2187C01E
+status     = succeeded
+```
+
+**Le conteneur a été intégralement préservé** : le journal est passé de 33 à 36 lignes — trois lignes ajoutées,
+aucune perdue — et les cinq préférences sont toujours là, calibration comprise. La session de débogage a ensuite
+été arrêtée proprement ; Iris ne tourne plus.
+
+## 4. La mesure
+
+`2026-09-17T12:45:50Z`, après le lancement contrôlé :
+
+| | |
+|---|---|
+| `appTransaction.environment` | **`Xcode`** (verified=yes) |
+| `result.count` | 2 |
+| `result.ids` | `net.steve-s.iris.access.promopass` · `net.steve-s.iris.unlock.fullgame` |
+| `result.displayPrice` | 2,99 € |
+| `entitlement` | `free` |
+| `storefront` | FRA / 143442 |
+| erreurs | aucune (`error.domain=(none)`) |
+
+Rigoureusement identique aux onze lectures précédentes.
+
+## 5. Restauration
+
+```
+SHA-256 après  : 56d1db6ce21194f31dcee60b15e91dbe51d027adbc769b2f4f9f75fa1e074756
+SHA-256 avant  : 56d1db6ce21194f31dcee60b15e91dbe51d027adbc769b2f4f9f75fa1e074756
+identiques     : OUI
+```
+
+Les trois lignes `StoreKitConfigurationFileReference` sont de retour aux lignes 93-95. `git diff` est vide, et
+`git status` ne montre que les trois fichiers non suivis qui préexistaient à toute cette mission.
+
+## 6. Ce que ce test prouve, et ce qu'il ne prouve pas
+
+**PROVEN.** Un lancement depuis Xcode sur l'iPhone 14 Pro, le scheme sur disque portant « None », n'a pas fait
+disparaître `appTransaction.environment=Xcode`. Le run a bien eu lieu sur le bon appareil — Xcode le consigne
+lui-même — et la mesure qui a suivi est inchangée.
+
+**NOT PROVEN — et il faut le dire.** Rien ne démontre qu'Xcode ait relu mon édition du fichier. Xcode était
+ouvert sur le projet pendant tout le test ; il a pu servir une version du scheme gardée en mémoire. Deux lectures
+restent donc possibles :
+
+| | Lecture | Ce qu'elle impliquerait |
+|---|---|---|
+| **B1** | Xcode a bien appliqué « None », et l'environnement a survécu | l'état est persistant, hors du scheme |
+| **B2** | Xcode a utilisé un scheme en cache portant encore la configuration | le run a **ré-affirmé** l'environnement, et le test n'aura rien montré |
+
+**Trois tentatives pour départager B1 et B2 ont échoué**, et il faut le consigner plutôt que de conclure :
+
+- le `.xcresult` du run ne mentionne pas StoreKit — mais **le run du 16 septembre non plus**, alors qu'il portait
+  la configuration. Contrôle négatif : cette absence ne prouve rien ;
+- les deux journaux de build contiennent exactement une occurrence « storekit », **identique dans les deux** : une
+  section de compilation, sans rapport avec la configuration ;
+- aucun outil en ligne de commande ne sait lire ni écrire cet état : ni `devicectl`, ni `simctl` n'ont de
+  sous-commande StoreKit.
+
+**Statut de la cause racine : NOT PROVEN.** L'hypothèse d'un état persistant au niveau de l'appareil est
+**renforcée** par ce test, sans être établie — parce que B2 n'a pas pu être écartée.
+
+Ce que ce test n'établit toujours pas : où réside cet état, par quel mécanisme, et si une désinstallation le
+supprimerait.
+
+## 7. État à l'arrêt
+
+```
+IRIS DÉSINSTALLÉ : NON
+APPAREIL REDÉMARRÉ : NON
+DONNÉES SUPPRIMÉES : NON
+ENVIRONNEMENT STOREKIT RÉINITIALISÉ : NON
+SCHEME : restauré à l'identique, hash vérifié
+CODE PRODUIT MODIFIÉ : NON
+IPHONE 15 PRO : non connecté, non touché
+PRODUCTION VERIFIED : NON — et rien dans ce test n'y touche
+```
+
+La mission s'arrête ici, conformément au CAS B.
