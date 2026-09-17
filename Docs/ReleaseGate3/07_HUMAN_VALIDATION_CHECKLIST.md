@@ -76,7 +76,13 @@ Aucun de ces points ne doit être marqué HUMAN PASS sans retour humain.
 
 ## Section finale : microcopie de la pause, calibration, accessibilité (17 septembre 2026)
 
-Ajoutée après le raffinement d'accès en pause. **Rien ici n'est validé.**
+> **VALIDÉE — 17 septembre 2026.** Testée sur iPhone et déclarée **passée**, texte agrandi compris : interface
+> utilisable, aucun problème bloquant constaté. Le retour est un verdict d'ensemble ; aucune case n'est donc
+> cochée individuellement ci-dessous, le tableau restant la trace de ce qui était couvert.
+>
+> **Exception, T à X — VoiceOver : non testé, et non exigé pour ce Gate.** Décision délibérée, consignée au
+> document 11 : Iris se joue en regardant l'écran. Les points T à X ne sont ni passés ni échoués ; ils sont
+> hors critère. Les éléments d'accessibilité en place restent en place et ne doivent pas être dégradés.
 
 ### Taille de texte normale
 
@@ -131,10 +137,10 @@ Réglages iOS → Affichage et luminosité → Taille du texte, puis Accessibili
 | **Y** | aucune latence nouvelle à l'ouverture de la pause | ☐ |
 | **Z** | aucun flash nouveau attribuable à ce raffinement | ☐ |
 
-Aucun de ces points ne doit être marqué HUMAN PASS sans retour humain.
+Le retour humain du 17 septembre 2026 couvre A à S et Y à Z. T à X restent hors critère (voir l'en-tête).
 
-**Ce qui a été vérifié techniquement, et ne vous demande donc que confirmation :** les trois libellés compacts,
+**Ce qui avait été vérifié techniquement avant ce test :** les trois libellés compacts,
 la phrase de calibration, la conservation des explications longues des Réglages, et le fait que le sélecteur
 — compact comme détaillé — tient dans la largeur de chaque iPhone jusqu'à `accessibility5` sans déborder.
-**Ce que la machine ne sait pas dire :** ce que VoiceOver prononce réellement, et si le panneau reste
-confortable une fois le texte agrandi. C'est P à X.
+**Ce que la machine ne savait pas dire :** si le panneau reste confortable une fois le texte agrandi — P à S,
+tranché à la main le 17 septembre 2026 — et ce que VoiceOver prononce réellement, T à X, resté hors critère.
