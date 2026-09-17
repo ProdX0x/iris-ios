@@ -297,3 +297,96 @@ Sealed experiment:
     POSITIVE-RESPONSE.txt             1ba1d60966b5e0d302b1326fc594a0a980262719dbd3f8c1109337a022b57171
     POSITIVE-SYSTEM-OBSERVATIONS.txt  96c0c80c8ab67f1550bdd4d5b3b7fe2611c080a7614fa7f33f0703ee0bc3ce3a
     POSITIVE-PROVENANCE.md            8e46db1f89feccabb8e5edc9331ee3f622e09dd2b215a64c4030f20215f67790
+
+---
+
+## Post-closure addendum — persistence after /clear
+
+Added 2026-09-17, after the report above was committed. **Nothing above has been altered.** The verdict
+recorded in section 13 — `PERSISTENCE VERIFIED : NOT PROVEN` — was correct on the evidence available when
+it was written: the rendered `/skills` list is not persisted, the session recorded at 18:57 UTC then held
+five records and no skill call, and the only supporting item was an operator transcription whose
+companion wording had already failed to match the store. That remains the honest reading of that moment.
+
+One further experiment was then run. It settles the question.
+
+### What was done
+
+The frozen scenario was sent once more, in the session created by `/clear`, with no reinstallation, no
+change to the skill, and no new scenario.
+
+    POST-CLEAR TRANSCRIPT  ~/.claude/projects/-private-tmp-engineering-skill-activation-test/
+                           02421ab3-e65a-48ab-8ac6-9f231f85299c.jsonl
+    SHA-256 AFTER TEST     2899658d377b72be15bfa5456ea388f1241591c628afe99b7e709b7b0f4c1c78
+                           (was 41c50fcc… at closure, 1 990 bytes; now 276 823 bytes — the session
+                           received new events, which is expected growth, not corruption)
+
+The other two transcripts are unchanged, byte for byte, from the hashes recorded in section 9.
+
+### The stimulus was the frozen one
+
+The user content recorded at 19:46:27.396Z, reconstructed from the JSON record and hashed on its own,
+gives `af070d3613a8795f78c7559bac7968f3c740a360c851bbf612d8bcfbd55fb606` — the same value as the frozen
+specification, and the same value as both earlier arms. Three sendings, one stimulus, verified by
+measurement each time.
+
+### The decisive record
+
+    {"type": "tool_use",
+     "id": "toolu_01TQtSq9T7iAbD8tcsv1QByb",
+     "name": "Skill",
+     "input": {"skill": "engineering-expert-skill"},
+     "caller": {"type": "direct"}}
+
+    result: "Launching skill: engineering-expert-skill"
+    timestamp: 2026-09-17T19:46:33.159Z
+    session: 02421ab3-e65a-48ab-8ac6-9f231f85299c
+
+A different tool_use id from the pre-clear one (`toolu_017PjYg6…`), in a different session, after the
+`/clear`. It is a new invocation, not the old one read twice.
+
+### Chronology, which is the whole point
+
+    18:53:35.015Z   old invocation, pre-clear session 9787ac3b
+    18:57:07.558Z   /clear, recorded as a command in session 02421ab3
+    19:46:27.396Z   frozen stimulus, post-clear
+    19:46:33.159Z   new Skill tool_use
+
+Strictly ordered. The required relation `OLD < /clear < NEW STIMULUS < NEW tool_use` holds.
+
+### V4 section 15 conditions
+
+> 3. ne PAS relire manuellement le Skill ;
+
+Satisfied, and checkable: **zero tool calls precede the invocation.** The Skill call is the first action
+of the turn, before any file was read. The skill's references — `evidence-levels.md`,
+`destructive-operations.md`, `causal-debugging.md` — were read *after* it, by the router, exactly as in
+the pre-clear arm.
+
+> 5. relancer la sonde ;
+
+**Not performed in that session.** The two occurrences of `activation_probe` in the transcript are inside
+the injected `SKILL.md` text, not a command. This is recorded as a deviation. It does not bear on the
+invocation finding, and the probe strand was independently `PASS` in three layouts.
+
+### Classification
+
+The evidence is the same kind as in section 14, and falls under the same clause of the level B example
+list:
+
+> - **tool call montrant le chargement** ;
+
+and answers the definition of the state itself:
+
+> | **PERSISTENCE VERIFIED** | Une nouvelle session ou un `/clear` confirme qu'il reste disponible selon le mécanisme attendu. |
+
+    PERSISTENCE EVIDENCE LEVEL : B
+    PERSISTENCE VERIFIED       : YES
+
+### What this does and does not change
+
+It closes the one open item of the closure report. It does not touch anything else, and in particular it
+does **not** extend to section 16: auto-invocation under noisy context, in Iris, in a long session, with
+competing skills, remains `NOT TESTED`. This experiment was run twice in the same clean, empty,
+single-skill directory with a prompt aimed squarely at the skill's subject. That is what was measured;
+nothing wider.
