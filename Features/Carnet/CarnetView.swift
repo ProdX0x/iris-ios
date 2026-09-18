@@ -31,11 +31,11 @@ private struct CarnetRow: View {
             DSGlyph(isKnown ? element.glyphKind : .inconnu, tint: isKnown ? DSColor.Identity.accent : DSColor.Identity.textTertiary)
                 .frame(width: 28, height: 28)
             VStack(alignment: .leading, spacing: DSSpacing.xxs) {
-                Text(isKnown ? element.name : "à découvrir")
+                Text(isKnown ? CampaignText.name(of: element) : "à découvrir")
                     .font(DSFont.headline)
                     .foregroundStyle(isKnown ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
                 if isKnown {
-                    Text(element.summary)
+                    Text(CampaignText.summary(of: element))
                         .font(DSFont.footnote)
                         .foregroundStyle(DSColor.Identity.textSecondary)
                 }

@@ -20,7 +20,7 @@ struct JourneyCompleteView: View {
             .padding(.top, DSSpacing.l)
             VStack(alignment: .leading, spacing: DSSpacing.s) {
                 Text("le dernier iris").dsEyebrowStyle(tint: DSColor.State.success)
-                Text(Campaign.chapters.last?.name ?? "")
+                Text(Campaign.chapters.last.map(CampaignText.name(of:)) ?? "")
                     .font(DSFont.display)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     .accessibilityAddTraits(.isHeader)

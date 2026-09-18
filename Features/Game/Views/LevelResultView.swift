@@ -84,10 +84,10 @@ private struct EclatBadge: View {
             }
             .frame(width: 56, height: 56)
             .animation(.easeInOut(duration: 0.3), value: isLit)
-            Text(eclat.title)
+            Text(CampaignText.title(of: eclat))
                 .font(DSFont.callout)
                 .foregroundStyle(isLit ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
-            Text(eclat.condition)
+            Text(CampaignText.condition(of: eclat))
                 .font(DSFont.caption)
                 .foregroundStyle(DSColor.Identity.textTertiary)
                 .multilineTextAlignment(.center)

@@ -16,7 +16,9 @@ struct SettingsView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: DSSpacing.l) {
                     DSGlassPanel {
-                        Toggle("Effets sonores", isOn: $settings.soundEffectsEnabled)
+                        Toggle(String(localized: "settings.audio.soundEffects", defaultValue: "Effets sonores",
+                                      comment: "Settings: the short sounds the game plays on events"),
+                               isOn: $settings.soundEffectsEnabled)
                         Toggle("Ambiance sonore", isOn: $settings.ambienceEnabled)
                         Toggle("Vibrations", isOn: $settings.hapticsEnabled)
                     }

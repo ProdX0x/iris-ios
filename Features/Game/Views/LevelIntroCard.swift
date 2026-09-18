@@ -30,11 +30,11 @@ struct LevelIntroCard: View {
                         .foregroundStyle(DSColor.Identity.textSecondary)
                         .frame(minHeight: 44)
                 }
-                Text(level.title)
+                Text(CampaignText.title(of: level))
                     .font(DSFont.title)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     .accessibilityAddTraits(.isHeader)
-                Text(level.principle)
+                Text(CampaignText.principle(of: level))
                     .font(DSFont.callout)
                     .foregroundStyle(DSColor.Identity.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -44,7 +44,7 @@ struct LevelIntroCard: View {
                             HStack(spacing: DSSpacing.xs) {
                                 DSGlyph(element.glyphKind)
                                     .frame(width: 18, height: 18)
-                                Text(element.name)
+                                Text(CampaignText.name(of: element))
                                     .font(DSFont.footnote)
                                     .foregroundStyle(DSColor.Identity.textPrimary)
                             }

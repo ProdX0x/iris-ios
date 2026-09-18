@@ -20,7 +20,9 @@ enum PaywallCopy {
 
     static let whatIsBought = "L'accès complet ouvre tous les autres chapitres d'Iris, et ceux qui viendront ensuite."
 
-    static let notASubscription = "Achat unique. Aucun abonnement, aucun renouvellement."
+    static var notASubscription: String {
+        IrisText.interface("paywall.notASubscription", french: "Achat unique. Aucun abonnement, aucun renouvellement.")
+    }
 
     static let progressIsKept = "Votre progression est gardée sur l'appareil : elle vous attend quoi qu'il arrive."
 

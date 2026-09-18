@@ -215,8 +215,11 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Paywall/PaywallView.swift | struct | Presentation | What the full access is, what it costs according to the store, and the three ways in: buy once, restore, | Claude (mission Iris) |
 | Features/Settings/GazeAssistanceSection.swift | struct | Presentation | The settings home of the gaze assistance choice: the detailed picker, its one line of context, and the | Claude (mission Iris) |
 | Features/Settings/SettingsView.swift | struct | Presentation | Sound effects, ambience, haptics, gaze diagnostics, recalibration, progress reset, privacy note; the | Claude (mission Iris) |
+| Features/Shared/CampaignText.swift | enum | Presentation | Localisation keys for the game content, derived from what a thing IS — a chapter number, a level id, an | Claude (mission Iris) |
 | Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
+| Features/Shared/HintText.swift | enum | Presentation | Gives every contextual instruction a stable identity again. The engine hands the screen a bare French | Claude (mission Iris) |
+| Features/Shared/IrisText.swift | enum | Presentation | The one place where a sentence Iris holds becomes the sentence Iris shows. A stable technical key carries | Claude (mission Iris) |
 | Features/Unavailable/UnavailableView.swift | struct | Presentation | Shown when the device cannot track faces (no TrueDepth / ARFaceTracking unsupported) | Claude (mission Iris) |
 | GameEngine/Campaign/HintTracker.swift | struct | GameEngine | Decides which contextual instruction is visible, from engine events and elapsed time | Claude (mission Iris) |
 | GameEngine/Campaign/LevelResolver.swift | enum | GameEngine | Resolves a LevelDefinition against the playfield: scale, zone, forces, elements, routes | Claude (mission Iris) |
@@ -353,6 +356,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/LevelHintLocalizationTests.swift | struct | Tests | Every contextual instruction the engine can show has exactly one stable identity, that identity is never | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/LocalizationInfrastructureTests.swift | struct | Tests | The localisation hinge holds: a stable key resolves, a missing key falls back to the French Iris already | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OnboardingTests.swift | struct | Tests | The four explanation screens: what they say, that they say it about a game and nothing else, that they | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/VisualCaptureTests.swift | struct | Tests | Deterministic images of representative screens (off screen and hosted in a window) and of every level, to | Claude (mission Iris) |

@@ -46,11 +46,11 @@ struct ChapterCard: View {
                 .fixedSize()
                 .frame(minWidth: 36, alignment: .leading)
             VStack(alignment: .leading, spacing: DSSpacing.xxs) {
-                Text(chapter.name)
+                Text(CampaignText.name(of: chapter))
                     .font(DSFont.title2)
                     .foregroundStyle(isUnlocked ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
-                Text(isUnlocked ? chapter.principle : lockedHint)
+                Text(isUnlocked ? CampaignText.principle(of: chapter) : lockedHint)
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)

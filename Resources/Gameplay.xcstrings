@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "level.1-1.title" : {
+      "comment" : "Title of level I-1. Level titles are short, lowercase, and evoke what the player does; they are not instructions.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "premier regard"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

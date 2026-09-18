@@ -68,7 +68,11 @@ struct GameHUDHost: View {
 
     var body: some View {
         GameHUDView(levelMark: "\(viewModel.chapter.numeral) · \(viewModel.level.index)",
-                    hint: viewModel.phase == .playing ? viewModel.hint : nil,
+                    // The engine hands over a bare sentence; its identity is rebuilt here, where the level
+                    // is at hand. With no translation in the catalogue this returns the French received.
+                    hint: viewModel.phase == .playing
+                        ? viewModel.hint.map { HintText.localized($0, in: viewModel.level) }
+                        : nil,
                     showsPause: viewModel.phase == .playing,
                     diagnostics: diagnosticLabels,
                     onPause: { viewModel.pause() })

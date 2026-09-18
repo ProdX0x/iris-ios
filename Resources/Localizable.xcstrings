@@ -1,0 +1,30 @@
+{
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "paywall.notASubscription" : {
+      "comment" : "Paywall. Reassures the player that the full access is bought once. Iris sells no subscription: never translate this as a recurring plan.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achat unique. Aucun abonnement, aucun renouvellement."
+          }
+        }
+      }
+    },
+    "settings.audio.soundEffects" : {
+      "comment" : "Settings. Toggle label for the short sounds the game plays on events. Keep it to two words if the language allows.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effets sonores"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
