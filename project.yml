@@ -63,6 +63,9 @@ targets:
         CURRENT_PROJECT_VERSION: "1"
         SUPPORTS_MACCATALYST: "NO"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        # Iris v1 est une application iPHONE. Aucun support iPad n'est revendiqué ni validé pour cette version.
+        # La restriction vit sur la seule cible applicative ; les réglages de projet restent « 1,2 » pour les tests.
+        TARGETED_DEVICE_FAMILY: "1"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
       configs:
         # Release SEULEMENT — signature de distribution App Store, épinglée et déterministe.
