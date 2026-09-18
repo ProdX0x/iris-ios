@@ -49,9 +49,11 @@ enum GazeSetupFailure: Hashable, Sendable {
         case .cameraRestricted:
             IrisText.interface("gazeSetup.camera.restricted.message", french: "L'accès à la caméra est restreint sur cet appareil.")
         case let .trackingError(message):
-            "Le suivi du regard s'est arrêté. \(message)"
+            IrisText.interface("gazeSetup.trackingError.message", french: "Le suivi du regard s'est arrêté. %@", message)
         case let .insufficientSignal(target):
-            "Le regard n'a pas pu être mesuré sur le point \(target + 1). Gardez la tête immobile, évitez les reflets et recommencez."
+            IrisText.interface("gazeSetup.insufficientSignal.message",
+                               french: "Le regard n'a pas pu être mesuré sur le point %lld. Gardez la tête immobile, évitez les reflets et recommencez.",
+                               target + 1)
         case .fitFailed:
             IrisText.interface("gazeSetup.failure.noCorrection", french: "Les mesures ne permettent pas de calculer une correction. Recommencez en suivant chaque point des yeux.")
         }

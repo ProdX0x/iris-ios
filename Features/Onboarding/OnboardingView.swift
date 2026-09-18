@@ -70,7 +70,7 @@ struct OnboardingView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Écran \(index + 1) sur \(pages.count)")
+        .accessibilityLabel(IrisText.interface("common.pageIndicator", french: "Écran %lld sur %lld", index + 1, pages.count))
     }
 
     private func advance() {

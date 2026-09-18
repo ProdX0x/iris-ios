@@ -34,7 +34,7 @@ struct DSProgressRing: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(label ?? "progression")
-        .accessibilityValue("\(Int((progress * 100).rounded())) pour cent")
+        .accessibilityValue(IrisText.interface("progress.percent.value", french: "%lld pour cent", Int((progress * 100).rounded())))
     }
 }
 

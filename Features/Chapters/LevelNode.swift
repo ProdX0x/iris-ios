@@ -49,7 +49,8 @@ struct LevelNode: View {
         }
         .buttonStyle(DSPressableButtonStyle())
         .disabled(state == .locked)
-        .accessibilityLabel("Niveau \(level.index), \(level.title)")
+        .accessibilityLabel(IrisText.interface("chapters.level.label", french: "Niveau %lld, %@",
+                                               level.index, CampaignText.title(of: level)))
         .accessibilityValue(accessibilityValue)
     }
 
@@ -57,8 +58,8 @@ struct LevelNode: View {
         switch state {
         case .locked: IrisText.interface("chapters.level.locked", french: "verrouillé")
         case .next: IrisText.interface("chapters.level.toPlay", french: "à jouer")
-        case .available: "\(eclats.count) éclats sur 3"
-        case .completed: "\(eclats.count) éclats sur 3"
+        case .available: IrisText.interface("eclats.outOfThree.value", french: "%lld éclats sur 3", eclats.count)
+        case .completed: IrisText.interface("eclats.outOfThree.value", french: "%lld éclats sur 3", eclats.count)
         }
     }
 }

@@ -25,7 +25,7 @@ struct DSEclats: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(lit.filter { $0 }.count) éclats sur 3")
+        .accessibilityLabel(IrisText.interface("eclats.outOfThree.value", french: "%lld éclats sur 3", lit.filter { $0 }.count))
     }
 
     private func isLit(_ index: Int) -> Bool {

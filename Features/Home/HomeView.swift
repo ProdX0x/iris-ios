@@ -27,8 +27,10 @@ struct HomeView: View {
                 Spacer(minLength: DSSpacing.l)
                 VStack(spacing: DSSpacing.s) {
                     DSButton(HomeText.primaryTitle(of: summary), systemImage: "eye") { coordinator.continueJourney() }
-                    if let detail = summary.detail {
-                        Text(detail)
+                    // `summary.detail` is composed inside a frozen file, already assembled; the same line is rebuilt
+                    // from keys here, where the level itself is at hand. The two are held equal by test.
+                    if summary.detail != nil, let level = coordinator.nextLevel {
+                        Text(NavigationText.label(for: level))
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textTertiary)
                             .multilineTextAlignment(.center)
@@ -36,7 +38,7 @@ struct HomeView: View {
                     DSButton(IrisText.interface("howToPlay.title", french: "Comment jouer"), systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
                         .padding(.top, DSSpacing.xs)
                     if summary.eclats > 0 {
-                        Text("\(summary.eclats) éclats sur \(summary.maxEclats)")
+                        Text(IrisText.interface("eclats.total.value", french: "%lld éclats sur %lld", summary.eclats, summary.maxEclats))
                             .dsEyebrowStyle(tint: DSColor.State.success)
                             .padding(.top, DSSpacing.xs)
                     }

@@ -17,8 +17,9 @@ struct LevelResultView: View {
 
     var body: some View {
         DSOverlayPanel(title: IrisText.interface("result.title", french: "atteint"),
-                       subtitle: "\(chapter.numeral) · \(chapter.name) — \(level.title)",
-                       eyebrow: result.isCampaignEnd ? IrisText.interface("result.lastIris.eyebrow", french: "dernier iris") : (result.isChapterEnd ? IrisText.interface("result.chapterComplete.eyebrow", french: "chapitre terminé") : "niveau \(level.index)"),
+                       subtitle: IrisText.interface("common.chapterLevel.line", french: "%@ · %@ — %@",
+                                                    chapter.numeral, CampaignText.name(of: chapter), CampaignText.title(of: level)),
+                       eyebrow: result.isCampaignEnd ? IrisText.interface("result.lastIris.eyebrow", french: "dernier iris") : (result.isChapterEnd ? IrisText.interface("result.chapterComplete.eyebrow", french: "chapitre terminé") : IrisText.interface("result.levelIndex.eyebrow", french: "niveau %lld", level.index)),
                        dim: 0.9) {
             HStack(alignment: .top, spacing: DSSpacing.m) {
                 ForEach(Array(Eclat.allCases.enumerated()), id: \.offset) { index, eclat in

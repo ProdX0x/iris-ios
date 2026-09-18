@@ -64,7 +64,7 @@ struct GazeVerdictView: View {
     private func metric(label: String, value: Double) -> some View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             Text(label).dsEyebrowStyle()
-            Text("\(Int((value * 100).rounded())) %")
+            Text(IrisText.interface("gazeVerdict.percent.value", french: "%lld %%", Int((value * 100).rounded())))
                 .font(DSFont.title2)
                 .foregroundStyle(DSColor.Identity.textPrimary)
         }

@@ -1,14 +1,5006 @@
 {
   "sourceLanguage" : "fr",
   "strings" : {
+    "chapter.1.name" : {
+      "comment" : "Name of chapter I (1 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "éveil"
+          }
+        }
+      }
+    },
+    "chapter.1.principle" : {
+      "comment" : "The single line that says what chapter I (1 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce que vous regardez s'éloigne."
+          }
+        }
+      }
+    },
+    "chapter.2.name" : {
+      "comment" : "Name of chapter II (2 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "partage"
+          }
+        }
+      }
+    },
+    "chapter.2.principle" : {
+      "comment" : "The single line that says what chapter II (2 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une attention, plusieurs lueurs."
+          }
+        }
+      }
+    },
+    "chapter.3.name" : {
+      "comment" : "Name of chapter III (3 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "courants"
+          }
+        }
+      }
+    },
+    "chapter.3.principle" : {
+      "comment" : "The single line that says what chapter III (3 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre regard pousse aussi."
+          }
+        }
+      }
+    },
+    "chapter.4.name" : {
+      "comment" : "Name of chapter IV (4 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "voiles"
+          }
+        }
+      }
+    },
+    "chapter.4.principle" : {
+      "comment" : "The single line that says what chapter IV (4 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contourner, c'est viser."
+          }
+        }
+      }
+    },
+    "chapter.5.name" : {
+      "comment" : "Name of chapter V (5 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "veilleuses"
+          }
+        }
+      }
+    },
+    "chapter.5.principle" : {
+      "comment" : "The single line that says what chapter V (5 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regarder sans troubler."
+          }
+        }
+      }
+    },
+    "chapter.6.name" : {
+      "comment" : "Name of chapter VI (6 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "clairvoyance"
+          }
+        }
+      }
+    },
+    "chapter.6.principle" : {
+      "comment" : "The single line that says what chapter VI (6 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lire le niveau avant de jouer."
+          }
+        }
+      }
+    },
+    "chapter.7.name" : {
+      "comment" : "Name of chapter VII (7 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jumelles"
+          }
+        }
+      }
+    },
+    "chapter.7.principle" : {
+      "comment" : "The single line that says what chapter VII (7 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chacune est l'iris de l'autre."
+          }
+        }
+      }
+    },
+    "chapter.8.name" : {
+      "comment" : "Name of chapter VIII (8 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "souffles"
+          }
+        }
+      }
+    },
+    "chapter.8.principle" : {
+      "comment" : "The single line that says what chapter VIII (8 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qu'il traverse, il l'emporte."
+          }
+        }
+      }
+    },
+    "chapter.9.name" : {
+      "comment" : "Name of chapter IX (9 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "échos"
+          }
+        }
+      }
+    },
+    "chapter.9.principle" : {
+      "comment" : "The single line that says what chapter IX (9 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un iris qui se ferme réveille ce qui dort à portée."
+          }
+        }
+      }
+    },
+    "chapter.10.name" : {
+      "comment" : "Name of chapter X (10 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gouffres"
+          }
+        }
+      }
+    },
+    "chapter.10.principle" : {
+      "comment" : "The single line that says what chapter X (10 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qu'il avale revient au départ."
+          }
+        }
+      }
+    },
+    "chapter.11.name" : {
+      "comment" : "Name of chapter XI (11 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "braises"
+          }
+        }
+      }
+    },
+    "chapter.11.principle" : {
+      "comment" : "The single line that says what chapter XI (11 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un regard bref la réveille. Un regard long l'affole."
+          }
+        }
+      }
+    },
+    "chapter.12.name" : {
+      "comment" : "Name of chapter XII (12 of 12). Chapter names are short, lowercase and evocative — they name a movement of the eyes, not a place. Not a sentence, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "constellation"
+          }
+        }
+      }
+    },
+    "chapter.12.principle" : {
+      "comment" : "The single line that says what chapter XII (12 of 12) teaches. Shown on the chapter card. It states a principle, never an instruction to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout ce que vous savez regarder, ensemble."
+          }
+        }
+      }
+    },
+    "eclat.atteint.condition" : {
+      "comment" : "What earns the mark `atteint`. FUNCTIONAL: this is a promise the game keeps exactly. Translate the condition precisely — not more generously, not more strictly — or the player will believe a rule the engine does not apply.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "terminer le niveau"
+          }
+        }
+      }
+    },
+    "eclat.atteint.title" : {
+      "comment" : "Name of the mark `atteint`, one of the three a level can award.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "atteint"
+          }
+        }
+      }
+    },
+    "eclat.fluide.condition" : {
+      "comment" : "What earns the mark `fluide`. FUNCTIONAL: this is a promise the game keeps exactly. Translate the condition precisely — not more generously, not more strictly — or the player will believe a rule the engine does not apply.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le terminer sans s'attarder"
+          }
+        }
+      }
+    },
+    "eclat.fluide.title" : {
+      "comment" : "Name of the mark `fluide`, one of the three a level can award.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fluide"
+          }
+        }
+      }
+    },
+    "eclat.serein.condition" : {
+      "comment" : "What earns the mark `serein`. FUNCTIONAL: this is a promise the game keeps exactly. Translate the condition precisely — not more generously, not more strictly — or the player will believe a rule the engine does not apply.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ne rien perdre, troubler peu"
+          }
+        }
+      }
+    },
+    "eclat.serein.title" : {
+      "comment" : "Name of the mark `serein`, one of the three a level can award.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "serein"
+          }
+        }
+      }
+    },
+    "element.absence.name" : {
+      "comment" : "Name of the game element `absence`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "absence"
+          }
+        }
+      }
+    },
+    "element.absence.summary" : {
+      "comment" : "What the element `absence` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une présence tient tant que vous la regardez. Quand une autre répond, parfois après un silence, allez à elle."
+          }
+        }
+      }
+    },
+    "element.ancre.name" : {
+      "comment" : "Name of the game element `ancre`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ancre"
+          }
+        }
+      }
+    },
+    "element.ancre.summary" : {
+      "comment" : "What the element `ancre` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un point au centre d'une silhouette. Les yeux posés dessus, la tête dessine un cercle lent : l'anneau se remplit, puis dans l'autre sens."
+          }
+        }
+      }
+    },
+    "element.balise.name" : {
+      "comment" : "Name of the game element `balise`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "balise"
+          }
+        }
+      }
+    },
+    "element.balise.summary" : {
+      "comment" : "What the element `balise` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle s'éveille sous un regard posé, puis tend un fil vers la suivante. Le fil complet ouvre l'iris."
+          }
+        }
+      }
+    },
+    "element.braise.name" : {
+      "comment" : "Name of the game element `braise`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "braise"
+          }
+        }
+      }
+    },
+    "element.braise.summary" : {
+      "comment" : "What the element `braise` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Froide, elle dort. Un regard bref la réveille et elle fuit ; un regard long l'affole."
+          }
+        }
+      }
+    },
+    "element.cascade.name" : {
+      "comment" : "Name of the game element `cascade`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cascade"
+          }
+        }
+      }
+    },
+    "element.cascade.summary" : {
+      "comment" : "What the element `cascade` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si une lueur perd sa place, celles qui la suivent la perdent aussi."
+          }
+        }
+      }
+    },
+    "element.coeur.name" : {
+      "comment" : "Name of the game element `coeur`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cœur de verre"
+          }
+        }
+      }
+    },
+    "element.coeur.summary" : {
+      "comment" : "What the element `coeur` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Froid, il se réchauffe sous un regard qui reste. Les étincelles autour n'attendent que votre regard pour le refroidir."
+          }
+        }
+      }
+    },
+    "element.courant.name" : {
+      "comment" : "Name of the game element `courant`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "courant"
+          }
+        }
+      }
+    },
+    "element.courant.summary" : {
+      "comment" : "What the element `courant` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il emporte les lueurs. Poussez-les avec votre regard."
+          }
+        }
+      }
+    },
+    "element.croisement.name" : {
+      "comment" : "Name of the game element `croisement`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "croisement"
+          }
+        }
+      }
+    },
+    "element.croisement.summary" : {
+      "comment" : "What the element `croisement` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les jumelles s'appellent d'un coin à l'autre. Répondez à celle qui respire : leur lien se resserre."
+          }
+        }
+      }
+    },
+    "element.dormeuse.name" : {
+      "comment" : "Name of the game element `dormeuse`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dormeuse"
+          }
+        }
+      }
+    },
+    "element.dormeuse.summary" : {
+      "comment" : "What the element `dormeuse` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle dort : elle ne bouge pas et son iris reste fermé. Seul un écho la réveille."
+          }
+        }
+      }
+    },
+    "element.echo.name" : {
+      "comment" : "Name of the game element `echo`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "écho"
+          }
+        }
+      }
+    },
+    "element.echo.summary" : {
+      "comment" : "What the element `echo` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un iris qui se ferme respire un écho. Il réveille les dormeuses à portée et les lance."
+          }
+        }
+      }
+    },
+    "element.ecran.name" : {
+      "comment" : "Name of the game element `ecran`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regard sur l'écran"
+          }
+        }
+      }
+    },
+    "element.ecran.summary" : {
+      "comment" : "What the element `ecran` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si vos yeux quittent l'écran, les iris se ferment."
+          }
+        }
+      }
+    },
+    "element.etoileAbsente.name" : {
+      "comment" : "Name of the game element `etoileAbsente`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "étoile absente"
+          }
+        }
+      }
+    },
+    "element.etoileAbsente.summary" : {
+      "comment" : "What the element `etoileAbsente` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle brille un instant puis s'efface. Retournez là où elle était : elle revient, et la constellation grandit."
+          }
+        }
+      }
+    },
+    "element.filVivant.name" : {
+      "comment" : "Name of the game element `filVivant`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fil vivant"
+          }
+        }
+      }
+    },
+    "element.filVivant.summary" : {
+      "comment" : "What the element `filVivant` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle file sans jamais s'arrêter. Accompagnez-la du regard : le fil qu'elle laisse reste vivant."
+          }
+        }
+      }
+    },
+    "element.gouffre.name" : {
+      "comment" : "Name of the game element `gouffre`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gouffre"
+          }
+        }
+      }
+    },
+    "element.gouffre.summary" : {
+      "comment" : "What the element `gouffre` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il aspire ce qui s'approche. Ce qu'il avale revient à son départ."
+          }
+        }
+      }
+    },
+    "element.iris.name" : {
+      "comment" : "Name of the game element `iris`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iris"
+          }
+        }
+      }
+    },
+    "element.iris.summary" : {
+      "comment" : "What the element `iris` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une lueur doit y rester trois quarts de seconde pour qu'il se ferme."
+          }
+        }
+      }
+    },
+    "element.irisMouvant.name" : {
+      "comment" : "Name of the game element `irisMouvant`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iris mouvant"
+          }
+        }
+      }
+    },
+    "element.irisMouvant.summary" : {
+      "comment" : "What the element `irisMouvant` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris glisse. Anticipez sans le fixer."
+          }
+        }
+      }
+    },
+    "element.jardin.name" : {
+      "comment" : "Name of the game element `jardin`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jardin caché"
+          }
+        }
+      }
+    },
+    "element.jardin.summary" : {
+      "comment" : "What the element `jardin` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parmi les graines qui scintillent, quelques-unes respirent. Posez le regard sur celles-là : elles poussent."
+          }
+        }
+      }
+    },
+    "element.jumelles.name" : {
+      "comment" : "Name of the game element `jumelles`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jumelles"
+          }
+        }
+      }
+    },
+    "element.jumelles.summary" : {
+      "comment" : "What the element `jumelles` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elles n'ont pas d'iris : chacune est l'iris de l'autre. Réunissez-les."
+          }
+        }
+      }
+    },
+    "element.lanterne.name" : {
+      "comment" : "Name of the game element `lanterne`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lanterne du courant"
+          }
+        }
+      }
+    },
+    "element.lanterne.summary" : {
+      "comment" : "What the element `lanterne` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant la porte toujours par le même chemin. Dans la brume elle disparaît : soyez là où elle ressort."
+          }
+        }
+      }
+    },
+    "element.lueur.name" : {
+      "comment" : "Name of the game element `lueur`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lueur"
+          }
+        }
+      }
+    },
+    "element.lueur.summary" : {
+      "comment" : "What the element `lueur` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle fuit votre regard et rejoint son iris quand on la laisse."
+          }
+        }
+      }
+    },
+    "element.miroir.name" : {
+      "comment" : "Name of the game element `miroir`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "miroir menteur"
+          }
+        }
+      }
+    },
+    "element.miroir.summary" : {
+      "comment" : "What the element `miroir` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qui brille d'un côté appelle le regard ; la porte s'ouvre de l'autre. Ne suivez pas l'éclat."
+          }
+        }
+      }
+    },
+    "element.orchestre.name" : {
+      "comment" : "Name of the game element `orchestre`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "orchestre du regard"
+          }
+        }
+      }
+    },
+    "element.orchestre.summary" : {
+      "comment" : "What the element `orchestre` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout ce que vos yeux ont appris, d'un seul souffle. Chaque passage allume une étoile."
+          }
+        }
+      }
+    },
+    "element.ordre.name" : {
+      "comment" : "Name of the game element `ordre`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ordre"
+          }
+        }
+      }
+    },
+    "element.ordre.summary" : {
+      "comment" : "What the element `ordre` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les numéros fixent l'ordre : 1, puis 2, puis 3."
+          }
+        }
+      }
+    },
+    "element.premierRegard.name" : {
+      "comment" : "Name of the game element `premierRegard`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "d'abord les yeux"
+          }
+        }
+      }
+    },
+    "element.premierRegard.summary" : {
+      "comment" : "What the element `premierRegard` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une braise s'allume au bord. Allez-y des yeux, puis laissez la tête suivre : elle donne toute sa chaleur."
+          }
+        }
+      }
+    },
+    "element.souffle.name" : {
+      "comment" : "Name of the game element `souffle`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "souffle"
+          }
+        }
+      }
+    },
+    "element.souffle.summary" : {
+      "comment" : "What the element `souffle` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il passe et repasse sur son chemin. Ce qu'il traverse, il l'emporte par-dessus les voiles."
+          }
+        }
+      }
+    },
+    "element.temperaments.name" : {
+      "comment" : "Name of the game element `temperaments`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tempéraments"
+          }
+        }
+      }
+    },
+    "element.temperaments.summary" : {
+      "comment" : "What the element `temperaments` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lueur vive fuit au moindre regard, la lourde résiste."
+          }
+        }
+      }
+    },
+    "element.veilleuse.name" : {
+      "comment" : "Name of the game element `veilleuse`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "veilleuse"
+          }
+        }
+      }
+    },
+    "element.veilleuse.summary" : {
+      "comment" : "What the element `veilleuse` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez la flamme pour la raviver. Éteinte, elle ferme ses iris."
+          }
+        }
+      }
+    },
+    "element.voile.name" : {
+      "comment" : "Name of the game element `voile`, as the carnet lists it. Iris names its own things: keep the poetry, do not translate it into a generic game term.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "voile"
+          }
+        }
+      }
+    },
+    "element.voile.summary" : {
+      "comment" : "What the element `voile` does, in one line, in the carnet. Describes behaviour the player can verify on screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les lueurs ne le traversent pas. Poussez-les autour."
+          }
+        }
+      }
+    },
+    "hint.generic.balises" : {
+      "comment" : "Late help shown in any level that names none of its own, chosen by the shape of the level (`balises`). Generic on purpose: it must fit every level of that shape.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seule la balise qui respire s'éveille, sous un regard posé."
+          }
+        }
+      }
+    },
+    "hint.generic.emptySpace" : {
+      "comment" : "Late help shown in any level that names none of its own, chosen by the shape of the level (`emptySpace`). Generic on purpose: it must fit every level of that shape.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherchez l'espace le plus vide de l'écran."
+          }
+        }
+      }
+    },
+    "hint.generic.oculo" : {
+      "comment" : "Late help shown in any level that names none of its own, chosen by the shape of the level (`oculo`). Generic on purpose: it must fit every level of that shape.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le jeu vous montre où poser le regard : suivez ce qui respire."
+          }
+        }
+      }
+    },
+    "hint.generic.route" : {
+      "comment" : "Late help shown in any level that names none of its own, chosen by the shape of the level (`route`). Generic on purpose: it must fit every level of that shape.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voie est tracée en pointillés."
+          }
+        }
+      }
+    },
+    "level.1-1.hint.afterSeconds.30" : {
+      "comment" : "Instruction shown during level I-1 when 30 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez un coin de l'écran, loin de la lueur."
+          }
+        }
+      }
+    },
+    "level.1-1.hint.attentionLeftField" : {
+      "comment" : "Instruction shown during level I-1 when the gaze leaves the useful area. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez les yeux sur l'écran."
+          }
+        }
+      }
+    },
+    "level.1-1.hint.firstHold" : {
+      "comment" : "Instruction shown during level I-1 when the player holds their gaze steady for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laissez-la se poser dans son iris."
+          }
+        }
+      }
+    },
+    "level.1-1.hint.firstIntrusion" : {
+      "comment" : "Instruction shown during level I-1 when something enters the playfield for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle fuit votre regard. Regardez ailleurs, sur l'écran."
+          }
+        }
+      }
+    },
+    "level.1-1.hint.start" : {
+      "comment" : "Instruction shown during level I-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez la lueur."
+          }
+        }
+      }
+    },
+    "level.1-1.principle" : {
+      "comment" : "What level I-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amenez la lueur dans son iris."
+          }
+        }
+      }
+    },
     "level.1-1.title" : {
-      "comment" : "Title of level I-1. Level titles are short, lowercase, and evoke what the player does; they are not instructions.",
+      "comment" : "Title of level I-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
       "extractionState" : "manual",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "premier regard"
+          }
+        }
+      }
+    },
+    "level.1-2.hint.firstHold" : {
+      "comment" : "Instruction shown during level I-2 when the player holds their gaze steady for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenez : trois quarts de seconde."
+          }
+        }
+      }
+    },
+    "level.1-2.hint.firstLoss" : {
+      "comment" : "Instruction shown during level I-2 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle est sortie de l'iris. Regardez plus loin."
+          }
+        }
+      }
+    },
+    "level.1-2.principle" : {
+      "comment" : "What level I-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris est au centre. Où poser les yeux ?"
+          }
+        }
+      }
+    },
+    "level.1-2.title" : {
+      "comment" : "Title of level I-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tenir"
+          }
+        }
+      }
+    },
+    "level.1-3.hint.attentionLeftField" : {
+      "comment" : "Instruction shown during level I-3 when the gaze leaves the useful area. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hors de l'écran, les iris se ferment."
+          }
+        }
+      }
+    },
+    "level.1-3.hint.start" : {
+      "comment" : "Instruction shown during level I-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez les yeux sur l'écran, loin de la lueur."
+          }
+        }
+      }
+    },
+    "level.1-3.principle" : {
+      "comment" : "What level I-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivez-la sans la regarder."
+          }
+        }
+      }
+    },
+    "level.1-3.title" : {
+      "comment" : "Title of level I-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "traversée"
+          }
+        }
+      }
+    },
+    "level.1-4.principle" : {
+      "comment" : "What level I-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux lueurs, deux iris, dans l'ordre que vous voulez."
+          }
+        }
+      }
+    },
+    "level.1-4.title" : {
+      "comment" : "Title of level I-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deux couloirs"
+          }
+        }
+      }
+    },
+    "level.1-5.principle" : {
+      "comment" : "What level I-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La vive fuit au moindre regard. La lourde résiste."
+          }
+        }
+      }
+    },
+    "level.1-5.title" : {
+      "comment" : "Title of level I-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tempéraments"
+          }
+        }
+      }
+    },
+    "level.1-6.hint.afterSeconds.40" : {
+      "comment" : "Instruction shown during level I-6 when 40 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seule la balise qui respire peut s'éveiller. Restez posé dessus un instant."
+          }
+        }
+      }
+    },
+    "level.1-6.hint.balisesCompleted" : {
+      "comment" : "Instruction shown during level I-6 when every balise is awake. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fil est complet : l'iris s'ouvre et une lueur s'éveille. Laissez-la venir."
+          }
+        }
+      }
+    },
+    "level.1-6.hint.firstBalise" : {
+      "comment" : "Instruction shown during level I-6 when the first balise wakes. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle tend un fil. Suivez-le du regard, balise après balise."
+          }
+        }
+      }
+    },
+    "level.1-6.hint.start" : {
+      "comment" : "Instruction shown during level I-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une balise respire au centre. Posez-y le regard."
+          }
+        }
+      }
+    },
+    "level.1-6.principle" : {
+      "comment" : "What level I-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris est éteint. Éveillez chaque balise que le fil désigne ; le fil complet l'ouvrira."
+          }
+        }
+      }
+    },
+    "level.1-6.title" : {
+      "comment" : "Title of level I-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le fil des balises"
+          }
+        }
+      }
+    },
+    "level.2-1.hint.start" : {
+      "comment" : "Instruction shown during level II-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D'abord la 1, ensuite la 2."
+          }
+        }
+      }
+    },
+    "level.2-1.principle" : {
+      "comment" : "What level II-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lueur 2 attend que la 1 soit posée."
+          }
+        }
+      }
+    },
+    "level.2-1.title" : {
+      "comment" : "Title of level II-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dans l'ordre"
+          }
+        }
+      }
+    },
+    "level.2-2.principle" : {
+      "comment" : "What level II-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leurs chemins traversent l'écran et se croisent au centre."
+          }
+        }
+      }
+    },
+    "level.2-2.title" : {
+      "comment" : "Title of level II-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "croisement"
+          }
+        }
+      }
+    },
+    "level.2-3.hint.firstLoss" : {
+      "comment" : "Instruction shown during level II-3 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si la 1 perd sa place, la 2 la perd aussi."
+          }
+        }
+      }
+    },
+    "level.2-3.principle" : {
+      "comment" : "What level II-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protégez la 1 pendant que la 2 passe."
+          }
+        }
+      }
+    },
+    "level.2-3.title" : {
+      "comment" : "Title of level II-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "garde"
+          }
+        }
+      }
+    },
+    "level.2-4.principle" : {
+      "comment" : "What level II-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trois lueurs, un seul regard."
+          }
+        }
+      }
+    },
+    "level.2-4.title" : {
+      "comment" : "Title of level II-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "trois"
+          }
+        }
+      }
+    },
+    "level.2-5.principle" : {
+      "comment" : "What level II-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout ce que vous avez appris, et une lueur vive."
+          }
+        }
+      }
+    },
+    "level.2-5.title" : {
+      "comment" : "Title of level II-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "partage"
+          }
+        }
+      }
+    },
+    "level.2-6.hint.afterSeconds.40" : {
+      "comment" : "Instruction shown during level II-6 when 40 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qui brille autour ne compte pas. Seul le cœur."
+          }
+        }
+      }
+    },
+    "level.2-6.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level II-6 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une étincelle vous a pris le regard : le cœur a refroidi un peu."
+          }
+        }
+      }
+    },
+    "level.2-6.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level II-6 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le cœur s'ouvre. Deux lueurs s'éveillent : laissez-les venir."
+          }
+        }
+      }
+    },
+    "level.2-6.hint.start" : {
+      "comment" : "Instruction shown during level II-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un cœur de verre, froid. Posez-y le regard et laissez-le se réchauffer."
+          }
+        }
+      }
+    },
+    "level.2-6.principle" : {
+      "comment" : "What level II-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un cœur froid. Votre regard, s'il reste, le réchauffe ; ce qui brille autour le refroidit."
+          }
+        }
+      }
+    },
+    "level.2-6.title" : {
+      "comment" : "Title of level II-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le cœur de verre"
+          }
+        }
+      }
+    },
+    "level.3-1.hint.afterSeconds.5" : {
+      "comment" : "Instruction shown during level III-1 when 5 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez juste sous la lueur : elle montera."
+          }
+        }
+      }
+    },
+    "level.3-1.hint.firstHold" : {
+      "comment" : "Instruction shown during level III-1 when the player holds their gaze steady for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passé le courant, laissez-la."
+          }
+        }
+      }
+    },
+    "level.3-1.hint.start" : {
+      "comment" : "Instruction shown during level III-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant emporte la lueur vers le bas."
+          }
+        }
+      }
+    },
+    "level.3-1.principle" : {
+      "comment" : "What level III-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant la retient. Poussez-la."
+          }
+        }
+      }
+    },
+    "level.3-1.title" : {
+      "comment" : "Title of level III-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le courant"
+          }
+        }
+      }
+    },
+    "level.3-2.hint.afterSeconds.6" : {
+      "comment" : "Instruction shown during level III-2 when 6 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poussez-la de côté, vers la brèche."
+          }
+        }
+      }
+    },
+    "level.3-2.principle" : {
+      "comment" : "What level III-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant laisse un passage."
+          }
+        }
+      }
+    },
+    "level.3-2.title" : {
+      "comment" : "Title of level III-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la brèche"
+          }
+        }
+      }
+    },
+    "level.3-3.principle" : {
+      "comment" : "What level III-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'une remonte le courant, l'autre le descend."
+          }
+        }
+      }
+    },
+    "level.3-3.title" : {
+      "comment" : "Title of level III-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deux rives"
+          }
+        }
+      }
+    },
+    "level.3-4.principle" : {
+      "comment" : "What level III-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux courants, une lueur vive."
+          }
+        }
+      }
+    },
+    "level.3-4.title" : {
+      "comment" : "Title of level III-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "contre-marée"
+          }
+        }
+      }
+    },
+    "level.3-5.principle" : {
+      "comment" : "What level III-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lourde est longue à pousser. La 2 attend."
+          }
+        }
+      }
+    },
+    "level.3-5.title" : {
+      "comment" : "Title of level III-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "contre le courant"
+          }
+        }
+      }
+    },
+    "level.3-6.principle" : {
+      "comment" : "What level III-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trois lueurs, deux courants, dans l'ordre."
+          }
+        }
+      }
+    },
+    "level.3-6.title" : {
+      "comment" : "Title of level III-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "courants"
+          }
+        }
+      }
+    },
+    "level.3-7.hint.afterSeconds.40" : {
+      "comment" : "Instruction shown during level III-7 when 40 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivez-la d'un regard souple, comme on suit une feuille sur l'eau."
+          }
+        }
+      }
+    },
+    "level.3-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level III-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fil s'effiloche. Rattrapez-la : il se ravive."
+          }
+        }
+      }
+    },
+    "level.3-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level III-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fil est vivant. L'iris s'ouvre : laissez la lueur venir."
+          }
+        }
+      }
+    },
+    "level.3-7.hint.start" : {
+      "comment" : "Instruction shown during level III-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'étincelle ne s'arrête jamais. Gardez-la sous le regard, sans la devancer."
+          }
+        }
+      }
+    },
+    "level.3-7.principle" : {
+      "comment" : "What level III-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une étincelle file dans le courant. Accompagnez-la : son fil reste vivant tant que votre regard la suit."
+          }
+        }
+      }
+    },
+    "level.3-7.title" : {
+      "comment" : "Title of level III-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le fil vivant"
+          }
+        }
+      }
+    },
+    "level.4-1.hint.afterSeconds.5" : {
+      "comment" : "Instruction shown during level IV-1 when 5 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez à gauche de la lueur : elle glissera vers la droite."
+          }
+        }
+      }
+    },
+    "level.4-1.hint.start" : {
+      "comment" : "Instruction shown during level IV-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les lueurs ne traversent pas les voiles."
+          }
+        }
+      }
+    },
+    "level.4-1.principle" : {
+      "comment" : "What level IV-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle bute. Poussez-la vers le bord du voile."
+          }
+        }
+      }
+    },
+    "level.4-1.title" : {
+      "comment" : "Title of level IV-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le voile"
+          }
+        }
+      }
+    },
+    "level.4-2.principle" : {
+      "comment" : "What level IV-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le passage n'est pas dans l'axe, et une lueur veille à côté."
+          }
+        }
+      }
+    },
+    "level.4-2.title" : {
+      "comment" : "Title of level IV-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le col"
+          }
+        }
+      }
+    },
+    "level.4-3.principle" : {
+      "comment" : "What level IV-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux poussées : monter, puis tourner."
+          }
+        }
+      }
+    },
+    "level.4-3.title" : {
+      "comment" : "Title of level IV-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le coude"
+          }
+        }
+      }
+    },
+    "level.4-4.principle" : {
+      "comment" : "What level IV-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poussez l'une sans chasser l'autre."
+          }
+        }
+      }
+    },
+    "level.4-4.title" : {
+      "comment" : "Title of level IV-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deux côtés"
+          }
+        }
+      }
+    },
+    "level.4-5.principle" : {
+      "comment" : "What level IV-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant l'éloigne de l'ouverture."
+          }
+        }
+      }
+    },
+    "level.4-5.title" : {
+      "comment" : "Title of level IV-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "voile et courant"
+          }
+        }
+      }
+    },
+    "level.4-6.principle" : {
+      "comment" : "What level IV-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un iris enfermé, une seule entrée."
+          }
+        }
+      }
+    },
+    "level.4-6.title" : {
+      "comment" : "Title of level IV-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la chambre"
+          }
+        }
+      }
+    },
+    "level.4-7.hint.afterSeconds.45" : {
+      "comment" : "Instruction shown during level IV-7 when 45 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne regardez pas ce qui brille. Regardez là où il ne brille pas."
+          }
+        }
+      }
+    },
+    "level.4-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level IV-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'éclat mentait. La porte se rouvrira : allez en face."
+          }
+        }
+      }
+    },
+    "level.4-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level IV-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La porte a cédé. Chaque éclat en annonce une autre, toujours en face."
+          }
+        }
+      }
+    },
+    "level.4-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level IV-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les portes ont cédé. L'iris s'ouvre : contournez le voile."
+          }
+        }
+      }
+    },
+    "level.4-7.hint.start" : {
+      "comment" : "Instruction shown during level IV-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un éclat va briller. La porte, elle, s'ouvre en face."
+          }
+        }
+      }
+    },
+    "level.4-7.principle" : {
+      "comment" : "What level IV-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un éclat appelle le regard d'un côté ; la porte s'ouvre de l'autre. Le voile ne cède qu'aux portes."
+          }
+        }
+      }
+    },
+    "level.4-7.title" : {
+      "comment" : "Title of level IV-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le miroir menteur"
+          }
+        }
+      }
+    },
+    "level.5-1.hint.firstLoss" : {
+      "comment" : "Instruction shown during level V-1 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flamme éteinte : l'iris s'est fermé."
+          }
+        }
+      }
+    },
+    "level.5-1.hint.start" : {
+      "comment" : "Instruction shown during level V-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez la flamme pour la raviver."
+          }
+        }
+      }
+    },
+    "level.5-1.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level V-1 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme s'éteint. Un regard suffit."
+          }
+        }
+      }
+    },
+    "level.5-1.principle" : {
+      "comment" : "What level V-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit. Sans elle, l'iris se ferme."
+          }
+        }
+      }
+    },
+    "level.5-1.title" : {
+      "comment" : "Title of level V-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la veilleuse"
+          }
+        }
+      }
+    },
+    "level.5-2.principle" : {
+      "comment" : "What level V-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme veille au-dessus de l'iris 1."
+          }
+        }
+      }
+    },
+    "level.5-2.title" : {
+      "comment" : "Title of level V-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "près du feu"
+          }
+        }
+      }
+    },
+    "level.5-3.principle" : {
+      "comment" : "What level V-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque flamme éclaire un iris."
+          }
+        }
+      }
+    },
+    "level.5-3.title" : {
+      "comment" : "Title of level V-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deux flammes"
+          }
+        }
+      }
+    },
+    "level.5-4.principle" : {
+      "comment" : "What level V-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme ne veille que sur la 1. Si elle meurt, tout tombe."
+          }
+        }
+      }
+    },
+    "level.5-4.title" : {
+      "comment" : "Title of level V-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "garde et flamme"
+          }
+        }
+      }
+    },
+    "level.5-5.principle" : {
+      "comment" : "What level V-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contourner le voile sans laisser mourir la flamme."
+          }
+        }
+      }
+    },
+    "level.5-5.title" : {
+      "comment" : "Title of level V-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "derrière le voile"
+          }
+        }
+      }
+    },
+    "level.5-6.principle" : {
+      "comment" : "What level V-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une flamme exigeante, un courant, trois lueurs."
+          }
+        }
+      }
+    },
+    "level.5-6.title" : {
+      "comment" : "Title of level V-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "veilleuses"
+          }
+        }
+      }
+    },
+    "level.5-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level V-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas ici. Elles reviennent briller un instant : regardez encore."
+          }
+        }
+      }
+    },
+    "level.5-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level V-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retrouvée. Cherchez l'autre, là où elle était."
+          }
+        }
+      }
+    },
+    "level.5-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level V-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La constellation est dessinée. L'iris s'ouvre ; la flamme l'éclaire, ne l'oubliez pas."
+          }
+        }
+      }
+    },
+    "level.5-7.hint.start" : {
+      "comment" : "Instruction shown during level V-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez bien où elles brillent : elles vont s'effacer."
+          }
+        }
+      }
+    },
+    "level.5-7.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level V-7 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit."
+          }
+        }
+      }
+    },
+    "level.5-7.principle" : {
+      "comment" : "What level V-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des étoiles brillent un instant, puis s'effacent. Retournez là où elles étaient : la constellation se dessine."
+          }
+        }
+      }
+    },
+    "level.5-7.title" : {
+      "comment" : "Title of level V-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "les étoiles absentes"
+          }
+        }
+      }
+    },
+    "level.6-1.hint.firstLoss" : {
+      "comment" : "Instruction shown during level VI-1 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivez-le de loin."
+          }
+        }
+      }
+    },
+    "level.6-1.hint.start" : {
+      "comment" : "Instruction shown during level VI-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris se déplace lentement."
+          }
+        }
+      }
+    },
+    "level.6-1.principle" : {
+      "comment" : "What level VI-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris glisse. Anticipez sans le fixer."
+          }
+        }
+      }
+    },
+    "level.6-1.title" : {
+      "comment" : "Title of level VI-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iris mouvant"
+          }
+        }
+      }
+    },
+    "level.6-2.principle" : {
+      "comment" : "What level VI-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris 2 monte et descend près de la 1."
+          }
+        }
+      }
+    },
+    "level.6-2.title" : {
+      "comment" : "Title of level VI-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "marée"
+          }
+        }
+      }
+    },
+    "level.6-3.principle" : {
+      "comment" : "What level VI-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pousser contre le courant sans oublier la flamme."
+          }
+        }
+      }
+    },
+    "level.6-3.title" : {
+      "comment" : "Title of level VI-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "flamme et courant"
+          }
+        }
+      }
+    },
+    "level.6-4.principle" : {
+      "comment" : "What level VI-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris passe derrière le voile, puis en ressort."
+          }
+        }
+      }
+    },
+    "level.6-4.title" : {
+      "comment" : "Title of level VI-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "voile et marée"
+          }
+        }
+      }
+    },
+    "level.6-5.principle" : {
+      "comment" : "What level VI-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un courant, un voile, une flamme, trois lueurs."
+          }
+        }
+      }
+    },
+    "level.6-5.title" : {
+      "comment" : "Title of level VI-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "constellation"
+          }
+        }
+      }
+    },
+    "level.6-6.principle" : {
+      "comment" : "What level VI-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le dernier regard."
+          }
+        }
+      }
+    },
+    "level.6-6.title" : {
+      "comment" : "Title of level VI-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iris"
+          }
+        }
+      }
+    },
+    "level.6-7.hint.afterSeconds.40" : {
+      "comment" : "Instruction shown during level VI-7 when 40 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un coup d'œil ne coûte rien. Seules les graines qui respirent méritent qu'on s'y attarde."
+          }
+        }
+      }
+    },
+    "level.6-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level VI-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celle-ci ne faisait que scintiller : les pousses se sont repliées. Cherchez encore."
+          }
+        }
+      }
+    },
+    "level.6-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level VI-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle pousse. Une autre respire quelque part."
+          }
+        }
+      }
+    },
+    "level.6-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level VI-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le jardin est ouvert. L'iris glisse : laissez la lueur le rejoindre."
+          }
+        }
+      }
+    },
+    "level.6-7.hint.start" : {
+      "comment" : "Instruction shown during level VI-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes scintillent. Cherchez celles qui respirent lentement."
+          }
+        }
+      }
+    },
+    "level.6-7.principle" : {
+      "comment" : "What level VI-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des graines partout. Quelques-unes respirent : trouvez-les du regard, elles poussent."
+          }
+        }
+      }
+    },
+    "level.6-7.title" : {
+      "comment" : "Title of level VI-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le jardin caché"
+          }
+        }
+      }
+    },
+    "level.7-1.hint.afterSeconds.30" : {
+      "comment" : "Instruction shown during level VII-1 when 30 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez au-dessus de celle du haut pour la pousser vers le bas."
+          }
+        }
+      }
+    },
+    "level.7-1.hint.firstHold" : {
+      "comment" : "Instruction shown during level VII-1 when the player holds their gaze steady for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenez : elles se ferment l'une sur l'autre."
+          }
+        }
+      }
+    },
+    "level.7-1.hint.firstIntrusion" : {
+      "comment" : "Instruction shown during level VII-1 when something enters the playfield for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poussez l'une vers l'autre, par le regard."
+          }
+        }
+      }
+    },
+    "level.7-1.hint.start" : {
+      "comment" : "Instruction shown during level VII-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elles n'ont pas d'iris. Chacune est l'iris de l'autre."
+          }
+        }
+      }
+    },
+    "level.7-1.hint.twinsLinked" : {
+      "comment" : "Instruction shown during level VII-1 when the two twins are linked. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elles se sont vues. Laissez-les se rejoindre."
+          }
+        }
+      }
+    },
+    "level.7-1.principle" : {
+      "comment" : "What level VII-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux lueurs, aucun iris. Amenez l'une à portée de l'autre."
+          }
+        }
+      }
+    },
+    "level.7-1.title" : {
+      "comment" : "Title of level VII-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'une l'autre"
+          }
+        }
+      }
+    },
+    "level.7-2.hint.start" : {
+      "comment" : "Instruction shown during level VII-2 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le voile les sépare. Contournez-le par la droite."
+          }
+        }
+      }
+    },
+    "level.7-2.hint.twinsLinked" : {
+      "comment" : "Instruction shown during level VII-2 when the two twins are linked. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À portée. Laissez faire."
+          }
+        }
+      }
+    },
+    "level.7-2.principle" : {
+      "comment" : "What level VII-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un voile entre elles. Le fil trouve le passage."
+          }
+        }
+      }
+    },
+    "level.7-2.title" : {
+      "comment" : "Title of level VII-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le fil"
+          }
+        }
+      }
+    },
+    "level.7-3.hint.firstLoss" : {
+      "comment" : "Instruction shown during level VII-3 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre regard a chassé la solitaire. Elle reviendra."
+          }
+        }
+      }
+    },
+    "level.7-3.hint.start" : {
+      "comment" : "Instruction shown during level VII-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La solitaire rejoint son iris seule. Contournez-la avec la jumelle."
+          }
+        }
+      }
+    },
+    "level.7-3.principle" : {
+      "comment" : "What level VII-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une paire, et une lueur ordinaire dont l'iris est au centre."
+          }
+        }
+      }
+    },
+    "level.7-3.title" : {
+      "comment" : "Title of level VII-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la solitaire"
+          }
+        }
+      }
+    },
+    "level.7-4.hint.start" : {
+      "comment" : "Instruction shown during level VII-4 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant l'emporte vers la gauche. Entrez à droite."
+          }
+        }
+      }
+    },
+    "level.7-4.hint.twinsLinked" : {
+      "comment" : "Instruction shown during level VII-4 when the two twins are linked. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hors du courant, elles se rejoignent."
+          }
+        }
+      }
+    },
+    "level.7-4.principle" : {
+      "comment" : "What level VII-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant les sépare. Traversez-le de biais."
+          }
+        }
+      }
+    },
+    "level.7-4.title" : {
+      "comment" : "Title of level VII-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "à contre-courant"
+          }
+        }
+      }
+    },
+    "level.7-5.hint.start" : {
+      "comment" : "Instruction shown during level VII-5 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sans la flamme, elles ne se ferment pas l'une sur l'autre."
+          }
+        }
+      }
+    },
+    "level.7-5.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level VII-5 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit. Regardez-la."
+          }
+        }
+      }
+    },
+    "level.7-5.principle" : {
+      "comment" : "What level VII-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme éclaire leur rendez-vous. Ne l'oubliez pas."
+          }
+        }
+      }
+    },
+    "level.7-5.title" : {
+      "comment" : "Title of level VII-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sous la veilleuse"
+          }
+        }
+      }
+    },
+    "level.7-6.hint.firstLoss" : {
+      "comment" : "Instruction shown during level VII-6 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séparées, elles entraînent la troisième dans leur chute."
+          }
+        }
+      }
+    },
+    "level.7-6.hint.start" : {
+      "comment" : "Instruction shown during level VII-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans l'ordre : les jumelles, puis la troisième."
+          }
+        }
+      }
+    },
+    "level.7-6.principle" : {
+      "comment" : "What level VII-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les jumelles d'abord, puis la troisième. Le voile impose le détour."
+          }
+        }
+      }
+    },
+    "level.7-6.title" : {
+      "comment" : "Title of level VII-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la troisième"
+          }
+        }
+      }
+    },
+    "level.7-7.hint.afterSeconds.40" : {
+      "comment" : "Instruction shown during level VII-7 when 40 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une seule respire à la fois. Allez à elle, puis à l'autre coin."
+          }
+        }
+      }
+    },
+    "level.7-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level VII-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle appelle sa sœur, de l'autre côté. Répondez-lui."
+          }
+        }
+      }
+    },
+    "level.7-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level VII-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leur lien est complet. Elles glissent l'une vers l'autre : laissez-les se rejoindre."
+          }
+        }
+      }
+    },
+    "level.7-7.hint.start" : {
+      "comment" : "Instruction shown during level VII-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux jumelles, deux coins opposés. Regardez celle qui respire."
+          }
+        }
+      }
+    },
+    "level.7-7.principle" : {
+      "comment" : "What level VII-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les jumelles s'appellent d'un coin à l'autre. Répondez à celle qui respire ; à la fin, elles se rejoignent."
+          }
+        }
+      }
+    },
+    "level.7-7.title" : {
+      "comment" : "Title of level VII-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la danse croisée"
+          }
+        }
+      }
+    },
+    "level.8-1.hint.afterSeconds.30" : {
+      "comment" : "Instruction shown during level VIII-1 when 30 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez loin à sa droite : elle glisse vers la gauche, jusqu'au chemin."
+          }
+        }
+      }
+    },
+    "level.8-1.hint.firstCarried" : {
+      "comment" : "Instruction shown during level VIII-1 when something is carried for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il l'emporte. Ne la regardez plus."
+          }
+        }
+      }
+    },
+    "level.8-1.hint.firstIntrusion" : {
+      "comment" : "Instruction shown during level VIII-1 when something enters the playfield for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quand le souffle approche, amenez-la sur son chemin."
+          }
+        }
+      }
+    },
+    "level.8-1.hint.start" : {
+      "comment" : "Instruction shown during level VIII-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contre le voile, elle glisse vers son iris. Le souffle passe ailleurs."
+          }
+        }
+      }
+    },
+    "level.8-1.principle" : {
+      "comment" : "What level VIII-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le voile ferme tout. Le souffle passe par-dessus."
+          }
+        }
+      }
+    },
+    "level.8-1.title" : {
+      "comment" : "Title of level VIII-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le souffle"
+          }
+        }
+      }
+    },
+    "level.8-2.hint.firstCarried" : {
+      "comment" : "Instruction shown during level VIII-2 when something is carried for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une de moins. Le souffle reviendra pour l'autre."
+          }
+        }
+      }
+    },
+    "level.8-2.hint.start" : {
+      "comment" : "Instruction shown during level VIII-2 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elles s'écartent vers les bords. Le souffle passe au milieu."
+          }
+        }
+      }
+    },
+    "level.8-2.principle" : {
+      "comment" : "What level VIII-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux lueurs, un seul chemin. Ensemble, ou l'une après l'autre."
+          }
+        }
+      }
+    },
+    "level.8-2.title" : {
+      "comment" : "Title of level VIII-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "un souffle pour deux"
+          }
+        }
+      }
+    },
+    "level.8-3.hint.firstCarried" : {
+      "comment" : "Instruction shown during level VIII-3 when something is carried for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le souffle est plus fort que le courant."
+          }
+        }
+      }
+    },
+    "level.8-3.hint.start" : {
+      "comment" : "Instruction shown during level VIII-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contre le voile, le courant l'emporte vers la gauche. Le chemin est à droite."
+          }
+        }
+      }
+    },
+    "level.8-3.principle" : {
+      "comment" : "What level VIII-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant l'écarte du chemin. Ramenez-la quand le souffle vient."
+          }
+        }
+      }
+    },
+    "level.8-3.title" : {
+      "comment" : "Title of level VIII-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la dérive"
+          }
+        }
+      }
+    },
+    "level.8-4.hint.start" : {
+      "comment" : "Instruction shown during level VIII-4 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme est loin du chemin. Regardez-la quand la lueur ne vole pas."
+          }
+        }
+      }
+    },
+    "level.8-4.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level VIII-4 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit."
+          }
+        }
+      }
+    },
+    "level.8-4.principle" : {
+      "comment" : "What level VIII-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme éclaire l'iris d'en bas. Servez-la entre deux souffles."
+          }
+        }
+      }
+    },
+    "level.8-4.title" : {
+      "comment" : "Title of level VIII-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la flamme et la brume"
+          }
+        }
+      }
+    },
+    "level.8-5.hint.start" : {
+      "comment" : "Instruction shown during level VIII-5 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le premier souffle la dépose entre les voiles. Le second passe à droite."
+          }
+        }
+      }
+    },
+    "level.8-5.principle" : {
+      "comment" : "What level VIII-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux voiles, deux souffles. Entre les deux, changez de chemin."
+          }
+        }
+      }
+    },
+    "level.8-5.title" : {
+      "comment" : "Title of level VIII-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "double traversée"
+          }
+        }
+      }
+    },
+    "level.8-6.hint.start" : {
+      "comment" : "Instruction shown during level VIII-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son poste est de l'autre côté. Le souffle l'y conduira."
+          }
+        }
+      }
+    },
+    "level.8-6.hint.twinsLinked" : {
+      "comment" : "Instruction shown during level VIII-6 when the two twins are linked. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À portée. Laissez-les se rejoindre."
+          }
+        }
+      }
+    },
+    "level.8-6.principle" : {
+      "comment" : "What level VIII-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le voile sépare une jumelle de son poste. Le souffle l'y conduit."
+          }
+        }
+      }
+    },
+    "level.8-6.title" : {
+      "comment" : "Title of level VIII-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jumelles dans la brume"
+          }
+        }
+      }
+    },
+    "level.8-7.hint.afterSeconds.45" : {
+      "comment" : "Instruction shown during level VIII-7 when 45 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans la brume, continuez de la suivre du regard, au même pas qu'avant."
+          }
+        }
+      }
+    },
+    "level.8-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level VIII-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle est ressortie sans vous. Au prochain passage, gardez son rythme dans la brume."
+          }
+        }
+      }
+    },
+    "level.8-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level VIII-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous étiez là. Chaque brume a sa sortie."
+          }
+        }
+      }
+    },
+    "level.8-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level VIII-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant vous connaît. L'iris s'ouvre : laissez la lueur venir."
+          }
+        }
+      }
+    },
+    "level.8-7.hint.start" : {
+      "comment" : "Instruction shown during level VIII-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivez la lanterne. Le courant la ramène toujours par le même chemin."
+          }
+        }
+      }
+    },
+    "level.8-7.principle" : {
+      "comment" : "What level VIII-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant porte une lanterne, toujours par le même chemin. Dans la brume elle disparaît : soyez là où elle ressort."
+          }
+        }
+      }
+    },
+    "level.8-7.title" : {
+      "comment" : "Title of level VIII-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la lanterne du courant"
+          }
+        }
+      }
+    },
+    "level.9-1.hint.firstValidation" : {
+      "comment" : "Instruction shown during level IX-1 when the first target is validated. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'iris se ferme et respire. Regardez l'écho."
+          }
+        }
+      }
+    },
+    "level.9-1.hint.firstWake" : {
+      "comment" : "Instruction shown during level IX-1 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveillée, elle vit comme les autres. Laissez-la se poser."
+          }
+        }
+      }
+    },
+    "level.9-1.hint.start" : {
+      "comment" : "Instruction shown during level IX-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lueur du bas dort. Rien ne la fera bouger, sauf un écho."
+          }
+        }
+      }
+    },
+    "level.9-1.principle" : {
+      "comment" : "What level IX-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La seconde dort. Fermez le premier iris : son écho la réveille."
+          }
+        }
+      }
+    },
+    "level.9-1.title" : {
+      "comment" : "Title of level IX-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'écho"
+          }
+        }
+      }
+    },
+    "level.9-2.hint.firstWake" : {
+      "comment" : "Instruction shown during level IX-2 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'écho la lance. Elle rejoint son iris seule."
+          }
+        }
+      }
+    },
+    "level.9-2.hint.start" : {
+      "comment" : "Instruction shown during level IX-2 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endormie, elle fuit encore votre regard. Poussez-la vers l'iris de l'autre."
+          }
+        }
+      }
+    },
+    "level.9-2.principle" : {
+      "comment" : "What level IX-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'écho ne porte pas jusqu'à elle. Rapprochez-la avant."
+          }
+        }
+      }
+    },
+    "level.9-2.title" : {
+      "comment" : "Title of level IX-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hors de portée"
+          }
+        }
+      }
+    },
+    "level.9-3.hint.firstWake" : {
+      "comment" : "Instruction shown during level IX-3 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son iris respirera à son tour."
+          }
+        }
+      }
+    },
+    "level.9-3.hint.start" : {
+      "comment" : "Instruction shown during level IX-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux dormeuses. La première est à portée ; la seconde ne l'est d'aucun iris."
+          }
+        }
+      }
+    },
+    "level.9-3.principle" : {
+      "comment" : "What level IX-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un écho en réveille une, dont l'iris en réveille une autre."
+          }
+        }
+      }
+    },
+    "level.9-3.title" : {
+      "comment" : "Title of level IX-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la chaîne"
+          }
+        }
+      }
+    },
+    "level.9-4.hint.firstWake" : {
+      "comment" : "Instruction shown during level IX-4 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lancée par l'écho, elle sort du courant."
+          }
+        }
+      }
+    },
+    "level.9-4.hint.start" : {
+      "comment" : "Instruction shown during level IX-4 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans le courant, la dormeuse dérive vers la droite. Tenez-la à portée."
+          }
+        }
+      }
+    },
+    "level.9-4.principle" : {
+      "comment" : "What level IX-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant l'éloigne de l'iris qui doit la réveiller."
+          }
+        }
+      }
+    },
+    "level.9-4.title" : {
+      "comment" : "Title of level IX-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "à contre-écho"
+          }
+        }
+      }
+    },
+    "level.9-5.hint.start" : {
+      "comment" : "Instruction shown during level IX-5 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme ferme l'iris du haut si elle s'éteint. Servez-la, puis réveillez."
+          }
+        }
+      }
+    },
+    "level.9-5.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level IX-5 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit."
+          }
+        }
+      }
+    },
+    "level.9-5.principle" : {
+      "comment" : "What level IX-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme éclaire l'iris qui doit se fermer. Sans elle, pas d'écho."
+          }
+        }
+      }
+    },
+    "level.9-5.title" : {
+      "comment" : "Title of level IX-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la flamme et l'écho"
+          }
+        }
+      }
+    },
+    "level.9-6.hint.firstLoss" : {
+      "comment" : "Instruction shown during level IX-6 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un iris qui se rouvre entraîne les suivants."
+          }
+        }
+      }
+    },
+    "level.9-6.hint.start" : {
+      "comment" : "Instruction shown during level IX-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'éveillée d'abord. Amenez chaque dormeuse à portée de son écho, dans l'ordre."
+          }
+        }
+      }
+    },
+    "level.9-6.principle" : {
+      "comment" : "What level IX-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans l'ordre : l'éveillée, puis chaque dormeuse que son écho atteint. Le voile impose le détour."
+          }
+        }
+      }
+    },
+    "level.9-6.title" : {
+      "comment" : "Title of level IX-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "trois voix"
+          }
+        }
+      }
+    },
+    "level.9-7.hint.afterSeconds.45" : {
+      "comment" : "Instruction shown during level IX-7 when 45 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quand la réponse paraît, quittez la première, même si elle brille encore."
+          }
+        }
+      }
+    },
+    "level.9-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level IX-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La réponse s'est éteinte. Revenez à la présence : elle rappellera."
+          }
+        }
+      }
+    },
+    "level.9-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level IX-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle a répondu et vous l'avez rejointe. Restez avec elle : une autre viendra."
+          }
+        }
+      }
+    },
+    "level.9-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level IX-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les échos se sont tous répondu. Les lueurs s'éveillent : laissez l'écho faire le reste."
+          }
+        }
+      }
+    },
+    "level.9-7.hint.start" : {
+      "comment" : "Instruction shown during level IX-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une présence au centre. Posez-y le regard, et restez."
+          }
+        }
+      }
+    },
+    "level.9-7.principle" : {
+      "comment" : "What level IX-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une présence tient tant que vous la regardez. Quand une autre lui répond, parfois après un silence, allez à elle."
+          }
+        }
+      }
+    },
+    "level.9-7.title" : {
+      "comment" : "Title of level IX-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'absence"
+          }
+        }
+      }
+    },
+    "level.10-1.hint.afterSeconds.30" : {
+      "comment" : "Instruction shown during level X-1 when 30 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poussez-la sur le côté avant qu'il ne l'aspire."
+          }
+        }
+      }
+    },
+    "level.10-1.hint.firstSwallow" : {
+      "comment" : "Instruction shown during level X-1 when something is swallowed for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avalée, elle revient au départ. Tout est à refaire."
+          }
+        }
+      }
+    },
+    "level.10-1.hint.start" : {
+      "comment" : "Instruction shown during level X-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Livrée à elle-même, elle file droit vers le gouffre."
+          }
+        }
+      }
+    },
+    "level.10-1.principle" : {
+      "comment" : "What level X-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le gouffre est sur le chemin direct. Contournez-le."
+          }
+        }
+      }
+    },
+    "level.10-1.title" : {
+      "comment" : "Title of level X-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le gouffre"
+          }
+        }
+      }
+    },
+    "level.10-2.hint.firstSwallow" : {
+      "comment" : "Instruction shown during level X-2 when something is swallowed for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trop près. Elle revient au départ."
+          }
+        }
+      }
+    },
+    "level.10-2.hint.start" : {
+      "comment" : "Instruction shown during level X-2 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'aspiration commence bien avant la bouche."
+          }
+        }
+      }
+    },
+    "level.10-2.principle" : {
+      "comment" : "What level X-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux gouffres, et leur aspiration se touche. Passez large."
+          }
+        }
+      }
+    },
+    "level.10-2.title" : {
+      "comment" : "Title of level X-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'aspiration"
+          }
+        }
+      }
+    },
+    "level.10-3.hint.firstSwallow" : {
+      "comment" : "Instruction shown during level X-3 when something is swallowed for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avalée. Elle repart dans le courant."
+          }
+        }
+      }
+    },
+    "level.10-3.hint.start" : {
+      "comment" : "Instruction shown during level X-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant l'emporte vers le gouffre. Poussez-la vers le bas."
+          }
+        }
+      }
+    },
+    "level.10-3.principle" : {
+      "comment" : "What level X-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le courant la porte droit dans le gouffre. Sortez-la du courant avant."
+          }
+        }
+      }
+    },
+    "level.10-3.title" : {
+      "comment" : "Title of level X-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le courant et le gouffre"
+          }
+        }
+      }
+    },
+    "level.10-4.hint.start" : {
+      "comment" : "Instruction shown during level X-4 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme est en haut, le gouffre au centre. Faites le tour par la droite."
+          }
+        }
+      }
+    },
+    "level.10-4.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level X-4 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit."
+          }
+        }
+      }
+    },
+    "level.10-4.principle" : {
+      "comment" : "What level X-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme veille tout en haut, loin du gouffre. Servez-la sans perdre le détour."
+          }
+        }
+      }
+    },
+    "level.10-4.title" : {
+      "comment" : "Title of level X-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la flamme en haut"
+          }
+        }
+      }
+    },
+    "level.10-5.hint.firstSwallow" : {
+      "comment" : "Instruction shown during level X-5 when something is swallowed for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une de perdue, pas les deux. Elle revient au départ."
+          }
+        }
+      }
+    },
+    "level.10-5.hint.start" : {
+      "comment" : "Instruction shown during level X-5 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leurs chemins se croisent au centre, là où le gouffre attend."
+          }
+        }
+      }
+    },
+    "level.10-5.principle" : {
+      "comment" : "What level X-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux lueurs se croisent autour du gouffre. Chacune son côté."
+          }
+        }
+      }
+    },
+    "level.10-5.title" : {
+      "comment" : "Title of level X-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de part et d'autre"
+          }
+        }
+      }
+    },
+    "level.10-6.hint.firstSwallow" : {
+      "comment" : "Instruction shown during level X-6 when something is swallowed for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avalée. Et si elle était fermée, les suivantes s'ouvrent aussi."
+          }
+        }
+      }
+    },
+    "level.10-6.hint.start" : {
+      "comment" : "Instruction shown during level X-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'ordre d'abord ; puis les couloirs des bords, loin des bouches."
+          }
+        }
+      }
+    },
+    "level.10-6.principle" : {
+      "comment" : "What level X-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux gouffres, trois lueurs, dans l'ordre. L'iris de la première est entre les bouches."
+          }
+        }
+      }
+    },
+    "level.10-6.title" : {
+      "comment" : "Title of level X-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'abîme"
+          }
+        }
+      }
+    },
+    "level.10-7.hint.afterSeconds.30" : {
+      "comment" : "Instruction shown during level X-7 when 30 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les yeux restent sur le point ; c'est la tête qui dessine le cercle."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level X-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maintenant, dessinez le cercle avec la tête, en partant vers la droite."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level X-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les deux cercles sont faits. La lueur s'éveille."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.oculoHelp" : {
+      "comment" : "Late help for level X-7, shown when the player is still on the same oculomotor sequence after a while. Encouraging, never corrective.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un petit mouvement suffit : l'anneau se remplit quand la tête suit le cercle."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.oculoStageCompleted.0" : {
+      "comment" : "Instruction shown during level X-7 when stage 0 of the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tour complet ! Revenez de face, les yeux sur le point."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.oculoSuccessInStage.1.1" : {
+      "comment" : "Instruction shown during level X-7 when target 1 of oculomotor stage 1 is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maintenant, le cercle dans l'autre sens, en partant vers la gauche."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.oculoSuccessInStage.1.6" : {
+      "comment" : "Instruction shown during level X-7 when target 6 of oculomotor stage 1 is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les yeux sur le point, une dernière fois."
+          }
+        }
+      }
+    },
+    "level.10-7.hint.start" : {
+      "comment" : "Instruction shown during level X-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez les yeux sur le point."
+          }
+        }
+      }
+    },
+    "level.10-7.principle" : {
+      "comment" : "What level X-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez le point au centre.\nGardez vos yeux dessus et tournez doucement la tête en rond.\nFaites le tour complet, puis recommencez dans l'autre sens."
+          }
+        }
+      }
+    },
+    "level.10-7.title" : {
+      "comment" : "Title of level X-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'ancre"
+          }
+        }
+      }
+    },
+    "level.11-1.hint.afterSeconds.30" : {
+      "comment" : "Instruction shown during level XI-1 when 30 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un regard bref suffit. Puis regardez ailleurs."
+          }
+        }
+      }
+    },
+    "level.11-1.hint.braiseFlared" : {
+      "comment" : "Instruction shown during level XI-1 when a braise flares up. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trop regardée, elle s'affole."
+          }
+        }
+      }
+    },
+    "level.11-1.hint.braiseLit" : {
+      "comment" : "Instruction shown during level XI-1 when a braise catches. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle s'allume et fuit. Laissez-la venir."
+          }
+        }
+      }
+    },
+    "level.11-1.hint.start" : {
+      "comment" : "Instruction shown during level XI-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle est froide. Regardez-la."
+          }
+        }
+      }
+    },
+    "level.11-1.principle" : {
+      "comment" : "What level XI-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle dort, froide. Votre regard la réveille, et elle fuit."
+          }
+        }
+      }
+    },
+    "level.11-1.title" : {
+      "comment" : "Title of level XI-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la braise"
+          }
+        }
+      }
+    },
+    "level.11-2.hint.braiseFlared" : {
+      "comment" : "Instruction shown during level XI-2 when a braise flares up. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affolée, elle fuit de plus loin. Regardez ailleurs."
+          }
+        }
+      }
+    },
+    "level.11-2.hint.start" : {
+      "comment" : "Instruction shown during level XI-2 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveillez-les l'une après l'autre."
+          }
+        }
+      }
+    },
+    "level.11-2.principle" : {
+      "comment" : "What level XI-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux braises, deux réveils. Réveillez-les du côté opposé à leur iris."
+          }
+        }
+      }
+    },
+    "level.11-2.title" : {
+      "comment" : "Title of level XI-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deux braises"
+          }
+        }
+      }
+    },
+    "level.11-3.hint.braiseLit" : {
+      "comment" : "Instruction shown during level XI-3 when a braise catches. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle monte. Le courant va l'emporter vers la gauche."
+          }
+        }
+      }
+    },
+    "level.11-3.hint.start" : {
+      "comment" : "Instruction shown during level XI-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Froide, elle attend sous le courant."
+          }
+        }
+      }
+    },
+    "level.11-3.principle" : {
+      "comment" : "What level XI-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveillée, elle monte dans le courant. Poussez-la au travers."
+          }
+        }
+      }
+    },
+    "level.11-3.title" : {
+      "comment" : "Title of level XI-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la braise et le courant"
+          }
+        }
+      }
+    },
+    "level.11-4.hint.braiseLit" : {
+      "comment" : "Instruction shown during level XI-4 when a braise catches. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveillée, elle vole vers le voile. Poussez-la vers la gauche."
+          }
+        }
+      }
+    },
+    "level.11-4.hint.start" : {
+      "comment" : "Instruction shown during level XI-4 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le voile ferme la droite. Le passage est à gauche."
+          }
+        }
+      }
+    },
+    "level.11-4.principle" : {
+      "comment" : "What level XI-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son iris est derrière le voile. Réveillez-la, puis contournez."
+          }
+        }
+      }
+    },
+    "level.11-4.title" : {
+      "comment" : "Title of level XI-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la braise et le voile"
+          }
+        }
+      }
+    },
+    "level.11-5.hint.firstWake" : {
+      "comment" : "Instruction shown during level XI-5 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'écho l'a réveillée. Elle rejoint son iris."
+          }
+        }
+      }
+    },
+    "level.11-5.hint.start" : {
+      "comment" : "Instruction shown during level XI-5 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux sommeils : l'un cède au regard, l'autre à l'écho."
+          }
+        }
+      }
+    },
+    "level.11-5.principle" : {
+      "comment" : "What level XI-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La braise s'éveille au regard ; son iris fermé réveille la dormeuse."
+          }
+        }
+      }
+    },
+    "level.11-5.title" : {
+      "comment" : "Title of level XI-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deux réveils"
+          }
+        }
+      }
+    },
+    "level.11-6.hint.firstLoss" : {
+      "comment" : "Instruction shown during level XI-6 when the player loses something for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un iris qui se rouvre entraîne les suivants."
+          }
+        }
+      }
+    },
+    "level.11-6.hint.start" : {
+      "comment" : "Instruction shown during level XI-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La première braise, puis la lueur, puis la braise derrière le voile."
+          }
+        }
+      }
+    },
+    "level.11-6.principle" : {
+      "comment" : "What level XI-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une braise, une lueur, une braise. Dans l'ordre, et le voile en travers."
+          }
+        }
+      }
+    },
+    "level.11-6.title" : {
+      "comment" : "Title of level XI-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "trois feux"
+          }
+        }
+      }
+    },
+    "level.11-7.hint.afterSeconds.45" : {
+      "comment" : "Instruction shown during level XI-7 when 45 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne tournez pas la tête pour chercher : laissez les yeux trouver, la tête suit d'elle-même."
+          }
+        }
+      }
+    },
+    "level.11-7.hint.firstOculoMiss" : {
+      "comment" : "Instruction shown during level XI-7 when the first oculomotor target is missed. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle s'est éteinte sans vous. La suivante s'allume ailleurs."
+          }
+        }
+      }
+    },
+    "level.11-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level XI-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle vous a donné sa chaleur. Les yeux d'abord, la tête ensuite : c'est là qu'elle en donne le plus."
+          }
+        }
+      }
+    },
+    "level.11-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level XI-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assez de chaleur. La braise dort encore : un regard bref la réveillera."
+          }
+        }
+      }
+    },
+    "level.11-7.hint.start" : {
+      "comment" : "Instruction shown during level XI-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une braise va s'allumer au bord de l'écran. Laissez vos yeux y aller."
+          }
+        }
+      }
+    },
+    "level.11-7.principle" : {
+      "comment" : "What level XI-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des braises s'allument au bord. Allez-y des yeux d'abord, puis laissez la tête suivre : elles donnent toute leur chaleur."
+          }
+        }
+      }
+    },
+    "level.11-7.title" : {
+      "comment" : "Title of level XI-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "d'abord les yeux"
+          }
+        }
+      }
+    },
+    "level.12-1.hint.firstWake" : {
+      "comment" : "Instruction shown during level XII-1 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lancée par l'écho, elle rejoint son iris."
+          }
+        }
+      }
+    },
+    "level.12-1.hint.start" : {
+      "comment" : "Instruction shown during level XII-1 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contournez le gouffre avec la dormeuse, jusqu'à portée de l'iris du haut."
+          }
+        }
+      }
+    },
+    "level.12-1.principle" : {
+      "comment" : "What level XII-1 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La dormeuse est loin de l'iris qui doit la réveiller, et le gouffre est sur le chemin."
+          }
+        }
+      }
+    },
+    "level.12-1.title" : {
+      "comment" : "Title of level XII-1. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'écho et le gouffre"
+          }
+        }
+      }
+    },
+    "level.12-2.hint.braiseLit" : {
+      "comment" : "Instruction shown during level XII-2 when a braise catches. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveillée, elle glisse contre le voile. Amenez-la sur le chemin du souffle."
+          }
+        }
+      }
+    },
+    "level.12-2.hint.firstCarried" : {
+      "comment" : "Instruction shown during level XII-2 when something is carried for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il l'emporte. Ne la regardez plus."
+          }
+        }
+      }
+    },
+    "level.12-2.hint.start" : {
+      "comment" : "Instruction shown during level XII-2 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Froide, elle attend sous le voile. Le souffle monte à gauche."
+          }
+        }
+      }
+    },
+    "level.12-2.principle" : {
+      "comment" : "What level XII-2 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveillez la braise, puis confiez-la au souffle : son iris est de l'autre côté."
+          }
+        }
+      }
+    },
+    "level.12-2.title" : {
+      "comment" : "Title of level XII-2. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la braise dans la brume"
+          }
+        }
+      }
+    },
+    "level.12-3.hint.start" : {
+      "comment" : "Instruction shown during level XII-3 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout droit, c'est le gouffre. Passez par le bas."
+          }
+        }
+      }
+    },
+    "level.12-3.hint.twinsLinked" : {
+      "comment" : "Instruction shown during level XII-3 when the two twins are linked. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À portée. Laissez-les se rejoindre, loin de la bouche."
+          }
+        }
+      }
+    },
+    "level.12-3.principle" : {
+      "comment" : "What level XII-3 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le gouffre est entre leurs postes. Le fil le contourne."
+          }
+        }
+      }
+    },
+    "level.12-3.title" : {
+      "comment" : "Title of level XII-3. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jumelles et gouffre"
+          }
+        }
+      }
+    },
+    "level.12-4.hint.firstWake" : {
+      "comment" : "Instruction shown during level XII-4 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'écho a passé le voile."
+          }
+        }
+      }
+    },
+    "level.12-4.hint.start" : {
+      "comment" : "Instruction shown during level XII-4 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le souffle porte l'éveillée. Son iris, une fois fermé, réveillera la dormeuse."
+          }
+        }
+      }
+    },
+    "level.12-4.principle" : {
+      "comment" : "What level XII-4 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La dormeuse attend de l'autre côté du voile, à portée d'un iris que seul le souffle permet de fermer."
+          }
+        }
+      }
+    },
+    "level.12-4.title" : {
+      "comment" : "Title of level XII-4. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "souffle et écho"
+          }
+        }
+      }
+    },
+    "level.12-5.hint.braiseFlared" : {
+      "comment" : "Instruction shown during level XII-5 when a braise flares up. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affolée. Regardez ailleurs."
+          }
+        }
+      }
+    },
+    "level.12-5.hint.start" : {
+      "comment" : "Instruction shown during level XII-5 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme d'abord, puis réveillez la braise de gauche, puis celle de droite."
+          }
+        }
+      }
+    },
+    "level.12-5.hint.veilleuseLow" : {
+      "comment" : "Instruction shown during level XII-5 when the veilleuse is running low. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La flamme faiblit."
+          }
+        }
+      }
+    },
+    "level.12-5.principle" : {
+      "comment" : "What level XII-5 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux braises dans l'ordre, une flamme en haut qui éclaire leurs iris, un gouffre entre elles."
+          }
+        }
+      }
+    },
+    "level.12-5.title" : {
+      "comment" : "Title of level XII-5. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la flamme et les braises"
+          }
+        }
+      }
+    },
+    "level.12-6.hint.firstWake" : {
+      "comment" : "Instruction shown during level XII-6 when something wakes for the first time. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le dernier iris l'attend, en bas."
+          }
+        }
+      }
+    },
+    "level.12-6.hint.start" : {
+      "comment" : "Instruction shown during level XII-6 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les jumelles d'abord. Réunies, elles respirent un écho."
+          }
+        }
+      }
+    },
+    "level.12-6.hint.twinsLinked" : {
+      "comment" : "Instruction shown during level XII-6 when the two twins are linked. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elles se rejoignent. Maintenant la dormeuse, par la droite du gouffre."
+          }
+        }
+      }
+    },
+    "level.12-6.principle" : {
+      "comment" : "What level XII-6 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réunissez les jumelles ; leur rendez-vous respire. Amenez la dormeuse à portée, autour du gouffre."
+          }
+        }
+      }
+    },
+    "level.12-6.title" : {
+      "comment" : "Title of level XII-6. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le dernier iris"
+          }
+        }
+      }
+    },
+    "level.12-7.hint.afterSeconds.60" : {
+      "comment" : "Instruction shown during level XII-7 when 60 seconds have passed without the level being finished. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque passage est un souvenir : le cœur, la réponse, le fil, le jardin, les étoiles, les jumelles, la braise."
+          }
+        }
+      }
+    },
+    "level.12-7.hint.firstOculoSuccess" : {
+      "comment" : "Instruction shown during level XII-7 when the first oculomotor target is reached. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une étoile s'allume. Chaque passage en allume une autre."
+          }
+        }
+      }
+    },
+    "level.12-7.hint.oculoCompleted" : {
+      "comment" : "Instruction shown during level XII-7 when the oculomotor sequence is complete. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La constellation est entière. Les jumelles descendent la rejoindre."
+          }
+        }
+      }
+    },
+    "level.12-7.hint.start" : {
+      "comment" : "Instruction shown during level XII-7 when the level opens. Read mid-play, while the player is looking at something else: keep it short, calm, and addressed to the player.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un cœur de verre. Posez le regard, comme au début."
+          }
+        }
+      }
+    },
+    "level.12-7.principle" : {
+      "comment" : "What level XII-7 is about, in one line, shown before the level starts. States the idea; the instructions are the hints.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout ce que vos yeux ont appris, d'un seul souffle. Chaque passage allume une étoile."
+          }
+        }
+      }
+    },
+    "level.12-7.title" : {
+      "comment" : "Title of level XII-7. Short, lowercase, evocative; names what the eyes do. Not an instruction, no final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l'orchestre du regard"
           }
         }
       }

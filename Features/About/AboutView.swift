@@ -44,7 +44,7 @@ struct AboutView: View {
                             .foregroundStyle(DSColor.Identity.textSecondary)
                             .textSelection(.enabled)
                             .fixedSize(horizontal: false, vertical: true)
-                            .accessibilityLabel("Adresse de contact : \(AboutCopy.contactEmail)")
+                            .accessibilityLabel(IrisText.interface("about.contact.address.label", french: "Adresse de contact : %@", AboutCopy.contactEmail))
                         opener(AboutCopy.contactAction, systemImage: "envelope", url: AboutCopy.contactURL,
                                hint: IrisText.interface("about.contact.hint", french: "Ouvre un nouveau message vers l'assistance d'Iris"))
                     }

@@ -31,7 +31,9 @@ struct GameOverlayView: View {
                 DSButton(IrisText.interface("common.chapters", french: "Chapitres"), variant: .secondary) { viewModel.openChapters() }
             }
         case .resuming:
-            DSOverlayPanel(title: IrisText.interface("game.resuming.title", french: "reprise"), subtitle: "\(viewModel.chapter.numeral) · \(viewModel.chapter.name) — \(viewModel.level.title)") {
+            DSOverlayPanel(title: IrisText.interface("game.resuming.title", french: "reprise"), subtitle: IrisText.interface("common.chapterLevel.line", french: "%@ · %@ — %@",
+                                                        viewModel.chapter.numeral, CampaignText.name(of: viewModel.chapter),
+                                                        CampaignText.title(of: viewModel.level))) {
                 DSButton(IrisText.interface("common.resume", french: "Reprendre"), systemImage: "play.fill") { viewModel.primaryAction() }
                 DSButton(IrisText.interface("common.chapters", french: "Chapitres"), variant: .ghost) { viewModel.openChapters() }
             }
@@ -59,7 +61,9 @@ struct GameOverlayView: View {
     }
 
     private var pausePanel: some View {
-        DSOverlayPanel(title: IrisText.interface("pause.panel.title", french: "pause"), subtitle: "\(viewModel.chapter.numeral) · \(viewModel.chapter.name) — \(viewModel.level.title)") {
+        DSOverlayPanel(title: IrisText.interface("pause.panel.title", french: "pause"), subtitle: IrisText.interface("common.chapterLevel.line", french: "%@ · %@ — %@",
+                                                        viewModel.chapter.numeral, CampaignText.name(of: viewModel.chapter),
+                                                        CampaignText.title(of: viewModel.level))) {
             DSButton(IrisText.interface("common.resume", french: "Reprendre"), systemImage: "play.fill") { viewModel.primaryAction() }
             DSButton(IrisText.interface("common.restart", french: "Recommencer"), variant: .secondary) { viewModel.restartLevel() }
             DSButton(IrisText.interface("common.chapters", french: "Chapitres"), variant: .ghost) { viewModel.openChapters() }

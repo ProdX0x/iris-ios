@@ -22,7 +22,8 @@ struct LevelIntroCard: View {
 
             VStack(alignment: .leading, spacing: DSSpacing.s) {
                 HStack(alignment: .firstTextBaseline) {
-                    Text("\(chapter.numeral) · \(chapter.name) — \(level.index)")
+                    Text(IrisText.interface("levelIntro.chapterLevel.line", french: "%@ · %@ — %lld",
+                                            chapter.numeral, CampaignText.name(of: chapter), level.index))
                         .dsEyebrowStyle(tint: chapter.theme.palette.accent)
                     Spacer()
                     Button(IrisText.interface("levelIntro.chapters.action", french: "chapitres"), action: onChapters)

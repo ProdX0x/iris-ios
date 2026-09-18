@@ -19,8 +19,11 @@ struct InterfaceLocalizationTests {
     private static let sourceRoots = ["App","AR","Audio","Commerce","DesignSystem","Domain","Features","GameEngine","Haptics","Navigation"]
 
     /// Every `IrisText.interface("key", french: "…")` written in the app, as (file, key, French).
-    private static let calls: [(path: String, key: String, french: String)] = {
-        let pattern = /IrisText\.interface\("([A-Za-z0-9.]+)", french: "((?:\\.|[^"\\])*)"\)/
+    /// The catalogue is built from the same scan, so the two can never describe different apps.
+    static let callSites: [(path: String, key: String, french: String)] = {
+        // No closing parenthesis in the pattern: a sentence with values carries arguments after its French, and
+        // requiring `")` here is how twenty-six of them stayed invisible to the catalogue for one build.
+        let pattern = /IrisText\.interface\(\s*"([A-Za-z0-9.]+)",\s*french: "((?:\\.|[^"\\])*)"/
         var found: [(String, String, String)] = []
         for base in sourceRoots {
             let directory = projectRoot.appendingPathComponent(base)
@@ -93,9 +96,9 @@ struct InterfaceLocalizationTests {
 
     @Test("A: a key is an identifier, never a French phrase")
     func keysAreIdentifiers() throws {
-        #expect(!Self.calls.isEmpty, "no migrated interface string was found")
+        #expect(!Self.callSites.isEmpty, "no migrated interface string was found")
         let allowed = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.")
-        for call in Self.calls {
+        for call in Self.callSites {
             #expect(call.key.unicodeScalars.allSatisfy { allowed.contains($0) }, "\(call.path): \(call.key)")
             #expect(!call.key.contains(" "), "\(call.path): \(call.key)")
             #expect(call.key.contains("."), "\(call.path): \(call.key) names no family")
@@ -108,7 +111,7 @@ struct InterfaceLocalizationTests {
     @Test("B: one key always means one sentence")
     func keysAreConsistent() {
         var french: [String: String] = [:]
-        for call in Self.calls {
+        for call in Self.callSites {
             if let existing = french[call.key] {
                 #expect(existing == call.french, "\(call.key) carries two different sentences: « \(existing) » / « \(call.french) »")
             } else {
@@ -120,7 +123,9 @@ struct InterfaceLocalizationTests {
 
     @Test("C: with no translation, the French rendered is the French the code holds")
     func frenchIsUnchanged() {
-        for call in Self.calls {
+        // A sentence carrying values is not asked for without them: a plural entry answers with its `%#@…@` template
+        // until `String(format:)` has resolved it. Those are rendered, argument by argument, by the catalogue suite.
+        for call in Self.callSites where !call.french.contains("%lld") && !call.french.contains("%@") {
             #expect(IrisText.interface(call.key, french: call.french) == call.french, "\(call.key)")
         }
     }
@@ -136,7 +141,7 @@ struct InterfaceLocalizationTests {
 
     @Test("E: no frozen file was drawn into the hinge")
     func frozenFilesStayOut() {
-        for call in Self.calls {
+        for call in Self.callSites {
             #expect(!Self.frozenFiles.contains(call.path), "\(call.path) is frozen and now calls IrisText")
         }
         for helper in ["Features/Shared/IrisText.swift", "Features/Shared/CampaignText.swift",
@@ -147,7 +152,7 @@ struct InterfaceLocalizationTests {
 
     @Test("F: no migrated sentence carries an interpolation")
     func noInterpolationWasMigrated() {
-        for call in Self.calls {
+        for call in Self.callSites {
             #expect(!call.french.contains("\\("), "\(call.key) was migrated with an interpolation in it")
         }
     }
@@ -226,9 +231,17 @@ struct InterfaceLocalizationTests {
                 guard !Self.frozenFiles.contains(path),
                       let text = try? String(contentsOf: directory.appendingPathComponent(relative), encoding: .utf8)
                 else { continue }
+                var irisDepth = 0
                 for line in Self.shippedLines(of: text) {
                     let code = line.text.components(separatedBy: "//")[0]
-                    guard !code.contains("IrisText.") else { continue }
+                    // An `IrisText` call can span several lines; its French sits on one of them. Follow the call to
+                    // its closing parenthesis instead of judging one line at a time.
+                    let wasInside = irisDepth > 0
+                    if code.contains("IrisText.") || wasInside {
+                        irisDepth += code.filter { $0 == "(" }.count - code.filter { $0 == ")" }.count
+                        irisDepth = max(0, irisDepth)
+                        continue
+                    }
                     var suspects = code.matches(of: drawn).map { String($0.output.1) }
                     suspects += code.matches(of: named).map { String($0.output.1) }
                     suspects += code.matches(of: anyString).map { String($0.output.1) }.filter { Self.readsAsFrench($0) }

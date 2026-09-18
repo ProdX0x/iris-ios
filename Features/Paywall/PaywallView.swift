@@ -57,7 +57,8 @@ struct PaywallView: View {
     private func offer(price: String?) -> some View {
         VStack(alignment: .leading, spacing: DSSpacing.l) {
             if let chapter = coordinator.paywallChapter {
-                Text("\(chapter.numeral) · \(chapter.name)").dsEyebrowStyle()
+                Text(IrisText.interface("common.chapter.line", french: "%@ · %@",
+                                        chapter.numeral, CampaignText.name(of: chapter))).dsEyebrowStyle()
             }
             DSGlassPanel {
                 Text(PaywallCopy.whatIsBought)

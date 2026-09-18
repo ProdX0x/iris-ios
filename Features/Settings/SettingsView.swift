@@ -16,8 +16,7 @@ struct SettingsView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: DSSpacing.l) {
                     DSGlassPanel {
-                        Toggle(String(localized: "settings.audio.soundEffects", defaultValue: "Effets sonores",
-                                      comment: "Settings: the short sounds the game plays on events"),
+                        Toggle(IrisText.interface("settings.audio.soundEffects", french: "Effets sonores"),
                                isOn: $settings.soundEffectsEnabled)
                         Toggle(IrisText.interface("settings.audio.ambience", french: "Ambiance sonore"), isOn: $settings.ambienceEnabled)
                         Toggle(IrisText.interface("settings.haptics.label", french: "Vibrations"), isOn: $settings.hapticsEnabled)

@@ -33,4 +33,23 @@ enum IrisText {
     static func interface(_ key: String, french: String) -> String {
         resolve(key: key, french: french, table: interfaceTable)
     }
+
+    /// A sentence assembled from values. The French *format* is the fallback, exactly as a fixed sentence is, so a
+    /// missing translation still reads as French. `String(format:locale:arguments:)` with the current locale is what
+    /// resolves the placeholders and — where the catalogue declares one — the plural variation, which is why a count
+    /// is passed as a number and never pre-rendered into the sentence.
+    ///
+    /// A whole sentence goes in here, never a half of one: English will not put the pieces back in the French order.
+    static func interface(_ key: String, french: String, _ arguments: any CVarArg...) -> String {
+        format(key: key, french: french, table: interfaceTable, arguments: arguments)
+    }
+
+    /// Game content assembled from values. Same rule, the other table.
+    static func gameplay(_ key: String, french: String, _ arguments: any CVarArg...) -> String {
+        format(key: key, french: french, table: gameplayTable, arguments: arguments)
+    }
+
+    static func format(key: String, french: String, table: String, arguments: [any CVarArg]) -> String {
+        String(format: resolve(key: key, french: french, table: table), locale: .current, arguments: arguments)
+    }
 }

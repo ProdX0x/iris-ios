@@ -43,7 +43,7 @@ enum AboutCopy {
 
     static var version: String { bundleValue("CFBundleShortVersionString") }
     static var build: String { bundleValue("CFBundleVersion") }
-    static var versionLine: String { "Version \(version) (build \(build))" }
+    static var versionLine: String { IrisText.interface("about.version.line", french: "Version %@ (build %@)", version, build) }
 
     private static func bundleValue(_ key: String) -> String {
         guard let value = Bundle.main.infoDictionary?[key] as? String, !value.isEmpty else { return unknownValue }

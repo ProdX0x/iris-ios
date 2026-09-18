@@ -38,3 +38,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+# Localization catalogue generator marker (see Tests/IrisTests/Presentation/LocalizationCatalogTests.swift)
+.write-catalogs

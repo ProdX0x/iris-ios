@@ -223,6 +223,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Shared/HintText.swift | enum | Presentation | Gives every contextual instruction a stable identity again. The engine hands the screen a bare French | Claude (mission Iris) |
 | Features/Shared/HomeText.swift | enum | Presentation | Gives the threshold's main action a stable identity. Its three sentences live in Navigation/HomeSummary, | Claude (mission Iris) |
 | Features/Shared/IrisText.swift | enum | Presentation | The one place where a sentence Iris holds becomes the sentence Iris shows. A stable technical key carries | Claude (mission Iris) |
+| Features/Shared/NavigationText.swift | enum | Presentation | Stable identities for the sentences the navigation owns. Those sentences live in Navigation/, whose bytes | Claude (mission Iris) |
 | Features/Unavailable/UnavailableView.swift | struct | Presentation | Shown when the device cannot track faces (no TrueDepth / ARFaceTracking unsupported) | Claude (mission Iris) |
 | GameEngine/Campaign/HintTracker.swift | struct | GameEngine | Decides which contextual instruction is visible, from engine events and elapsed time | Claude (mission Iris) |
 | GameEngine/Campaign/LevelResolver.swift | enum | GameEngine | Resolves a LevelDefinition against the playfield: scale, zone, forces, elements, routes | Claude (mission Iris) |
@@ -358,9 +359,12 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/InterfaceComments.swift | enum | Tests | What a translator is told about each interface key. A comment is built from three things — the screen the | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/InterfaceLocalizationTests.swift | struct | Tests | The interface now names its sentences instead of being named by them. Every migrated string carries a stable | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LevelHintLocalizationTests.swift | struct | Tests | Every contextual instruction the engine can show has exactly one stable identity, that identity is never | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/LocalizationCatalog.swift | struct | Tests | The deterministic source of the French catalogues. Every entry here is derived — from the campaign, from | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/LocalizationCatalogTests.swift | struct | Tests | The French catalogues say exactly what the app says, and nothing else. Every key the app can ask for has an | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LocalizationInfrastructureTests.swift | struct | Tests | The localisation hinge holds: a stable key resolves, a missing key falls back to the French Iris already | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OnboardingTests.swift | struct | Tests | The four explanation screens: what they say, that they say it about a game and nothing else, that they | Claude (mission Iris) |

@@ -11,11 +11,12 @@ enum PaywallCopy {
         let numerals = AccessPolicy.freeChapters(in: Campaign.chapters).map(\.numeral)
         guard let last = numerals.last else { return "" }
         guard numerals.count > 1 else { return last }
-        return numerals.dropLast().joined(separator: ", ") + " et " + last
+        return numerals.dropLast().joined(separator: ", ")
+            + IrisText.interface("common.list.conjunction", french: " et ") + last
     }
 
     static var freeChapters: String {
-        "Les chapitres \(freeChapterList) restent gratuits, pour toujours."
+        IrisText.interface("paywall.freeChapters", french: "Les chapitres %@ restent gratuits, pour toujours.", freeChapterList)
     }
 
     static let whatIsBought = IrisText.interface("paywall.whatIsBought", french: "L'accès complet ouvre tous les autres chapitres d'Iris, et ceux qui viendront ensuite.")
@@ -29,7 +30,7 @@ enum PaywallCopy {
     /// The main action. The price is the one the store formats; Iris never composes one.
     static func unlockTitle(price: String?) -> String {
         guard let price else { return IrisText.interface("paywall.unlock.action", french: "Débloquer l'accès complet") }
-        return "Débloquer · \(price)"
+        return IrisText.interface("paywall.unlock.withPrice", french: "Débloquer · %@", price)
     }
 
     static let restore = IrisText.interface("paywall.restore.action", french: "Restaurer mes achats")
@@ -38,7 +39,7 @@ enum PaywallCopy {
 
     /// What a locked chapter says about itself on the map.
     static func lockedChapter(_ chapter: ChapterDefinition) -> String {
-        "Le chapitre \(chapter.numeral) fait partie de l'accès complet."
+        IrisText.interface("paywall.lockedChapter", french: "Le chapitre %@ fait partie de l'accès complet.", chapter.numeral)
     }
 
     /// What a temporary access says once it has ended.

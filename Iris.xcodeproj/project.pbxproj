@@ -63,6 +63,7 @@
 		23791663624A85BBF7772F00 /* SimulatedGazeTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0876AF61255786B54E6B7CA1 /* SimulatedGazeTrackingService.swift */; };
 		23F69C903735F44EB9F22EC6 /* EchoDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101909F27E8BE550C7047A66 /* EchoDefinition.swift */; };
 		24385E12016E14C53C04D618 /* AudioCue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63669236D77A269D0C392E57 /* AudioCue.swift */; };
+		244CE146520D1A8441D9D057 /* LocalizationCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D799D2325829A98A1E92C /* LocalizationCatalogTests.swift */; };
 		26AFB81A350DAE8EA509AAFF /* ChaptersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F579BD2430AB6DD15CFA21C3 /* ChaptersView.swift */; };
 		26C7E23E770AD684B6AB7D11 /* StoreKitEntitlementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE43B9D73C4DD217E752D10 /* StoreKitEntitlementTests.swift */; };
 		27803E85A54612CBB306A969 /* OculoCoeurTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20FE7A61FD6D56DC9792C96 /* OculoCoeurTests.swift */; };
@@ -161,6 +162,7 @@
 		67B062AE70E2F026778A5016 /* CroisementStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E4C9E57097F8155671BBB5 /* CroisementStageState.swift */; };
 		67B105C8AE8C920CAF549F43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 636694E9043AC8362E68025D /* Assets.xcassets */; };
 		67C74CBD5868678813B7A51C /* VeilDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B2ABCFEA818E92CC86A7EC /* VeilDefinition.swift */; };
+		6864A858FC799901963E6C4A /* NavigationText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D87736FE6055E336DAA452 /* NavigationText.swift */; };
 		69C6467DBC6B4E7A5B3AD355 /* BraisesPrototypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB0D1B8E47AA3FD6AA38DB5 /* BraisesPrototypeTests.swift */; };
 		6A2ECD935B33EC46F8FA53C4 /* DSThemeWash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B06250E3FB05DBFF96244A /* DSThemeWash.swift */; };
 		6B86C28C1AC98414AC28E39C /* GazeRay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F67B3E93111CBEC6533C7F /* GazeRay.swift */; };
@@ -245,6 +247,7 @@
 		A37B46105347352A93E54FAB /* OculoDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F852E6862756E54E16CB195B /* OculoDefinition.swift */; };
 		A3AACCB23FC5010DE6F3E41E /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786577D8ECE419A8C69144E3 /* Vector2.swift */; };
 		A40C75B67EF1D24460337C5B /* GameSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB9F52FA98B6CDAFD36D8F /* GameSessionTests.swift */; };
+		A634D0955C7266085261867F /* InterfaceComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A733416BF0E1D2FD63B2C1E /* InterfaceComments.swift */; };
 		A6BAD0FA1B3E78B23AD7F448 /* LevelResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5BF25D73E9B570A57FD3BF /* LevelResolver.swift */; };
 		A6BD4D687B285DA80AD62AA3 /* CalibrationGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA87ADA525EF1C50F514A53 /* CalibrationGrid.swift */; };
 		A6D33A22670601F1B245433B /* Campaign+FinalClairvoyance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FAAA20C282D9001110907B /* Campaign+FinalClairvoyance.swift */; };
@@ -350,6 +353,7 @@
 		E6AA4C6F8D9982CF6BC4EA4D /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EB48088F64AC3694035F51 /* AboutView.swift */; };
 		EAAF9A7DD18088DEC4C250D9 /* GazeAssistanceText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EF4F090ED33B1C94D8EBE8 /* GazeAssistanceText.swift */; };
 		EAE809D62A58ACC1CF62DD99 /* AncreCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82315916A05E59D624DCC9E3 /* AncreCapture.swift */; };
+		EBA101F56021D826FCFD7ADA /* LocalizationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E99D5C6076A236147CE031 /* LocalizationCatalog.swift */; };
 		EC5C3045ED240A50AB745191 /* LevelEnvironmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95ADD54A9E6D7BF0E893EAB /* LevelEnvironmentTests.swift */; };
 		ED5470AFC429AB7CE79AE568 /* InterfaceLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B9C9A2BE0A1D602C95D69 /* InterfaceLocalizationTests.swift */; };
 		EDCA473EC1252D80AA8292AD /* LaunchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684AB828B7DC11DF78F6CE18 /* LaunchOptions.swift */; };
@@ -410,6 +414,7 @@
 		0876AF61255786B54E6B7CA1 /* SimulatedGazeTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedGazeTrackingService.swift; sourceTree = "<group>"; };
 		08B9A8A9490F67F3E264AEDE /* CalibrationProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationProfile.swift; sourceTree = "<group>"; };
 		0A6E301C83BC5FE76A8906E6 /* StorePurchaseOutcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePurchaseOutcome.swift; sourceTree = "<group>"; };
+		0A733416BF0E1D2FD63B2C1E /* InterfaceComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceComments.swift; sourceTree = "<group>"; };
 		0AAE3F6E916C94BD7926A869 /* Campaign+FinalPartage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+FinalPartage.swift"; sourceTree = "<group>"; };
 		0B56A480302FEBFDDEB968DC /* EtoilesStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtoilesStageState.swift; sourceTree = "<group>"; };
 		0B7AD342653D374AF694FE25 /* DSGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlyph.swift; sourceTree = "<group>"; };
@@ -477,6 +482,7 @@
 		2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHapticFeedbackService.swift; sourceTree = "<group>"; };
 		308F25679A5A110E8EE8B174 /* GameCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCanvasView.swift; sourceTree = "<group>"; };
 		320718F4EB5AB2EBE016B5C4 /* OculoStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OculoStageState.swift; sourceTree = "<group>"; };
+		32D87736FE6055E336DAA452 /* NavigationText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationText.swift; sourceTree = "<group>"; };
 		3413CBADB7CA3CD49D01F43D /* ChapterTheme+Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChapterTheme+Palette.swift"; sourceTree = "<group>"; };
 		34C5B90ABA49ADF4FE775E61 /* EntitlementProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementProviding.swift; sourceTree = "<group>"; };
 		34E00E95370C1763A4DF1BD8 /* AbsenceStageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbsenceStageState.swift; sourceTree = "<group>"; };
@@ -621,6 +627,7 @@
 		96E1DEFDE85E15D98ECD1A87 /* VeilleuseDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeilleuseDefinition.swift; sourceTree = "<group>"; };
 		97597A52D9148578572188ED /* TwinState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwinState.swift; sourceTree = "<group>"; };
 		97AF5544272252AFD6C38BBC /* SineSynthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SineSynthTests.swift; sourceTree = "<group>"; };
+		97E99D5C6076A236147CE031 /* LocalizationCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationCatalog.swift; sourceTree = "<group>"; };
 		988419B0C5BE91DBAA541561 /* LinearCongruentialGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearCongruentialGeneratorTests.swift; sourceTree = "<group>"; };
 		9916BB997E5EC86BFD97BC98 /* DSGlassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSGlassTests.swift; sourceTree = "<group>"; };
 		99ED755ED76F23184416DACA /* AffineTransform2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransform2D.swift; sourceTree = "<group>"; };
@@ -651,6 +658,7 @@
 		AE1572AD8AD958A319467FFA /* BraiseStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseStateTests.swift; sourceTree = "<group>"; };
 		AE438BA3325063A857915CEC /* Campaign+OculomotorFinals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Campaign+OculomotorFinals.swift"; sourceTree = "<group>"; };
 		AE46076AAECA1EF108B5C091 /* NominalDisplayGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NominalDisplayGeometry.swift; sourceTree = "<group>"; };
+		AF0D799D2325829A98A1E92C /* LocalizationCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationCatalogTests.swift; sourceTree = "<group>"; };
 		AF1585AF6D44A5E92F30099E /* DSEyebrowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEyebrowStyle.swift; sourceTree = "<group>"; };
 		AF4900229A2D127497A80827 /* SoufflesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoufflesTests.swift; sourceTree = "<group>"; };
 		AF7C18EF6E49BC01A6386AB9 /* GazeLearningFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeLearningFlowTests.swift; sourceTree = "<group>"; };
@@ -798,6 +806,7 @@
 				1FC6E1FC8B467B794512D52B /* HintText.swift */,
 				F94C3A3D44CF31196E89FE69 /* HomeText.swift */,
 				0457A6A140CDEC8B0316CE58 /* IrisText.swift */,
+				32D87736FE6055E336DAA452 /* NavigationText.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1243,9 +1252,12 @@
 				93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */,
 				5C429251189588D65388F4B2 /* GameViewModelTests.swift */,
 				D0782523A70B6E6C8B3B861F /* GazeSetupViewModelTests.swift */,
+				0A733416BF0E1D2FD63B2C1E /* InterfaceComments.swift */,
 				C05B9C9A2BE0A1D602C95D69 /* InterfaceLocalizationTests.swift */,
 				E7BEC32F454392D52CD02E7A /* LaunchOptionsTests.swift */,
 				45F36EDDEC84841D65C7A090 /* LevelHintLocalizationTests.swift */,
+				97E99D5C6076A236147CE031 /* LocalizationCatalog.swift */,
+				AF0D799D2325829A98A1E92C /* LocalizationCatalogTests.swift */,
 				A34DEE1F8FCB35762972CF20 /* LocalizationInfrastructureTests.swift */,
 				249B00C73A72410C16B0C647 /* OculomotorTraceTests.swift */,
 				EAFDF6615340DFA69660E492 /* OnboardingTests.swift */,
@@ -2002,6 +2014,7 @@
 				B034077B0DEE687597DAD6D2 /* HintTrackerTests.swift in Sources */,
 				0ECAB898E66FE482731D2ECF /* HistoricalCampaignDump.swift in Sources */,
 				C64737ADA961196BD87D0748 /* HistoricalCampaignFingerprintTests.swift in Sources */,
+				A634D0955C7266085261867F /* InterfaceComments.swift in Sources */,
 				ED5470AFC429AB7CE79AE568 /* InterfaceLocalizationTests.swift in Sources */,
 				92D07B67D4B9C6F323D6E067 /* JumellesTests.swift in Sources */,
 				74FDE5E76895E79161AEE104 /* LaunchOptionsTests.swift in Sources */,
@@ -2010,6 +2023,8 @@
 				AE8B856F3B0321EDB27FAEF1 /* LevelHintLocalizationTests.swift in Sources */,
 				1A41A7F740C484B3FEE760B5 /* LevelLabTests.swift in Sources */,
 				1ADDE1EF4068C4B63093FEEE /* LinearCongruentialGeneratorTests.swift in Sources */,
+				EBA101F56021D826FCFD7ADA /* LocalizationCatalog.swift in Sources */,
+				244CE146520D1A8441D9D057 /* LocalizationCatalogTests.swift in Sources */,
 				413B14FAA5F594AD5EC5DBF5 /* LocalizationInfrastructureTests.swift in Sources */,
 				DC0332194D3AEF7B0211AD04 /* MockAudioService.swift in Sources */,
 				4E79F474EF5E220C5C80D1E6 /* MockGameNavigating.swift in Sources */,
@@ -2257,6 +2272,7 @@
 				41B03A523A6DA13556C05E9D /* LueurDefinition.swift in Sources */,
 				6266836DB1BC1C40FC2AAEA4 /* ManualGameClock.swift in Sources */,
 				448C53D729EB3506CC1BD216 /* MiroirStageState.swift in Sources */,
+				6864A858FC799901963E6C4A /* NavigationText.swift in Sources */,
 				DD2F6E597B1ACF3834D30A19 /* NoiseSource.swift in Sources */,
 				40B805C9919A53DEF3A81A20 /* NominalDisplayGeometry.swift in Sources */,
 				0FD6259C04CCBBAA4524A1A1 /* NormalizedCoordinates.swift in Sources */,

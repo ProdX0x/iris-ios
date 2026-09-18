@@ -22,7 +22,12 @@ struct ChapterCard: View {
         DSGlassPanel {
             header
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Chapitre \(chapter.number), \(chapter.name), \(completed) niveaux sur \(chapter.levels.count) atteints\(isAccessible ? "" : ", accès complet requis")")
+                .accessibilityLabel(isAccessible
+                    ? IrisText.interface("chapters.card.label", french: "Chapitre %lld, %@, %lld niveaux sur %lld atteints",
+                                         chapter.number, CampaignText.name(of: chapter), completed, chapter.levels.count)
+                    : IrisText.interface("chapters.card.label.locked",
+                                         french: "Chapitre %lld, %@, %lld niveaux sur %lld atteints, accès complet requis",
+                                         chapter.number, CampaignText.name(of: chapter), completed, chapter.levels.count))
             if !isAccessible {
                 ChapterLockNotice(chapter: chapter, price: fullAccessPrice, action: onUnlock)
             } else if isUnlocked {

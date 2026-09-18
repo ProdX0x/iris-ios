@@ -1,8 +1,2300 @@
 {
   "sourceLanguage" : "fr",
   "strings" : {
+    "about.contact.action" : {
+      "comment" : "About and legal screen. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écrire à l'assistance"
+          }
+        }
+      }
+    },
+    "about.contact.address.label" : {
+      "comment" : "About and legal screen. VoiceOver label: what is read aloud, not what is drawn. %@ is the support email address, unchanged in every language.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse de contact : %@"
+          }
+        }
+      }
+    },
+    "about.contact.hint" : {
+      "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre un nouveau message vers l'assistance d'Iris"
+          }
+        }
+      }
+    },
+    "about.entry.action" : {
+      "comment" : "About and legal screen. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À propos & informations légales"
+          }
+        }
+      }
+    },
+    "about.entry.hint" : {
+      "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identité, version, liens et confidentialité"
+          }
+        }
+      }
+    },
+    "about.links.eyebrow" : {
+      "comment" : "About and legal screen. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "liens"
+          }
+        }
+      }
+    },
+    "about.privacy.hint" : {
+      "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre la politique de confidentialité sur le site d'Iris"
+          }
+        }
+      }
+    },
+    "about.privacy.title" : {
+      "comment" : "About and legal screen. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Politique de confidentialité"
+          }
+        }
+      }
+    },
+    "about.role" : {
+      "comment" : "About and legal screen. The author's role on the project, next to their name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conception & direction du projet"
+          }
+        }
+      }
+    },
+    "about.site.hint" : {
+      "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre le site officiel d'Iris"
+          }
+        }
+      }
+    },
+    "about.site.title" : {
+      "comment" : "About and legal screen. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Site officiel"
+          }
+        }
+      }
+    },
+    "about.support.eyebrow" : {
+      "comment" : "About and legal screen. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "assistance"
+          }
+        }
+      }
+    },
+    "about.terms.detail" : {
+      "comment" : "About and legal screen. Explanatory line under a title. LEGAL: Iris uses Apple's standard licence agreement. Do not name another one.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris est couvert par le contrat de licence standard d'Apple."
+          }
+        }
+      }
+    },
+    "about.terms.hint" : {
+      "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre le contrat de licence standard sur le site d'Apple"
+          }
+        }
+      }
+    },
+    "about.terms.title" : {
+      "comment" : "About and legal screen. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conditions d'utilisation"
+          }
+        }
+      }
+    },
+    "about.title" : {
+      "comment" : "About and legal screen. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "à propos"
+          }
+        }
+      }
+    },
+    "about.version.line" : {
+      "comment" : "About and legal screen. A composed line. %@ is the version (1.0), then %@ the build number. Both are literal, never translated.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@ (build %@)"
+          }
+        }
+      }
+    },
+    "access.full.summary" : {
+      "comment" : "Access state, shown in the settings and on the paywall. One line summarising a state. FUNCTIONAL: the full access is permanent and tied to the Apple Account, not the device.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris est ouvert en entier sur ce compte Apple."
+          }
+        }
+      }
+    },
+    "access.promotional.detail" : {
+      "comment" : "Access state, shown in the settings and on the paywall. Explanatory line under a title. FUNCTIONAL: says the access lasts as long as its duration, no longer.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris est ouvert en entier pendant la durée de votre accès."
+          }
+        }
+      }
+    },
+    "access.promotional.summary" : {
+      "comment" : "Access state, shown in the settings and on the paywall. One line summarising a state. FUNCTIONAL: a temporary access opens everything, and when it ends the free chapters stay open. Both halves matter.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un accès temporaire ouvre Iris en entier. À sa fin, les chapitres gratuits restent ouverts."
+          }
+        }
+      }
+    },
+    "camera.allow.action" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser la caméra"
+          }
+        }
+      }
+    },
+    "camera.denied.detail" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Explanatory line under a title. The camera was refused; says the game cannot work without the gaze, and that it can be allowed again in Settings.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'accès à la caméra a été refusé. Sans regard, Iris ne peut pas fonctionner. Vous pouvez l'autoriser dans Réglages, puis revenir ici."
+          }
+        }
+      }
+    },
+    "camera.denied.message" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Message shown when something went wrong. Shorter form of the same, shown over a level.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris a besoin de la caméra frontale pour lire votre regard. Autorisez-la dans Réglages."
+          }
+        }
+      }
+    },
+    "camera.denied.title" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "caméra refusée"
+          }
+        }
+      }
+    },
+    "camera.eyebrow" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "avant de jouer"
+          }
+        }
+      }
+    },
+    "camera.headline" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la caméra lit votre regard"
+          }
+        }
+      }
+    },
+    "camera.later.action" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
+          }
+        }
+      }
+    },
+    "camera.localProcessing.detail" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Explanatory line under a title. PRIVACY: this is a factual claim about the app. Nothing is recorded, nothing is sent, nothing leaves the device. Translate it exactly; never weaken it and never strengthen it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune image n'est enregistrée ni envoyée. Rien ne quitte l'appareil."
+          }
+        }
+      }
+    },
+    "camera.localProcessing.title" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traitement local"
+          }
+        }
+      }
+    },
+    "camera.noCalibration.detail" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Explanatory line under a title. Says the game starts as soon as a face is detected.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le jeu démarre dès que votre visage est détecté."
+          }
+        }
+      }
+    },
+    "camera.noCalibration.title" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune calibration"
+          }
+        }
+      }
+    },
+    "camera.request.detail" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Explanatory line under a title. PRIVACY: explains what iOS is about to ask and what the camera is used for.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS va vous demander l'autorisation d'utiliser la caméra frontale. Elle sert uniquement à détecter où vous regardez."
+          }
+        }
+      }
+    },
+    "camera.requesting" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demande d'accès en cours…"
+          }
+        }
+      }
+    },
+    "camera.restricted.detail" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Explanatory line under a title. FUNCTIONAL: the restriction comes from Screen Time or a management profile, not from a refusal by the player. Keep that distinction.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'accès à la caméra est restreint sur cet appareil (temps d'écran, profil de gestion). Iris ne peut pas lire le regard tant que cette restriction est active."
+          }
+        }
+      }
+    },
+    "camera.restricted.message" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Message shown when something went wrong. Shorter form of the same.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'accès à la caméra est restreint sur cet appareil (temps d'écran ou profil)."
+          }
+        }
+      }
+    },
+    "camera.restricted.title" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "caméra restreinte"
+          }
+        }
+      }
+    },
+    "camera.trueDepth.detail" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Explanatory line under a title. Describes what the TrueDepth camera does, about sixty times a second.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estime la direction du regard, environ soixante fois par seconde."
+          }
+        }
+      }
+    },
+    "camera.trueDepth.title" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caméra TrueDepth"
+          }
+        }
+      }
+    },
+    "camera.unsupported.message" : {
+      "comment" : "Camera permission screen, shown before the gaze can be read. Message shown when something went wrong. FUNCTIONAL: the device has no TrueDepth face tracking at all. Nothing the player does can change it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard."
+          }
+        }
+      }
+    },
+    "carnet.title" : {
+      "comment" : "Carnet, the collection of game elements the player has met. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "carnet"
+          }
+        }
+      }
+    },
+    "carnet.undiscovered" : {
+      "comment" : "Carnet, the collection of game elements the player has met.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "à découvrir"
+          }
+        }
+      }
+    },
+    "chapters.card.label" : {
+      "comment" : "Chapter map. VoiceOver label: what is read aloud, not what is drawn. VoiceOver label of a chapter card. %lld is the chapter number, %@ its name, then the number of levels reached and the number of levels it holds. Keep all four, in an order the sentence allows.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapitre %lld, %@, %lld niveaux sur %lld atteints"
+          }
+        }
+      }
+    },
+    "chapters.card.label.locked" : {
+      "comment" : "Chapter map. Same as `chapters.card.label`, for a chapter the player has not bought. %lld chapter number, %@ name, levels reached, levels in total. The ending says the full access is required.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapitre %lld, %@, %lld niveaux sur %lld atteints, accès complet requis"
+          }
+        }
+      }
+    },
+    "chapters.level.label" : {
+      "comment" : "Chapter map. VoiceOver label: what is read aloud, not what is drawn. VoiceOver label of a level. %lld is the level number inside its chapter, %@ its title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niveau %lld, %@"
+          }
+        }
+      }
+    },
+    "chapters.level.locked" : {
+      "comment" : "Chapter map.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "verrouillé"
+          }
+        }
+      }
+    },
+    "chapters.level.toPlay" : {
+      "comment" : "Chapter map.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "à jouer"
+          }
+        }
+      }
+    },
+    "chapters.locked.hint" : {
+      "comment" : "Chapter map. VoiceOver hint: says what happens if the control is used. %@ is a chapter numeral (I, II, III…). Says which chapter must be finished first.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminez le chapitre %@"
+          }
+        }
+      }
+    },
+    "chapters.title" : {
+      "comment" : "Chapter map. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chapitres"
+          }
+        }
+      }
+    },
+    "common.back" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour"
+          }
+        }
+      }
+    },
+    "common.begin" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
+          }
+        }
+      }
+    },
+    "common.cancel" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        }
+      }
+    },
+    "common.chapter.line" : {
+      "comment" : "Shared control or line, used on several screens. A composed line. %@ is a chapter numeral, %@ its name. The separator is a middle dot.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        }
+      }
+    },
+    "common.chapterLevel.line" : {
+      "comment" : "Shared control or line, used on several screens. A composed line. %@ chapter numeral, %@ chapter name, %@ level title. Punctuation is part of the design: a middle dot then an em dash.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@ — %@"
+          }
+        }
+      }
+    },
+    "common.chapters" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapitres"
+          }
+        }
+      }
+    },
+    "common.close" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        }
+      }
+    },
+    "common.continue" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer"
+          }
+        }
+      }
+    },
+    "common.list.conjunction" : {
+      "comment" : "Shared control or line, used on several screens. Joins the last two items of a list of chapter numerals: « I, II et III ». Keep the spaces around the word. Only used inside `paywall.freeChapters`.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " et "
+          }
+        }
+      }
+    },
+    "common.openSettings" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir Réglages"
+          }
+        }
+      }
+    },
+    "common.pageIndicator" : {
+      "comment" : "Shared control or line, used on several screens. VoiceOver label of a page indicator. %lld is the current screen, %lld the total.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écran %lld sur %lld"
+          }
+        }
+      }
+    },
+    "common.recalibrate" : {
+      "comment" : "Shared control or line, used on several screens. Starts the calibration again.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recalibrer"
+          }
+        }
+      }
+    },
+    "common.replay" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejouer"
+          }
+        }
+      }
+    },
+    "common.restart" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recommencer"
+          }
+        }
+      }
+    },
+    "common.resume" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reprendre"
+          }
+        }
+      }
+    },
+    "common.retry" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
+          }
+        }
+      }
+    },
+    "common.skip" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passer"
+          }
+        }
+      }
+    },
+    "common.threshold" : {
+      "comment" : "Shared control or line, used on several screens. Goes back to the threshold — the home screen, called « Seuil » in French. It is a place in Iris, so it keeps a name rather than becoming « Home ».",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seuil"
+          }
+        }
+      }
+    },
+    "eclats.outOfThree.value" : {
+      "comment" : "The marks a level awards, shown as a count. A value read aloud or drawn next to a figure. VoiceOver value: how many of a level's three marks are lit. %lld is that count. The French keeps the plural form at every count, as validated; the plural slot is for the translation.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld éclats sur 3"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld éclats sur 3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "eclats.total.value" : {
+      "comment" : "The marks a level awards, shown as a count. A value read aloud or drawn next to a figure. How many marks the player has, out of the campaign total. %lld earned, %lld possible.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld éclats sur %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld éclats sur %lld"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "game.cameraBusy.detail" : {
+      "comment" : "In-game overlays, shown over a level in progress. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La caméra est utilisée ailleurs. La partie reprendra dès que votre regard sera retrouvé."
+          }
+        }
+      }
+    },
+    "game.faceLost.detail" : {
+      "comment" : "In-game overlays, shown over a level in progress. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replacez-vous face à l'écran. La partie reprend d'elle-même."
+          }
+        }
+      }
+    },
+    "game.faceLost.title" : {
+      "comment" : "In-game overlays, shown over a level in progress. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "visage perdu"
+          }
+        }
+      }
+    },
+    "game.gazeWaking" : {
+      "comment" : "In-game overlays, shown over a level in progress.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le regard s'éveille…"
+          }
+        }
+      }
+    },
+    "game.interrupted.title" : {
+      "comment" : "In-game overlays, shown over a level in progress. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "interrompu"
+          }
+        }
+      }
+    },
+    "game.level.label" : {
+      "comment" : "In-game overlays, shown over a level in progress. VoiceOver label: what is read aloud, not what is drawn. VoiceOver label of the level mark in the HUD. %@ is the mark itself, e.g. « III · 2 ».",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niveau %@"
+          }
+        }
+      }
+    },
+    "game.pause.action" : {
+      "comment" : "In-game overlays, shown over a level in progress. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        }
+      }
+    },
+    "game.resuming.title" : {
+      "comment" : "In-game overlays, shown over a level in progress. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "reprise"
+          }
+        }
+      }
+    },
+    "game.trackingError.message" : {
+      "comment" : "In-game overlays, shown over a level in progress. Message shown when something went wrong. %@ is the system's own error text, already localised by iOS. Do not translate it, do not drop it: it is what a support request will quote.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le suivi du regard s'est arrêté de façon inattendue. %@"
+          }
+        }
+      }
+    },
+    "gaze.trackingError.title" : {
+      "comment" : "Gaze failure titles. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "erreur de suivi"
+          }
+        }
+      }
+    },
+    "gaze.unavailable.title" : {
+      "comment" : "Gaze failure titles. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regard indisponible"
+          }
+        }
+      }
+    },
+    "gazeAssistance.detail" : {
+      "comment" : "Gaze-assistance setting: how visible the gaze marker is during play. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le repère montre où Iris estime que vous regardez."
+          }
+        }
+      }
+    },
+    "gazeAssistance.eyebrow" : {
+      "comment" : "Gaze-assistance setting: how visible the gaze marker is during play. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "aide au regard"
+          }
+        }
+      }
+    },
+    "gazeAssistance.learning.note" : {
+      "comment" : "Gaze-assistance setting: how visible the gaze marker is during play. Side note, smaller than the body text.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'aide au regard est guidée pendant les premiers niveaux d'apprentissage."
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.classic.compact" : {
+      "comment" : "Pause panel. The `classic` mode in two or three words, for a player mid-level who must recognise it at a glance. Keep it very short.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sans repère"
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.classic.summary" : {
+      "comment" : "Settings. What the `classic` gaze-assistance mode does, read by a player who has time to read. FUNCTIONAL: describes what the marker actually does.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le repère reste masqué. Un halo discret vous indique seulement quand votre regard sort de la zone utile."
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.classic.title" : {
+      "comment" : "Settings and pause. Name of the gaze-assistance mode `classic`, which decides how visible the gaze marker is during play.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classique"
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.guided.compact" : {
+      "comment" : "Pause panel. The `guided` mode in two or three words, for a player mid-level who must recognise it at a glance. Keep it very short.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repère ponctuel"
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.guided.summary" : {
+      "comment" : "Settings. What the `guided` gaze-assistance mode does, read by a player who has time to read. FUNCTIONAL: describes what the marker actually does.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le repère apparaît brièvement, de temps en temps, pour vous aider à vous recaler."
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.guided.title" : {
+      "comment" : "Settings and pause. Name of the gaze-assistance mode `guided`, which decides how visible the gaze marker is during play.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guidé"
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.visible.compact" : {
+      "comment" : "Pause panel. The `visible` mode in two or three words, for a player mid-level who must recognise it at a glance. Keep it very short.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repère permanent"
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.visible.summary" : {
+      "comment" : "Settings. What the `visible` gaze-assistance mode does, read by a player who has time to read. FUNCTIONAL: describes what the marker actually does.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le repère reste visible pendant le jeu."
+          }
+        }
+      }
+    },
+    "gazeAssistance.mode.visible.title" : {
+      "comment" : "Settings and pause. Name of the gaze-assistance mode `visible`, which decides how visible the gaze marker is during play.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visible"
+          }
+        }
+      }
+    },
+    "gazeAssistance.replay.action" : {
+      "comment" : "Gaze-assistance setting: how visible the gaze marker is during play. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revoir l'explication"
+          }
+        }
+      }
+    },
+    "gazeAssistance.title" : {
+      "comment" : "Gaze-assistance setting: how visible the gaze marker is during play. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aide au regard"
+          }
+        }
+      }
+    },
+    "gazeLearning.accuracy.note" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Side note, smaller than the body text. FUNCTIONAL: explains that a lower calibration deviation is better and that 0 % is an ideal reference, not a requirement. The percent signs here are literal text, not placeholders.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus le pourcentage d'écart de calibration est faible, plus la calibration correspond précisément à votre regard. 0 % est une référence idéale : un écart nul n'est pas attendu en usage réel."
+          }
+        }
+      }
+    },
+    "gazeLearning.choice.detail" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous pouvez réactiver une aide à tout moment dans Réglages, « Aide au regard »."
+          }
+        }
+      }
+    },
+    "gazeLearning.choice.figure" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le repère qui s'efface peu à peu."
+          }
+        }
+      }
+    },
+    "gazeLearning.choice.title" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous gardez toujours le choix"
+          }
+        }
+      }
+    },
+    "gazeLearning.drift.detail" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le point lumineux montre où Iris estime que vous regardez. Il peut bouger légèrement même quand vous pensez fixer exactement le même endroit."
+          }
+        }
+      }
+    },
+    "gazeLearning.drift.figure" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trois positions proches du repère, montrant qu'il bouge légèrement."
+          }
+        }
+      }
+    },
+    "gazeLearning.drift.title" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre regard n'est pas un point fixe"
+          }
+        }
+      }
+    },
+    "gazeLearning.guided.detail" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans les deux premiers niveaux, le repère reste visible. Au troisième, il disparaît progressivement pour vous apprendre à jouer sans lui."
+          }
+        }
+      }
+    },
+    "gazeLearning.guided.figure" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le repère, bien visible."
+          }
+        }
+      }
+    },
+    "gazeLearning.guided.title" : {
+      "comment" : "The screens that introduce the gaze marker, before the first level. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris vous accompagne au début"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.axisMapping.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `axisMapping`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orientation du regard"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.blinkDetection.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `blinkDetection`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clignements détectés"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.cameraAccess.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `cameraAccess`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès caméra"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.eyeTracking.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `eyeTracking`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivi des yeux"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.faceDetected.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `faceDetected`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visage détecté"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.faceTracking.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `faceTracking`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caméra TrueDepth"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.gazeDirection.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `gazeDirection`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direction du regard"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.headStable.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `headStable`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tête stable"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.session.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `session`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session AR"
+          }
+        }
+      }
+    },
+    "gazeReadiness.check.signalStable.title" : {
+      "comment" : "Gaze setup. Name of the readiness check `signalStable`, listed before calibration. FUNCTIONAL: names a real hardware or signal condition.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signal stable"
+          }
+        }
+      }
+    },
+    "gazeReadiness.eyebrow" : {
+      "comment" : "Gaze setup: the checks run before calibration. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "diagnostic du regard"
+          }
+        }
+      }
+    },
+    "gazeReadiness.ready.detail" : {
+      "comment" : "Gaze setup: the checks run before calibration. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La calibration démarre dans un instant. Gardez la tête immobile."
+          }
+        }
+      }
+    },
+    "gazeReadiness.ready.headline" : {
+      "comment" : "Gaze setup: the checks run before calibration. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regard prêt pour la calibration"
+          }
+        }
+      }
+    },
+    "gazeReadiness.waiting.detail" : {
+      "comment" : "Gaze setup: the checks run before calibration. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenez l'iPhone droit devant vous, à 30 ou 40 cm, et fixez le point."
+          }
+        }
+      }
+    },
+    "gazeReadiness.waiting.headline" : {
+      "comment" : "Gaze setup: the checks run before calibration. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regardez le point"
+          }
+        }
+      }
+    },
+    "gazeSetup.camera.restricted.message" : {
+      "comment" : "Gaze calibration. Message shown when something went wrong.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'accès à la caméra est restreint sur cet appareil."
+          }
+        }
+      }
+    },
+    "gazeSetup.failure.noCorrection" : {
+      "comment" : "Gaze calibration.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les mesures ne permettent pas de calculer une correction. Recommencez en suivant chaque point des yeux."
+          }
+        }
+      }
+    },
+    "gazeSetup.fixation.instruction" : {
+      "comment" : "Gaze calibration.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "suivez le point des yeux, sans bouger la tête"
+          }
+        }
+      }
+    },
+    "gazeSetup.impossible.title" : {
+      "comment" : "Gaze calibration. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "calibration impossible"
+          }
+        }
+      }
+    },
+    "gazeSetup.insufficientSignal.message" : {
+      "comment" : "Gaze calibration. Message shown when something went wrong. %lld is the number of the calibration point, counted from 1.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le regard n'a pas pu être mesuré sur le point %lld. Gardez la tête immobile, évitez les reflets et recommencez."
+          }
+        }
+      }
+    },
+    "gazeSetup.starting" : {
+      "comment" : "Gaze calibration.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "démarrage du suivi du regard…"
+          }
+        }
+      }
+    },
+    "gazeSetup.trackingError.message" : {
+      "comment" : "Gaze calibration. Message shown when something went wrong. %@ is the system's own error text, already localised by iOS.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le suivi du regard s'est arrêté. %@"
+          }
+        }
+      }
+    },
+    "gazeSetup.verification.eyebrow" : {
+      "comment" : "Gaze calibration. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vérification"
+          }
+        }
+      }
+    },
+    "gazeSetup.weakSignal.title" : {
+      "comment" : "Gaze calibration. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "signal insuffisant"
+          }
+        }
+      }
+    },
+    "gazeStatus.accuracy.note" : {
+      "comment" : "Calibration state, summarised in the pause panel. Side note, smaller than the body text.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus l'écart est faible, plus le suivi du regard est précis."
+          }
+        }
+      }
+    },
+    "gazeStatus.calibrated.headline" : {
+      "comment" : "Calibration state, summarised in the pause panel. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calibration réussie"
+          }
+        }
+      }
+    },
+    "gazeStatus.imprecise.advice" : {
+      "comment" : "Calibration state, summarised in the pause panel.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recalibrez pour qu'Iris suive votre regard plus précisément."
+          }
+        }
+      }
+    },
+    "gazeStatus.imprecise.headline" : {
+      "comment" : "Calibration state, summarised in the pause panel. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calibration à refaire"
+          }
+        }
+      }
+    },
+    "gazeStatus.line" : {
+      "comment" : "Calibration state, summarised in the pause panel. A composed line. %@ is the calibration headline. This form only adds the final period.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@."
+          }
+        }
+      }
+    },
+    "gazeStatus.meanError.line" : {
+      "comment" : "Calibration state, summarised in the pause panel. A composed line. %@ is the calibration headline, %lld the mean error as a percentage. `%%` is a literal percent sign. FUNCTIONAL: the figure is a measured deviation, not a score and not an accuracy.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ — écart moyen %lld %%."
+          }
+        }
+      }
+    },
+    "gazeStatus.uncalibrated" : {
+      "comment" : "Calibration state, summarised in the pause panel.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regard non calibré."
+          }
+        }
+      }
+    },
+    "gazeVerdict.continueAnyway.action" : {
+      "comment" : "The result of a calibration. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer quand même"
+          }
+        }
+      }
+    },
+    "gazeVerdict.error.note" : {
+      "comment" : "The result of a calibration. Side note, smaller than the body text. FUNCTIONAL: the figure is expressed as a percentage of the screen's short side, with thresholds at 18 % and 30 %. The percent signs are literal text.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en pourcentage de la petite dimension de l'écran (seuils 18 % et 30 %)"
+          }
+        }
+      }
+    },
+    "gazeVerdict.fail.detail" : {
+      "comment" : "The result of a calibration. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les cibles de contrôle n'ont pas été retrouvées avec assez de précision. Recalibrez en tenant l'iPhone droit, sans bouger la tête."
+          }
+        }
+      }
+    },
+    "gazeVerdict.fail.eyebrow" : {
+      "comment" : "The result of a calibration. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "précision insuffisante"
+          }
+        }
+      }
+    },
+    "gazeVerdict.fail.headline" : {
+      "comment" : "The result of a calibration. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "la précision peut être améliorée"
+          }
+        }
+      }
+    },
+    "gazeVerdict.maxError.label" : {
+      "comment" : "The result of a calibration. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "erreur maximale"
+          }
+        }
+      }
+    },
+    "gazeVerdict.meanError.label" : {
+      "comment" : "The result of a calibration. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "erreur moyenne"
+          }
+        }
+      }
+    },
+    "gazeVerdict.pass.detail" : {
+      "comment" : "The result of a calibration. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le point menthe suit votre regard. Vérifiez qu'il se pose bien là où vous regardez, puis continuez."
+          }
+        }
+      }
+    },
+    "gazeVerdict.pass.eyebrow" : {
+      "comment" : "The result of a calibration. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "calibration validée"
+          }
+        }
+      }
+    },
+    "gazeVerdict.pass.headline" : {
+      "comment" : "The result of a calibration. Headline.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regard prêt"
+          }
+        }
+      }
+    },
+    "gazeVerdict.percent.value" : {
+      "comment" : "The result of a calibration. A value read aloud or drawn next to a figure. %lld is a percentage; `%%` is a literal percent sign.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld %%"
+          }
+        }
+      }
+    },
+    "home.action.begin" : {
+      "comment" : "Threshold screen. The main button when the player's state is `begin`. One or two words; it is the largest control on the screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
+          }
+        }
+      }
+    },
+    "home.action.replay" : {
+      "comment" : "Threshold screen. The main button when the player's state is `replay`. One or two words; it is the largest control on the screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejouer un chapitre"
+          }
+        }
+      }
+    },
+    "home.action.resume" : {
+      "comment" : "Threshold screen. The main button when the player's state is `resume`. One or two words; it is the largest control on the screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer"
+          }
+        }
+      }
+    },
+    "home.replayChapter.action" : {
+      "comment" : "Threshold, the first screen. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejouer un chapitre"
+          }
+        }
+      }
+    },
+    "home.tagline" : {
+      "comment" : "Threshold, the first screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce que vous regardez s'éloigne."
+          }
+        }
+      }
+    },
+    "howToPlay.comfort.detail" : {
+      "comment" : "How-to-play explanations. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenez l'iPhone à hauteur des yeux, à une longueur de bras, dans une lumière régulière. Si le regard dérive, recalibrez depuis les réglages."
+          }
+        }
+      }
+    },
+    "howToPlay.comfort.eyebrow" : {
+      "comment" : "How-to-play explanations. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "confort"
+          }
+        }
+      }
+    },
+    "howToPlay.eyebrow" : {
+      "comment" : "How-to-play explanations. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "comment jouer"
+          }
+        }
+      }
+    },
+    "howToPlay.intro" : {
+      "comment" : "How-to-play explanations.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris se joue avec les yeux. La caméra avant estime la direction de votre regard ; le reste tient en quatre idées."
+          }
+        }
+      }
+    },
+    "howToPlay.title" : {
+      "comment" : "How-to-play explanations. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment jouer"
+          }
+        }
+      }
+    },
+    "journey.detail" : {
+      "comment" : "End of the journey, after the last level. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les lueurs ont trouvé leur iris. Vous avez appris à regarder juste, pas à regarder plus."
+          }
+        }
+      }
+    },
+    "journey.eclats.label" : {
+      "comment" : "End of the journey, after the last level. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "éclats"
+          }
+        }
+      }
+    },
+    "journey.eyebrow" : {
+      "comment" : "End of the journey, after the last level. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le dernier iris"
+          }
+        }
+      }
+    },
+    "journey.playTime.label" : {
+      "comment" : "End of the journey, after the last level. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "temps de jeu"
+          }
+        }
+      }
+    },
+    "levelIntro.chapterLevel.line" : {
+      "comment" : "The card shown before a level starts. A composed line. %@ chapter numeral, %@ chapter name, %lld level number.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@ — %lld"
+          }
+        }
+      }
+    },
+    "levelIntro.chapters.action" : {
+      "comment" : "The card shown before a level starts. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chapitres"
+          }
+        }
+      }
+    },
+    "levelIntro.new.badge" : {
+      "comment" : "The card shown before a level starts.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nouveau"
+          }
+        }
+      }
+    },
+    "navigation.destination.carnet.title" : {
+      "comment" : "Navigation. Tab bar label for `carnet`. RESERVED: not read at runtime yet — the tab bar is drawn in a frozen file. Translate it anyway; a tab label must stay very short.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carnet"
+          }
+        }
+      }
+    },
+    "navigation.destination.chapitres.title" : {
+      "comment" : "Navigation. Tab bar label for `chapitres`. RESERVED: not read at runtime yet — the tab bar is drawn in a frozen file. Translate it anyway; a tab label must stay very short.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapitres"
+          }
+        }
+      }
+    },
+    "navigation.destination.seuil.title" : {
+      "comment" : "Navigation. Tab bar label for `seuil`. RESERVED: not read at runtime yet — the tab bar is drawn in a frozen file. Translate it anyway; a tab label must stay very short.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seuil"
+          }
+        }
+      }
+    },
+    "navigation.sheet.gazeIntroduction.title" : {
+      "comment" : "Navigation. Title of the `gazeIntroduction` sheet. RESERVED: not read at runtime yet — its only display site is a frozen file. Translate it anyway.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aide au regard"
+          }
+        }
+      }
+    },
+    "navigation.sheet.howToPlay.title" : {
+      "comment" : "Navigation. Title of the `howToPlay` sheet. RESERVED: not read at runtime yet — its only display site is a frozen file. Translate it anyway.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment jouer"
+          }
+        }
+      }
+    },
+    "navigation.sheet.paywall.title" : {
+      "comment" : "Navigation. Title of the `paywall` sheet. RESERVED: not read at runtime yet — its only display site is a frozen file. Translate it anyway.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès complet"
+          }
+        }
+      }
+    },
+    "navigation.sheet.settings.title" : {
+      "comment" : "Navigation. Title of the `settings` sheet. RESERVED: not read at runtime yet — its only display site is a frozen file. Translate it anyway.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages"
+          }
+        }
+      }
+    },
+    "onboarding.destination.detail" : {
+      "comment" : "First-run introduction. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque sphère a un iris qui l'attend. Amenez-la jusqu'à lui, et le niveau est atteint."
+          }
+        }
+      }
+    },
+    "onboarding.destination.figure" : {
+      "comment" : "First-run introduction.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une sphère qui rejoint l'iris ouvert au bout de son chemin."
+          }
+        }
+      }
+    },
+    "onboarding.destination.title" : {
+      "comment" : "First-run introduction. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guidez les sphères vers leur iris"
+          }
+        }
+      }
+    },
+    "onboarding.directStare.detail" : {
+      "comment" : "First-run introduction. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La regarder droit dessus la chasse — souvent loin de l'endroit où vous vouliez l'emmener."
+          }
+        }
+      }
+    },
+    "onboarding.directStare.figure" : {
+      "comment" : "First-run introduction.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un regard posé sur la sphère, qui part à l'opposé de l'iris."
+          }
+        }
+      }
+    },
+    "onboarding.directStare.title" : {
+      "comment" : "First-run introduction. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne fixez pas la sphère"
+          }
+        }
+      }
+    },
+    "onboarding.indirectGaze.detail" : {
+      "comment" : "First-run introduction. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posez votre attention à côté de la sphère : elle glisse doucement du côté opposé."
+          }
+        }
+      }
+    },
+    "onboarding.indirectGaze.figure" : {
+      "comment" : "First-run introduction.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un regard posé à gauche de la sphère, qui glisse vers la droite."
+          }
+        }
+      }
+    },
+    "onboarding.indirectGaze.title" : {
+      "comment" : "First-run introduction. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez autour d'elle pour la guider"
+          }
+        }
+      }
+    },
+    "onboarding.repulsion.detail" : {
+      "comment" : "First-run introduction. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris suit la direction de votre regard. Là où vous regardez, la sphère s'écarte."
+          }
+        }
+      }
+    },
+    "onboarding.repulsion.figure" : {
+      "comment" : "First-run introduction.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un regard à gauche, une sphère à droite qui s'éloigne de lui."
+          }
+        }
+      }
+    },
+    "onboarding.repulsion.title" : {
+      "comment" : "First-run introduction. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre regard repousse les sphères"
+          }
+        }
+      }
+    },
+    "pause.detail" : {
+      "comment" : "Pause panel. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris attend votre retour."
+          }
+        }
+      }
+    },
+    "pause.gaze.eyebrow" : {
+      "comment" : "Pause panel. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regard"
+          }
+        }
+      }
+    },
+    "pause.panel.title" : {
+      "comment" : "Pause panel. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pause"
+          }
+        }
+      }
+    },
+    "pause.title" : {
+      "comment" : "Pause panel. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en pause"
+          }
+        }
+      }
+    },
+    "paywall.eyebrow" : {
+      "comment" : "Paywall: what the full access is and how to get it. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "accès complet"
+          }
+        }
+      }
+    },
+    "paywall.freeChapters" : {
+      "comment" : "Paywall: what the full access is and how to get it. %@ is the list of free chapters in numerals, e.g. « I, II et III ». COMMERCIAL: the chapters named here are free permanently — the sentence must not suggest a trial or a limited time.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les chapitres %@ restent gratuits, pour toujours."
+          }
+        }
+      }
+    },
+    "paywall.full.eyebrow" : {
+      "comment" : "Paywall: what the full access is and how to get it. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "accès complet"
+          }
+        }
+      }
+    },
+    "paywall.lockedChapter" : {
+      "comment" : "Paywall: what the full access is and how to get it. %@ is a chapter numeral. Says the chapter belongs to the paid access.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le chapitre %@ fait partie de l'accès complet."
+          }
+        }
+      }
+    },
     "paywall.notASubscription" : {
-      "comment" : "Paywall. Reassures the player that the full access is bought once. Iris sells no subscription: never translate this as a recurring plan.",
+      "comment" : "Paywall: what the full access is and how to get it. COMMERCIAL: Iris sells one non-consumable purchase. Never translate this as a subscription, a plan, or anything renewing.",
       "extractionState" : "manual",
       "localizations" : {
         "fr" : {
@@ -13,14 +2305,578 @@
         }
       }
     },
+    "paywall.priceUnavailable" : {
+      "comment" : "Paywall: what the full access is and how to get it. Shown when the App Store did not return a price. Must keep both halves: the price could not be read, and the free chapters stay open.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le prix n'a pas pu être lu sur l'App Store. Réessayez plus tard : les chapitres gratuits restent ouverts."
+          }
+        }
+      }
+    },
+    "paywall.progressIsKept" : {
+      "comment" : "Paywall: what the full access is and how to get it. Reassurance: progress is stored on the device and survives the purchase.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre progression est gardée sur l'appareil : elle vous attend quoi qu'il arrive."
+          }
+        }
+      }
+    },
+    "paywall.promotional.eyebrow" : {
+      "comment" : "Paywall: what the full access is and how to get it. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "accès temporaire"
+          }
+        }
+      }
+    },
+    "paywall.promotionalAccessEnded" : {
+      "comment" : "Paywall: what the full access is and how to get it. COMMERCIAL: a temporary access has ended. Must say that the free chapters stay open and that progress is intact — a player reading this has lost nothing.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre accès temporaire est terminé. Les chapitres gratuits restent ouverts, et votre progression est intacte."
+          }
+        }
+      }
+    },
+    "paywall.redeem.action" : {
+      "comment" : "Paywall: what the full access is and how to get it. Button label — keep it short enough for a control. Opens the App Store offer-code sheet.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser un code d'accès"
+          }
+        }
+      }
+    },
+    "paywall.restore.action" : {
+      "comment" : "Paywall: what the full access is and how to get it. Button label — keep it short enough for a control. Restores purchases already made on this Apple Account. Apple's own wording in the target language is the safest choice.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurer mes achats"
+          }
+        }
+      }
+    },
+    "paywall.storeWorking" : {
+      "comment" : "Paywall: what the full access is and how to get it. Shown while the App Store is being contacted.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communication avec l'App Store"
+          }
+        }
+      }
+    },
+    "paywall.title" : {
+      "comment" : "Paywall: what the full access is and how to get it. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès complet"
+          }
+        }
+      }
+    },
+    "paywall.unlock.action" : {
+      "comment" : "Paywall: what the full access is and how to get it. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer l'accès complet"
+          }
+        }
+      }
+    },
+    "paywall.unlock.withPrice" : {
+      "comment" : "Paywall: what the full access is and how to get it. Main purchase button. %@ is the price, already formatted by the App Store in the player's currency. Never alter it, never add a currency, never round it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer · %@"
+          }
+        }
+      }
+    },
+    "paywall.whatIsBought" : {
+      "comment" : "Paywall: what the full access is and how to get it. COMMERCIAL: states what the money buys — every other chapter, and future ones. Do not promise anything the sentence does not already promise.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'accès complet ouvre tous les autres chapitres d'Iris, et ceux qui viendront ensuite."
+          }
+        }
+      }
+    },
+    "progress.percent.value" : {
+      "comment" : "Progress indicator. A value read aloud or drawn next to a figure. VoiceOver value of a progress ring. %lld is a percentage from 0 to 100.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld pour cent"
+          }
+        }
+      }
+    },
+    "purchase.failed" : {
+      "comment" : "Result of a purchase or a restore. The purchase did not complete. Neutral: it is not the player's fault and nothing was charged.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'achat n'a pas abouti."
+          }
+        }
+      }
+    },
+    "purchase.nothingToRestore" : {
+      "comment" : "Result of a purchase or a restore. FUNCTIONAL: there is nothing to restore on this Apple Account. Not an error.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun achat à restaurer sur ce compte Apple."
+          }
+        }
+      }
+    },
+    "purchase.pending" : {
+      "comment" : "Result of a purchase or a restore. FUNCTIONAL: the purchase waits for someone else's approval (Ask to Buy). Nothing is granted yet, and nothing was lost.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Achat en attente de validation."
+          }
+        }
+      }
+    },
+    "purchase.restored" : {
+      "comment" : "Result of a purchase or a restore. Purchases were restored successfully.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos achats ont été restaurés."
+          }
+        }
+      }
+    },
+    "purchase.storeUnreachable" : {
+      "comment" : "Result of a purchase or a restore. The App Store could not be reached. Temporary; the free chapters stay open.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'App Store est injoignable pour le moment."
+          }
+        }
+      }
+    },
+    "purchase.unlocked" : {
+      "comment" : "Result of a purchase or a restore. The full access is now open.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès complet débloqué."
+          }
+        }
+      }
+    },
+    "purchase.unverified" : {
+      "comment" : "Result of a purchase or a restore. FUNCTIONAL: the App Store could not verify the purchase, so nothing was granted. Do not soften it into a delay.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cet achat n'a pas pu être vérifié par l'App Store."
+          }
+        }
+      }
+    },
+    "result.bestTime.badge" : {
+      "comment" : "The panel shown when a level is finished.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "meilleur temps"
+          }
+        }
+      }
+    },
+    "result.chapterComplete.eyebrow" : {
+      "comment" : "The panel shown when a level is finished. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chapitre terminé"
+          }
+        }
+      }
+    },
+    "result.eclat.notEarned" : {
+      "comment" : "The panel shown when a level is finished.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "non obtenu"
+          }
+        }
+      }
+    },
+    "result.lastIris.eyebrow" : {
+      "comment" : "The panel shown when a level is finished. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dernier iris"
+          }
+        }
+      }
+    },
+    "result.levelIndex.eyebrow" : {
+      "comment" : "The panel shown when a level is finished. Small lowercase label above a title. %lld is the level number inside its chapter.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "niveau %lld"
+          }
+        }
+      }
+    },
+    "result.new.badge" : {
+      "comment" : "The panel shown when a level is finished.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nouveau"
+          }
+        }
+      }
+    },
+    "result.nextChapter.action" : {
+      "comment" : "The panel shown when a level is finished. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapitre suivant"
+          }
+        }
+      }
+    },
+    "result.seeEnding.action" : {
+      "comment" : "The panel shown when a level is finished. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir la fin"
+          }
+        }
+      }
+    },
+    "result.title" : {
+      "comment" : "The panel shown when a level is finished. Title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "atteint"
+          }
+        }
+      }
+    },
+    "settings.access.eyebrow" : {
+      "comment" : "Settings. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "accès"
+          }
+        }
+      }
+    },
+    "settings.audio.ambience" : {
+      "comment" : "Settings.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ambiance sonore"
+          }
+        }
+      }
+    },
     "settings.audio.soundEffects" : {
-      "comment" : "Settings. Toggle label for the short sounds the game plays on events. Keep it to two words if the language allows.",
+      "comment" : "Settings.",
       "extractionState" : "manual",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Effets sonores"
+          }
+        }
+      }
+    },
+    "settings.gaze.eyebrow" : {
+      "comment" : "Settings. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "regard"
+          }
+        }
+      }
+    },
+    "settings.haptics.label" : {
+      "comment" : "Settings. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibrations"
+          }
+        }
+      }
+    },
+    "settings.navigationTitle" : {
+      "comment" : "Settings.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "réglages"
+          }
+        }
+      }
+    },
+    "settings.privacy.detail" : {
+      "comment" : "Settings. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le regard est calculé sur l'iPhone, en temps réel. Aucune image, aucune vidéo et aucune donnée du visage n'est enregistrée ni envoyée. Seuls les coefficients de calibration et votre progression sont gardés sur l'appareil."
+          }
+        }
+      }
+    },
+    "settings.privacy.eyebrow" : {
+      "comment" : "Settings. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "confidentialité"
+          }
+        }
+      }
+    },
+    "settings.recalibrate.action" : {
+      "comment" : "Settings. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recalibrer le regard"
+          }
+        }
+      }
+    },
+    "settings.reset.action" : {
+      "comment" : "Settings. Button label — keep it short enough for a control.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser la progression"
+          }
+        }
+      }
+    },
+    "settings.reset.confirm" : {
+      "comment" : "Settings.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer tous les niveaux atteints et les éclats ?"
+          }
+        }
+      }
+    },
+    "settings.reset.confirmAction" : {
+      "comment" : "Settings.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser"
+          }
+        }
+      }
+    },
+    "settings.understand.eyebrow" : {
+      "comment" : "Settings. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "comprendre iris"
+          }
+        }
+      }
+    },
+    "status.pending" : {
+      "comment" : "Generic status word.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en attente"
+          }
+        }
+      }
+    },
+    "unavailable.detail" : {
+      "comment" : "The screen shown on a device that cannot read the gaze. Explanatory line under a title. FUNCTIONAL: this device cannot run Iris, because it has no TrueDepth camera.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris se joue uniquement avec le regard, lu par la caméra TrueDepth. Cet appareil ne dispose pas du suivi facial nécessaire."
+          }
+        }
+      }
+    },
+    "unavailable.devices.detail" : {
+      "comment" : "The screen shown on a device that cannot read the gaze. Explanatory line under a title. The devices that do work: iPhone and iPad with Face ID.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone et iPad équipés de Face ID (caméra TrueDepth)"
+          }
+        }
+      }
+    },
+    "unavailable.devices.label" : {
+      "comment" : "The screen shown on a device that cannot read the gaze. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appareils compatibles"
+          }
+        }
+      }
+    },
+    "unavailable.eyebrow" : {
+      "comment" : "The screen shown on a device that cannot read the gaze. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "appareil"
+          }
+        }
+      }
+    },
+    "unavailable.faceTracking.detail" : {
+      "comment" : "The screen shown on a device that cannot read the gaze. Explanatory line under a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non pris en charge sur cet appareil"
+          }
+        }
+      }
+    },
+    "unavailable.faceTracking.label" : {
+      "comment" : "The screen shown on a device that cannot read the gaze. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivi facial ARKit"
           }
         }
       }

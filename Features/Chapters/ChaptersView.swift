@@ -10,7 +10,8 @@ struct ChaptersView: View {
     var body: some View {
         DSScreen {
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                Text("\(coordinator.homeSummary.eclats) éclats sur \(coordinator.homeSummary.maxEclats)")
+                Text(IrisText.interface("eclats.total.value", french: "%lld éclats sur %lld",
+                     coordinator.homeSummary.eclats, coordinator.homeSummary.maxEclats))
                     .dsEyebrowStyle(tint: DSColor.State.success)
                 Text(IrisText.interface("chapters.title", french: "chapitres"))
                     .font(DSFont.display)
@@ -39,7 +40,7 @@ struct ChaptersView: View {
 
     private func lockedHint(for chapter: ChapterDefinition) -> String {
         guard let previous = Campaign.chapter(number: chapter.number - 1) else { return "" }
-        return "Terminez le chapitre \(previous.numeral)"
+        return IrisText.interface("chapters.locked.hint", french: "Terminez le chapitre %@", previous.numeral)
     }
 }
 

@@ -28,7 +28,8 @@ enum GameFailure: Hashable, Sendable {
         case .cameraRestricted:
             IrisText.interface("camera.restricted.message", french: "L'accès à la caméra est restreint sur cet appareil (temps d'écran ou profil).")
         case let .trackingError(message):
-            "Le suivi du regard s'est arrêté de façon inattendue. \(message)"
+            IrisText.interface("game.trackingError.message",
+                               french: "Le suivi du regard s'est arrêté de façon inattendue. %@", message)
         }
     }
 

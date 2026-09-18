@@ -151,8 +151,14 @@ struct LevelHintLocalizationTests {
                 #expect(!shown.isEmpty)
             }
         }
-        // A sentence from nowhere still shows itself, never an identifier.
+        // A sentence from nowhere is identified as the level's generic help — that is what `HintText.key(for:in:)`
+        // promises — and since EN-3 the catalogue answers that key with a real sentence. What matters here has not
+        // changed: French reaches the screen, never an identifier. In play the case cannot arise, because the only
+        // sentences the engine produces are the level's own and the generic help itself.
         let stranger = "Une phrase que personne n'a écrite."
-        #expect(HintText.localized(stranger, in: levels[0]) == stranger)
+        let shown = HintText.localized(stranger, in: levels[0])
+        #expect(!shown.hasPrefix("hint.") && !shown.hasPrefix("level."))
+        #expect(!shown.isEmpty)
+        #expect(shown == HintText.localized(engineLateHelp(for: levels[0]) ?? stranger, in: levels[0]))
     }
 }

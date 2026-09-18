@@ -19,7 +19,7 @@ struct GameHUDView: View {
             HStack(alignment: .center) {
                 Text(levelMark)
                     .dsEyebrowStyle(tint: DSColor.Identity.textSecondary)
-                    .accessibilityLabel("Niveau \(levelMark)")
+                    .accessibilityLabel(IrisText.interface("game.level.label", french: "Niveau %@", levelMark))
                 Spacer()
                 Button(action: onPause) {
                     Image(systemName: "pause")
