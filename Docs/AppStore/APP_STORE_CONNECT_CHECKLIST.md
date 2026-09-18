@@ -117,7 +117,7 @@ même version marketing), puis régénérer avec `xcodegen generate`.
 - [ ] Offer Code `IRIS7D` créé, gratuit, 1 semaine, **sans reconduction**
 - [ ] Achat réel testé en bac à sable sur un iPhone avec TrueDepth
 - [ ] Rédemption réelle de `IRIS7D` testée en bac à sable, puis expiration observée
-- [ ] Captures produites selon `SCREENSHOT_PLAN.md`
+- [x] Captures produites selon `SCREENSHOT_PLAN.md` — 8/8 validées le 18 septembre 2026, manifeste et empreintes dans `Docs/ReleaseGate4/11_SCREENSHOTS.md`
 - [x] URL d'assistance et politique de confidentialité en ligne — vérifiées le 18 septembre 2026
 - [ ] **Statut « trader / non-trader » (UE, DSA) déclaré dans App Store Connect** — NON VÉRIFIÉ, hors du périmètre du Gate 4H ; à contrôler avant soumission dans l'UE
 - [ ] Questionnaire « App Privacy » rempli selon `PRIVACY_RELEASE_NOTES.md` § 4
