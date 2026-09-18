@@ -37,11 +37,11 @@ struct PaywallView: View {
             }
             .dsSoftScrollEdges()
             .background { DSBackground(intensity: .calm) }
-            .navigationTitle("accès complet")
+            .navigationTitle(IrisText.interface("paywall.eyebrow", french: "accès complet"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Fermer") { coordinator.dismissSheet() }
+                    Button(IrisText.interface("common.close", french: "Fermer")) { coordinator.dismissSheet() }
                 }
             }
         }
@@ -100,17 +100,17 @@ struct PaywallView: View {
             if store.isWorking {
                 ProgressView()
                     .tint(DSColor.Identity.accent)
-                    .accessibilityLabel("Communication avec l'App Store")
+                    .accessibilityLabel(IrisText.interface("paywall.storeWorking", french: "Communication avec l'App Store"))
             }
         }
     }
 
     private var granted: some View {
         DSGlassPanel {
-            DSBadge(coordinator.entitlement == .fullAccess ? "accès complet" : "accès temporaire", tone: .success)
+            DSBadge(coordinator.entitlement == .fullAccess ? IrisText.interface("paywall.full.eyebrow", french: "accès complet") : IrisText.interface("paywall.promotional.eyebrow", french: "accès temporaire"), tone: .success)
             Text(coordinator.entitlement == .fullAccess
-                 ? "Iris est ouvert en entier sur ce compte Apple."
-                 : "Iris est ouvert en entier pendant la durée de votre accès.")
+                 ? IrisText.interface("access.full.summary", french: "Iris est ouvert en entier sur ce compte Apple.")
+                 : IrisText.interface("access.promotional.detail", french: "Iris est ouvert en entier pendant la durée de votre accès."))
                 .font(DSFont.body)
                 .foregroundStyle(DSColor.Identity.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)

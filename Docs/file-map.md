@@ -218,7 +218,10 @@ Registry of every source file in the project. One row per file. Updated by every
 | Features/Shared/CampaignText.swift | enum | Presentation | Localisation keys for the game content, derived from what a thing IS — a chapter number, a level id, an | Claude (mission Iris) |
 | Features/Shared/ChapterTheme+Palette.swift | - | Presentation | Maps each chapter theme of the domain to its design-system palette | Claude (mission Iris) |
 | Features/Shared/GameElement+Glyph.swift | - | Presentation | Maps the domain's game elements to design-system glyphs | Claude (mission Iris) |
+| Features/Shared/GazeAssistanceText.swift | enum | Presentation | Gives each gaze-assistance mode a stable identity. The three modes and their wording belong to the Domain, | Claude (mission Iris) |
+| Features/Shared/GazeReadinessText.swift | enum | Presentation | Gives the readiness checks of the gaze diagnostic a stable identity. Their sentences are written in the AR | Claude (mission Iris) |
 | Features/Shared/HintText.swift | enum | Presentation | Gives every contextual instruction a stable identity again. The engine hands the screen a bare French | Claude (mission Iris) |
+| Features/Shared/HomeText.swift | enum | Presentation | Gives the threshold's main action a stable identity. Its three sentences live in Navigation/HomeSummary, | Claude (mission Iris) |
 | Features/Shared/IrisText.swift | enum | Presentation | The one place where a sentence Iris holds becomes the sentence Iris shows. A stable technical key carries | Claude (mission Iris) |
 | Features/Unavailable/UnavailableView.swift | struct | Presentation | Shown when the device cannot track faces (no TrueDepth / ARFaceTracking unsupported) | Claude (mission Iris) |
 | GameEngine/Campaign/HintTracker.swift | struct | GameEngine | Decides which contextual instruction is visible, from engine events and elapsed time | Claude (mission Iris) |
@@ -355,6 +358,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/InterfaceLocalizationTests.swift | struct | Tests | The interface now names its sentences instead of being named by them. Every migrated string carries a stable | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LaunchOptionsTests.swift | struct | Tests | Debug launch argument parsing and seeded progress | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LevelHintLocalizationTests.swift | struct | Tests | Every contextual instruction the engine can show has exactly one stable identity, that identity is never | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LocalizationInfrastructureTests.swift | struct | Tests | The localisation hinge holds: a stable key resolves, a missing key falls back to the French Iris already | Claude (mission Iris) |

@@ -11,8 +11,8 @@ struct GazeReadinessView: View {
     var body: some View {
         VStack(spacing: DSSpacing.m) {
             VStack(spacing: DSSpacing.xs) {
-                Text("diagnostic du regard").dsEyebrowStyle(tint: DSColor.Identity.accent)
-                Text(report.isReady ? "regard prêt pour la calibration" : "regardez le point")
+                Text(IrisText.interface("gazeReadiness.eyebrow", french: "diagnostic du regard")).dsEyebrowStyle(tint: DSColor.Identity.accent)
+                Text(report.isReady ? IrisText.interface("gazeReadiness.ready.headline", french: "regard prêt pour la calibration") : IrisText.interface("gazeReadiness.waiting.headline", french: "regardez le point"))
                     .font(DSFont.title2)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     .multilineTextAlignment(.center)
@@ -26,11 +26,11 @@ struct GazeReadinessView: View {
             ScrollView(showsIndicators: false) {
                 DSGlassPanel {
                     ForEach(report.checks) { check in
-                        DSStatusRow(systemImage: symbol(for: check.kind), title: check.kind.title, detail: check.detail, state: state(for: check.status))
+                        DSStatusRow(systemImage: symbol(for: check.kind), title: GazeReadinessText.title(of: check), detail: GazeReadinessText.detail(of: check), state: state(for: check.status))
                     }
                 }
                 .padding(.horizontal, DSSpacing.gutter)
-                Text(report.isReady ? "La calibration démarre dans un instant. Gardez la tête immobile." : "Tenez l'iPhone droit devant vous, à 30 ou 40 cm, et fixez le point.")
+                Text(report.isReady ? IrisText.interface("gazeReadiness.ready.detail", french: "La calibration démarre dans un instant. Gardez la tête immobile.") : IrisText.interface("gazeReadiness.waiting.detail", french: "Tenez l'iPhone droit devant vous, à 30 ou 40 cm, et fixez le point."))
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textTertiary)
                     .multilineTextAlignment(.center)
@@ -38,7 +38,7 @@ struct GazeReadinessView: View {
                     .padding(.top, DSSpacing.s)
             }
 
-            DSButton("Annuler", variant: .ghost, action: onCancel)
+            DSButton(IrisText.interface("common.cancel", french: "Annuler"), variant: .ghost, action: onCancel)
                 .padding(.horizontal, DSSpacing.gutter)
                 .padding(.bottom, DSSpacing.s)
         }

@@ -10,7 +10,7 @@ struct UnavailableView: View {
 
     var body: some View {
         DSScreen {
-            Text("appareil")
+            Text(IrisText.interface("unavailable.eyebrow", french: "appareil"))
                 .dsEyebrowStyle(tint: DSColor.State.danger)
             Text(title)
                 .font(DSFont.title)
@@ -20,24 +20,24 @@ struct UnavailableView: View {
                 .font(DSFont.body)
                 .foregroundStyle(DSColor.Identity.textSecondary)
             DSGlassPanel {
-                DSStatusRow(systemImage: "faceid", title: "Suivi facial ARKit", detail: "Non pris en charge sur cet appareil", state: .error)
-                DSStatusRow(systemImage: "iphone", title: "Appareils compatibles",
-                            detail: "iPhone et iPad équipés de Face ID (caméra TrueDepth)", state: .warning)
+                DSStatusRow(systemImage: "faceid", title: IrisText.interface("unavailable.faceTracking.label", french: "Suivi facial ARKit"), detail: IrisText.interface("unavailable.faceTracking.detail", french: "Non pris en charge sur cet appareil"), state: .error)
+                DSStatusRow(systemImage: "iphone", title: IrisText.interface("unavailable.devices.label", french: "Appareils compatibles"),
+                            detail: IrisText.interface("unavailable.devices.detail", french: "iPhone et iPad équipés de Face ID (caméra TrueDepth)"), state: .warning)
             }
-            DSButton("Retour", variant: .secondary) { coordinator.returnHome() }
+            DSButton(IrisText.interface("common.back", french: "Retour"), variant: .secondary) { coordinator.returnHome() }
         }
     }
 
     private var title: String {
         switch reason {
-        case .faceTrackingUnsupported: "regard indisponible"
+        case .faceTrackingUnsupported: IrisText.interface("gaze.unavailable.title", french: "regard indisponible")
         }
     }
 
     private var message: String {
         switch reason {
         case .faceTrackingUnsupported:
-            "Iris se joue uniquement avec le regard, lu par la caméra TrueDepth. Cet appareil ne dispose pas du suivi facial nécessaire."
+            IrisText.interface("unavailable.detail", french: "Iris se joue uniquement avec le regard, lu par la caméra TrueDepth. Cet appareil ne dispose pas du suivi facial nécessaire.")
         }
     }
 }

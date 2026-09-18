@@ -12,21 +12,21 @@ enum GameFailure: Hashable, Sendable {
 
     var title: String {
         switch self {
-        case .faceTrackingUnsupported: "regard indisponible"
-        case .cameraDenied: "caméra refusée"
-        case .cameraRestricted: "caméra restreinte"
-        case .trackingError: "erreur de suivi"
+        case .faceTrackingUnsupported: IrisText.interface("gaze.unavailable.title", french: "regard indisponible")
+        case .cameraDenied: IrisText.interface("camera.denied.title", french: "caméra refusée")
+        case .cameraRestricted: IrisText.interface("camera.restricted.title", french: "caméra restreinte")
+        case .trackingError: IrisText.interface("gaze.trackingError.title", french: "erreur de suivi")
         }
     }
 
     var message: String {
         switch self {
         case .faceTrackingUnsupported:
-            "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard."
+            IrisText.interface("camera.unsupported.message", french: "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard.")
         case .cameraDenied:
-            "Iris a besoin de la caméra frontale pour lire votre regard. Autorisez-la dans Réglages."
+            IrisText.interface("camera.denied.message", french: "Iris a besoin de la caméra frontale pour lire votre regard. Autorisez-la dans Réglages.")
         case .cameraRestricted:
-            "L'accès à la caméra est restreint sur cet appareil (temps d'écran ou profil)."
+            IrisText.interface("camera.restricted.message", french: "L'accès à la caméra est restreint sur cet appareil (temps d'écran ou profil).")
         case let .trackingError(message):
             "Le suivi du regard s'est arrêté de façon inattendue. \(message)"
         }

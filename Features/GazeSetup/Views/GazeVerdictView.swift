@@ -16,16 +16,16 @@ struct GazeVerdictView: View {
         VStack(spacing: DSSpacing.l) {
             Spacer()
             VStack(spacing: DSSpacing.s) {
-                Text(isAccepted ? "calibration validée" : "précision insuffisante")
+                Text(isAccepted ? IrisText.interface("gazeVerdict.pass.eyebrow", french: "calibration validée") : IrisText.interface("gazeVerdict.fail.eyebrow", french: "précision insuffisante"))
                     .dsEyebrowStyle(tint: isAccepted ? DSColor.State.success : DSColor.State.danger)
-                Text(isAccepted ? "regard prêt" : "la précision peut être améliorée")
+                Text(isAccepted ? IrisText.interface("gazeVerdict.pass.headline", french: "regard prêt") : IrisText.interface("gazeVerdict.fail.headline", french: "la précision peut être améliorée"))
                     .font(DSFont.display)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                 Text(isAccepted
-                     ? "Le point menthe suit votre regard. Vérifiez qu'il se pose bien là où vous regardez, puis continuez."
-                     : "Les cibles de contrôle n'ont pas été retrouvées avec assez de précision. Recalibrez en tenant l'iPhone droit, sans bouger la tête.")
+                     ? IrisText.interface("gazeVerdict.pass.detail", french: "Le point menthe suit votre regard. Vérifiez qu'il se pose bien là où vous regardez, puis continuez.")
+                     : IrisText.interface("gazeVerdict.fail.detail", french: "Les cibles de contrôle n'ont pas été retrouvées avec assez de précision. Recalibrez en tenant l'iPhone droit, sans bouger la tête."))
                     .font(DSFont.callout)
                     .foregroundStyle(DSColor.Identity.textSecondary)
                     .multilineTextAlignment(.center)
@@ -34,11 +34,11 @@ struct GazeVerdictView: View {
 
             DSGlassPanel {
                 HStack {
-                    metric(label: "erreur moyenne", value: result.meanError)
+                    metric(label: IrisText.interface("gazeVerdict.meanError.label", french: "erreur moyenne"), value: result.meanError)
                     Spacer()
-                    metric(label: "erreur maximale", value: result.maxError)
+                    metric(label: IrisText.interface("gazeVerdict.maxError.label", french: "erreur maximale"), value: result.maxError)
                 }
-                Text("en pourcentage de la petite dimension de l'écran (seuils 18 % et 30 %)")
+                Text(IrisText.interface("gazeVerdict.error.note", french: "en pourcentage de la petite dimension de l'écran (seuils 18 % et 30 %)"))
                     .font(DSFont.footnote)
                     .foregroundStyle(DSColor.Identity.textTertiary)
             }
@@ -46,14 +46,14 @@ struct GazeVerdictView: View {
 
             VStack(spacing: DSSpacing.s) {
                 if isAccepted {
-                    DSButton("Continuer", systemImage: "arrow.right", action: onPrimary)
-                    DSButton("Recalibrer", variant: .ghost, action: onSecondary)
+                    DSButton(IrisText.interface("common.continue", french: "Continuer"), systemImage: "arrow.right", action: onPrimary)
+                    DSButton(IrisText.interface("common.recalibrate", french: "Recalibrer"), variant: .ghost, action: onSecondary)
                 } else {
-                    DSButton("Recalibrer", systemImage: "scope", action: onPrimary)
+                    DSButton(IrisText.interface("common.recalibrate", french: "Recalibrer"), systemImage: "scope", action: onPrimary)
                     if attempts >= 1 {
-                        DSButton("Continuer quand même", variant: .secondary, action: onSecondary)
+                        DSButton(IrisText.interface("gazeVerdict.continueAnyway.action", french: "Continuer quand même"), variant: .secondary, action: onSecondary)
                     }
-                    DSButton("Annuler", variant: .ghost, action: onCancel)
+                    DSButton(IrisText.interface("common.cancel", french: "Annuler"), variant: .ghost, action: onCancel)
                 }
             }
             .padding(.horizontal, DSSpacing.gutter)

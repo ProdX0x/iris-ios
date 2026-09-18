@@ -19,28 +19,28 @@ struct SettingsView: View {
                         Toggle(String(localized: "settings.audio.soundEffects", defaultValue: "Effets sonores",
                                       comment: "Settings: the short sounds the game plays on events"),
                                isOn: $settings.soundEffectsEnabled)
-                        Toggle("Ambiance sonore", isOn: $settings.ambienceEnabled)
-                        Toggle("Vibrations", isOn: $settings.hapticsEnabled)
+                        Toggle(IrisText.interface("settings.audio.ambience", french: "Ambiance sonore"), isOn: $settings.ambienceEnabled)
+                        Toggle(IrisText.interface("settings.haptics.label", french: "Vibrations"), isOn: $settings.hapticsEnabled)
                     }
                     .tint(DSColor.Navigation.control)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     GazeAssistanceSection(mode: $settings.gazeAssistance) { coordinator.showGazeIntroduction() }
                     DSGlassPanel {
-                        Text("regard").dsEyebrowStyle()
-                        DSButton("Recalibrer le regard", systemImage: "scope", variant: .secondary) { coordinator.recalibrate() }
+                        Text(IrisText.interface("settings.gaze.eyebrow", french: "regard")).dsEyebrowStyle()
+                        DSButton(IrisText.interface("settings.recalibrate.action", french: "Recalibrer le regard"), systemImage: "scope", variant: .secondary) { coordinator.recalibrate() }
                     }
                     DSGlassPanel {
-                        Text("comprendre iris").dsEyebrowStyle()
-                        DSButton("Comment jouer", systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
+                        Text(IrisText.interface("settings.understand.eyebrow", french: "comprendre iris")).dsEyebrowStyle()
+                        DSButton(IrisText.interface("howToPlay.title", french: "Comment jouer"), systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
                     }
                     DSGlassPanel {
-                        Text("accès").dsEyebrowStyle()
+                        Text(IrisText.interface("settings.access.eyebrow", french: "accès")).dsEyebrowStyle()
                         Text(accessSummary)
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textSecondary)
                             .fixedSize(horizontal: false, vertical: true)
                         if coordinator.entitlement != .fullAccess {
-                            DSButton("Accès complet", systemImage: "lock.open", variant: .secondary) { coordinator.presentPaywall() }
+                            DSButton(IrisText.interface("paywall.title", french: "Accès complet"), systemImage: "lock.open", variant: .secondary) { coordinator.presentPaywall() }
                         }
                         DSButton(PaywallCopy.restore, variant: .ghost) {
                             Task { await coordinator.store.restorePurchases() }
@@ -54,23 +54,23 @@ struct SettingsView: View {
                         }
                     }
                     DSGlassPanel {
-                        Text("confidentialité").dsEyebrowStyle()
-                        Text("Le regard est calculé sur l'iPhone, en temps réel. Aucune image, aucune vidéo et aucune donnée du visage n'est enregistrée ni envoyée. Seuls les coefficients de calibration et votre progression sont gardés sur l'appareil.")
+                        Text(IrisText.interface("settings.privacy.eyebrow", french: "confidentialité")).dsEyebrowStyle()
+                        Text(IrisText.interface("settings.privacy.detail", french: "Le regard est calculé sur l'iPhone, en temps réel. Aucune image, aucune vidéo et aucune donnée du visage n'est enregistrée ni envoyée. Seuls les coefficients de calibration et votre progression sont gardés sur l'appareil."))
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textSecondary)
                     }
                     DSGlassPanel {
-                        Text("à propos").dsEyebrowStyle()
+                        Text(IrisText.interface("about.title", french: "à propos")).dsEyebrowStyle()
                         NavigationLink {
                             AboutView()
                         } label: {
-                            Label("À propos & informations légales", systemImage: "info.circle")
+                            Label(IrisText.interface("about.entry.action", french: "À propos & informations légales"), systemImage: "info.circle")
                                 .font(DSFont.headline)
                                 .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
                                 .contentShape(Rectangle())
                         }
                         .foregroundStyle(DSColor.Navigation.control)
-                        .accessibilityHint("Identité, version, liens et confidentialité")
+                        .accessibilityHint(IrisText.interface("about.entry.hint", french: "Identité, version, liens et confidentialité"))
                     }
                     #if DEBUG
                     DSGlassPanel {
@@ -90,10 +90,10 @@ struct SettingsView: View {
                         DSButton("Braises A · braise", systemImage: "flame", variant: .secondary) { coordinator.playPrototype(BraisesPrototype.a) }
                     }
                     #endif
-                    DSButton("Réinitialiser la progression", variant: .ghost) { confirmsReset = true }
-                        .confirmationDialog("Effacer tous les niveaux atteints et les éclats ?", isPresented: $confirmsReset, titleVisibility: .visible) {
-                            Button("Réinitialiser", role: .destructive) { coordinator.resetProgress() }
-                            Button("Annuler", role: .cancel) {}
+                    DSButton(IrisText.interface("settings.reset.action", french: "Réinitialiser la progression"), variant: .ghost) { confirmsReset = true }
+                        .confirmationDialog(IrisText.interface("settings.reset.confirm", french: "Effacer tous les niveaux atteints et les éclats ?"), isPresented: $confirmsReset, titleVisibility: .visible) {
+                            Button(IrisText.interface("settings.reset.confirmAction", french: "Réinitialiser"), role: .destructive) { coordinator.resetProgress() }
+                            Button(IrisText.interface("common.cancel", french: "Annuler"), role: .cancel) {}
                         }
                 }
                 .padding(DSSpacing.gutter)
@@ -102,11 +102,11 @@ struct SettingsView: View {
             // The sheet stands in the chambre noire like every other screen: a flat opaque surface left the glass
             // of its panels nothing to transmit.
             .background { DSBackground(intensity: .calm) }
-            .navigationTitle("réglages")
+            .navigationTitle(IrisText.interface("settings.navigationTitle", french: "réglages"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Fermer") { coordinator.dismissSheet() }
+                    Button(IrisText.interface("common.close", french: "Fermer")) { coordinator.dismissSheet() }
                 }
             }
         }
@@ -116,8 +116,8 @@ struct SettingsView: View {
     /// What the player holds right now, in one sentence; the chapters that stay free are read from the policy.
     private var accessSummary: String {
         switch coordinator.entitlement {
-        case .fullAccess: "Iris est ouvert en entier sur ce compte Apple."
-        case .promotionalAccess: "Un accès temporaire ouvre Iris en entier. À sa fin, les chapitres gratuits restent ouverts."
+        case .fullAccess: IrisText.interface("access.full.summary", french: "Iris est ouvert en entier sur ce compte Apple.")
+        case .promotionalAccess: IrisText.interface("access.promotional.summary", french: "Un accès temporaire ouvre Iris en entier. À sa fin, les chapitres gratuits restent ouverts.")
         case .free: PaywallCopy.freeChapters
         }
     }

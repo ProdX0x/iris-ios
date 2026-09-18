@@ -12,13 +12,13 @@ struct GazeAssistanceSection: View {
 
     var body: some View {
         DSGlassPanel {
-            Text("aide au regard").dsEyebrowStyle()
-            Text("Le repère montre où Iris estime que vous regardez.")
+            Text(IrisText.interface("gazeAssistance.eyebrow", french: "aide au regard")).dsEyebrowStyle()
+            Text(IrisText.interface("gazeAssistance.detail", french: "Le repère montre où Iris estime que vous regardez."))
                 .font(DSFont.footnote)
                 .foregroundStyle(DSColor.Identity.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             GazeAssistancePicker(mode: $mode, variant: .detailed)
-            DSButton("Revoir l'explication", systemImage: "questionmark.circle", variant: .ghost, action: onReviewIntroduction)
+            DSButton(IrisText.interface("gazeAssistance.replay.action", french: "Revoir l'explication"), systemImage: "questionmark.circle", variant: .ghost, action: onReviewIntroduction)
         }
     }
 }

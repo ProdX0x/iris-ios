@@ -13,9 +13,9 @@ enum GazeCalibrationStatus: Hashable, Sendable {
     var description: String {
         switch self {
         case .uncalibrated:
-            return "Regard non calibré."
+            return IrisText.interface("gazeStatus.uncalibrated", french: "Regard non calibré.")
         case let .calibrated(meanError, isValid):
-            let headline = isValid ? "Calibration réussie" : "Calibration à refaire"
+            let headline = isValid ? IrisText.interface("gazeStatus.calibrated.headline", french: "Calibration réussie") : IrisText.interface("gazeStatus.imprecise.headline", french: "Calibration à refaire")
             guard let meanError else { return headline + "." }
             return "\(headline) — écart moyen \(Self.percentage(meanError)) %."
         }
@@ -26,9 +26,9 @@ enum GazeCalibrationStatus: Hashable, Sendable {
     var explanation: String? {
         switch self {
         case .uncalibrated:
-            return "Recalibrez pour qu'Iris suive votre regard plus précisément."
+            return IrisText.interface("gazeStatus.imprecise.advice", french: "Recalibrez pour qu'Iris suive votre regard plus précisément.")
         case .calibrated:
-            return "Plus l'écart est faible, plus le suivi du regard est précis."
+            return IrisText.interface("gazeStatus.accuracy.note", french: "Plus l'écart est faible, plus le suivi du regard est précis.")
         }
     }
 

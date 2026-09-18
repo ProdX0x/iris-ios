@@ -13,7 +13,7 @@ struct ChapterLockNotice: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.s) {
-            DSBadge("accès complet", tone: .info)
+            DSBadge(IrisText.interface("paywall.eyebrow", french: "accès complet"), tone: .info)
             Text(PaywallCopy.lockedChapter(chapter))
                 .font(DSFont.footnote)
                 .foregroundStyle(DSColor.Identity.textSecondary)

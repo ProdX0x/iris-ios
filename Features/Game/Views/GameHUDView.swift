@@ -29,7 +29,7 @@ struct GameHUDView: View {
                 }
                 .opacity(showsPause ? 1 : 0)
                 .disabled(!showsPause)
-                .accessibilityLabel("Pause")
+                .accessibilityLabel(IrisText.interface("game.pause.action", french: "Pause"))
             }
             Spacer()
             if let hint {

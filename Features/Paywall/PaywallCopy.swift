@@ -18,23 +18,23 @@ enum PaywallCopy {
         "Les chapitres \(freeChapterList) restent gratuits, pour toujours."
     }
 
-    static let whatIsBought = "L'accès complet ouvre tous les autres chapitres d'Iris, et ceux qui viendront ensuite."
+    static let whatIsBought = IrisText.interface("paywall.whatIsBought", french: "L'accès complet ouvre tous les autres chapitres d'Iris, et ceux qui viendront ensuite.")
 
     static var notASubscription: String {
         IrisText.interface("paywall.notASubscription", french: "Achat unique. Aucun abonnement, aucun renouvellement.")
     }
 
-    static let progressIsKept = "Votre progression est gardée sur l'appareil : elle vous attend quoi qu'il arrive."
+    static let progressIsKept = IrisText.interface("paywall.progressIsKept", french: "Votre progression est gardée sur l'appareil : elle vous attend quoi qu'il arrive.")
 
     /// The main action. The price is the one the store formats; Iris never composes one.
     static func unlockTitle(price: String?) -> String {
-        guard let price else { return "Débloquer l'accès complet" }
+        guard let price else { return IrisText.interface("paywall.unlock.action", french: "Débloquer l'accès complet") }
         return "Débloquer · \(price)"
     }
 
-    static let restore = "Restaurer mes achats"
-    static let redeemCode = "Utiliser un code d'accès"
-    static let priceUnavailable = "Le prix n'a pas pu être lu sur l'App Store. Réessayez plus tard : les chapitres gratuits restent ouverts."
+    static let restore = IrisText.interface("paywall.restore.action", french: "Restaurer mes achats")
+    static let redeemCode = IrisText.interface("paywall.redeem.action", french: "Utiliser un code d'accès")
+    static let priceUnavailable = IrisText.interface("paywall.priceUnavailable", french: "Le prix n'a pas pu être lu sur l'App Store. Réessayez plus tard : les chapitres gratuits restent ouverts.")
 
     /// What a locked chapter says about itself on the map.
     static func lockedChapter(_ chapter: ChapterDefinition) -> String {
@@ -42,5 +42,5 @@ enum PaywallCopy {
     }
 
     /// What a temporary access says once it has ended.
-    static let promotionalAccessEnded = "Votre accès temporaire est terminé. Les chapitres gratuits restent ouverts, et votre progression est intacte."
+    static let promotionalAccessEnded = IrisText.interface("paywall.promotionalAccessEnded", french: "Votre accès temporaire est terminé. Les chapitres gratuits restent ouverts, et votre progression est intacte.")
 }

@@ -39,7 +39,7 @@ struct GazeSetupView: View {
         case .starting:
             VStack(spacing: DSSpacing.l) {
                 DSIrisMark(size: 90, isBreathing: true)
-                Text("démarrage du suivi du regard…")
+                Text(IrisText.interface("gazeSetup.starting", french: "démarrage du suivi du regard…"))
                     .font(DSFont.callout)
                     .foregroundStyle(DSColor.Identity.textSecondary)
             }
@@ -48,7 +48,7 @@ struct GazeSetupView: View {
         case let .calibrating(display):
             FixationTargetView(display: display, stageLabel: "calibration", viewport: viewModel.viewport, onCancel: { viewModel.cancel() })
         case let .validating(display):
-            FixationTargetView(display: display, stageLabel: "vérification", viewport: viewModel.viewport, onCancel: { viewModel.cancel() })
+            FixationTargetView(display: display, stageLabel: IrisText.interface("gazeSetup.verification.eyebrow", french: "vérification"), viewport: viewModel.viewport, onCancel: { viewModel.cancel() })
         case let .insufficient(result, attempts):
             GazeVerdictView(result: result, isAccepted: false, attempts: attempts,
                             onPrimary: { viewModel.recalibrate() },
@@ -60,16 +60,16 @@ struct GazeSetupView: View {
                             onSecondary: { viewModel.recalibrate() },
                             onCancel: { viewModel.cancel() })
         case .suspended:
-            DSOverlayPanel(title: "en pause", subtitle: "Iris attend votre retour.", dim: 0.94) { EmptyView() }
+            DSOverlayPanel(title: IrisText.interface("pause.title", french: "en pause"), subtitle: IrisText.interface("pause.detail", french: "Iris attend votre retour."), dim: 0.94) { EmptyView() }
         case let .failed(failure):
             DSOverlayPanel(title: failure.title, subtitle: failure.message, tint: DSColor.State.danger, dim: 0.94) {
                 if failure == .cameraDenied {
-                    DSButton("Ouvrir Réglages", systemImage: "gear") {
+                    DSButton(IrisText.interface("common.openSettings", french: "Ouvrir Réglages"), systemImage: "gear") {
                         if let url = SystemLinks.appSettings { openURL(url) }
                     }
                 }
-                DSButton("Réessayer", variant: .secondary) { viewModel.recalibrate() }
-                DSButton("Annuler", variant: .ghost) { viewModel.cancel() }
+                DSButton(IrisText.interface("common.retry", french: "Réessayer"), variant: .secondary) { viewModel.recalibrate() }
+                DSButton(IrisText.interface("common.cancel", french: "Annuler"), variant: .ghost) { viewModel.cancel() }
             }
         }
     }

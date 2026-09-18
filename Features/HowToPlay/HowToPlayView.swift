@@ -12,7 +12,7 @@ struct HowToPlayView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: DSSpacing.l) {
-                    Text("Iris se joue avec les yeux. La caméra avant estime la direction de votre regard ; le reste tient en quatre idées.")
+                    Text(IrisText.interface("howToPlay.intro", french: "Iris se joue avec les yeux. La caméra avant estime la direction de votre regard ; le reste tient en quatre idées."))
                         .font(DSFont.callout)
                         .foregroundStyle(DSColor.Identity.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -30,8 +30,8 @@ struct HowToPlayView: View {
                         }
                     }
                     DSGlassPanel {
-                        Text("confort").dsEyebrowStyle()
-                        Text("Tenez l'iPhone à hauteur des yeux, à une longueur de bras, dans une lumière régulière. Si le regard dérive, recalibrez depuis les réglages.")
+                        Text(IrisText.interface("howToPlay.comfort.eyebrow", french: "confort")).dsEyebrowStyle()
+                        Text(IrisText.interface("howToPlay.comfort.detail", french: "Tenez l'iPhone à hauteur des yeux, à une longueur de bras, dans une lumière régulière. Si le regard dérive, recalibrez depuis les réglages."))
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textSecondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -41,11 +41,11 @@ struct HowToPlayView: View {
             }
             .dsSoftScrollEdges()
             .background { DSBackground(intensity: .calm) }
-            .navigationTitle("comment jouer")
+            .navigationTitle(IrisText.interface("howToPlay.eyebrow", french: "comment jouer"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Fermer") { coordinator.dismissSheet() }
+                    Button(IrisText.interface("common.close", french: "Fermer")) { coordinator.dismissSheet() }
                 }
             }
         }

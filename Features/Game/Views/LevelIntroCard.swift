@@ -25,7 +25,7 @@ struct LevelIntroCard: View {
                     Text("\(chapter.numeral) · \(chapter.name) — \(level.index)")
                         .dsEyebrowStyle(tint: chapter.theme.palette.accent)
                     Spacer()
-                    Button("chapitres", action: onChapters)
+                    Button(IrisText.interface("levelIntro.chapters.action", french: "chapitres"), action: onChapters)
                         .font(DSFont.footnote)
                         .foregroundStyle(DSColor.Identity.textSecondary)
                         .frame(minHeight: 44)
@@ -50,10 +50,10 @@ struct LevelIntroCard: View {
                             }
                             .accessibilityElement(children: .combine)
                         }
-                        DSBadge("nouveau", tone: .accent)
+                        DSBadge(IrisText.interface("levelIntro.new.badge", french: "nouveau"), tone: .accent)
                     }
                 }
-                DSButton("Commencer", systemImage: "eye", action: onStart)
+                DSButton(IrisText.interface("common.begin", french: "Commencer"), systemImage: "eye", action: onStart)
                     .padding(.top, DSSpacing.xs)
             }
             .padding(.horizontal, DSSpacing.l)

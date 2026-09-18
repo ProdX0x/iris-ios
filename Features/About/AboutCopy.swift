@@ -11,28 +11,28 @@ enum AboutCopy {
 
     // MARK: Identity
 
-    static let role = "Conception & direction du projet"
+    static let role = IrisText.interface("about.role", french: "Conception & direction du projet")
     static let creatorName = "Stéphane SAULNIER"
     /// The line the app displays. App Store Connect owns its own copyright field, without the symbol.
     static let copyright = "© 2026 Stéphane SAULNIER"
 
     // MARK: Addresses
 
-    static let siteTitle = "Site officiel"
+    static let siteTitle = IrisText.interface("about.site.title", french: "Site officiel")
     static let siteAddress = "https://www.steve-s.net/iris/"
     static var siteURL: URL? { URL(string: siteAddress) }
 
     static let contactTitle = "Assistance"
     static let contactEmail = "contact@steve-s.net"
-    static let contactAction = "Écrire à l'assistance"
+    static let contactAction = IrisText.interface("about.contact.action", french: "Écrire à l'assistance")
     static var contactURL: URL? { URL(string: "mailto:\(contactEmail)") }
 
-    static let privacyTitle = "Politique de confidentialité"
+    static let privacyTitle = IrisText.interface("about.privacy.title", french: "Politique de confidentialité")
     static let privacyAddress = "https://www.steve-s.net/iris/privacy-iris/"
     static var privacyURL: URL? { URL(string: privacyAddress) }
 
-    static let termsTitle = "Conditions d'utilisation"
-    static let termsDetail = "Iris est couvert par le contrat de licence standard d'Apple."
+    static let termsTitle = IrisText.interface("about.terms.title", french: "Conditions d'utilisation")
+    static let termsDetail = IrisText.interface("about.terms.detail", french: "Iris est couvert par le contrat de licence standard d'Apple.")
     static let termsAddress = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
     static var termsURL: URL? { URL(string: termsAddress) }
 

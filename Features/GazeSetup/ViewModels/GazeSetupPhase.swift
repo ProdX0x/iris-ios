@@ -31,29 +31,29 @@ enum GazeSetupFailure: Hashable, Sendable {
 
     var title: String {
         switch self {
-        case .faceTrackingUnsupported: "regard indisponible"
-        case .cameraDenied: "caméra refusée"
-        case .cameraRestricted: "caméra restreinte"
-        case .trackingError: "erreur de suivi"
-        case .insufficientSignal: "signal insuffisant"
-        case .fitFailed: "calibration impossible"
+        case .faceTrackingUnsupported: IrisText.interface("gaze.unavailable.title", french: "regard indisponible")
+        case .cameraDenied: IrisText.interface("camera.denied.title", french: "caméra refusée")
+        case .cameraRestricted: IrisText.interface("camera.restricted.title", french: "caméra restreinte")
+        case .trackingError: IrisText.interface("gaze.trackingError.title", french: "erreur de suivi")
+        case .insufficientSignal: IrisText.interface("gazeSetup.weakSignal.title", french: "signal insuffisant")
+        case .fitFailed: IrisText.interface("gazeSetup.impossible.title", french: "calibration impossible")
         }
     }
 
     var message: String {
         switch self {
         case .faceTrackingUnsupported:
-            "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard."
+            IrisText.interface("camera.unsupported.message", french: "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard.")
         case .cameraDenied:
-            "Iris a besoin de la caméra frontale pour lire votre regard. Autorisez-la dans Réglages."
+            IrisText.interface("camera.denied.message", french: "Iris a besoin de la caméra frontale pour lire votre regard. Autorisez-la dans Réglages.")
         case .cameraRestricted:
-            "L'accès à la caméra est restreint sur cet appareil."
+            IrisText.interface("gazeSetup.camera.restricted.message", french: "L'accès à la caméra est restreint sur cet appareil.")
         case let .trackingError(message):
             "Le suivi du regard s'est arrêté. \(message)"
         case let .insufficientSignal(target):
             "Le regard n'a pas pu être mesuré sur le point \(target + 1). Gardez la tête immobile, évitez les reflets et recommencez."
         case .fitFailed:
-            "Les mesures ne permettent pas de calculer une correction. Recommencez en suivant chaque point des yeux."
+            IrisText.interface("gazeSetup.failure.noCorrection", french: "Les mesures ne permettent pas de calculer une correction. Recommencez en suivant chaque point des yeux.")
         }
     }
 }

@@ -63,7 +63,7 @@ struct DSStatusRow: View {
 
     private var stateLabel: String {
         switch state {
-        case .pending: "en attente"
+        case .pending: IrisText.interface("status.pending", french: "en attente")
         case .ok: "disponible"
         case .warning: "attention"
         case .error: "indisponible"

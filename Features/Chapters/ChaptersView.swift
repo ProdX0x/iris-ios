@@ -12,7 +12,7 @@ struct ChaptersView: View {
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text("\(coordinator.homeSummary.eclats) éclats sur \(coordinator.homeSummary.maxEclats)")
                     .dsEyebrowStyle(tint: DSColor.State.success)
-                Text("chapitres")
+                Text(IrisText.interface("chapters.title", french: "chapitres"))
                     .font(DSFont.display)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     .accessibilityAddTraits(.isHeader)

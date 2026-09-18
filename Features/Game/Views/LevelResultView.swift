@@ -16,9 +16,9 @@ struct LevelResultView: View {
     @State private var revealed = 0
 
     var body: some View {
-        DSOverlayPanel(title: "atteint",
+        DSOverlayPanel(title: IrisText.interface("result.title", french: "atteint"),
                        subtitle: "\(chapter.numeral) · \(chapter.name) — \(level.title)",
-                       eyebrow: result.isCampaignEnd ? "dernier iris" : (result.isChapterEnd ? "chapitre terminé" : "niveau \(level.index)"),
+                       eyebrow: result.isCampaignEnd ? IrisText.interface("result.lastIris.eyebrow", french: "dernier iris") : (result.isChapterEnd ? IrisText.interface("result.chapterComplete.eyebrow", french: "chapitre terminé") : "niveau \(level.index)"),
                        dim: 0.9) {
             HStack(alignment: .top, spacing: DSSpacing.m) {
                 ForEach(Array(Eclat.allCases.enumerated()), id: \.offset) { index, eclat in
@@ -35,12 +35,12 @@ struct LevelResultView: View {
                     metric("pertes", "\(result.outcome.losses)")
                 }
                 if result.isNewBestTime {
-                    Text("meilleur temps").dsEyebrowStyle(tint: DSColor.State.success)
+                    Text(IrisText.interface("result.bestTime.badge", french: "meilleur temps")).dsEyebrowStyle(tint: DSColor.State.success)
                 }
             }
             DSButton(result.primaryTitle, systemImage: result.isCampaignEnd ? "sparkles" : "arrow.right", action: onPrimary)
-            DSButton("Rejouer", variant: .secondary, action: onReplay)
-            DSButton("Chapitres", variant: .ghost, action: onChapters)
+            DSButton(IrisText.interface("common.replay", french: "Rejouer"), variant: .secondary, action: onReplay)
+            DSButton(IrisText.interface("common.chapters", french: "Chapitres"), variant: .ghost, action: onChapters)
         }
         .task {
             if reduceMotion {
@@ -93,10 +93,10 @@ private struct EclatBadge: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 96)
             if isNew {
-                DSBadge("nouveau", tone: .success)
+                DSBadge(IrisText.interface("result.new.badge", french: "nouveau"), tone: .success)
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityValue(isLit ? "obtenu" : "non obtenu")
+        .accessibilityValue(isLit ? "obtenu" : IrisText.interface("result.eclat.notEarned", french: "non obtenu"))
     }
 }

@@ -15,17 +15,17 @@ struct GazeIntroductionPage: Hashable, Sendable, Identifiable {
 
     static let all: [GazeIntroductionPage] = [
         GazeIntroductionPage(
-            title: "Votre regard n'est pas un point fixe",
-            detail: "Le point lumineux montre où Iris estime que vous regardez. Il peut bouger légèrement même quand vous pensez fixer exactement le même endroit.",
+            title: IrisText.interface("gazeLearning.drift.title", french: "Votre regard n'est pas un point fixe"),
+            detail: IrisText.interface("gazeLearning.drift.detail", french: "Le point lumineux montre où Iris estime que vous regardez. Il peut bouger légèrement même quand vous pensez fixer exactement le même endroit."),
             note: nil),
         GazeIntroductionPage(
-            title: "Iris vous accompagne au début",
-            detail: "Dans les deux premiers niveaux, le repère reste visible. Au troisième, il disparaît progressivement pour vous apprendre à jouer sans lui.",
+            title: IrisText.interface("gazeLearning.guided.title", french: "Iris vous accompagne au début"),
+            detail: IrisText.interface("gazeLearning.guided.detail", french: "Dans les deux premiers niveaux, le repère reste visible. Au troisième, il disparaît progressivement pour vous apprendre à jouer sans lui."),
             note: nil),
         GazeIntroductionPage(
-            title: "Vous gardez toujours le choix",
-            detail: "Vous pouvez réactiver une aide à tout moment dans Réglages, « Aide au regard ».",
-            note: "Plus le pourcentage d'écart de calibration est faible, plus la calibration correspond précisément à votre regard. 0 % est une référence idéale : un écart nul n'est pas attendu en usage réel."),
+            title: IrisText.interface("gazeLearning.choice.title", french: "Vous gardez toujours le choix"),
+            detail: IrisText.interface("gazeLearning.choice.detail", french: "Vous pouvez réactiver une aide à tout moment dans Réglages, « Aide au regard »."),
+            note: IrisText.interface("gazeLearning.accuracy.note", french: "Plus le pourcentage d'écart de calibration est faible, plus la calibration correspond précisément à votre regard. 0 % est une référence idéale : un écart nul n'est pas attendu en usage réel.")),
     ]
 
     /// What the main action says on each page.

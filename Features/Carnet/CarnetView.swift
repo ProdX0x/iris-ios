@@ -9,7 +9,7 @@ struct CarnetView: View {
 
     var body: some View {
         DSScreen {
-            Text("carnet")
+            Text(IrisText.interface("carnet.title", french: "carnet"))
                 .font(DSFont.display)
                 .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -31,7 +31,7 @@ private struct CarnetRow: View {
             DSGlyph(isKnown ? element.glyphKind : .inconnu, tint: isKnown ? DSColor.Identity.accent : DSColor.Identity.textTertiary)
                 .frame(width: 28, height: 28)
             VStack(alignment: .leading, spacing: DSSpacing.xxs) {
-                Text(isKnown ? CampaignText.name(of: element) : "à découvrir")
+                Text(isKnown ? CampaignText.name(of: element) : IrisText.interface("carnet.undiscovered", french: "à découvrir"))
                     .font(DSFont.headline)
                     .foregroundStyle(isKnown ? DSColor.Identity.textPrimary : DSColor.Identity.textTertiary)
                 if isKnown {

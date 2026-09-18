@@ -35,7 +35,7 @@ struct AboutView: View {
                     }
                 }
                 DSGlassPanel {
-                    Text("assistance").dsEyebrowStyle()
+                    Text(IrisText.interface("about.support.eyebrow", french: "assistance")).dsEyebrowStyle()
                     VStack(alignment: .leading, spacing: DSSpacing.s) {
                         // The address stays readable and selectable: if no mail account can answer the link, it can
                         // still be copied.
@@ -46,19 +46,19 @@ struct AboutView: View {
                             .fixedSize(horizontal: false, vertical: true)
                             .accessibilityLabel("Adresse de contact : \(AboutCopy.contactEmail)")
                         opener(AboutCopy.contactAction, systemImage: "envelope", url: AboutCopy.contactURL,
-                               hint: "Ouvre un nouveau message vers l'assistance d'Iris")
+                               hint: IrisText.interface("about.contact.hint", french: "Ouvre un nouveau message vers l'assistance d'Iris"))
                     }
                 }
                 DSGlassPanel {
-                    Text("liens").dsEyebrowStyle()
+                    Text(IrisText.interface("about.links.eyebrow", french: "liens")).dsEyebrowStyle()
                     // Each action keeps the height a finger needs; only the gaps between them give way.
                     VStack(alignment: .leading, spacing: DSSpacing.s) {
                         opener(AboutCopy.siteTitle, systemImage: "safari", url: AboutCopy.siteURL,
-                               hint: "Ouvre le site officiel d'Iris")
+                               hint: IrisText.interface("about.site.hint", french: "Ouvre le site officiel d'Iris"))
                         opener(AboutCopy.privacyTitle, systemImage: "hand.raised", url: AboutCopy.privacyURL,
-                               hint: "Ouvre la politique de confidentialité sur le site d'Iris")
+                               hint: IrisText.interface("about.privacy.hint", french: "Ouvre la politique de confidentialité sur le site d'Iris"))
                         opener(AboutCopy.termsTitle, systemImage: "doc.text", url: AboutCopy.termsURL,
-                               hint: "Ouvre le contrat de licence standard sur le site d'Apple")
+                               hint: IrisText.interface("about.terms.hint", french: "Ouvre le contrat de licence standard sur le site d'Apple"))
                     }
                     Text(AboutCopy.termsDetail)
                         .font(DSFont.caption)
@@ -79,7 +79,7 @@ struct AboutView: View {
         }
         .dsSoftScrollEdges()
         .background { DSBackground(intensity: .calm) }
-        .navigationTitle("à propos")
+        .navigationTitle(IrisText.interface("about.title", french: "à propos"))
         .navigationBarTitleDisplayMode(.inline)
     }
 

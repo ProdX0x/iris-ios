@@ -19,12 +19,12 @@ struct JourneyCompleteView: View {
             }
             .padding(.top, DSSpacing.l)
             VStack(alignment: .leading, spacing: DSSpacing.s) {
-                Text("le dernier iris").dsEyebrowStyle(tint: DSColor.State.success)
+                Text(IrisText.interface("journey.eyebrow", french: "le dernier iris")).dsEyebrowStyle(tint: DSColor.State.success)
                 Text(Campaign.chapters.last.map(CampaignText.name(of:)) ?? "")
                     .font(DSFont.display)
                     .foregroundStyle(DSColor.Identity.textPrimary)
                     .accessibilityAddTraits(.isHeader)
-                Text("Toutes les lueurs ont trouvé leur iris. Vous avez appris à regarder juste, pas à regarder plus.")
+                Text(IrisText.interface("journey.detail", french: "Toutes les lueurs ont trouvé leur iris. Vous avez appris à regarder juste, pas à regarder plus."))
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.Identity.textSecondary)
             }
@@ -32,13 +32,13 @@ struct JourneyCompleteView: View {
                 HStack {
                     metric("niveaux", "\(summary.levelCount)")
                     Spacer()
-                    metric("éclats", "\(summary.eclats) / \(summary.maxEclats)")
+                    metric(IrisText.interface("journey.eclats.label", french: "éclats"), "\(summary.eclats) / \(summary.maxEclats)")
                     Spacer()
-                    metric("temps de jeu", Duration.seconds(summary.playDuration).formatted(.time(pattern: .hourMinuteSecond)))
+                    metric(IrisText.interface("journey.playTime.label", french: "temps de jeu"), Duration.seconds(summary.playDuration).formatted(.time(pattern: .hourMinuteSecond)))
                 }
             }
-            DSButton("Rejouer un chapitre", systemImage: "arrow.counterclockwise") { coordinator.openChapters() }
-            DSButton("Seuil", variant: .ghost) { coordinator.returnHome() }
+            DSButton(IrisText.interface("home.replayChapter.action", french: "Rejouer un chapitre"), systemImage: "arrow.counterclockwise") { coordinator.openChapters() }
+            DSButton(IrisText.interface("common.threshold", french: "Seuil"), variant: .ghost) { coordinator.returnHome() }
         }
     }
 

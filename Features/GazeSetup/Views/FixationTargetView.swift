@@ -25,7 +25,7 @@ struct FixationTargetView: View {
                 VStack(spacing: DSSpacing.xs) {
                     Text("\(stageLabel) \(display.index + 1) / \(display.count)")
                         .dsEyebrowStyle(tint: DSColor.Identity.accent)
-                    Text("suivez le point des yeux, sans bouger la tête")
+                    Text(IrisText.interface("gazeSetup.fixation.instruction", french: "suivez le point des yeux, sans bouger la tête"))
                         .font(DSFont.footnote)
                         .foregroundStyle(DSColor.Identity.textSecondary)
                 }
@@ -38,7 +38,7 @@ struct FixationTargetView: View {
                         .frame(width: 44, height: 44)
                         .dsGlass(.clearControl)
                 }
-                .accessibilityLabel("Annuler")
+                .accessibilityLabel(IrisText.interface("common.cancel", french: "Annuler"))
                 .position(x: DSSpacing.xl + DSSpacing.s, y: proxy.size.height - DSSpacing.xxl)
             }
         }

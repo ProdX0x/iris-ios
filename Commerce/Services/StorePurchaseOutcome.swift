@@ -20,14 +20,14 @@ enum StorePurchaseOutcome: Hashable, Sendable {
     /// What the player is told. Nothing here names a price: the price always comes from the store itself.
     var notice: String? {
         switch self {
-        case .purchased: "Accès complet débloqué."
-        case .pending: "Achat en attente de validation."
+        case .purchased: IrisText.interface("purchase.unlocked", french: "Accès complet débloqué.")
+        case .pending: IrisText.interface("purchase.pending", french: "Achat en attente de validation.")
         case .cancelled: nil
-        case .unverified: "Cet achat n'a pas pu être vérifié par l'App Store."
-        case .unavailable: "L'App Store est injoignable pour le moment."
-        case .restored: "Vos achats ont été restaurés."
-        case .nothingToRestore: "Aucun achat à restaurer sur ce compte Apple."
-        case .failed: "L'achat n'a pas abouti."
+        case .unverified: IrisText.interface("purchase.unverified", french: "Cet achat n'a pas pu être vérifié par l'App Store.")
+        case .unavailable: IrisText.interface("purchase.storeUnreachable", french: "L'App Store est injoignable pour le moment.")
+        case .restored: IrisText.interface("purchase.restored", french: "Vos achats ont été restaurés.")
+        case .nothingToRestore: IrisText.interface("purchase.nothingToRestore", french: "Aucun achat à restaurer sur ce compte Apple.")
+        case .failed: IrisText.interface("purchase.failed", french: "L'achat n'a pas abouti.")
         }
     }
 

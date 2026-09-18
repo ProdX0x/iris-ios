@@ -19,7 +19,7 @@ struct GazeIntroductionView: View {
         ZStack {
             DSBackground(intensity: .calm)
             VStack(spacing: DSSpacing.l) {
-                Text("aide au regard").dsEyebrowStyle()
+                Text(IrisText.interface("gazeAssistance.eyebrow", french: "aide au regard")).dsEyebrowStyle()
                 Spacer(minLength: 0)
                 GazeMarkerFigure(stage: index)
                     .id(index)
@@ -111,9 +111,9 @@ private struct GazeMarkerFigure: View {
 
     private var label: String {
         switch stage {
-        case 0: "Trois positions proches du repère, montrant qu'il bouge légèrement."
-        case 1: "Le repère, bien visible."
-        default: "Le repère qui s'efface peu à peu."
+        case 0: IrisText.interface("gazeLearning.drift.figure", french: "Trois positions proches du repère, montrant qu'il bouge légèrement.")
+        case 1: IrisText.interface("gazeLearning.guided.figure", french: "Le repère, bien visible.")
+        default: IrisText.interface("gazeLearning.choice.figure", french: "Le repère qui s'efface peu à peu.")
         }
     }
 

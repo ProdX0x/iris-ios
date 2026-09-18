@@ -27,9 +27,9 @@ struct LevelResult: Hashable, Sendable {
     }
 
     var primaryTitle: String {
-        if isCampaignEnd { return "Voir la fin" }
+        if isCampaignEnd { return IrisText.interface("result.seeEnding.action", french: "Voir la fin") }
         if !hasNextLevel { return "Chapitres" }
-        if isChapterEnd { return "Chapitre suivant" }
+        if isChapterEnd { return IrisText.interface("result.nextChapter.action", french: "Chapitre suivant") }
         return "Suivant"
     }
 }

@@ -54,9 +54,9 @@ struct OnboardingView: View {
 
     private var skipRow: some View {
         HStack {
-            Text("comment jouer").dsEyebrowStyle()
+            Text(IrisText.interface("howToPlay.eyebrow", french: "comment jouer")).dsEyebrowStyle()
             Spacer()
-            DSButton("Passer", variant: .ghost) { onFinish() }
+            DSButton(IrisText.interface("common.skip", french: "Passer"), variant: .ghost) { onFinish() }
         }
     }
 

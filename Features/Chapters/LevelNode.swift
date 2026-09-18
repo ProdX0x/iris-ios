@@ -55,8 +55,8 @@ struct LevelNode: View {
 
     private var accessibilityValue: String {
         switch state {
-        case .locked: "verrouillé"
-        case .next: "à jouer"
+        case .locked: IrisText.interface("chapters.level.locked", french: "verrouillé")
+        case .next: IrisText.interface("chapters.level.toPlay", french: "à jouer")
         case .available: "\(eclats.count) éclats sur 3"
         case .completed: "\(eclats.count) éclats sur 3"
         }

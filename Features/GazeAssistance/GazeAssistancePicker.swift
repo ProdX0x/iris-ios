@@ -14,14 +14,14 @@ struct GazeAssistancePicker: View {
     }
 
     /// Why the choices are inert while chapter I is still teaching the marker. Said once, in the player's terms.
-    static let learningNote = "L'aide au regard est guidée pendant les premiers niveaux d'apprentissage."
+    static let learningNote = IrisText.interface("gazeAssistance.learning.note", french: "L'aide au regard est guidée pendant les premiers niveaux d'apprentissage.")
 
     /// What a row says about a mode, at the length its screen can afford: the settings explain, the pause names.
     /// One rule, used both to draw the row and to answer VoiceOver, so the two can never say different things.
     static func meaning(for mode: GazeAssistanceMode, variant: Variant) -> String {
         switch variant {
-        case .detailed: mode.summary
-        case .compact: mode.compactSummary
+        case .detailed: GazeAssistanceText.summary(of: mode)
+        case .compact: GazeAssistanceText.compactSummary(of: mode)
         }
     }
 
@@ -49,7 +49,7 @@ struct GazeAssistancePicker: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .disabled(isLearning)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Aide au regard")
+        .accessibilityLabel(IrisText.interface("gazeAssistance.title", french: "Aide au regard"))
     }
 }
 
@@ -74,7 +74,7 @@ private struct GazeAssistanceRow: View {
                     .foregroundStyle(isSelected ? DSColor.Navigation.selection : DSColor.Identity.textTertiary)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: DSSpacing.xxs) {
-                    Text(mode.title)
+                    Text(GazeAssistanceText.title(of: mode))
                         .font(DSFont.headline)
                         .foregroundStyle(DSColor.Identity.textPrimary)
                     Text(meaning)
@@ -92,7 +92,7 @@ private struct GazeAssistanceRow: View {
         .buttonStyle(DSPressableButtonStyle())
         // One element per choice: the mark is hidden, the two texts are merged into this label and value, and the
         // selection is a trait rather than a spoken word.
-        .accessibilityLabel(mode.title)
+        .accessibilityLabel(GazeAssistanceText.title(of: mode))
         .accessibilityValue(meaning)
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }

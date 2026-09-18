@@ -11,20 +11,20 @@ struct CameraAccessView: View {
 
     var body: some View {
         DSScreen {
-            Text("avant de jouer")
+            Text(IrisText.interface("camera.eyebrow", french: "avant de jouer"))
                 .dsEyebrowStyle(tint: DSColor.Identity.accent)
-            Text("la caméra lit votre regard")
+            Text(IrisText.interface("camera.headline", french: "la caméra lit votre regard"))
                 .font(DSFont.title)
                 .foregroundStyle(DSColor.Identity.textPrimary)
                 .accessibilityAddTraits(.isHeader)
 
             DSGlassPanel {
-                DSStatusRow(systemImage: "faceid", title: "Caméra TrueDepth",
-                            detail: "Estime la direction du regard, environ soixante fois par seconde.", state: rowState)
-                DSStatusRow(systemImage: "lock.shield", title: "Traitement local",
-                            detail: "Aucune image n'est enregistrée ni envoyée. Rien ne quitte l'appareil.", state: .ok)
-                DSStatusRow(systemImage: "eye.slash", title: "Aucune calibration",
-                            detail: "Le jeu démarre dès que votre visage est détecté.", state: .ok)
+                DSStatusRow(systemImage: "faceid", title: IrisText.interface("camera.trueDepth.title", french: "Caméra TrueDepth"),
+                            detail: IrisText.interface("camera.trueDepth.detail", french: "Estime la direction du regard, environ soixante fois par seconde."), state: rowState)
+                DSStatusRow(systemImage: "lock.shield", title: IrisText.interface("camera.localProcessing.title", french: "Traitement local"),
+                            detail: IrisText.interface("camera.localProcessing.detail", french: "Aucune image n'est enregistrée ni envoyée. Rien ne quitte l'appareil."), state: .ok)
+                DSStatusRow(systemImage: "eye.slash", title: IrisText.interface("camera.noCalibration.title", french: "Aucune calibration"),
+                            detail: IrisText.interface("camera.noCalibration.detail", french: "Le jeu démarre dès que votre visage est détecté."), state: .ok)
             }
 
             content
@@ -39,34 +39,34 @@ struct CameraAccessView: View {
     private var content: some View {
         switch viewModel.phase {
         case .explain:
-            Text("iOS va vous demander l'autorisation d'utiliser la caméra frontale. Elle sert uniquement à détecter où vous regardez.")
+            Text(IrisText.interface("camera.request.detail", french: "iOS va vous demander l'autorisation d'utiliser la caméra frontale. Elle sert uniquement à détecter où vous regardez."))
                 .font(DSFont.body)
                 .foregroundStyle(DSColor.Identity.textSecondary)
-            DSButton("Autoriser la caméra", systemImage: "camera") {
+            DSButton(IrisText.interface("camera.allow.action", french: "Autoriser la caméra"), systemImage: "camera") {
                 Task { await viewModel.requestAccess() }
             }
-            DSButton("Plus tard", variant: .ghost) { viewModel.abandon() }
+            DSButton(IrisText.interface("camera.later.action", french: "Plus tard"), variant: .ghost) { viewModel.abandon() }
         case .requesting:
             HStack(spacing: DSSpacing.m) {
                 ProgressView()
                     .tint(DSColor.Navigation.control)
-                Text("Demande d'accès en cours…")
+                Text(IrisText.interface("camera.requesting", french: "Demande d'accès en cours…"))
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.Identity.textSecondary)
             }
         case .denied:
-            Text("L'accès à la caméra a été refusé. Sans regard, Iris ne peut pas fonctionner. Vous pouvez l'autoriser dans Réglages, puis revenir ici.")
+            Text(IrisText.interface("camera.denied.detail", french: "L'accès à la caméra a été refusé. Sans regard, Iris ne peut pas fonctionner. Vous pouvez l'autoriser dans Réglages, puis revenir ici."))
                 .font(DSFont.body)
                 .foregroundStyle(DSColor.Identity.textSecondary)
-            DSButton("Ouvrir Réglages", systemImage: "gear") {
+            DSButton(IrisText.interface("common.openSettings", french: "Ouvrir Réglages"), systemImage: "gear") {
                 if let url = SystemLinks.appSettings { openURL(url) }
             }
-            DSButton("Retour", variant: .ghost) { viewModel.abandon() }
+            DSButton(IrisText.interface("common.back", french: "Retour"), variant: .ghost) { viewModel.abandon() }
         case .restricted:
-            Text("L'accès à la caméra est restreint sur cet appareil (temps d'écran, profil de gestion). Iris ne peut pas lire le regard tant que cette restriction est active.")
+            Text(IrisText.interface("camera.restricted.detail", french: "L'accès à la caméra est restreint sur cet appareil (temps d'écran, profil de gestion). Iris ne peut pas lire le regard tant que cette restriction est active."))
                 .font(DSFont.body)
                 .foregroundStyle(DSColor.Identity.textSecondary)
-            DSButton("Retour", variant: .secondary) { viewModel.abandon() }
+            DSButton(IrisText.interface("common.back", french: "Retour"), variant: .secondary) { viewModel.abandon() }
         }
     }
 

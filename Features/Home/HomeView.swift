@@ -20,20 +20,20 @@ struct HomeView: View {
                         .font(DSFont.display)
                         .foregroundStyle(DSColor.Identity.textPrimary)
                         .accessibilityAddTraits(.isHeader)
-                    Text("Ce que vous regardez s'éloigne.")
+                    Text(IrisText.interface("home.tagline", french: "Ce que vous regardez s'éloigne."))
                         .font(DSFont.callout)
                         .foregroundStyle(DSColor.Identity.textSecondary)
                 }
                 Spacer(minLength: DSSpacing.l)
                 VStack(spacing: DSSpacing.s) {
-                    DSButton(summary.primaryTitle, systemImage: "eye") { coordinator.continueJourney() }
+                    DSButton(HomeText.primaryTitle(of: summary), systemImage: "eye") { coordinator.continueJourney() }
                     if let detail = summary.detail {
                         Text(detail)
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textTertiary)
                             .multilineTextAlignment(.center)
                     }
-                    DSButton("Comment jouer", systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
+                    DSButton(IrisText.interface("howToPlay.title", french: "Comment jouer"), systemImage: "questionmark.circle", variant: .secondary) { coordinator.showHowToPlay() }
                         .padding(.top, DSSpacing.xs)
                     if summary.eclats > 0 {
                         Text("\(summary.eclats) éclats sur \(summary.maxEclats)")
