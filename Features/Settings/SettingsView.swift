@@ -57,6 +57,19 @@ struct SettingsView: View {
                             .font(DSFont.footnote)
                             .foregroundStyle(DSColor.Identity.textSecondary)
                     }
+                    DSGlassPanel {
+                        Text("à propos").dsEyebrowStyle()
+                        NavigationLink {
+                            AboutView()
+                        } label: {
+                            Label("À propos & informations légales", systemImage: "info.circle")
+                                .font(DSFont.headline)
+                                .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+                                .contentShape(Rectangle())
+                        }
+                        .foregroundStyle(DSColor.Navigation.control)
+                        .accessibilityHint("Identité, version, liens et confidentialité")
+                    }
                     #if DEBUG
                     DSGlassPanel {
                         Text("diagnostics (debug)").dsEyebrowStyle()

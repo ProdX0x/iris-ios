@@ -91,8 +91,9 @@ facultative pour un code personnalisé et de 6 mois maximum si elle est fixée.
 | Captures d'écran | `SCREENSHOT_PLAN.md` — **à produire**, aucune n'existe encore |
 | Notes pour la relecture | `APP_REVIEW_NOTES_FR.md` |
 | Réponses « App Privacy » | `PRIVACY_RELEASE_NOTES.md` § 4 |
-| **URL d'assistance** | **à fournir** — obligatoire |
-| **URL de politique de confidentialité** | **à fournir** — obligatoire (texte prêt dans `PRIVACY_RELEASE_NOTES.md` § 5) |
+| **URL d'assistance** | `https://www.steve-s.net/iris/` — en ligne, vérifiée le 18 septembre 2026 |
+| **URL de politique de confidentialité** | `https://www.steve-s.net/iris/privacy-iris/` — en ligne, vérifiée le 18 septembre 2026 |
+| Copyright | `2026 Stéphane SAULNIER` — sans le symbole, Apple l'ajoute |
 
 ## 4. Décisions humaines restées ouvertes
 
@@ -117,7 +118,8 @@ même version marketing), puis régénérer avec `xcodegen generate`.
 - [ ] Achat réel testé en bac à sable sur un iPhone avec TrueDepth
 - [ ] Rédemption réelle de `IRIS7D` testée en bac à sable, puis expiration observée
 - [ ] Captures produites selon `SCREENSHOT_PLAN.md`
-- [ ] URL d'assistance et politique de confidentialité en ligne
+- [x] URL d'assistance et politique de confidentialité en ligne — vérifiées le 18 septembre 2026
+- [ ] **Statut « trader / non-trader » (UE, DSA) déclaré dans App Store Connect** — NON VÉRIFIÉ, hors du périmètre du Gate 4H ; à contrôler avant soumission dans l'UE
 - [ ] Questionnaire « App Privacy » rempli selon `PRIVACY_RELEASE_NOTES.md` § 4
 - [ ] **Validation physique des performances sur iPhone** (voir le rapport de mission : régression non résolue)
 - [ ] **Validation de stabilité mémoire / backboardd** (voir le rapport de mission : incident Jetsam non attribué)

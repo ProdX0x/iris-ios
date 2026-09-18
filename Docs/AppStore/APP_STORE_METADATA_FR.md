@@ -103,9 +103,13 @@ utilisateurs, aucun accès web. À confirmer via le questionnaire d'App Store Co
 
 ## Copyright
 
+Champ « Copyright » d'App Store Connect — **sans le symbole**, Apple l'ajoute lui-même :
+
 ```
-© 2026 Stéphane SAULNIER
+2026 Stéphane SAULNIER
 ```
+
+La ligne affichée dans l'app porte le symbole : `© 2026 Stéphane SAULNIER` (`Features/About/AboutCopy.swift`).
 
 ## Achats intégrés — textes localisés (fr-FR)
 
@@ -126,12 +130,14 @@ utilisateurs, aucun accès web. À confirmer via le questionnaire d'App Store Co
 Ce second produit n'est jamais proposé à la vente dans Iris : il n'existe que pour porter l'Offer Code gratuit de
 7 jours. Voir `STOREKIT_PRODUCTS.md`.
 
-## URLs à fournir (bloquant externe)
+## URLs
 
-| Champ | État |
+| Champ | Valeur |
 |---|---|
-| URL d'assistance | **à fournir** — obligatoire pour la soumission |
-| URL de politique de confidentialité | **à fournir** — obligatoire dès qu'une app accède à la caméra |
-| URL marketing | facultative |
+| URL d'assistance | `https://www.steve-s.net/iris/` — en ligne, porte `contact@steve-s.net` |
+| URL de politique de confidentialité | `https://www.steve-s.net/iris/privacy-iris/` — en ligne, mise à jour du 13 septembre 2026 |
+| URL marketing | facultative — non fournie |
 
-Le contenu de la politique de confidentialité est déjà rédigé, prêt à publier : voir `PRIVACY_RELEASE_NOTES.md` § 5.
+Les deux pages ont été consultées le 18 septembre 2026 (Release Gate 4H-A) : HTTPS valide, français, politique de
+confidentialité propre à Iris, adresse de contact présente. Le texte de référence reste `PRIVACY_RELEASE_NOTES.md` § 5.
+Les deux adresses sont également accessibles depuis l'app, écran « À propos & informations légales » (Réglages).

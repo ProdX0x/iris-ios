@@ -158,6 +158,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Domain/ValueObjects/NormalizedRect.swift | struct | Domain | Resolution-independent rectangle (0...1 on both axes), resolved against the playfield at load time | Claude (mission Iris) |
 | Domain/ValueObjects/PlayfieldBounds.swift | struct | Domain | Size of the game space in points; the reference engine used the browser window size | Claude (mission Iris) |
 | Domain/ValueObjects/Vector2.swift | struct | Domain | Two-dimensional vector in playfield points (the reference engine's canvas pixels) | Claude (mission Iris) |
+| Features/About/AboutCopy.swift | enum | Presentation | Who made Iris, the four addresses a player or Apple may need, and the copyright — written once here, read | Claude (mission Iris) |
+| Features/About/AboutView.swift | struct | Presentation | One page, pushed from the settings: which Iris runs, who made it, and the addresses — site, assistance, | Claude (mission Iris) |
 | Features/CameraAccess/CameraAccessNavigating.swift | protocol | Presentation | Navigation intents emitted by the camera permission screen | Claude (mission Iris) |
 | Features/CameraAccess/CameraAccessView.swift | struct | Presentation | Explains why the TrueDepth camera is needed and handles denied and restricted states | Claude (mission Iris) |
 | Features/CameraAccess/CameraAccessViewModel.swift | class | Presentation | Camera permission flow: explanation, request, denied and restricted states | Claude (mission Iris) |
@@ -340,6 +342,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Mocks/MockAudioService.swift | class | Tests | Recording mock for AudioService | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockGameNavigating.swift | class | Tests | Recording mock for GameNavigating, CameraAccessNavigating and GazeSetupNavigating | Claude (mission Iris) |
 | Tests/IrisTests/Mocks/MockHapticFeedbackService.swift | class | Tests | Recording mock for HapticFeedbackService | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/AboutLegalTests.swift | struct | Tests | The about page carries the exact identity, addresses and copyright Apple and the player need; its version | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AdaptiveLevelRowMetricsTests.swift | struct | Tests | The level row geometry for 1 to 10 levels on every supported width: inside its width, full touch targets, | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AncreSceneTests.swift | struct | Tests | Chapter X final « l'ancre », the scene: the silhouette traced from the reference image is framed around the | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/AppCoordinatorTests.swift | struct | Tests | Deterministic routes, gaze gating, progress recording and debug launch options | Claude (mission Iris) |
