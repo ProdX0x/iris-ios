@@ -11,6 +11,7 @@ enum EnglishTranslationsEN5 {
     static let byKey: [String: String] = EnglishTranslationsEN5Interface.byKey
         .merging(EnglishTranslationsEN5Campaign.byKey) { a, _ in a }
         .merging(EnglishTranslationsEN5Hints.byKey) { a, _ in a }
+        .merging(EnglishTranslationsEN5Readiness.byKey) { a, _ in a }
 
     /// The English singular of the two counted entries. French keeps one wording at every count — that sentence was
     /// validated and photographed as it stands — while English says « 1 glint » and « 2 glints », which is what the
@@ -26,7 +27,7 @@ enum EnglishTranslationsEN5 {
     /// French and English legitimately identical, EN-5 side. Each one is a word the two languages share — a
     /// constellation is a constellation, an iris is an iris — or a format made of punctuation alone. Listed key by
     /// key so that an untranslated sentence cannot hide among them.
-    static let identicalByDesign: Set<String> = [
+    static let identicalByDesign: Set<String> = Set([
         "chapter.12.name",                    // constellation
         "element.absence.name",               // absence
         "element.cascade.name",               // cascade
@@ -35,5 +36,6 @@ enum EnglishTranslationsEN5 {
         "gazeStatus.line",                    // %@.
         "level.6-5.title",                    // constellation
         "level.6-6.title",                    // iris
-    ]
+    ])
+    .union(EnglishTranslationsEN5Readiness.identicalByDesign)
 }

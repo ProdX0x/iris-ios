@@ -207,6 +207,12 @@ struct InterfaceLocalizationTests {
         #expect(Set([HomeSummary.Action.begin, .resume, .replay].map(HomeText.key(for:))).count == 3)
     }
 
+    /// Hinges whose French is a lookup table rather than a call site. Every sentence in them is handed to `IrisText`
+    /// under a key built from an identity — which this scanner, reading one expression at a time, cannot see. That
+    /// those keys exist, carry French and English, and cover every message is proved key by key elsewhere:
+    /// ReadinessDetailLocalizationTests A, B, C and G.
+    private static let fallbackTables: Set<String> = ["Features/Shared/GazeReadinessText.swift"]
+
     @Test("K: every sentence the app shows outside the frozen files now has a key")
     func migrationIsComplete() throws {
         // Two nets, because one was not enough: a sentence that reads as French anywhere, and any literal sitting
@@ -228,7 +234,7 @@ struct InterfaceLocalizationTests {
             let files = FileManager.default.enumerator(atPath: directory.path)?.allObjects as? [String] ?? []
             for relative in files.sorted() where relative.hasSuffix(".swift") {
                 let path = "\(base)/\(relative)"
-                guard !Self.frozenFiles.contains(path),
+                guard !Self.frozenFiles.contains(path), !Self.fallbackTables.contains(path),
                       let text = try? String(contentsOf: directory.appendingPathComponent(relative), encoding: .utf8)
                 else { continue }
                 var irisDepth = 0

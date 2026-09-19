@@ -48,11 +48,16 @@ struct ReadinessCheck: Hashable, Sendable, Identifiable {
     let kind: ReadinessCheckKind
     let status: ReadinessStatus
     let detail: String?
+    /// What the detail is saying, as an identity rather than a sentence. The French `detail` above stays exactly as
+    /// it was and remains the witness that nothing about this check moved; `reason` is what lets a screen say the
+    /// same thing in another language. Optional, so no existing caller has to change.
+    let reason: ReadinessDetail?
 
-    init(kind: ReadinessCheckKind, status: ReadinessStatus, detail: String? = nil) {
+    init(kind: ReadinessCheckKind, status: ReadinessStatus, detail: String? = nil, reason: ReadinessDetail? = nil) {
         self.kind = kind
         self.status = status
         self.detail = detail
+        self.reason = reason
     }
 
     var id: ReadinessCheckKind { kind }

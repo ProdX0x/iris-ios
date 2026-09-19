@@ -220,6 +220,7 @@
 		8E50147454065949EA2D5491 /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97A042C1F524AD440D6439 /* ProgressStore.swift */; };
 		91274D5D0B8F1C9E2626CF75 /* PrototypeLevelCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798C1EA5367F6ADFC58CA4D5 /* PrototypeLevelCatalog.swift */; };
 		92D07B67D4B9C6F323D6E067 /* JumellesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A0BC98410BFF04096B11A5 /* JumellesTests.swift */; };
+		92FD040F5BD440DF3C692092 /* ReadinessDetailLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC928528D92FADAF5C619FB /* ReadinessDetailLocalizationTests.swift */; };
 		932A363070348BD86ED50526 /* GazeTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCCEB7594AB8217F6255129 /* GazeTrackingService.swift */; };
 		937BCA26C2867DB0A15A262B /* EnglishTranslationEN5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029036797EAF03266D8A6747 /* EnglishTranslationEN5Tests.swift */; };
 		959B618BD105A9420553DA18 /* GameSceneSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA8A3EBFC406F28A58A915A /* GameSceneSnapshot.swift */; };
@@ -278,6 +279,7 @@
 		B1ED2E73D3AFD051B4F0158E /* JardinStageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D3F2E07DB3FE65B0B53FCD /* JardinStageState.swift */; };
 		B1FAC1B41B4A6E4E5ABB400F /* OnboardingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D89BD55BC08487A146CAB3 /* OnboardingStore.swift */; };
 		B34BE855F05185DDBC26F3E0 /* DSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5475244795788D1DC0B6380F /* DSButton.swift */; };
+		B3846874C5DFF72FB4E44F14 /* EnglishTranslationsEN5Readiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591C24AA064E6F62E9DB8329 /* EnglishTranslationsEN5Readiness.swift */; };
 		B3F1D55A2798F05D635778B6 /* GameHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EC3AAB0C88BBD113DF08D0 /* GameHUDView.swift */; };
 		B4424AE158060828FF78274D /* GameOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C306525C2E00F84B4E40D53D /* GameOverlayView.swift */; };
 		B60B5088D2D82CD419C9590A /* GazeAssistancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18A3CBF106BF14423B7AC72 /* GazeAssistancePicker.swift */; };
@@ -338,6 +340,7 @@
 		D633A1C6F164CB89EDD24EDA /* InterfaceOrientationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622DC62D0A9FF4662E83D6EF /* InterfaceOrientationProvider.swift */; };
 		D65157554E77E0C9BB644674 /* Campaign+Oculomoteur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E7F86F4D4AAC8E15851CF /* Campaign+Oculomoteur.swift */; };
 		D6FB76E356CE058E251024A5 /* AudioCuePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F240F98DB0B0B86BAFEEB1FE /* AudioCuePolicyTests.swift */; };
+		D880FD24DE0FBCB721CCC976 /* ReadinessDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C09D1836DEE80C33AFB5B5 /* ReadinessDetail.swift */; };
 		D9EE06F17C0640DED9245696 /* ConstellationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7AFC7016A275147A164D9A /* ConstellationTests.swift */; };
 		DB1B932804E31EC05579D487 /* GameSceneRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895A77572444EA0B5AFB485A /* GameSceneRenderer.swift */; };
 		DBE7E0EC100F61A91CA2BC88 /* PhysicsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9E09D23FE77CAC52A9FEAA /* PhysicsConstants.swift */; };
@@ -489,6 +492,7 @@
 		2C3831048F60D51B2C372E34 /* ValidationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTransition.swift; sourceTree = "<group>"; };
 		2C9CE1C80EBCEA72FBA91A69 /* BraiseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraiseState.swift; sourceTree = "<group>"; };
 		2C9E4FD0BD7CE4E6BB7BBF79 /* DSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSColor.swift; sourceTree = "<group>"; };
+		2CC928528D92FADAF5C619FB /* ReadinessDetailLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadinessDetailLocalizationTests.swift; sourceTree = "<group>"; };
 		2DAE144DBA42CA41CD9DD2F3 /* ChapterCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterCardLayoutTests.swift; sourceTree = "<group>"; };
 		2FB242B789DB39DE33E73E39 /* UIKitHapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHapticFeedbackService.swift; sourceTree = "<group>"; };
 		308F25679A5A110E8EE8B174 /* GameCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCanvasView.swift; sourceTree = "<group>"; };
@@ -547,6 +551,7 @@
 		578D23EDEDB8E979C4EF8271 /* CampaignText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignText.swift; sourceTree = "<group>"; };
 		57E4B98C2A2C831DA7D3D084 /* GazeAssistanceModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeAssistanceModeTests.swift; sourceTree = "<group>"; };
 		591BAD3FDB49053BC4F4ADD1 /* DSThemePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSThemePalette.swift; sourceTree = "<group>"; };
+		591C24AA064E6F62E9DB8329 /* EnglishTranslationsEN5Readiness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishTranslationsEN5Readiness.swift; sourceTree = "<group>"; };
 		59AB64B0FD379DB5189BBA95 /* GazeIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeIntroductionView.swift; sourceTree = "<group>"; };
 		5B5CE94358B60B35459BF218 /* GameElement+Glyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameElement+Glyph.swift"; sourceTree = "<group>"; };
 		5B5F6AA990DF2D0ADAC5DA6B /* FixationSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixationSequence.swift; sourceTree = "<group>"; };
@@ -746,6 +751,7 @@
 		DF9F9EFA1251797938463FF3 /* TargetBlueprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetBlueprint.swift; sourceTree = "<group>"; };
 		DFBCA2F738EEE7481EA16C0F /* AxisMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisMapping.swift; sourceTree = "<group>"; };
 		E0B30308D08E575D6B0B7371 /* Iris.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Iris.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0C09D1836DEE80C33AFB5B5 /* ReadinessDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadinessDetail.swift; sourceTree = "<group>"; };
 		E0D75921DD31A81ED12A8093 /* FixationTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixationTargetView.swift; sourceTree = "<group>"; };
 		E15A0B55924F49D25F2803AD /* EnglishTranslationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishTranslationTests.swift; sourceTree = "<group>"; };
 		E165178E76D82113C70DA7B6 /* GazeSetupPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GazeSetupPhase.swift; sourceTree = "<group>"; };
@@ -1180,6 +1186,7 @@
 				27E22A056627411114A2EEA7 /* GazeReadinessReport.swift */,
 				AE46076AAECA1EF108B5C091 /* NominalDisplayGeometry.swift */,
 				294A4A3C6F8935D0485A0695 /* NormalizedCoordinates.swift */,
+				E0C09D1836DEE80C33AFB5B5 /* ReadinessDetail.swift */,
 				B2B963C8273B51A3EAAB22EA /* RobustAggregator.swift */,
 			);
 			path = Calibration;
@@ -1271,6 +1278,7 @@
 				0EBDFF034B79EF48C95FD932 /* EnglishTranslationsEN5Campaign.swift */,
 				2B17AD23E91177AC74E85577 /* EnglishTranslationsEN5Hints.swift */,
 				9D3ABEE1DFA5D45BA75A2078 /* EnglishTranslationsEN5Interface.swift */,
+				591C24AA064E6F62E9DB8329 /* EnglishTranslationsEN5Readiness.swift */,
 				E15A0B55924F49D25F2803AD /* EnglishTranslationTests.swift */,
 				93B3F2E9A9BFBC83F1136D64 /* GameSettingsStoreTests.swift */,
 				5C429251189588D65388F4B2 /* GameViewModelTests.swift */,
@@ -1285,6 +1293,7 @@
 				A34DEE1F8FCB35762972CF20 /* LocalizationInfrastructureTests.swift */,
 				249B00C73A72410C16B0C647 /* OculomotorTraceTests.swift */,
 				EAFDF6615340DFA69660E492 /* OnboardingTests.swift */,
+				2CC928528D92FADAF5C619FB /* ReadinessDetailLocalizationTests.swift */,
 				51669757A8638E5981E3BCD6 /* VisualCaptureTests.swift */,
 			);
 			path = Presentation;
@@ -2024,6 +2033,7 @@
 				0549375D52FA46336353B4BB /* EnglishTranslationsEN5Campaign.swift in Sources */,
 				B1850C560DCB263980D0452B /* EnglishTranslationsEN5Hints.swift in Sources */,
 				D5E209EC06255B37EFEF7EA0 /* EnglishTranslationsEN5Interface.swift in Sources */,
+				B3846874C5DFF72FB4E44F14 /* EnglishTranslationsEN5Readiness.swift in Sources */,
 				7A36EE0CA845984F54892152 /* ExpansionCampaignDump.swift in Sources */,
 				AE4BBABCCFB8D8C048234A0A /* ExpansionCampaignFingerprintTests.swift in Sources */,
 				61C97E1EB62CA5D90E388225 /* FixationSequenceTests.swift in Sources */,
@@ -2082,6 +2092,7 @@
 				44784C9361B32D49B650F3A6 /* PauseGazeAssistanceTests.swift in Sources */,
 				058A990AA7823BF2C3EE4D47 /* PauseGazeCopyTests.swift in Sources */,
 				86F5CB215B1118F23A4FBC3A /* PrototypeLevelCatalogTests.swift in Sources */,
+				92FD040F5BD440DF3C692092 /* ReadinessDetailLocalizationTests.swift in Sources */,
 				F67BA6FF0AA1824B95510070 /* RobustAggregatorTests.swift in Sources */,
 				5DF6C98C80CA871137E21684 /* SequenceOrderTests.swift in Sources */,
 				EF10D2A788A01E2F8CB6FC2B /* SessionFixture.swift in Sources */,
@@ -2327,6 +2338,7 @@
 				42B7AF690EC5DD44FB1791A5 /* PlayfieldBounds.swift in Sources */,
 				8E50147454065949EA2D5491 /* ProgressStore.swift in Sources */,
 				91274D5D0B8F1C9E2626CF75 /* PrototypeLevelCatalog.swift in Sources */,
+				D880FD24DE0FBCB721CCC976 /* ReadinessDetail.swift in Sources */,
 				DDDDC5695CD863D4A063DA6C /* ResolvedLevel.swift in Sources */,
 				59C38057369509754C61D100 /* RobustAggregator.swift in Sources */,
 				55DA3F86D27C09C63BD65723 /* RootView.swift in Sources */,

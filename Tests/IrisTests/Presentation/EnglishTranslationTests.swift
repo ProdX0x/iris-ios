@@ -35,7 +35,7 @@ struct EnglishTranslationTests {
                 counted += 1
             }
         }
-        #expect(counted == 655, "the catalogues hold \(counted) keys, not 655")
+        #expect(counted == 680, "the catalogues hold \(counted) keys, not 680")
     }
 
     @Test("2: the classification still explains which phase wrote each sentence")

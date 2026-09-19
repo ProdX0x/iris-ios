@@ -176,6 +176,13 @@ enum LocalizationCatalog {
                                         + "mid-level who must recognise it at a glance. Keep it very short."))
         }
 
+        // The twenty-five readiness messages, named by what they say. Their French is the very sentence the
+        // evaluator builds; a test renders both and refuses to let them differ.
+        for id in ReadinessDetailID.allCases {
+            entries.append(CatalogEntry(id.localizationKey, GazeReadinessText.french(for: id),
+                                        EnglishTranslationsEN5Readiness.comments[id.localizationKey] ?? ""))
+        }
+
         for kind in ReadinessCheckKind.allCases {
             entries.append(CatalogEntry(GazeReadinessText.titleKey(for: kind), kind.title,
                                         "Gaze setup. Name of the readiness check `\(kind.rawValue)`, listed before "

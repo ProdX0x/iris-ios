@@ -2083,6 +2083,456 @@
         }
       }
     },
+    "gazeReadiness.detail.awaitingSignal" : {
+      "comment" : "Shown on every signal check while there are not yet enough samples to judge anything.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for the signal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente du signal"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.axesResolved" : {
+      "comment" : "State of the axis check once the gaze axes are resolved. %@ is the device axis that turned out to be right, then the one that turned out to be up; both are technical identifiers such as positiveX and are never translated.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Axes resolved (right = %@, up = %@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Axes résolus (droite = %@, haut = %@)"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.axesUnresolved" : {
+      "comment" : "Instruction shown when the axes are not resolved yet: the player must hold the device upright and facing them.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold the iPhone straight in front of you"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenez l'iPhone droit devant vous"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.blendShapesUnavailable" : {
+      "comment" : "FUNCTIONAL: ARKit is not supplying blend shapes, so blinks cannot be recognised. « Blend shapes » is Apple's own term and stays in English.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blend shapes unavailable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blend shapes indisponibles"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.blinksIgnored" : {
+      "comment" : "PRIVACY-ADJACENT FACTUAL CLAIM: blinks are detected and then discarded, not acted on. Do not turn this into a promise about anything else.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blinks will be ignored"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les clignements seront ignorés"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.cameraDeniedOrRestricted" : {
+      "comment" : "FUNCTIONAL: camera access is refused, or restricted by Screen Time or a profile. Both cases share this one line.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denied or restricted"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refusé ou restreint"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.cameraGranted" : {
+      "comment" : "State of the camera-permission check when access has been granted. One word, in a checklist row.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Granted"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorisé"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceDistance" : {
+      "comment" : "The measured distance between the face and the device. %.0f is that distance in centimetres, already rounded. Keep the unit in cm: it is what the app measures.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance %.0f cm"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance %.0f cm"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceDistanceOutOfRange" : {
+      "comment" : "FUNCTIONAL: the face is too close or too far. The range in brackets is the one the app actually accepts.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move closer to or further from the screen (20 to 80 cm)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rapprochez-vous ou éloignez-vous de l'écran (20 à 80 cm)"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceNotInFrame" : {
+      "comment" : "Instruction shown when no face is visible to the camera. Tells the player where to put their face.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Put your face in front of the screen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Placez votre visage face à l'écran"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceSettling" : {
+      "comment" : "Shown while the face is visible but not enough samples have arrived yet. A few seconds at most.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One moment…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un instant…"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceTracked" : {
+      "comment" : "State of the face check when the face is being tracked and enough samples have arrived.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face tracked"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visage suivi"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceTrackingAvailable" : {
+      "comment" : "Gaze diagnostic, shown before calibration. State of the TrueDepth face-tracking check when the device supports it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ARKit face tracking available"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivi facial ARKit disponible"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.faceTrackingUnsupported" : {
+      "comment" : "FUNCTIONAL: the device has no face tracking at all. Nothing the player does can change it.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Device without face tracking"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appareil sans suivi facial"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.gazeOffScreen" : {
+      "comment" : "Instruction shown when the gaze is not landing on the screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look at the screen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regardez l'écran"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.gazeOnScreen" : {
+      "comment" : "State of the gaze-direction check when the gaze lands on the screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gaze directed at the screen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regard dirigé vers l'écran"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.headMoving" : {
+      "comment" : "Instruction shown when the head is moving too much for calibration.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep your head still"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez la tête immobile"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.headStill" : {
+      "comment" : "State of the head check when the head is steady enough.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Head still"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tête immobile"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.sessionFailed" : {
+      "comment" : "FUNCTIONAL: the AR session failed. Distinct from interrupted and from unavailable.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.sessionInterrupted" : {
+      "comment" : "FUNCTIONAL: the AR session was interrupted. Distinct from unavailable and from an error.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session interrupted"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session interrompue"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.sessionReceivingFrames" : {
+      "comment" : "State of the AR session check when frames are arriving.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frames received"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frames reçues"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.sessionStarting" : {
+      "comment" : "State of the AR session check while it is still starting up.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrage"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.sessionUnavailable" : {
+      "comment" : "FUNCTIONAL: the AR session cannot run here. Distinct from interrupted and from an error.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unavailable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indisponible"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.signalSteady" : {
+      "comment" : "State of the signal check when the gaze signal is steady enough.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signal steady"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signal régulier"
+          }
+        }
+      }
+    },
+    "gazeReadiness.detail.signalUnsteady" : {
+      "comment" : "Instruction shown when the gaze signal is too unsteady. The dot is the fixation mark at the centre of the screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep your gaze on the dot in the centre"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fixez le point au centre"
+          }
+        }
+      }
+    },
     "gazeReadiness.eyebrow" : {
       "comment" : "Gaze setup: the checks run before calibration. Small lowercase label above a title.",
       "extractionState" : "manual",

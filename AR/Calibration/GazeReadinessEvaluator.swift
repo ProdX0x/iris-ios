@@ -50,30 +50,35 @@ struct GazeReadinessEvaluator: Hashable, Sendable {
                 nominal: NominalDisplayGeometry, viewport: PlayfieldBounds) -> GazeReadinessReport {
         var checks: [ReadinessCheck] = []
         checks.append(ReadinessCheck(kind: .faceTracking, status: supportsFaceTracking ? .pass : .fail,
-                                     detail: supportsFaceTracking ? "Suivi facial ARKit disponible" : "Appareil sans suivi facial"))
+                                     detail: supportsFaceTracking ? "Suivi facial ARKit disponible" : "Appareil sans suivi facial",
+                                     reason: supportsFaceTracking ? .faceTrackingAvailable : .faceTrackingUnsupported))
         checks.append(ReadinessCheck(kind: .cameraAccess, status: cameraAuthorized ? .pass : .fail,
-                                     detail: cameraAuthorized ? "Autorisé" : "Refusé ou restreint"))
+                                     detail: cameraAuthorized ? "Autorisé" : "Refusé ou restreint",
+                                     reason: cameraAuthorized ? .cameraGranted : .cameraDeniedOrRestricted))
 
         let sessionStatus: ReadinessStatus
         let sessionDetail: String
+        let sessionReason: ReadinessDetail
         switch trackingState {
-        case .tracking: sessionStatus = .pass; sessionDetail = "Frames reçues"
-        case .starting, .idle: sessionStatus = .pending; sessionDetail = "Démarrage"
-        case .interrupted: sessionStatus = .fail; sessionDetail = "Session interrompue"
-        case .unavailable: sessionStatus = .fail; sessionDetail = "Indisponible"
-        case .failed: sessionStatus = .fail; sessionDetail = "Erreur"
+        case .tracking: sessionStatus = .pass; sessionDetail = "Frames reçues"; sessionReason = .sessionReceivingFrames
+        case .starting, .idle: sessionStatus = .pending; sessionDetail = "Démarrage"; sessionReason = .sessionStarting
+        case .interrupted: sessionStatus = .fail; sessionDetail = "Session interrompue"; sessionReason = .sessionInterrupted
+        case .unavailable: sessionStatus = .fail; sessionDetail = "Indisponible"; sessionReason = .sessionUnavailable
+        case .failed: sessionStatus = .fail; sessionDetail = "Erreur"; sessionReason = .sessionFailed
         }
-        checks.append(ReadinessCheck(kind: .session, status: sessionStatus, detail: sessionDetail))
+        checks.append(ReadinessCheck(kind: .session, status: sessionStatus, detail: sessionDetail, reason: sessionReason))
 
         let faceVisible: Bool
         if case .tracking(true) = trackingState { faceVisible = true } else { faceVisible = false }
         let enough = window.count >= configuration.minimumSamples
         checks.append(ReadinessCheck(kind: .faceDetected, status: faceVisible && enough ? .pass : .pending,
-                                     detail: faceVisible ? (enough ? "Visage suivi" : "Un instant…") : "Placez votre visage face à l'écran"))
+                                     detail: faceVisible ? (enough ? "Visage suivi" : "Un instant…") : "Placez votre visage face à l'écran",
+                                     reason: faceVisible ? (enough ? .faceTracked : .faceSettling) : .faceNotInFrame))
 
         guard enough else {
             for kind in [ReadinessCheckKind.eyeTracking, .gazeDirection, .headStable, .signalStable, .blinkDetection, .axisMapping] {
-                checks.append(ReadinessCheck(kind: kind, status: .pending, detail: "En attente du signal"))
+                checks.append(ReadinessCheck(kind: kind, status: .pending, detail: "En attente du signal",
+                                             reason: .awaitingSignal))
             }
             return GazeReadinessReport(checks: checks, axisMapping: axisVote.majority, axisConfidence: axisVote.confidence, sampleCount: window.count)
         }
@@ -86,7 +91,9 @@ struct GazeReadinessEvaluator: Hashable, Sendable {
             && medianDistance.isFinite && configuration.distanceRange.contains(medianDistance)
         checks.append(ReadinessCheck(kind: .eyeTracking, status: eyesValid ? .pass : .fail,
                                      detail: eyesValid ? String(format: "Distance %.0f cm", medianDistance * 100)
-                                                       : "Rapprochez-vous ou éloignez-vous de l'écran (20 à 80 cm)"))
+                                                       : "Rapprochez-vous ou éloignez-vous de l'écran (20 à 80 cm)",
+                                     reason: eyesValid ? .faceDistance(centimetres: medianDistance * 100)
+                                                       : .faceDistanceOutOfRange))
 
         let hits = window.compactMap { sample -> SIMD2<Double>? in
             sample.planeHit.map { hit in
@@ -96,26 +103,36 @@ struct GazeReadinessEvaluator: Hashable, Sendable {
         }
         let hitRatio = Double(hits.count) / Double(window.count)
         checks.append(ReadinessCheck(kind: .gazeDirection, status: hitRatio >= configuration.minimumHitRatio ? .pass : .fail,
-                                     detail: hitRatio >= configuration.minimumHitRatio ? "Regard dirigé vers l'écran" : "Regardez l'écran"))
+                                     detail: hitRatio >= configuration.minimumHitRatio ? "Regard dirigé vers l'écran" : "Regardez l'écran",
+                                     reason: hitRatio >= configuration.minimumHitRatio ? .gazeOnScreen : .gazeOffScreen))
 
         let headDeviation = Self.rmsDeviation(window.map { SIMD2($0.eyeOrigin.x, $0.eyeOrigin.y) })
         let headStable = headDeviation <= configuration.maximumHeadDeviation
         checks.append(ReadinessCheck(kind: .headStable, status: headStable ? .pass : .pending,
-                                     detail: headStable ? "Tête immobile" : "Gardez la tête immobile"))
+                                     detail: headStable ? "Tête immobile" : "Gardez la tête immobile",
+                                     reason: headStable ? .headStill : .headMoving))
 
         let signalDeviation = Self.rmsDeviation(hits)
         let signalStable = hits.count >= configuration.minimumSamples / 2 && signalDeviation <= configuration.maximumSignalDeviation
         checks.append(ReadinessCheck(kind: .signalStable, status: signalStable ? .pass : .pending,
-                                     detail: signalStable ? "Signal régulier" : "Fixez le point au centre"))
+                                     detail: signalStable ? "Signal régulier" : "Fixez le point au centre",
+                                     reason: signalStable ? .signalSteady : .signalUnsteady))
 
         let blinksAvailable = window.allSatisfy(\.hasBlendShapes)
         checks.append(ReadinessCheck(kind: .blinkDetection, status: blinksAvailable ? .pass : .fail,
-                                     detail: blinksAvailable ? "Les clignements seront ignorés" : "Blend shapes indisponibles"))
+                                     detail: blinksAvailable ? "Les clignements seront ignorés" : "Blend shapes indisponibles",
+                                     reason: blinksAvailable ? .blinksIgnored : .blendShapesUnavailable))
 
         let mapping = axisVote.majority
         let axisOK = mapping != nil && axisVote.confidence >= configuration.minimumAxisConfidence
+        let axisReason: ReadinessDetail = if axisOK, let mapping {
+            .axesResolved(right: mapping.right, up: mapping.up)
+        } else {
+            .axesUnresolved
+        }
         checks.append(ReadinessCheck(kind: .axisMapping, status: axisOK ? .pass : .pending,
-                                     detail: axisOK ? "Axes résolus (\(Self.describe(mapping)))" : "Tenez l'iPhone droit devant vous"))
+                                     detail: axisOK ? "Axes résolus (\(Self.describe(mapping)))" : "Tenez l'iPhone droit devant vous",
+                                     reason: axisReason))
 
         return GazeReadinessReport(checks: checks, axisMapping: mapping, axisConfidence: axisVote.confidence, sampleCount: window.count)
     }

@@ -18,6 +18,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | AR/Calibration/GazeReadinessReport.swift | enum | AR | Readiness check kinds, statuses and the report shown before calibration | Claude (mission Iris) |
 | AR/Calibration/NominalDisplayGeometry.swift | struct | AR | Rough physical model of the screen used ONLY as a first guess before calibration and for the | Claude (mission Iris) |
 | AR/Calibration/NormalizedCoordinates.swift | enum | AR | Conversions between viewport points and resolution-independent 0...1 coordinates | Claude (mission Iris) |
+| AR/Calibration/ReadinessDetail.swift | enum | AR | What a readiness check is saying, as a thing rather than as a sentence. The evaluator used to hand the | Claude (mission Iris) |
 | AR/Calibration/RobustAggregator.swift | enum | AR | Median-based fixation estimate with MAD outlier rejection, so a blink or a glance never skews a point | Claude (mission Iris) |
 | AR/Projection/GazeRay.swift | enum | AR | Intersection of the eye-to-lookAtPoint ray with the device plane (z = 0 of the interface-oriented camera | Claude (mission Iris) |
 | AR/Services/ARKitGazeTrackingService+Observation.swift | - | AR | PROTOTYPE observation only: derives head yaw, pitch and roll from the face anchor's rotation in the view | Claude (mission Iris) |
@@ -363,6 +364,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/EnglishTranslationsEN5Campaign.swift | enum | Tests | The English of the campaign — chapters, levels, elements and the three marks. One word per thing, chosen | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/EnglishTranslationsEN5Hints.swift | enum | Tests | The English of the 163 contextual instructions. These are read mid-play, by a player looking somewhere | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/EnglishTranslationsEN5Interface.swift | enum | Tests | The English of the interface sentences EN-4 deferred — everything that teaches the gesture, measures it, | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationsEN5Readiness.swift | enum | Tests | The English of the twenty-five readiness messages — the checklist a player reads just before calibrating. | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
@@ -376,4 +378,5 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/LocalizationInfrastructureTests.swift | struct | Tests | The localisation hinge holds: a stable key resolves, a missing key falls back to the French Iris already | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OnboardingTests.swift | struct | Tests | The four explanation screens: what they say, that they say it about a game and nothing else, that they | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/ReadinessDetailLocalizationTests.swift | struct | Tests | The readiness checklist is the last thing a player reads before calibrating, and until now it answered in | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/VisualCaptureTests.swift | struct | Tests | Deterministic images of representative screens (off screen and hosted in a window) and of every level, to | Claude (mission Iris) |
