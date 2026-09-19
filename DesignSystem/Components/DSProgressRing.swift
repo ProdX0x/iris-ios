@@ -33,7 +33,9 @@ struct DSProgressRing: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(label ?? "progression")
+        // When the ring draws no text of its own, VoiceOver still needs to be told what the element is. A caller's
+        // label is its own text and is passed through untouched; only the fallback is localised.
+        .accessibilityLabel(label ?? IrisText.interface("progress.label", french: "progression"))
         .accessibilityValue(IrisText.interface("progress.percent.value", french: "%lld pour cent", Int((progress * 100).rounded())))
     }
 }

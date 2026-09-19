@@ -27,7 +27,7 @@ struct EnglishTranslationEN5Tests {
         let en5 = Set(EnglishTranslationsEN5.byKey.keys)
         #expect(en4c.isDisjoint(with: en5), "claimed twice: \(en4c.intersection(en5).sorted().prefix(8))")
         #expect(en4c.count == 89, "EN-4C settled \(en4c.count) sentences, not 89")
-        #expect(en5.count == 591, "EN-5 wrote \(en5.count) sentences, not 591 (566 catalogue + 25 readiness)")
+        #expect(en5.count == 595, "EN-5 wrote \(en5.count) sentences, not 595 (566 catalogue + 25 readiness + 4 spoken)")
         let catalogued = Set(try Self.allEntries.map(\.key))
         #expect(en4c.union(en5) == catalogued, "the tables and the catalogues do not describe the same keys")
     }
@@ -53,7 +53,7 @@ struct EnglishTranslationEN5Tests {
                 count += 1
             }
         }
-        #expect(count == 680, "\(count) keys, not 680 (655 + the 25 readiness messages)")
+        #expect(count == 684, "\(count) keys, not 684 (655 + 25 readiness + 4 spoken)")
     }
 
     /// Direction words, French beside English. A sentence that names one in French must name its counterpart in

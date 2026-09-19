@@ -92,6 +92,8 @@ enum InterfaceComments {
         "paywall.lockedChapter": "%@ is a chapter numeral. Says the chapter belongs to the paid access.",
         "paywall.unlock.withPrice": "Main purchase button. %@ is the price, already formatted by the App Store in the "
         + "player's currency. Never alter it, never add a currency, never round it.",
+        "progress.label": "Spoken by VoiceOver to say what a circular progress indicator is, when the ring draws no "
+        + "text of its own. Not shown on screen. One word; the percentage is spoken separately.",
         "progress.percent.value": "VoiceOver value of a progress ring. %lld is a percentage from 0 to 100.",
         "result.levelIndex.eyebrow": "%lld is the level number inside its chapter.",
         "gazeVerdict.percent.value": "%lld is a percentage; `%%` is a literal percent sign.",
@@ -150,6 +152,12 @@ enum InterfaceComments {
         + "is an ideal reference, not a requirement. The percent signs here are literal text, not placeholders.",
         "gazeVerdict.error.note": "FUNCTIONAL: the figure is expressed as a percentage of the screen's short side, "
         + "with thresholds at 18 % and 30 %. The percent signs are literal text.",
+        "status.available": "Spoken by VoiceOver as the value of a status row whose check has passed. Not drawn on "
+        + "screen. One word; it says the thing is there and working, not that a task succeeded.",
+        "status.warning": "Spoken by VoiceOver as the value of a status row that needs attention without being a "
+        + "failure. Not drawn on screen. One word.",
+        "status.unavailable": "Spoken by VoiceOver as the value of a status row whose check has failed. Not drawn on "
+        + "screen. One word; the thing is absent or refused, not broken.",
         "common.recalibrate": "Starts the calibration again.",
         "common.threshold": "Goes back to the threshold — the home screen, called « Seuil » in French. It is a place "
         + "in Iris, so it keeps a name rather than becoming « Home ».",

@@ -8,6 +8,12 @@ import Foundation
 
 enum EnglishTranslationsEN5Interface {
     static let byKey: [String: String] = [
+        // MARK: Spoken by VoiceOver, never drawn
+        "progress.label": "progress",
+        "status.available": "available",
+        "status.warning": "warning",
+        "status.unavailable": "unavailable",
+
         // MARK: Legal and access
         "about.terms.detail": "Iris is covered by Apple's standard licence agreement.",
         "access.full.summary": "Iris is fully unlocked on this Apple Account.",

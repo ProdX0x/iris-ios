@@ -2498,13 +2498,13 @@
       }
     },
     "gazeReadiness.detail.signalSteady" : {
-      "comment" : "State of the signal check when the gaze signal is steady enough.",
+      "comment" : "State of the signal check when the gaze signal is steady enough. The row's title above it already reads « Signal steady », so this line says the same thing in another word, as the French does with « stable » and « régulier ».",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Signal steady"
+            "value" : "Consistent"
           }
         },
         "fr" : {
@@ -4117,6 +4117,24 @@
         }
       }
     },
+    "progress.label" : {
+      "comment" : "Progress indicator. VoiceOver label: what is read aloud, not what is drawn. Spoken by VoiceOver to say what a circular progress indicator is, when the ring draws no text of its own. Not shown on screen. One word; the percentage is spoken separately.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "progress"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "progression"
+          }
+        }
+      }
+    },
     "progress.percent.value" : {
       "comment" : "Progress indicator. A value read aloud or drawn next to a figure. VoiceOver value of a progress ring. %lld is a percentage from 0 to 100.",
       "extractionState" : "manual",
@@ -4657,6 +4675,24 @@
         }
       }
     },
+    "status.available" : {
+      "comment" : "Generic status word. Spoken by VoiceOver as the value of a status row whose check has passed. Not drawn on screen. One word; it says the thing is there and working, not that a task succeeded.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "available"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "disponible"
+          }
+        }
+      }
+    },
     "status.pending" : {
       "comment" : "Generic status word.",
       "extractionState" : "manual",
@@ -4671,6 +4707,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "en attente"
+          }
+        }
+      }
+    },
+    "status.unavailable" : {
+      "comment" : "Generic status word. Spoken by VoiceOver as the value of a status row whose check has failed. Not drawn on screen. One word; the thing is absent or refused, not broken.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unavailable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "indisponible"
+          }
+        }
+      }
+    },
+    "status.warning" : {
+      "comment" : "Generic status word. Spoken by VoiceOver as the value of a status row that needs attention without being a failure. Not drawn on screen. One word.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "warning"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "attention"
           }
         }
       }

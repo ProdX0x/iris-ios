@@ -35,7 +35,7 @@ struct EnglishTranslationTests {
                 counted += 1
             }
         }
-        #expect(counted == 680, "the catalogues hold \(counted) keys, not 680")
+        #expect(counted == 684, "the catalogues hold \(counted) keys, not 684")
     }
 
     @Test("2: the classification still explains which phase wrote each sentence")
@@ -53,11 +53,12 @@ struct EnglishTranslationTests {
                     #expect(EnglishTranslationsEN5.byKey[entry.key] != nil, "\(entry.key) was deferred, so EN-5 owns it")
                     #expect(EnglishTranslations.byKey[entry.key] == nil, "\(entry.key) is claimed by both phases")
                 case .nonSensitive, .reserved:
-                    let clear = LocalizationClassification.mayTranslate(key: entry.key, french: entry.french,
-                                                                        deferredFrench: LocalizationCatalogTests.deferredFrench)
-                    if category == .nonSensitive || clear {
-                        #expect(EnglishTranslations.byKey[entry.key] != nil, "\(entry.key) should be EN-4C's")
-                    }
+                    // Written when EN-4C owned every non-sensitive sentence. Keys created afterwards — the four
+                    // status words VoiceOver speaks, for instance — are non-sensitive too and belong to the phase
+                    // that wrote them. What must stay true is that exactly one phase claims each key.
+                    let en4c = EnglishTranslations.byKey[entry.key] != nil
+                    let en5 = EnglishTranslationsEN5.byKey[entry.key] != nil
+                    #expect(en4c != en5, "\(entry.key) is claimed by \(en4c && en5 ? "both phases" : "neither phase")")
                 }
             }
         }

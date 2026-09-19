@@ -61,12 +61,15 @@ struct DSStatusRow: View {
         }
     }
 
+    /// What VoiceOver says about the row's state. Spoken, never drawn — which is how three of these four went
+    /// untranslated: no scanner looks for a bare literal returned from a switch, and « disponible » carries neither
+    /// an accent nor an article to give itself away.
     private var stateLabel: String {
         switch state {
         case .pending: IrisText.interface("status.pending", french: "en attente")
-        case .ok: "disponible"
-        case .warning: "attention"
-        case .error: "indisponible"
+        case .ok: IrisText.interface("status.available", french: "disponible")
+        case .warning: IrisText.interface("status.warning", french: "attention")
+        case .error: IrisText.interface("status.unavailable", french: "indisponible")
         }
     }
 }

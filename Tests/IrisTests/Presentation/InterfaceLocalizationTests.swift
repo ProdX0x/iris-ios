@@ -282,6 +282,62 @@ struct InterfaceLocalizationTests {
         #expect(keys.count == GazeAssistanceMode.allCases.count * 3)
     }
 
+    @Test("L: nothing VoiceOver says is left in French — and no file is excused from it")
+    func accessibilityValuesAreLocalized() throws {
+        // A literal handed straight to an accessibility API. Spoken, never drawn — which is exactly why the scanner
+        // that reads drawn text never saw « disponible », « attention » and « indisponible ».
+        let spoken = /\.accessibility(?:Label|Value|Hint)\(\s*"((?:\\.|[^"\\])*)"/
+        var raw: [String] = []
+        for base in ["App", "Commerce", "DesignSystem", "Features", "Navigation"] {
+            let directory = Self.projectRoot.appendingPathComponent(base)
+            let files = FileManager.default.enumerator(atPath: directory.path)?.allObjects as? [String] ?? []
+            for relative in files.sorted() where relative.hasSuffix(".swift") {
+                let path = "\(base)/\(relative)"
+                guard let text = try? String(contentsOf: directory.appendingPathComponent(relative), encoding: .utf8)
+                else { continue }
+                for line in Self.shippedLines(of: text) {
+                    let code = line.text.components(separatedBy: "//")[0]
+                    for match in code.matches(of: spoken) where String(match.output.1).count > 2 {
+                        raw.append("\(path):\(line.number) « \(match.output.1) »")
+                    }
+                }
+            }
+        }
+        #expect(raw.isEmpty, "spoken without a key:\n\(raw.joined(separator: "\n"))")
+    }
+
+    @Test("M: the four status-row states are localised, each by its own key")
+    func statusRowStatesAreLocalized() throws {
+        let source = try String(contentsOf: Self.projectRoot
+            .appendingPathComponent("DesignSystem/Components/DSStatusRow.swift"), encoding: .utf8)
+        let body = try #require(source.range(of: "private var stateLabel: String {").map { range in
+            String(source[range.upperBound...].prefix(while: { $0 != "}" }))
+        }, "stateLabel is gone or was renamed")
+
+        var keys: [String: String] = [:]
+        for line in body.split(separator: "\n") {
+            let text = String(line).trimmingCharacters(in: .whitespaces)
+            guard text.hasPrefix("case .") else { continue }
+            let state = String(text.dropFirst(6).prefix(while: { $0 != ":" }))
+            let call = /IrisText\.interface\("([A-Za-z0-9.]+)", french: "((?:\\.|[^"\\])*)"\)/
+            let match = try #require(text.firstMatch(of: call), "\(state) is not localised: \(text)")
+            keys[state] = String(match.output.1)
+            #expect(IrisText.interface(String(match.output.1), french: String(match.output.2)) != String(match.output.1))
+        }
+        #expect(Set(keys.keys) == ["pending", "ok", "warning", "error"], "states found: \(keys.keys.sorted())")
+        #expect(Set(keys.values).count == 4, "two states share a key")
+
+        let catalogue = Dictionary(uniqueKeysWithValues:
+            try LocalizationCatalog.read(table: IrisText.interfaceTable).map { ($0.key, $0) })
+        for (state, key) in keys {
+            let entry = try #require(catalogue[key], "\(state) points at \(key), which the catalogue does not hold")
+            #expect(!entry.french.isEmpty, "\(key) has no French")
+            let english = try #require(entry.english, "\(key) has no English")
+            #expect(!english.isEmpty)
+            #expect(!entry.comment.isEmpty, "\(key) gives a translator no context")
+        }
+    }
+
     @Test("I: French is the source language, and no third language has appeared")
     func onlyExpectedLanguagesExist() throws {
         for name in ["Localizable", "Gameplay"] {
