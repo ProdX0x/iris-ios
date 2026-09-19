@@ -356,6 +356,8 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/ChapterCardLayoutTests.swift | struct | Tests | Every chapter card of the campaign, on every supported phone width and with larger text, fits the width it | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/ColorRoleBoundaryTests.swift | struct | Tests | The colour roles stay apart and keep their values: chapters I to XII and the game's states are unchanged, | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationTests.swift | struct | Tests | What EN-4A is allowed to have done, and nothing more. The classification is reproducible, the English | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslations.swift | enum | Tests | The English of EN-4A, for the non-sensitive interface only. Buttons and titles take the Title Case an iOS | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |
@@ -365,6 +367,7 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/LevelHintLocalizationTests.swift | struct | Tests | Every contextual instruction the engine can show has exactly one stable identity, that identity is never | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LocalizationCatalog.swift | struct | Tests | The deterministic source of the French catalogues. Every entry here is derived — from the campaign, from | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LocalizationCatalogTests.swift | struct | Tests | The French catalogues say exactly what the app says, and nothing else. Every key the app can ask for has an | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/LocalizationClassification.swift | enum | Tests | Decides, by rule and not by opinion, which sentences may be translated now and which must wait. A wrong | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/LocalizationInfrastructureTests.swift | struct | Tests | The localisation hinge holds: a stable key resolves, a missing key falls back to the French Iris already | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OculomotorTraceTests.swift | struct | Tests | PROTOTYPE instrumentation: gaze states as the mapper really provides them, viewport exits without any | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/OnboardingTests.swift | struct | Tests | The four explanation screens: what they say, that they say it about a game and nothing else, that they | Claude (mission Iris) |

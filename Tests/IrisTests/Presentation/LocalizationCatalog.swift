@@ -15,12 +15,16 @@ struct CatalogEntry: Hashable, Comparable {
     let comment: String
     /// True when the catalogue declares a plural variation on the first argument of the format.
     let isPluralized: Bool
+    /// The English, when this key has been cleared for translation. Nil is the normal state of a sentence still
+    /// waiting for EN-5, and it is never filled in by guesswork.
+    let english: String?
 
-    init(_ key: String, _ french: String, _ comment: String, pluralized: Bool = false) {
+    init(_ key: String, _ french: String, _ comment: String, pluralized: Bool = false, english: String? = nil) {
         self.key = key
         self.french = french
         self.comment = comment
         self.isPluralized = pluralized
+        self.english = english
     }
 
     static func < (lhs: CatalogEntry, rhs: CatalogEntry) -> Bool { lhs.key < rhs.key }
@@ -207,8 +211,9 @@ enum LocalizationCatalog {
                   let localizations = entry["localizations"] as? [String: Any],
                   let french = localizations["fr"] as? [String: Any]
             else { return nil }
+            let english = ((localizations["en"] as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
             if let unit = french["stringUnit"] as? [String: Any], let value = unit["value"] as? String {
-                return CatalogEntry(key, value, entry["comment"] as? String ?? "")
+                return CatalogEntry(key, value, entry["comment"] as? String ?? "", english: english)
             }
             guard let variations = french["variations"] as? [String: Any],
                   let plural = variations["plural"] as? [String: Any],
@@ -216,8 +221,34 @@ enum LocalizationCatalog {
                   let unit = other["stringUnit"] as? [String: Any],
                   let value = unit["value"] as? String
             else { return nil }
-            return CatalogEntry(key, value, entry["comment"] as? String ?? "", pluralized: true)
+            return CatalogEntry(key, value, entry["comment"] as? String ?? "", pluralized: true, english: english)
         }.sorted()
+    }
+
+    // MARK: - English, attached only where the classification allows it
+
+    /// Puts the English of EN-4A on the entries cleared for it. A sentence deferred to EN-5 is left in French, and a
+    /// reserved key is translated only when its words are not deferred elsewhere. A translation offered for a key the
+    /// rule has not cleared is dropped here rather than written: the catalogue cannot become a way around the rule.
+    static func attachEnglish(to entries: [CatalogEntry], table: String,
+                              classes: [String: LocalizationClass], deferredFrench: Set<String>) -> [CatalogEntry] {
+        entries.map { entry in
+            let category = classes["\(table)|\(entry.key)"]
+            let cleared: Bool
+            switch category {
+            case .nonSensitive: cleared = true
+            case .reserved: cleared = LocalizationClassification.mayTranslate(key: entry.key, french: entry.french,
+                                                                              deferredFrench: deferredFrench)
+            default: cleared = false
+            }
+            guard cleared, let english = EnglishTranslations.byKey[entry.key] else { return entry }
+            return CatalogEntry(entry.key, entry.french, entry.comment, pluralized: entry.isPluralized, english: english)
+        }
+    }
+
+    /// Every French sentence that is waiting for EN-5, wherever it appears.
+    static func deferredFrench(in classes: [String: LocalizationClass], entries: [(String, CatalogEntry)]) -> Set<String> {
+        Set(entries.filter { classes["\($0.0)|\($0.1.key)"] == .sensitiveEN5 }.map(\.1.french))
     }
 
     /// Which languages each key carries. The measure EN-4 will be judged on.
@@ -244,8 +275,12 @@ enum LocalizationCatalog {
             } else {
                 french = ["stringUnit": ["state": "translated", "value": entry.french]]
             }
+            var localizations: [String: Any] = ["fr": french]
+            if let english = entry.english {
+                localizations["en"] = ["stringUnit": ["state": "translated", "value": english]]
+            }
             strings[entry.key] = ["comment": entry.comment, "extractionState": "manual",
-                                  "localizations": ["fr": french]]
+                                  "localizations": localizations]
         }
         let root: [String: Any] = ["sourceLanguage": "fr", "strings": strings, "version": "1.0"]
         return try JSONSerialization.data(withJSONObject: root,

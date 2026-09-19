@@ -276,8 +276,8 @@ struct InterfaceLocalizationTests {
         #expect(keys.count == GazeAssistanceMode.allCases.count * 3)
     }
 
-    @Test("I: no translation has been added")
-    func noTranslationExists() throws {
+    @Test("I: French is the source language, and no third language has appeared")
+    func onlyExpectedLanguagesExist() throws {
         for name in ["Localizable", "Gameplay"] {
             let url = Self.projectRoot.appendingPathComponent("Resources/\(name).xcstrings")
             let catalogue = try #require(try JSONSerialization.jsonObject(with: try Data(contentsOf: url)) as? [String: Any])
@@ -285,7 +285,12 @@ struct InterfaceLocalizationTests {
             let strings = try #require(catalogue["strings"] as? [String: Any])
             for (key, entry) in strings {
                 let localizations = try #require((entry as? [String: Any])?["localizations"] as? [String: Any])
-                #expect(Set(localizations.keys) == ["fr"], "\(name): \(key) carries a language other than French")
+                // EN-2 and EN-3 could say « French only ». Since EN-4A the non-sensitive interface also carries
+                // English; which keys may is decided by rule, and proved in EnglishTranslationTests. Here: French
+                // is never lost, and nothing but English has been added.
+                #expect(localizations["fr"] != nil, "\(name): \(key) has lost its French")
+                #expect(Set(localizations.keys).isSubset(of: ["fr", "en"]),
+                        "\(name): \(key) carries a language Iris does not ship")
             }
         }
     }

@@ -11,8 +11,24 @@ import Testing
 
 @Suite("French localization catalogues")
 struct LocalizationCatalogTests {
-    private static let gameplay = LocalizationCatalog.gameplayEntries
-    private static let interface = LocalizationCatalog.interfaceEntries(calls: InterfaceLocalizationTests.callSites)
+    private static let rawGameplay = LocalizationCatalog.gameplayEntries
+    private static let rawInterface = LocalizationCatalog.interfaceEntries(calls: InterfaceLocalizationTests.callSites)
+
+    /// The class of every key of both tables, decided by rule and shared by the generator and every check below.
+    static let classes: [String: LocalizationClass] = LocalizationClassification.classifyAll(
+        rawGameplay.map { (IrisText.gameplayTable, $0.key, $0.french, $0.comment) }
+            + rawInterface.map { (IrisText.interfaceTable, $0.key, $0.french, $0.comment) })
+
+    static let deferredFrench: Set<String> = LocalizationCatalog.deferredFrench(
+        in: classes,
+        entries: rawGameplay.map { (IrisText.gameplayTable, $0) } + rawInterface.map { (IrisText.interfaceTable, $0) })
+
+    private static let gameplay = LocalizationCatalog.attachEnglish(
+        to: rawGameplay, table: IrisText.gameplayTable, classes: classes, deferredFrench: deferredFrench)
+    private static let interface = LocalizationCatalog.attachEnglish(
+        to: rawInterface, table: IrisText.interfaceTable, classes: classes, deferredFrench: deferredFrench)
+
+    static func category(_ table: String, _ key: String) -> LocalizationClass? { classes["\(table)|\(key)"] }
 
     /// Writes the two catalogues from the corpus. Runs only when `.write-catalogs` sits at the project root, so no
     /// ordinary test run can ever touch the repository.
@@ -68,15 +84,20 @@ struct LocalizationCatalogTests {
         }
     }
 
-    @Test("Q: no English has been added")
-    func noEnglishExists() throws {
+    @Test("Q: French is the source, and the only other language is the English EN-4A was allowed to write")
+    func noUnexpectedLanguageExists() throws {
+        // EN-3 asserted that nothing but French existed. EN-4A ends that on purpose, for the non-sensitive keys
+        // only; which keys those are is decided by rule and checked in EnglishTranslationTests. What stays true
+        // here is narrower and still worth holding: French is the source, and no third language has appeared.
         for table in [IrisText.gameplayTable, IrisText.interfaceTable] {
             let root = try JSONSerialization.jsonObject(with: try Data(contentsOf: LocalizationCatalog.url(table: table))) as? [String: Any]
             #expect(root?["sourceLanguage"] as? String == "fr")
             let strings = try #require(root?["strings"] as? [String: Any])
             for (key, raw) in strings {
                 let localizations = try #require((raw as? [String: Any])?["localizations"] as? [String: Any])
-                #expect(Set(localizations.keys) == ["fr"], "\(table)/\(key) carries a language other than French")
+                #expect(localizations["fr"] != nil, "\(table)/\(key) has lost its French")
+                #expect(Set(localizations.keys).isSubset(of: ["fr", "en"]),
+                        "\(table)/\(key) carries a language Iris does not ship")
             }
         }
     }
@@ -200,13 +221,19 @@ struct LocalizationCatalogTests {
         }
     }
 
-    @Test("Y: what EN-4 will have to fill, listed rather than guessed")
+    @Test("Y: what still has no English, measured rather than guessed")
     func englishCoverageIsMeasurable() throws {
-        for table in [IrisText.gameplayTable, IrisText.interfaceTable] {
-            let entries = try LocalizationCatalog.read(table: table)
-            #expect(!entries.isEmpty)
-            #expect(try Self.keysAwaitingEnglish(in: table).count == entries.count,
-                    "\(table): English exists for some keys already, which EN-3 must not have added")
+        // The whole gameplay corpus waits for EN-5; in the interface, exactly the keys the rule deferred.
+        let gameplayWaiting = try Self.keysAwaitingEnglish(in: IrisText.gameplayTable)
+        let gameplayTotal = try LocalizationCatalog.read(table: IrisText.gameplayTable).count
+        #expect(gameplayWaiting.count == gameplayTotal)
+
+        let interface = try LocalizationCatalog.read(table: IrisText.interfaceTable)
+        let waiting = Set(try Self.keysAwaitingEnglish(in: IrisText.interfaceTable))
+        for entry in interface {
+            let deferred = Self.category(IrisText.interfaceTable, entry.key) != .nonSensitive
+                && !(Self.category(IrisText.interfaceTable, entry.key) == .reserved && entry.english != nil)
+            #expect(waiting.contains(entry.key) == deferred, "\(entry.key): waiting \(waiting.contains(entry.key)), deferred \(deferred)")
         }
     }
 

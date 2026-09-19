@@ -110,14 +110,19 @@ struct LocalizationInfrastructureTests {
         #expect(keys.allSatisfy { !$0.contains(" ") }, "a key is an identifier, not a sentence")
     }
 
-    @Test("G: the catalogues hold French and nothing else, and no key is orphaned from the content")
-    func cataloguesAreFrenchOnly() throws {
+    @Test("G: French is the source of both catalogues, every key gives a translator context")
+    func cataloguesAreFrenchSourced() throws {
         for name in ["Localizable", "Gameplay"] {
             let catalogue = try catalog(name)
             #expect(catalogue["sourceLanguage"] as? String == "fr")
             for (key, entry) in try strings(name) {
                 let localizations = try #require((entry as? [String: Any])?["localizations"] as? [String: Any])
-                #expect(Set(localizations.keys) == ["fr"], "\(name): \(key) carries a language other than French")
+                // Written when French was the only language. EN-4A adds English to the non-sensitive interface
+                // under a rule checked in EnglishTranslationTests; what this suite still guards is that French is
+                // never lost and that no unplanned language appears.
+                #expect(localizations["fr"] != nil, "\(name): \(key) has lost its French")
+                #expect(Set(localizations.keys).isSubset(of: ["fr", "en"]),
+                        "\(name): \(key) carries a language Iris does not ship")
                 let comment = (entry as? [String: Any])?["comment"] as? String
                 #expect(!(comment ?? "").isEmpty, "\(name): \(key) gives a translator no context")
             }

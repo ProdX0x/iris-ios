@@ -5,6 +5,12 @@
       "comment" : "About and legal screen. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email Support"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17,6 +23,12 @@
       "comment" : "About and legal screen. VoiceOver label: what is read aloud, not what is drawn. %@ is the support email address, unchanged in every language.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact address: %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29,6 +41,12 @@
       "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens a new message to Iris support"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41,6 +59,12 @@
       "comment" : "About and legal screen. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About & Legal Information"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53,6 +77,12 @@
       "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identity, version, links and privacy"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65,6 +95,12 @@
       "comment" : "About and legal screen. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "links"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77,6 +113,12 @@
       "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the privacy policy on the Iris website"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89,6 +131,12 @@
       "comment" : "About and legal screen. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101,6 +149,12 @@
       "comment" : "About and legal screen. The author's role on the project, next to their name.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Design & Project Direction"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113,6 +167,12 @@
       "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the official Iris website"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125,6 +185,12 @@
       "comment" : "About and legal screen. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Official Website"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137,6 +203,12 @@
       "comment" : "About and legal screen. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "support"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161,6 +233,12 @@
       "comment" : "About and legal screen. VoiceOver hint: says what happens if the control is used.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the standard license agreement on Apple's website"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -173,6 +251,12 @@
       "comment" : "About and legal screen. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Use"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -185,6 +269,12 @@
       "comment" : "About and legal screen. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "about"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -197,6 +287,12 @@
       "comment" : "About and legal screen. A composed line. %@ is the version (1.0), then %@ the build number. Both are literal, never translated.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@ (build %@)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -485,6 +581,12 @@
       "comment" : "Carnet, the collection of game elements the player has met.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "to be discovered"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -497,6 +599,12 @@
       "comment" : "Chapter map. VoiceOver label: what is read aloud, not what is drawn. VoiceOver label of a chapter card. %lld is the chapter number, %@ its name, then the number of levels reached and the number of levels it holds. Keep all four, in an order the sentence allows.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapter %lld, %@, %lld of %lld levels reached"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -509,6 +617,12 @@
       "comment" : "Chapter map. Same as `chapters.card.label`, for a chapter the player has not bought. %lld chapter number, %@ name, levels reached, levels in total. The ending says the full access is required.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapter %lld, %@, %lld of %lld levels reached, full access required"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -521,6 +635,12 @@
       "comment" : "Chapter map. VoiceOver label: what is read aloud, not what is drawn. VoiceOver label of a level. %lld is the level number inside its chapter, %@ its title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Level %lld, %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -533,6 +653,12 @@
       "comment" : "Chapter map.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "locked"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -545,6 +671,12 @@
       "comment" : "Chapter map.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "to play"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -557,6 +689,12 @@
       "comment" : "Chapter map. VoiceOver hint: says what happens if the control is used. %@ is a chapter numeral (I, II, III…). Says which chapter must be finished first.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish chapter %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -569,6 +707,12 @@
       "comment" : "Chapter map. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chapters"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -581,6 +725,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -593,6 +743,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -605,6 +761,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -617,6 +779,12 @@
       "comment" : "Shared control or line, used on several screens. A composed line. %@ is a chapter numeral, %@ its name. The separator is a middle dot.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -629,6 +797,12 @@
       "comment" : "Shared control or line, used on several screens. A composed line. %@ chapter numeral, %@ chapter name, %@ level title. Punctuation is part of the design: a middle dot then an em dash.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@ — %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -641,6 +815,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapters"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -653,6 +833,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -665,6 +851,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -677,6 +869,12 @@
       "comment" : "Shared control or line, used on several screens. Joins the last two items of a list of chapter numerals: « I, II et III ». Keep the spaces around the word. Only used inside `paywall.freeChapters`.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " and "
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -689,6 +887,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -701,6 +905,12 @@
       "comment" : "Shared control or line, used on several screens. VoiceOver label of a page indicator. %lld is the current screen, %lld the total.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen %lld of %lld"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -725,6 +935,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replay"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -737,6 +953,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restart"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -749,6 +971,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -761,6 +989,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -773,6 +1007,12 @@
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -893,6 +1133,12 @@
       "comment" : "In-game overlays, shown over a level in progress. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "interrupted"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -905,6 +1151,12 @@
       "comment" : "In-game overlays, shown over a level in progress. VoiceOver label: what is read aloud, not what is drawn. VoiceOver label of the level mark in the HUD. %@ is the mark itself, e.g. « III · 2 ».",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Level %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -917,6 +1169,12 @@
       "comment" : "In-game overlays, shown over a level in progress. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -929,6 +1187,12 @@
       "comment" : "In-game overlays, shown over a level in progress. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "resuming"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1769,6 +2033,12 @@
       "comment" : "Threshold screen. The main button when the player's state is `begin`. One or two words; it is the largest control on the screen.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1781,6 +2051,12 @@
       "comment" : "Threshold screen. The main button when the player's state is `replay`. One or two words; it is the largest control on the screen.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replay a Chapter"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1793,6 +2069,12 @@
       "comment" : "Threshold screen. The main button when the player's state is `resume`. One or two words; it is the largest control on the screen.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1805,6 +2087,12 @@
       "comment" : "Threshold, the first screen. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replay a Chapter"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1925,6 +2213,12 @@
       "comment" : "End of the journey, after the last level. VoiceOver label: what is read aloud, not what is drawn.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "play time"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1937,6 +2231,12 @@
       "comment" : "The card shown before a level starts. A composed line. %@ chapter numeral, %@ chapter name, %lld level number.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@ — %lld"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1949,6 +2249,12 @@
       "comment" : "The card shown before a level starts. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chapters"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1961,6 +2267,12 @@
       "comment" : "The card shown before a level starts.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "new"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1985,6 +2297,12 @@
       "comment" : "Navigation. Tab bar label for `chapitres`. RESERVED: not read at runtime yet — the tab bar is drawn in a frozen file. Translate it anyway; a tab label must stay very short.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapters"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2033,6 +2351,12 @@
       "comment" : "Navigation. Title of the `paywall` sheet. RESERVED: not read at runtime yet — its only display site is a frozen file. Translate it anyway.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full Access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2045,6 +2369,12 @@
       "comment" : "Navigation. Title of the `settings` sheet. RESERVED: not read at runtime yet — its only display site is a frozen file. Translate it anyway.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2201,6 +2531,12 @@
       "comment" : "Pause panel. Explanatory line under a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris awaits your return."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2225,6 +2561,12 @@
       "comment" : "Pause panel. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pause"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2237,6 +2579,12 @@
       "comment" : "Pause panel. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "paused"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2249,6 +2597,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "full access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2273,6 +2627,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "full access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2285,6 +2645,12 @@
       "comment" : "Paywall: what the full access is and how to get it. %@ is a chapter numeral. Says the chapter belongs to the paid access.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chapter %@ is included with full access."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2309,6 +2675,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Shown when the App Store did not return a price. Must keep both halves: the price could not be read, and the free chapters stay open.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The price could not be retrieved from the App Store. Try again later: the free chapters stay open."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2321,6 +2693,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Reassurance: progress is stored on the device and survives the purchase.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your progress is saved on this device: it will be waiting for you, no matter what."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2333,6 +2711,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "temporary access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2357,6 +2741,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Button label — keep it short enough for a control. Opens the App Store offer-code sheet.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redeem an Access Code"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2369,6 +2759,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Button label — keep it short enough for a control. Restores purchases already made on this Apple Account. Apple's own wording in the target language is the safest choice.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2381,6 +2777,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Shown while the App Store is being contacted.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacting the App Store"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2393,6 +2795,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full Access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2405,6 +2813,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock Full Access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2417,6 +2831,12 @@
       "comment" : "Paywall: what the full access is and how to get it. Main purchase button. %@ is the price, already formatted by the App Store in the player's currency. Never alter it, never add a currency, never round it.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock · %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2441,6 +2861,12 @@
       "comment" : "Progress indicator. A value read aloud or drawn next to a figure. VoiceOver value of a progress ring. %lld is a percentage from 0 to 100.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld percent"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2453,6 +2879,12 @@
       "comment" : "Result of a purchase or a restore. The purchase did not complete. Neutral: it is not the player's fault and nothing was charged.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The purchase did not complete."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2489,6 +2921,12 @@
       "comment" : "Result of a purchase or a restore. Purchases were restored successfully.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your purchases have been restored."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2501,6 +2939,12 @@
       "comment" : "Result of a purchase or a restore. The App Store could not be reached. Temporary; the free chapters stay open.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The App Store cannot be reached right now."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2513,6 +2957,12 @@
       "comment" : "Result of a purchase or a restore. The full access is now open.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full access unlocked."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2537,6 +2987,12 @@
       "comment" : "The panel shown when a level is finished.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "best time"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2549,6 +3005,12 @@
       "comment" : "The panel shown when a level is finished. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "chapter complete"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2585,6 +3047,12 @@
       "comment" : "The panel shown when a level is finished. Small lowercase label above a title. %lld is the level number inside its chapter.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "level %lld"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2597,6 +3065,12 @@
       "comment" : "The panel shown when a level is finished.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "new"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2621,6 +3095,12 @@
       "comment" : "The panel shown when a level is finished. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the Ending"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2645,6 +3125,12 @@
       "comment" : "Settings. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "access"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2657,6 +3143,12 @@
       "comment" : "Settings.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ambient Sound"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2669,6 +3161,12 @@
       "comment" : "Settings.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound Effects"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2693,6 +3191,12 @@
       "comment" : "Settings. VoiceOver label: what is read aloud, not what is drawn.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptics"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2705,6 +3209,12 @@
       "comment" : "Settings.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "settings"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2729,6 +3239,12 @@
       "comment" : "Settings. Small lowercase label above a title.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "privacy"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2753,6 +3269,12 @@
       "comment" : "Settings. Button label — keep it short enough for a control.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Progress"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2777,6 +3299,12 @@
       "comment" : "Settings.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2801,6 +3329,12 @@
       "comment" : "Generic status word.",
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pending"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
