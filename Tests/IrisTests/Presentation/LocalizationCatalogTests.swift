@@ -221,19 +221,13 @@ struct LocalizationCatalogTests {
         }
     }
 
-    @Test("Y: what still has no English, measured rather than guessed")
-    func englishCoverageIsMeasurable() throws {
-        // The whole gameplay corpus waits for EN-5; in the interface, exactly the keys the rule deferred.
-        let gameplayWaiting = try Self.keysAwaitingEnglish(in: IrisText.gameplayTable)
-        let gameplayTotal = try LocalizationCatalog.read(table: IrisText.gameplayTable).count
-        #expect(gameplayWaiting.count == gameplayTotal)
-
-        let interface = try LocalizationCatalog.read(table: IrisText.interfaceTable)
-        let waiting = Set(try Self.keysAwaitingEnglish(in: IrisText.interfaceTable))
-        for entry in interface {
-            let deferred = Self.category(IrisText.interfaceTable, entry.key) != .nonSensitive
-                && !(Self.category(IrisText.interfaceTable, entry.key) == .reserved && entry.english != nil)
-            #expect(waiting.contains(entry.key) == deferred, "\(entry.key): waiting \(waiting.contains(entry.key)), deferred \(deferred)")
+    @Test("Y: nothing is waiting for English any more")
+    func englishCoverageIsComplete() throws {
+        // EN-3 wrote this to list what EN-4 and EN-5 would have to fill. Both have. What it holds now is the end
+        // state: every catalogued key answers in English as well as in French.
+        for table in [IrisText.gameplayTable, IrisText.interfaceTable] {
+            let waiting = try Self.keysAwaitingEnglish(in: table)
+            #expect(waiting.isEmpty, "\(table) still has \(waiting.count) key(s) without English: \(waiting.prefix(8))")
         }
     }
 

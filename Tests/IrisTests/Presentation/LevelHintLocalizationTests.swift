@@ -128,7 +128,7 @@ struct LevelHintLocalizationTests {
         #expect(checked == 162 + levels.count, "expected one correspondence per hint plus one late help per level")
     }
 
-    @Test("I: no instruction has been translated")
+    @Test("I: every instruction keeps its French, and no language Iris does not ship")
     func noTranslationExists() throws {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .deletingLastPathComponent().deletingLastPathComponent()
@@ -137,7 +137,11 @@ struct LevelHintLocalizationTests {
         let strings = try #require(catalogue["strings"] as? [String: Any])
         for (key, entry) in strings {
             let localizations = try #require((entry as? [String: Any])?["localizations"] as? [String: Any])
-            #expect(Set(localizations.keys) == ["fr"], "\(key) carries a language other than French")
+            // Until EN-5 this said « French only ». EN-5 translates the instructions on purpose; what still has
+            // to hold is that the French is never lost and that no third language appears.
+            #expect(localizations["fr"] != nil, "\(key) has lost its French")
+            #expect(Set(localizations.keys).isSubset(of: ["fr", "en"]),
+                    "\(key) carries a language Iris does not ship")
         }
     }
 

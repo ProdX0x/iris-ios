@@ -38,25 +38,26 @@ struct EnglishTranslationTests {
         #expect(counted == 655, "the catalogues hold \(counted) keys, not 655")
     }
 
-    @Test("2: English exists for every non-sensitive key, and for no sensitive one")
+    @Test("2: the classification still explains which phase wrote each sentence")
     func englishSitsWhereTheRuleAllows() throws {
+        // Until EN-5 this read « and for no sensitive one ». EN-5 ends that deliberately: what the rule decides now
+        // is which table a key's English came from, and EN-4C's ninety-four sentences must never be reached by it.
         for table in Self.tables {
             for entry in try Self.entries(table) {
-                switch LocalizationCatalogTests.category(table, entry.key) {
-                case .nonSensitive:
-                    let english = try #require(entry.english, "\(entry.key) is non-sensitive and has no English")
-                    #expect(!english.isEmpty)
+                let category = try #require(LocalizationCatalogTests.category(table, entry.key),
+                                            "\(table)/\(entry.key) has no class")
+                let english = try #require(entry.english, "\(entry.key) has no English")
+                #expect(!english.isEmpty)
+                switch category {
                 case .sensitiveEN5:
-                    #expect(entry.english == nil, "\(entry.key) is deferred to EN-5 and must not be translated yet")
-                case .reserved:
-                    if LocalizationClassification.mayTranslate(key: entry.key, french: entry.french,
-                                                               deferredFrench: LocalizationCatalogTests.deferredFrench) {
-                        #expect(entry.english != nil, "\(entry.key) is reserved and clear, so it should be translated")
-                    } else {
-                        #expect(entry.english == nil, "\(entry.key) carries words that are deferred elsewhere")
+                    #expect(EnglishTranslationsEN5.byKey[entry.key] != nil, "\(entry.key) was deferred, so EN-5 owns it")
+                    #expect(EnglishTranslations.byKey[entry.key] == nil, "\(entry.key) is claimed by both phases")
+                case .nonSensitive, .reserved:
+                    let clear = LocalizationClassification.mayTranslate(key: entry.key, french: entry.french,
+                                                                        deferredFrench: LocalizationCatalogTests.deferredFrench)
+                    if category == .nonSensitive || clear {
+                        #expect(EnglishTranslations.byKey[entry.key] != nil, "\(entry.key) should be EN-4C's")
                     }
-                case nil:
-                    Issue.record("\(table)/\(entry.key) has no class")
                 }
             }
         }
@@ -72,14 +73,15 @@ struct EnglishTranslationTests {
                 #expect(!english.hasPrefix("level.") && !english.hasPrefix("hint.") && !english.hasPrefix("chapter."),
                         "\(entry.key) looks like an identifier")
                 if english == entry.french {
-                    #expect(EnglishTranslations.identicalByDesign.contains(entry.key),
-                            "\(entry.key) is identical to the French without being listed as legitimately identical")
+                    let listed = EnglishTranslations.identicalByDesign.contains(entry.key)
+                        || EnglishTranslationsEN5.identicalByDesign.contains(entry.key)
+                    #expect(listed, "\(entry.key) is identical to the French without being listed as legitimately identical")
                 }
             }
         }
         // And nothing sits in the list that is not actually identical.
         let all = try Self.tables.flatMap { try Self.entries($0) }
-        for key in EnglishTranslations.identicalByDesign {
+        for key in EnglishTranslations.identicalByDesign.union(EnglishTranslationsEN5.identicalByDesign) {
             let entry = try #require(all.first { $0.key == key }, "\(key) is listed but absent from the catalogue")
             #expect(entry.english == entry.french, "\(key) is listed as identical but the two differ")
         }
@@ -134,37 +136,35 @@ struct EnglishTranslationTests {
         }
     }
 
-    @Test("7: the whole gameplay corpus is still waiting for EN-5")
-    func gameplayIsUntranslated() throws {
+    @Test("7: the whole gameplay corpus is translated, and all of it by EN-5")
+    func gameplayIsTranslatedByEN5() throws {
         let gameplay = try Self.entries(IrisText.gameplayTable)
         #expect(gameplay.count == 417)
-        #expect(gameplay.allSatisfy { $0.english == nil }, "a gameplay sentence was translated before EN-5")
         for entry in gameplay {
+            #expect(entry.english != nil, "\(entry.key) has no English")
             #expect(LocalizationCatalogTests.category(IrisText.gameplayTable, entry.key) == .sensitiveEN5)
+            #expect(EnglishTranslations.byKey[entry.key] == nil, "\(entry.key) belongs to EN-5, not EN-4C")
         }
     }
 
-    @Test("8: every key EnglishTranslations offers is a key the catalogue holds and the rule cleared")
+    @Test("8: every translation offered is written, and no more than what was offered")
     func noTranslationIsStranded() throws {
         let all = try Self.tables.flatMap { table in try Self.entries(table).map { (table, $0) } }
         let written = Set(all.compactMap { $0.1.english == nil ? nil : $0.1.key })
-        for key in EnglishTranslations.byKey.keys {
-            #expect(written.contains(key), "\(key) is translated in the table but not written to the catalogue")
-        }
-        #expect(written.count == EnglishTranslations.byKey.count,
-                "\(written.count) keys carry English, \(EnglishTranslations.byKey.count) were offered")
+        let offered = Set(EnglishTranslations.byKey.keys).union(EnglishTranslationsEN5.byKey.keys)
+        #expect(written == offered, "written \(written.count), offered \(offered.count)")
     }
 
-    @Test("9: the plural mechanism is Apple's, and no English plural has been written")
-    func pluralsAreNativeAndStillFrench() throws {
+    @Test("9: the plural mechanism is Apple's, in both languages")
+    func pluralsAreNative() throws {
         let plurals = try Self.entries(IrisText.interfaceTable).filter(\.isPluralized)
         #expect(plurals.count == 2)
         for entry in plurals {
-            // Deferred with the rest of the « éclat » vocabulary: the English noun is EN-5's to choose.
-            #expect(entry.english == nil, "\(entry.key) was given an English plural before its noun exists")
-            #expect(LocalizationCatalogTests.category(IrisText.interfaceTable, entry.key) == .sensitiveEN5)
+            #expect(entry.english != nil, "\(entry.key) has no English plural")
+            #expect(entry.englishOne != nil, "\(entry.key) has no English singular")
+            #expect(entry.englishOne != entry.english, "\(entry.key): English says the same thing at 1 and at 2")
         }
-        // The mechanism itself still resolves, in French, at every count the app can show.
+        // French keeps one wording at every count, exactly as validated.
         for count in [0, 1, 2, 5] {
             #expect(IrisText.interface("eclats.outOfThree.value", french: "%lld éclats sur 3", count)
                     == "\(count) éclats sur 3")
@@ -193,29 +193,41 @@ struct EnglishTranslationTests {
                     #expect(fr == entry.french, "fr/\(entry.key) answered « \(fr) »")
                 }
                 let en = english.localizedString(forKey: entry.key, value: marker, table: table)
-                if let expected = entry.english {
-                    #expect(en == expected, "en/\(entry.key) answered « \(en) »")
+                let expected = try #require(entry.english, "\(entry.key) has no English")
+                if entry.isPluralized {
+                    #expect(en.contains("%#@"), "en/\(entry.key) should resolve through the plural template")
                 } else {
-                    // Untranslated: the English bundle has nothing to say, and the app falls back to its French.
-                    #expect(en == marker, "en/\(entry.key) answered « \(en) » but has no English yet")
+                    #expect(en == expected, "en/\(entry.key) answered « \(en) »")
                 }
                 #expect(fr != entry.key && en != entry.key)
             }
         }
     }
 
-    @Test("12: the plural entries resolve in French at 0, 1, 2 and 5, and carry no English plural")
+    @Test("12: the plurals resolve at 0, 1, 2 and 5 — English singular at 1, plural everywhere else")
     func pluralsResolveAtEveryCount() throws {
         let english = try Self.bundle("en")
-        for entry in try Self.entries(IrisText.interfaceTable).filter(\.isPluralized) {
-            #expect(english.localizedString(forKey: entry.key, value: "\u{0}", table: IrisText.interfaceTable) == "\u{0}",
-                    "\(entry.key) has an English plural before EN-5 chose the noun")
+        let french = try Self.bundle("fr")
+        let locale = Locale(identifier: "en_US")
+
+        func render(_ bundle: Bundle, _ key: String, _ arguments: [any CVarArg]) -> String {
+            let template = bundle.localizedString(forKey: key, value: "", table: IrisText.interfaceTable)
+            return String(format: template, locale: locale, arguments: arguments)
         }
+
         for count in [0, 1, 2, 5] {
-            #expect(IrisText.interface("eclats.outOfThree.value", french: "%lld éclats sur 3", count)
-                    == "\(count) éclats sur 3")
-            #expect(IrisText.interface("eclats.total.value", french: "%lld éclats sur %lld", count, 423)
-                    == "\(count) éclats sur 423")
+            let noun = count == 1 ? "glint" : "glints"
+            #expect(render(english, "eclats.outOfThree.value", [count]) == "\(count) \(noun) out of 3")
+            #expect(render(english, "eclats.total.value", [count, 423]) == "\(count) \(noun) out of 423")
+            // French keeps one wording at every count: EN-5 changes no validated French.
+            #expect(render(french, "eclats.outOfThree.value", [count]) == "\(count) éclats sur 3")
+            #expect(render(french, "eclats.total.value", [count, 423]) == "\(count) éclats sur 423")
+        }
+        // The noun is the one word Iris uses for what a level awards, and it is used nowhere else by another name.
+        #expect(EnglishTranslationsEN5.eclatTerm == "glint")
+        for key in ["eclats.outOfThree.value", "eclats.total.value", "journey.eclats.label", "settings.reset.confirm"] {
+            let value = try #require(EnglishTranslationsEN5.byKey[key] ?? EnglishTranslationsEN5.plurals[key]?.other)
+            #expect(value.lowercased().contains(EnglishTranslationsEN5.eclatTerm), "\(key) names the mark differently")
         }
     }
 

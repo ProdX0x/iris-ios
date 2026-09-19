@@ -356,8 +356,13 @@ Registry of every source file in the project. One row per file. Updated by every
 | Tests/IrisTests/Presentation/CameraAccessViewModelTests.swift | struct | Tests | Camera permission phases and navigation | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/ChapterCardLayoutTests.swift | struct | Tests | Every chapter card of the campaign, on every supported phone width and with larger text, fits the width it | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/ColorRoleBoundaryTests.swift | struct | Tests | The colour roles stay apart and keep their values: chapters I to XII and the game's states are unchanged, | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationEN5Tests.swift | struct | Tests | What EN-5 must not have got wrong. The instructions it translates decide where a player looks, and the | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/EnglishTranslationTests.swift | struct | Tests | What EN-4A is allowed to have done, and nothing more. The classification is reproducible, the English | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/EnglishTranslations.swift | enum | Tests | The English of EN-4A, for the non-sensitive interface only. Buttons and titles take the Title Case an iOS | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationsEN5.swift | enum | Tests | Gathers the English of EN-5 — interface, campaign, hints — and keeps it strictly apart from the eighty-nine | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationsEN5Campaign.swift | enum | Tests | The English of the campaign — chapters, levels, elements and the three marks. One word per thing, chosen | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationsEN5Hints.swift | enum | Tests | The English of the 163 contextual instructions. These are read mid-play, by a player looking somewhere | Claude (mission Iris) |
+| Tests/IrisTests/Presentation/EnglishTranslationsEN5Interface.swift | enum | Tests | The English of the interface sentences EN-4 deferred — everything that teaches the gesture, measures it, | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameSettingsStoreTests.swift | struct | Tests | Preferences defaults, persistence, and the migration of the single "Son" switch into effects and ambience | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GameViewModelTests.swift | struct | Tests | Campaign game screen: intro, play, hints, result and éclats, next level, help, lifecycle, gaze, audio and haptics | Claude (mission Iris) |
 | Tests/IrisTests/Presentation/GazeSetupViewModelTests.swift | struct | Tests | The setup state machine: readiness, calibration, validation, verdicts, persistence, failures | Claude (mission Iris) |

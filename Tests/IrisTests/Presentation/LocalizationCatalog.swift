@@ -15,16 +15,20 @@ struct CatalogEntry: Hashable, Comparable {
     let comment: String
     /// True when the catalogue declares a plural variation on the first argument of the format.
     let isPluralized: Bool
-    /// The English, when this key has been cleared for translation. Nil is the normal state of a sentence still
-    /// waiting for EN-5, and it is never filled in by guesswork.
+    /// The English, when this key has been translated. Nil is the normal state of a sentence still waiting, and it is
+    /// never filled in by guesswork.
     let english: String?
+    /// The English singular of a counted entry. French holds one wording at every count; English does not.
+    let englishOne: String?
 
-    init(_ key: String, _ french: String, _ comment: String, pluralized: Bool = false, english: String? = nil) {
+    init(_ key: String, _ french: String, _ comment: String, pluralized: Bool = false,
+         english: String? = nil, englishOne: String? = nil) {
         self.key = key
         self.french = french
         self.comment = comment
         self.isPluralized = pluralized
         self.english = english
+        self.englishOne = englishOne
     }
 
     static func < (lhs: CatalogEntry, rhs: CatalogEntry) -> Bool { lhs.key < rhs.key }
@@ -211,9 +215,15 @@ enum LocalizationCatalog {
                   let localizations = entry["localizations"] as? [String: Any],
                   let french = localizations["fr"] as? [String: Any]
             else { return nil }
-            let english = ((localizations["en"] as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
+            let englishRoot = localizations["en"] as? [String: Any]
+            var english = (englishRoot?["stringUnit"] as? [String: Any])?["value"] as? String
+            var englishOne: String?
+            if let plural = ((englishRoot?["variations"] as? [String: Any])?["plural"] as? [String: Any]) {
+                english = ((plural["other"] as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
+                englishOne = ((plural["one"] as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
+            }
             if let unit = french["stringUnit"] as? [String: Any], let value = unit["value"] as? String {
-                return CatalogEntry(key, value, entry["comment"] as? String ?? "", english: english)
+                return CatalogEntry(key, value, entry["comment"] as? String ?? "", english: english, englishOne: englishOne)
             }
             guard let variations = french["variations"] as? [String: Any],
                   let plural = variations["plural"] as? [String: Any],
@@ -221,7 +231,7 @@ enum LocalizationCatalog {
                   let unit = other["stringUnit"] as? [String: Any],
                   let value = unit["value"] as? String
             else { return nil }
-            return CatalogEntry(key, value, entry["comment"] as? String ?? "", pluralized: true, english: english)
+            return CatalogEntry(key, value, entry["comment"] as? String ?? "", pluralized: true, english: english, englishOne: englishOne)
         }.sorted()
     }
 
@@ -240,6 +250,12 @@ enum LocalizationCatalog {
             case .reserved: cleared = LocalizationClassification.mayTranslate(key: entry.key, french: entry.french,
                                                                               deferredFrench: deferredFrench)
             default: cleared = false
+            }
+            // EN-5 writes the sentences the rule had deferred; its table and EN-4C's never overlap.
+            if let english = EnglishTranslationsEN5.byKey[entry.key] {
+                let plural = EnglishTranslationsEN5.plurals[entry.key]
+                return CatalogEntry(entry.key, entry.french, entry.comment, pluralized: entry.isPluralized,
+                                    english: plural?.other ?? english, englishOne: plural?.one)
             }
             guard cleared, let english = EnglishTranslations.byKey[entry.key] else { return entry }
             return CatalogEntry(entry.key, entry.french, entry.comment, pluralized: entry.isPluralized, english: english)
@@ -277,7 +293,14 @@ enum LocalizationCatalog {
             }
             var localizations: [String: Any] = ["fr": french]
             if let english = entry.english {
-                localizations["en"] = ["stringUnit": ["state": "translated", "value": english]]
+                if let one = entry.englishOne {
+                    localizations["en"] = ["variations": ["plural": [
+                        "one": ["stringUnit": ["state": "translated", "value": one]],
+                        "other": ["stringUnit": ["state": "translated", "value": english]],
+                    ]]]
+                } else {
+                    localizations["en"] = ["stringUnit": ["state": "translated", "value": english]]
+                }
             }
             strings[entry.key] = ["comment": entry.comment, "extractionState": "manual",
                                   "localizations": localizations]
