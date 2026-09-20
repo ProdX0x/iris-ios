@@ -140,4 +140,31 @@ struct LocalizationInfrastructureTests {
             #expect(french == level.title, "\(key) has drifted from Domain")
         }
     }
+
+    @Test("I: the hinge answers in the language the host runs in, for every catalogued key")
+    func hingeAnswersInTheHostLanguage() throws {
+        // A and B prove the hinge resolves and falls back, and both read French, because the test host runs in
+        // French. The English proofs read `en.lproj` directly, deliberately, so that their result does not depend on
+        // the host — which leaves `Bundle.main`, the path the application itself takes, exercised in one language
+        // only. This asks the hinge what it would show and compares it to the catalogue of whatever language the host
+        // is set to: the same test proves the French under `-testLanguage fr` and the English under `-testLanguage en`.
+        let language = try #require(Bundle.main.preferredLocalizations.first)
+        try #require(["fr", "en"].contains(language), "the test host runs in \(language), a language Iris does not ship")
+
+        var checked = 0
+        for table in [IrisText.interfaceTable, IrisText.gameplayTable] {
+            for entry in try LocalizationCatalog.read(table: table) where !entry.isPluralized {
+                let shown = table == IrisText.gameplayTable
+                    ? IrisText.gameplay(entry.key, french: entry.french)
+                    : IrisText.interface(entry.key, french: entry.french)
+                let expected = language == "fr"
+                    ? entry.french
+                    : try #require(entry.english, "\(entry.key) has no English")
+                #expect(shown == expected, "\(language)/\(entry.key) showed « \(shown) »")
+                #expect(shown != entry.key, "\(entry.key) resolved to its own key")
+                checked += 1
+            }
+        }
+        #expect(checked == 682, "\(checked) keys went through the hinge, not 682 (684 less the two plural entries)")
+    }
 }

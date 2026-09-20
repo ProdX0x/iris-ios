@@ -189,14 +189,18 @@ struct EnglishTranslationTests {
             for entry in try Self.entries(table) {
                 let fr = french.localizedString(forKey: entry.key, value: marker, table: table)
                 if entry.isPluralized {
-                    #expect(fr.contains("%#@"), "\(entry.key) should resolve through the plural template")
+                    // "%#@value@" when the sentence counts one value, "%1$#@count@…" when it counts more and the
+                    // catalogue has to name the argument that drives the plural. Both are the template, not a sentence.
+                    #expect(fr.contains("#@"), "\(entry.key) should resolve through the plural template")
                 } else {
                     #expect(fr == entry.french, "fr/\(entry.key) answered « \(fr) »")
                 }
                 let en = english.localizedString(forKey: entry.key, value: marker, table: table)
                 let expected = try #require(entry.english, "\(entry.key) has no English")
                 if entry.isPluralized {
-                    #expect(en.contains("%#@"), "en/\(entry.key) should resolve through the plural template")
+                    // "%#@value@" when the sentence counts one value, "%1$#@count@…" when it counts more and the
+                    // catalogue has to name the argument that drives the plural. Both are the template, not a sentence.
+                    #expect(en.contains("#@"), "en/\(entry.key) should resolve through the plural template")
                 } else {
                     #expect(en == expected, "en/\(entry.key) answered « \(en) »")
                 }
@@ -241,6 +245,121 @@ struct EnglishTranslationTests {
                     #expect(!text.contains("%#@"), "\(entry.key) leaks a plural template")
                 }
             }
+        }
+    }
+
+    // MARK: - EN-6: what the built application actually carries
+
+    @Test("13: each compiled language holds exactly the catalogued keys, and exactly 684 resources")
+    func compiledArtefactMatchesTheCatalogues() throws {
+        // Test 11 asks each bundle for a key the catalogue already names, which can only show that nothing is
+        // missing. This reads the artefact's own contents instead, so a resource compiled into the app that no
+        // catalogue declares would be visible too, and the 265 + 2 + 417 split is counted rather than assumed —
+        // the count that has been reported as 682 and as 686, and is neither.
+        func keys(_ language: String, _ file: String) throws -> Set<String> {
+            let folder = try #require(Bundle.main.path(forResource: language, ofType: "lproj"),
+                                      "the built app has no \(language).lproj")
+            let data = try Data(contentsOf: URL(fileURLWithPath: folder).appendingPathComponent(file))
+            let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+            return Set(try #require(plist as? [String: Any], "\(language)/\(file) is not a dictionary").keys)
+        }
+        let interface = try Self.entries(IrisText.interfaceTable)
+        let catalogued = Set(interface.map(\.key))
+        let pluralised = Set(interface.filter(\.isPluralized).map(\.key))
+        let gameplay = Set(try Self.entries(IrisText.gameplayTable).map(\.key))
+
+        for language in ["fr", "en"] {
+            let strings = try keys(language, "Localizable.strings")
+            let stringsdict = try keys(language, "Localizable.stringsdict")
+            let gameplayStrings = try keys(language, "Gameplay.strings")
+
+            #expect(stringsdict == pluralised, "\(language): the compiled plurals are \(stringsdict.sorted())")
+            #expect(strings.isDisjoint(with: stringsdict), "\(language): a key is compiled into both files")
+            let compiledInterface = strings.union(stringsdict)
+            #expect(compiledInterface == catalogued,
+                    "\(language)/Localizable — orphan: \(compiledInterface.subtracting(catalogued).sorted().prefix(6)), missing: \(catalogued.subtracting(compiledInterface).sorted().prefix(6))")
+            #expect(gameplayStrings == gameplay,
+                    "\(language)/Gameplay — orphan: \(gameplayStrings.subtracting(gameplay).sorted().prefix(6)), missing: \(gameplay.subtracting(gameplayStrings).sorted().prefix(6))")
+
+            #expect(strings.count == 265, "\(language): Localizable.strings holds \(strings.count), not 265")
+            #expect(stringsdict.count == 2, "\(language): Localizable.stringsdict holds \(stringsdict.count), not 2")
+            #expect(gameplayStrings.count == 417, "\(language): Gameplay.strings holds \(gameplayStrings.count), not 417")
+            let total = strings.count + stringsdict.count + gameplayStrings.count
+            #expect(total == 684, "\(language) compiles \(total) resources, not 684")
+        }
+    }
+
+    @Test("14: every format renders in both compiled languages, leaving no specifier behind")
+    func formatsRenderInBothCompiledLanguages() throws {
+        // Test 5 renders twelve English sentences out of the EN-4C table, and the catalogue suite renders the French
+        // through `Bundle.main`. Neither renders an English format out of the artefact a player installs, so a format
+        // that passes the placeholder comparison of test 4 and still cannot be rendered would go unseen.
+        func specifiers(_ text: String) -> [String] {
+            text.matches(of: /%(?:\d+\$)?(?:\.\d+)?(@|lld|ld|d|f)/).map { String($0.output.1) }
+        }
+        let locales = ["fr": Locale(identifier: "fr_FR"), "en": Locale(identifier: "en_GB")]
+        var rendered = 0
+        for language in ["fr", "en"] {
+            let bundle = try Self.bundle(language)
+            for table in Self.tables {
+                for entry in try Self.entries(table) where !entry.isPluralized {
+                    let template = bundle.localizedString(forKey: entry.key, value: "", table: table)
+                    let types = specifiers(template)
+                    guard !types.isEmpty else { continue }
+                    var arguments: [any CVarArg] = []
+                    for type in types {
+                        switch type {
+                        case "@": arguments.append("VALEUR")
+                        case "f": arguments.append(42.0)
+                        default: arguments.append(7)
+                        }
+                    }
+                    let output = String(format: template, locale: locales[language], arguments: arguments)
+                    #expect(specifiers(output).isEmpty,
+                            "\(language)/\(entry.key) rendered « \(output) » with a specifier left in it")
+                    #expect(!output.isEmpty, "\(language)/\(entry.key) rendered nothing")
+                    rendered += 1
+                }
+            }
+        }
+        #expect(rendered == 48, "\(rendered) formats were rendered, not 48 (24 in each language)")
+    }
+
+    @Test("15: reading the catalogue and writing it back changes nothing, and keeps the explicit plural")
+    func catalogueSurvivesARoundTrip() throws {
+        // The catalogues are generated, not hand-written: what `read` understands and what `json(for:)` emits have to
+        // describe the same file, or the next regeneration would quietly undo an entry it could not read back. That is
+        // the real risk carried by `eclats.total.value`, whose plural must name the argument that drives it.
+        for table in Self.tables {
+            let onDisk = try #require(try JSONSerialization.jsonObject(
+                with: try Data(contentsOf: LocalizationCatalog.url(table: table))) as? [String: Any])
+            let before = try #require(onDisk["strings"] as? [String: Any])
+            let rebuilt = try #require(try JSONSerialization.jsonObject(
+                with: try LocalizationCatalog.json(for: try Self.entries(table))) as? [String: Any])
+            let after = try #require(rebuilt["strings"] as? [String: Any])
+
+            #expect(Set(after.keys) == Set(before.keys), "\(table): the round trip added or dropped a key")
+            let changed = before.keys.filter { key in
+                !NSDictionary(dictionary: before[key] as? [String: Any] ?? [:])
+                    .isEqual(to: after[key] as? [String: Any] ?? [:])
+            }
+            #expect(changed.isEmpty, "\(table): the round trip changed \(changed.count) key(s): \(changed.sorted().prefix(6))")
+        }
+
+        let rebuilt = try #require(try JSONSerialization.jsonObject(
+            with: try LocalizationCatalog.json(for: try Self.entries(IrisText.interfaceTable))) as? [String: Any])
+        let total = try #require((rebuilt["strings"] as? [String: Any])?["eclats.total.value"] as? [String: Any])
+        let localizations = try #require(total["localizations"] as? [String: Any])
+        for language in ["fr", "en"] {
+            let written = try #require(localizations[language] as? [String: Any])
+            #expect(written["variations"] == nil, "\(language) fell back to the shape Xcode has to guess at")
+            let substitutions = try #require(written["substitutions"] as? [String: Any], "\(language) lost its substitution")
+            let count = try #require(substitutions["count"] as? [String: Any])
+            #expect(count["argNum"] as? Int == 1, "\(language): the plural is no longer driven by the first argument")
+            #expect(count["formatSpecifier"] as? String == "lld")
+            let base = try #require((written["stringUnit"] as? [String: Any])?["value"] as? String)
+            #expect(base.contains("%#@count@"), "\(language) base is « \(base) »")
+            #expect(base.contains("%2$lld"), "\(language): the total is no longer the second argument")
         }
     }
 }

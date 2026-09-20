@@ -225,21 +225,110 @@ enum LocalizationCatalog {
             let englishRoot = localizations["en"] as? [String: Any]
             var english = (englishRoot?["stringUnit"] as? [String: Any])?["value"] as? String
             var englishOne: String?
-            if let plural = ((englishRoot?["variations"] as? [String: Any])?["plural"] as? [String: Any]) {
-                english = ((plural["other"] as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
-                englishOne = ((plural["one"] as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
+            if let root = englishRoot, let forms = pluralForms(of: root) {
+                english = forms.other
+                englishOne = forms.one
             }
-            if let unit = french["stringUnit"] as? [String: Any], let value = unit["value"] as? String {
-                return CatalogEntry(key, value, entry["comment"] as? String ?? "", english: english, englishOne: englishOne)
+            // A counted entry is looked for before a plain one. The substitution shape carries a `stringUnit` of its
+            // own — the sentence with the counted part standing in, `%#@count@ sur %2$lld` — and reading that as the
+            // whole sentence would lose the plural and hand back a template where the corpus holds French.
+            if let forms = pluralForms(of: french) {
+                return CatalogEntry(key, forms.other, entry["comment"] as? String ?? "", pluralized: true,
+                                    english: english, englishOne: englishOne)
             }
-            guard let variations = french["variations"] as? [String: Any],
-                  let plural = variations["plural"] as? [String: Any],
-                  let other = plural["other"] as? [String: Any],
-                  let unit = other["stringUnit"] as? [String: Any],
-                  let value = unit["value"] as? String
+            guard let unit = french["stringUnit"] as? [String: Any], let value = unit["value"] as? String
             else { return nil }
-            return CatalogEntry(key, value, entry["comment"] as? String ?? "", pluralized: true, english: english, englishOne: englishOne)
+            return CatalogEntry(key, value, entry["comment"] as? String ?? "", english: english, englishOne: englishOne)
         }.sorted()
+    }
+
+    // MARK: - The two shapes a counted sentence is written in
+
+    /// A format specifier as the catalogues write them, `%.0f` included, with its body captured.
+    private static var specifier: Regex<(Substring, Substring)> { /%(?:\d+\$)?((?:\.\d+)?(?:@|lld|ld|d|f))/ }
+
+    private static func value(in raw: Any?) -> String? {
+        ((raw as? [String: Any])?["stringUnit"] as? [String: Any])?["value"] as? String
+    }
+
+    /// The two plural forms a localisation declares, in whichever shape Xcode wrote them.
+    ///
+    /// A variation sits on the localisation itself when the sentence counts one value. When it counts more than one,
+    /// Xcode cannot tell which argument drives the plural and asks for a named substitution instead — the only shape
+    /// that says so. Both are read here, and a substitution is folded back into the sentence it stands for, so the
+    /// rest of this file — and the catalogue it compares against the corpus — sees one form either way.
+    private static func pluralForms(of localization: [String: Any]) -> (one: String, other: String)? {
+        if let plural = (localization["variations"] as? [String: Any])?["plural"] as? [String: Any] {
+            guard let one = value(in: plural["one"]), let other = value(in: plural["other"]) else { return nil }
+            return (one, other)
+        }
+        guard let base = value(in: localization),
+              let substitutions = localization["substitutions"] as? [String: Any],
+              let name = substitutions.keys.sorted().first,
+              let substitution = substitutions[name] as? [String: Any],
+              let body = substitution["formatSpecifier"] as? String,
+              let plural = (substitution["variations"] as? [String: Any])?["plural"] as? [String: Any],
+              let one = value(in: plural["one"]), let other = value(in: plural["other"])
+        else { return nil }
+        func folded(_ form: String) -> String {
+            base.replacingOccurrences(of: "%#@\(name)@", with: form.replacingOccurrences(of: "%arg", with: "%\(body)"))
+                .replacingOccurrences(of: "%\\d+\\$", with: "%", options: .regularExpression)
+        }
+        return (folded(one), folded(other))
+    }
+
+    /// Splits a counted sentence into the part the plural varies — the first specifier and the word it counts — and
+    /// everything after it.
+    private static func countedPart(of sentence: String) -> (counted: String, rest: String)? {
+        guard let first = sentence.firstMatch(of: specifier) else { return nil }
+        var cursor = first.range.upperBound
+        while cursor < sentence.endIndex, sentence[cursor] == " " { cursor = sentence.index(after: cursor) }
+        while cursor < sentence.endIndex, sentence[cursor] != " " { cursor = sentence.index(after: cursor) }
+        guard cursor > first.range.upperBound else { return nil }
+        return (String(sentence[sentence.startIndex..<cursor]), String(sentence[cursor...]))
+    }
+
+    /// One localisation of a counted entry, in the shape that sentence actually needs.
+    ///
+    /// Written narrowly on purpose. The corpus holds two counted entries: `eclats.outOfThree.value` counts one value
+    /// and keeps the plain variation, `eclats.total.value` counts two and needs the substitution, which is the only
+    /// shape that survives compilation without Xcode warning that it is guessing. Two entries do not make a law, so
+    /// the condition is not generalised beyond what it is known to describe, and the round-trip test fails loudly
+    /// the day a counted entry stops fitting it.
+    static func pluralLocalization(one: String, other: String) -> [String: Any] {
+        func unit(_ value: String) -> [String: Any] { ["stringUnit": ["state": "translated", "value": value]] }
+        let simple: [String: Any] = ["variations": ["plural": ["one": unit(one), "other": unit(other)]]]
+        guard other.matches(of: specifier).count > 1,
+              let split = countedPart(of: other),
+              let oneSplit = countedPart(of: one),
+              let body = other.firstMatch(of: specifier).map({ String($0.output.1) })
+        else { return simple }
+
+        // What follows the counted part keeps its own arguments, numbered from the second: the first belongs to the
+        // substitution, and leaving the rest unnumbered is what makes Foundation read the count twice.
+        var argument = 1
+        var numbered = ""
+        var cursor = split.rest.startIndex
+        while let match = split.rest[cursor...].firstMatch(of: specifier) {
+            argument += 1
+            numbered += split.rest[cursor..<match.range.lowerBound]
+            numbered += "%\(argument)$\(match.output.1)"
+            cursor = match.range.upperBound
+        }
+        numbered += split.rest[cursor...]
+
+        func stand(_ counted: String) -> String {
+            counted.replacingOccurrences(of: "%\\d+\\$", with: "%", options: .regularExpression)
+                .replacingOccurrences(of: "%\(body)", with: "%arg")
+        }
+        return [
+            "stringUnit": ["state": "translated", "value": "%#@count@\(numbered)"],
+            "substitutions": ["count": [
+                "argNum": 1,
+                "formatSpecifier": body,
+                "variations": ["plural": ["one": unit(stand(oneSplit.counted)), "other": unit(stand(split.counted))]],
+            ]],
+        ]
     }
 
     // MARK: - English, attached only where the classification allows it
@@ -290,21 +379,17 @@ enum LocalizationCatalog {
         for entry in entries {
             var french: [String: Any]
             if entry.isPluralized {
-                let unit: [String: Any] = ["stringUnit": ["state": "translated", "value": entry.french]]
                 // Both categories carry the very same French. French would say « 1 éclat », but that sentence has been
                 // validated and photographed as it stands: this phase does not change a character of it. The plural
                 // slot exists so English — and, the day someone decides to, French — can be written without moving a key.
-                french = ["variations": ["plural": ["one": unit, "other": unit]]]
+                french = pluralLocalization(one: entry.french, other: entry.french)
             } else {
                 french = ["stringUnit": ["state": "translated", "value": entry.french]]
             }
             var localizations: [String: Any] = ["fr": french]
             if let english = entry.english {
                 if let one = entry.englishOne {
-                    localizations["en"] = ["variations": ["plural": [
-                        "one": ["stringUnit": ["state": "translated", "value": one]],
-                        "other": ["stringUnit": ["state": "translated", "value": english]],
-                    ]]]
+                    localizations["en"] = pluralLocalization(one: one, other: english)
                 } else {
                     localizations["en"] = ["stringUnit": ["state": "translated", "value": english]]
                 }
