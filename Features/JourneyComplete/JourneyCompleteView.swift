@@ -5,6 +5,7 @@
 import SwiftUI
 
 struct JourneyCompleteView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let summary: JourneySummary
     @Environment(AppCoordinator.self) private var coordinator
 
@@ -29,17 +30,26 @@ struct JourneyCompleteView: View {
                     .foregroundStyle(DSColor.Identity.textSecondary)
             }
             DSGlassPanel {
-                HStack {
-                    metric("niveaux", "\(summary.levelCount)")
-                    Spacer()
+                // Same reason as the result panel: three columns hold until an accessibility size, then the words
+                // break. Stacked, each measurement gets the whole width instead of a third of it.
+                measurements {
+                    metric(IrisText.interface("journey.levels.label", french: "niveaux"), "\(summary.levelCount)")
+                    if !dynamicTypeSize.isAccessibilitySize { Spacer() }
                     metric(IrisText.interface("journey.eclats.label", french: "éclats"), "\(summary.eclats) / \(summary.maxEclats)")
-                    Spacer()
+                    if !dynamicTypeSize.isAccessibilitySize { Spacer() }
                     metric(IrisText.interface("journey.playTime.label", french: "temps de jeu"), Duration.seconds(summary.playDuration).formatted(.time(pattern: .hourMinuteSecond)))
                 }
             }
             DSButton(IrisText.interface("home.replayChapter.action", french: "Rejouer un chapitre"), systemImage: "arrow.counterclockwise") { coordinator.openChapters() }
             DSButton(IrisText.interface("common.threshold", french: "Seuil"), variant: .ghost) { coordinator.returnHome() }
         }
+    }
+
+    /// Side by side at ordinary text sizes, stacked once the size is an accessibility one.
+    private var measurements: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: DSSpacing.s))
+            : AnyLayout(HStackLayout())
     }
 
     private func metric(_ label: String, _ value: String) -> some View {

@@ -5,6 +5,7 @@
 import SwiftUI
 
 struct LevelResultView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let result: LevelResult
     let level: LevelDefinition
     let chapter: ChapterDefinition
@@ -21,19 +22,27 @@ struct LevelResultView: View {
                                                     chapter.numeral, CampaignText.name(of: chapter), CampaignText.title(of: level)),
                        eyebrow: result.isCampaignEnd ? IrisText.interface("result.lastIris.eyebrow", french: "dernier iris") : (result.isChapterEnd ? IrisText.interface("result.chapterComplete.eyebrow", french: "chapitre terminé") : IrisText.interface("result.levelIndex.eyebrow", french: "niveau %lld", level.index)),
                        dim: 0.9) {
-            HStack(alignment: .top, spacing: DSSpacing.m) {
+            // The three marks share the width until a third of it is too narrow for their condition, which is what
+            // broke « terminer » into « termi- / ner ». At an accessibility size they stack, one under the other.
+            marks {
                 ForEach(Array(Eclat.allCases.enumerated()), id: \.offset) { index, eclat in
                     EclatBadge(eclat: eclat, isLit: result.earned.contains(eclat) && revealed > index,
                                isNew: result.newlyEarned.contains(eclat) && revealed > index)
                 }
             }
             DSGlassPanel {
-                HStack {
-                    metric("temps", "\(result.outcome.time.formatted(.number.precision(.fractionLength(1)))) s")
-                    Spacer()
-                    metric("intrusions", "\(result.outcome.intrusions)")
-                    Spacer()
-                    metric("pertes", "\(result.outcome.losses)")
+                // Three columns side by side is right until the text stops fitting in a third of the panel: at an
+                // accessibility size the words break mid-word. The measurements then stack instead, each one taking
+                // the full width, which is the room the text actually needs. Nothing shrinks, nothing is capped.
+                measurements {
+                    metric(IrisText.interface("result.time.label", french: "temps"),
+                           "\(result.outcome.time.formatted(.number.precision(.fractionLength(1)))) s")
+                    if !dynamicTypeSize.isAccessibilitySize { Spacer() }
+                    metric(IrisText.interface("result.intrusions.label", french: "intrusions"),
+                           "\(result.outcome.intrusions)")
+                    if !dynamicTypeSize.isAccessibilitySize { Spacer() }
+                    metric(IrisText.interface("result.losses.label", french: "pertes"),
+                           "\(result.outcome.losses)")
                 }
                 if result.isNewBestTime {
                     Text(IrisText.interface("result.bestTime.badge", french: "meilleur temps")).dsEyebrowStyle(tint: DSColor.State.success)
@@ -55,6 +64,20 @@ struct LevelResultView: View {
         }
     }
 
+    /// Side by side at ordinary text sizes, stacked once the size is an accessibility one.
+    private var marks: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: DSSpacing.m))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: DSSpacing.m))
+    }
+
+    /// Side by side at ordinary text sizes, stacked once the size is an accessibility one.
+    private var measurements: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: DSSpacing.s))
+            : AnyLayout(HStackLayout())
+    }
+
     private func metric(_ label: String, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             Text(label).dsEyebrowStyle()
@@ -68,6 +91,7 @@ struct LevelResultView: View {
 }
 
 private struct EclatBadge: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let eclat: Eclat
     let isLit: Bool
     let isNew: Bool
@@ -92,7 +116,9 @@ private struct EclatBadge: View {
                 .font(DSFont.caption)
                 .foregroundStyle(DSColor.Identity.textTertiary)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 96)
+                // 96 points is the right measure for a column of three; at an accessibility size the badge has the
+                // whole width and the cap is what would force the words apart.
+                .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 96)
             if isNew {
                 DSBadge(IrisText.interface("result.new.badge", french: "nouveau"), tone: .success)
             }

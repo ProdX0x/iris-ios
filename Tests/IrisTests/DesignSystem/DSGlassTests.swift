@@ -24,7 +24,7 @@ struct DSGlassTests {
         "Navigation/AppRoute.swift": "8d05c60e7f49851d4c37fbc045e9c7c6aa6361b15681a5fb13ddf930d77fb73e",
         "Navigation/AppSheet.swift": "e33ba41e0c2b61f0340cac7085f6b4a579a2ec62866255df60a4235afbe1e0ae",
         "Navigation/HomeSummary.swift": "ad8b42102791d939250b8663085566d85336845280b74d5257efc92eb9dfb2e9",
-        "Navigation/RootView.swift": "27ef2994701cf181abf3a05f6d54b97e6e6937ca8cccf1284dfe9a17b2b1281a",
+        "Navigation/RootView.swift": "0ca62455edf207cd80f2adb99e5293ade77ba720970205d197cdbb6645a61546",
     ]
 
     /// Project root, derived from this file's compile-time path (Tests/IrisTests/DesignSystem/...).

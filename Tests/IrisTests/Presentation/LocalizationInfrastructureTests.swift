@@ -165,6 +165,6 @@ struct LocalizationInfrastructureTests {
                 checked += 1
             }
         }
-        #expect(checked == 682, "\(checked) keys went through the hinge, not 682 (684 less the two plural entries)")
+        #expect(checked == 688, "\(checked) keys went through the hinge, not 688 (690 less the two plural entries)")
     }
 }

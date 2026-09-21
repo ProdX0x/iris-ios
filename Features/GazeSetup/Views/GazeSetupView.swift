@@ -46,7 +46,9 @@ struct GazeSetupView: View {
         case let .readiness(report):
             GazeReadinessView(report: report, onCancel: { viewModel.cancel() })
         case let .calibrating(display):
-            FixationTargetView(display: display, stageLabel: "calibration", viewport: viewModel.viewport, onCancel: { viewModel.cancel() })
+            FixationTargetView(display: display,
+                               stageLabel: IrisText.interface("gazeSetup.calibration.eyebrow", french: "calibration"),
+                               viewport: viewModel.viewport, onCancel: { viewModel.cancel() })
         case let .validating(display):
             FixationTargetView(display: display, stageLabel: IrisText.interface("gazeSetup.verification.eyebrow", french: "vérification"), viewport: viewModel.viewport, onCancel: { viewModel.cancel() })
         case let .insufficient(result, attempts):

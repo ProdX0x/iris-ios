@@ -1027,7 +1027,25 @@
         }
       }
     },
-    "common.openSettings" : {
+    "common.next" : {
+      "comment" : "Shared control or line, used on several screens.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivant"
+          }
+        }
+      }
+    },
+  "common.openSettings" : {
       "comment" : "Shared control or line, used on several screens.",
       "extractionState" : "manual",
       "localizations" : {
@@ -2643,7 +2661,25 @@
         }
       }
     },
-    "gazeSetup.camera.restricted.message" : {
+    "gazeSetup.calibration.eyebrow" : {
+      "comment" : "Gaze calibration. Small lowercase label above a title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "calibration"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "calibration"
+          }
+        }
+      }
+    },
+  "gazeSetup.camera.restricted.message" : {
       "comment" : "Gaze calibration. Message shown when something went wrong.",
       "extractionState" : "manual",
       "localizations" : {
@@ -3363,7 +3399,25 @@
         }
       }
     },
-    "journey.playTime.label" : {
+    "journey.levels.label" : {
+      "comment" : "End of the journey, after the last level. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "levels"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "niveaux"
+          }
+        }
+      }
+    },
+  "journey.playTime.label" : {
       "comment" : "End of the journey, after the last level. VoiceOver label: what is read aloud, not what is drawn.",
       "extractionState" : "manual",
       "localizations" : {
@@ -4371,7 +4425,25 @@
         }
       }
     },
-    "result.levelIndex.eyebrow" : {
+    "result.intrusions.label" : {
+      "comment" : "The panel shown when a level is finished. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "intrusions"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "intrusions"
+          }
+        }
+      }
+    },
+  "result.levelIndex.eyebrow" : {
       "comment" : "The panel shown when a level is finished. Small lowercase label above a title. %lld is the level number inside its chapter.",
       "extractionState" : "manual",
       "localizations" : {
@@ -4389,7 +4461,25 @@
         }
       }
     },
-    "result.new.badge" : {
+    "result.losses.label" : {
+      "comment" : "The panel shown when a level is finished. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "losses"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pertes"
+          }
+        }
+      }
+    },
+  "result.new.badge" : {
       "comment" : "The panel shown when a level is finished.",
       "extractionState" : "manual",
       "localizations" : {
@@ -4443,7 +4533,25 @@
         }
       }
     },
-    "result.title" : {
+    "result.time.label" : {
+      "comment" : "The panel shown when a level is finished. VoiceOver label: what is read aloud, not what is drawn.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "time"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "temps"
+          }
+        }
+      }
+    },
+  "result.title" : {
       "comment" : "The panel shown when a level is finished. Title.",
       "extractionState" : "manual",
       "localizations" : {

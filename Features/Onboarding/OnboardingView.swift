@@ -41,7 +41,9 @@ struct OnboardingView: View {
                 .transition(.opacity)
                 Spacer(minLength: 0)
                 steps
-                DSButton(isLast ? "Commencer" : "Suivant", systemImage: isLast ? "eye" : "arrow.right") { advance() }
+                DSButton(isLast ? IrisText.interface("common.begin", french: "Commencer")
+                                : IrisText.interface("common.next", french: "Suivant"),
+                         systemImage: isLast ? "eye" : "arrow.right") { advance() }
             }
             .frame(maxWidth: 480)
             .frame(maxWidth: .infinity)

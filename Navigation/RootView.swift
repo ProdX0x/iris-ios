@@ -73,22 +73,22 @@ struct RootView: View {
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button { coordinator.showSettings() } label: {
-                                Label(AppSheet.settings.title, systemImage: "slider.horizontal.3")
+                                Label(NavigationText.title(of: .settings), systemImage: "slider.horizontal.3")
                             }
-                            .accessibilityLabel(AppSheet.settings.title)
+                            .accessibilityLabel(NavigationText.title(of: .settings))
                         }
                     }
                     .toolbarBackground(.hidden, for: .navigationBar)
             }
-            .tabItem { Label(AppDestination.seuil.title, systemImage: AppDestination.seuil.systemImage) }
+            .tabItem { Label(NavigationText.title(of: .seuil), systemImage: AppDestination.seuil.systemImage) }
             .tag(AppDestination.seuil)
 
             ChaptersView()
-                .tabItem { Label(AppDestination.chapitres.title, systemImage: AppDestination.chapitres.systemImage) }
+                .tabItem { Label(NavigationText.title(of: .chapitres), systemImage: AppDestination.chapitres.systemImage) }
                 .tag(AppDestination.chapitres)
 
             CarnetView()
-                .tabItem { Label(AppDestination.carnet.title, systemImage: AppDestination.carnet.systemImage) }
+                .tabItem { Label(NavigationText.title(of: .carnet), systemImage: AppDestination.carnet.systemImage) }
                 .tag(AppDestination.carnet)
         }
         .dsTabBarMinimizesOnScroll()

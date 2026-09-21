@@ -30,6 +30,8 @@ struct GazeIntroductionPage: Hashable, Sendable, Identifiable {
 
     /// What the main action says on each page.
     static func actionTitle(atIndex index: Int) -> String {
-        index >= all.count - 1 ? "Commencer" : "Suivant"
+        index >= all.count - 1
+            ? IrisText.interface("common.begin", french: "Commencer")
+            : IrisText.interface("common.next", french: "Suivant")
     }
 }

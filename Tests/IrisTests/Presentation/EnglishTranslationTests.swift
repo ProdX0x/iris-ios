@@ -35,7 +35,7 @@ struct EnglishTranslationTests {
                 counted += 1
             }
         }
-        #expect(counted == 684, "the catalogues hold \(counted) keys, not 684")
+        #expect(counted == 690, "the catalogues hold \(counted) keys, not 690")
     }
 
     @Test("2: the classification still explains which phase wrote each sentence")
@@ -281,11 +281,11 @@ struct EnglishTranslationTests {
             #expect(gameplayStrings == gameplay,
                     "\(language)/Gameplay — orphan: \(gameplayStrings.subtracting(gameplay).sorted().prefix(6)), missing: \(gameplay.subtracting(gameplayStrings).sorted().prefix(6))")
 
-            #expect(strings.count == 265, "\(language): Localizable.strings holds \(strings.count), not 265")
+            #expect(strings.count == 271, "\(language): Localizable.strings holds \(strings.count), not 271")
             #expect(stringsdict.count == 2, "\(language): Localizable.stringsdict holds \(stringsdict.count), not 2")
             #expect(gameplayStrings.count == 417, "\(language): Gameplay.strings holds \(gameplayStrings.count), not 417")
             let total = strings.count + stringsdict.count + gameplayStrings.count
-            #expect(total == 684, "\(language) compiles \(total) resources, not 684")
+            #expect(total == 690, "\(language) compiles \(total) resources, not 690")
         }
     }
 

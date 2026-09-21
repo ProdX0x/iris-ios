@@ -29,6 +29,8 @@ enum EnglishTranslationsEN5 {
     /// key so that an untranslated sentence cannot hide among them.
     static let identicalByDesign: Set<String> = Set([
         "chapter.12.name",                    // constellation
+        "gazeSetup.calibration.eyebrow",      // calibration — the same word in both languages
+        "result.intrusions.label",            // intrusions — the same word in both languages
         "element.absence.name",               // absence
         "element.cascade.name",               // cascade
         "element.iris.name",                  // iris — the word Iris is named after, kept in both languages

@@ -356,4 +356,95 @@ struct InterfaceLocalizationTests {
             }
         }
     }
+
+    /// Tables that hold the corpus the hinge reads from: their French *is* the fallback a key is resolved against,
+    /// and their own suites prove it key by key. Everything else in the drawing layers is in scope.
+    private static let corpusTables: Set<String> = [
+        "Features/Shared/GazeReadinessText.swift", "Features/Shared/HintText.swift", "Features/Shared/IrisText.swift",
+        "Features/Shared/NavigationText.swift", "Features/Shared/CampaignText.swift", "Features/Shared/HomeText.swift",
+        "Features/Shared/GazeAssistanceText.swift", "Navigation/AppDestination.swift", "Navigation/AppSheet.swift",
+        "Navigation/HomeSummary.swift",
+    ]
+
+    /// Proper nouns and addresses: not sentences, and the same in every language.
+    private static let properNouns: Set<String> = [
+        "iris", "IRIS", "Iris", "Stéphane SAULNIER", "© 2026 Stéphane SAULNIER", "Assistance", " et ", " and ",
+    ]
+
+    @Test("N: every word a player reads comes from a key, in every file that draws")
+    func visibleSentencesComeFromAKey() throws {
+        // EN-7A wrote this against a closed list of five files — the ones where a leak had already been found — and
+        // EN-7B found three more in a sixth. The rule was right, its scope was not: it was calibrated on the known
+        // defects instead of on the layer that can produce them. The scope is structural now — a file is in scope
+        // when it draws (it declares a SwiftUI view) or when it already speaks through the hinge, because such a
+        // file has no legitimate reason to say anything else in a literal. What stays out is decided by the role of
+        // the argument, never by how French or English a word looks: that lexical guess is what missed « niveaux »,
+        // « Suivant », « temps » and « pertes », none of which carries an accent or an article.
+        let icon = /system(?:Image|Name):|named:|imageNamed/
+        let logging = /\bLogger\(|\blogger\.|os_log|subsystem:|category:/
+        let bundleKey = /bundleValue\(|infoDictionary|forInfoDictionaryKey/
+        let iconMember = /symbol|icon|image/.ignoresCase()
+        let member = /\b(?:func|var)\s+([A-Za-z_][A-Za-z0-9_]*)/
+        let frozenTitle = /\bApp(?:Destination|Sheet)\.[A-Za-z]+\.title\b/
+        let anyString = /"((?:\\.|[^"\\])*)"/
+        let keyShaped = /[a-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)+/
+
+        var leaks: [String] = []
+        var scanned = 0
+        for base in ["App", "Commerce", "DesignSystem", "Features", "Navigation"] {
+            let directory = Self.projectRoot.appendingPathComponent(base)
+            let files = FileManager.default.enumerator(atPath: directory.path)?.allObjects as? [String] ?? []
+            for relative in files.sorted() where relative.hasSuffix(".swift") {
+                let path = "\(base)/\(relative)"
+                guard !Self.corpusTables.contains(path),
+                      let text = try? String(contentsOf: directory.appendingPathComponent(relative), encoding: .utf8)
+                else { continue }
+                // A file that draws, or that already asks the hinge for something, must ask it for everything.
+                guard text.contains(": View") || text.contains("some View") || text.contains("IrisText.") else { continue }
+                scanned += 1
+                var irisDepth = 0
+                var currentMember = ""
+                for line in Self.shippedLines(of: text) {
+                    if let found = line.text.firstMatch(of: member) { currentMember = String(found.output.1) }
+                    let code = line.text.components(separatedBy: "//")[0]
+                    for match in code.matches(of: frozenTitle) {
+                        leaks.append("\(path):\(line.number) reads \(match.output) instead of asking NavigationText")
+                    }
+                    if code.firstMatch(of: logging) != nil { continue }      // diagnostics, never drawn
+                    if code.firstMatch(of: bundleKey) != nil { continue }    // an Info.plist key, not a sentence
+                    if currentMember.firstMatch(of: iconMember) != nil { continue }  // a member that names icons
+                    let wasInside = irisDepth > 0
+                    if code.contains("IrisText.") || wasInside {
+                        irisDepth += code.filter { $0 == "(" }.count - code.filter { $0 == ")" }.count
+                        irisDepth = max(0, irisDepth)
+                        continue
+                    }
+                    let iconAt = code.firstMatch(of: icon)?.range.lowerBound
+                    for match in code.matches(of: anyString) {
+                        let literal = String(match.output.1)
+                        if let iconAt, match.range.lowerBound > iconAt { continue }
+                        guard literal.count > 1, !literal.contains("\\("), !literal.contains("@"),
+                              !literal.hasPrefix("http"), !literal.hasPrefix("mailto"),
+                              literal.contains(where: \.isLetter),
+                              literal.wholeMatch(of: keyShaped) == nil,
+                              !Self.properNouns.contains(literal)
+                        else { continue }
+                        leaks.append("\(path):\(line.number) « \(literal) » reaches a view without a key")
+                    }
+                }
+            }
+        }
+        #expect(scanned >= 40, "only \(scanned) drawing files were scanned; the layer holds more")
+        #expect(leaks.isEmpty, "shown without a key:\n\(leaks.joined(separator: "\n"))")
+
+        // And what RootView asks instead: the hinge, once per tab and once for the settings button.
+        let rootView = try String(contentsOf: Self.projectRoot.appendingPathComponent("Navigation/RootView.swift"),
+                                  encoding: .utf8)
+        for destination in AppDestination.allCases {
+            #expect(rootView.contains("NavigationText.title(of: .\(destination.rawValue))"),
+                    "the \(destination.rawValue) tab does not go through NavigationText")
+        }
+        #expect(rootView.contains("NavigationText.title(of: .settings)"),
+                "the settings button does not go through NavigationText")
+    }
 }

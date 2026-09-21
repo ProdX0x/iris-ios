@@ -9,6 +9,12 @@ import Foundation
 enum EnglishTranslationsEN5Interface {
     static let byKey: [String: String] = [
         // MARK: Spoken by VoiceOver, never drawn
+        "common.next": "Next",
+        "gazeSetup.calibration.eyebrow": "calibration",
+        "result.intrusions.label": "intrusions",
+        "result.losses.label": "losses",
+        "result.time.label": "time",
+        "journey.levels.label": "levels",
         "progress.label": "progress",
         "status.available": "available",
         "status.warning": "warning",

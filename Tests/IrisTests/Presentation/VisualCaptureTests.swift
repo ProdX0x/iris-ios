@@ -67,6 +67,12 @@ struct VisualCaptureTests {
         try await draw("cartes-des-douze-chapitres", "every card, every node state", AnyView(cards))
         try await draw("carnet", "carnet, all progress", AnyView(CarnetView().environment(coordinator(seeded: .all))))
         try await draw("reglages", "settings sheet content", AnyView(SettingsView().environment(coordinator(seeded: .through("5-3")))))
+        // The four sheets and the about page: text-dense surfaces a route cannot reach, only a tap can. Drawn here
+        // so EN-7 can read them in both languages without asking a human to open each one.
+        try await draw("paywall", "full access sheet", AnyView(PaywallView().environment(coordinator(seeded: .through("3-4")))))
+        try await draw("comment-jouer", "how to play sheet", AnyView(HowToPlayView().environment(coordinator())))
+        try await draw("aide-au-regard", "gaze introduction, first page", AnyView(GazeIntroductionView(onFinish: {}).environment(coordinator())))
+        try await draw("a-propos", "about and legal", AnyView(AboutView().environment(coordinator())))
         let summary = JourneySummary(levelCount: Campaign.levels.count, playDuration: 5_412,
                                      eclats: Campaign.levels.count * 3 - 21, maxEclats: Campaign.levels.count * 3)
         try await draw("fin-du-voyage", "journey complete", AnyView(JourneyCompleteView(summary: summary).environment(coordinator(seeded: .all))))
@@ -113,7 +119,7 @@ struct VisualCaptureTests {
     func screens() async throws {
         let sheet = CaptureSheet()
         try await drawScreens { name, note, view in try sheet.render(name, note: note, view) }
-        #expect(sheet.count == 22)
+        #expect(sheet.count == 26)
         try sheet.writeManifest("manifest-screens.txt")
     }
 
@@ -122,7 +128,7 @@ struct VisualCaptureTests {
     func screensInWindow() async throws {
         let sheet = CaptureSheet()
         try await drawScreens { name, note, view in try await sheet.host("fenetre-\(name)", note: note, view) }
-        #expect(sheet.count == 22)
+        #expect(sheet.count == 26)
         try sheet.writeManifest("manifest-window.txt")
     }
 

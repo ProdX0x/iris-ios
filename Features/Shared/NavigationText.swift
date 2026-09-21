@@ -4,7 +4,8 @@
 // are frozen by the glass suite: nothing here reads, copies or modifies those files as text — each identity is rebuilt
 // from what the thing IS, and the French the frozen type already returns is passed as the fallback
 //
-// Two of the three hinges below are reachable today. The third is not, and says so: see `title(of:)`
+// All three hinges below are reachable. The last two were not, until EN-7A: the freeze on `RootView` was revisited
+// deliberately, and each call site became the one-line change this file had predicted
 
 import Foundation
 
@@ -28,15 +29,14 @@ enum NavigationText {
                                   CampaignText.title(of: level))
     }
 
-    // MARK: - Reserved: blocked by the freeze
+    // MARK: - The tab bar and the settings button
 
-    /// Localisation debt, stated rather than worked around. `AppSheet.title` and `AppDestination.title` are drawn in
-    /// exactly one place — `Navigation/RootView.swift`, frozen — which calls them directly and leaves no seam to pass
-    /// through. Nothing here can change that without editing a frozen file, and no such edit will be made.
+    /// `AppSheet.title` and `AppDestination.title` are drawn in exactly one place — `Navigation/RootView.swift` — and
+    /// that file called them directly, which left the tab bar and the settings button in French on an English device.
+    /// The identities were written here first, deliberately, against the day the freeze would be revisited: EN-7A
+    /// revisited it, and each call site became the one-line change this comment had promised.
     ///
-    /// What is possible is to fix the identities now, so the catalogue can be translated in full and so the day the
-    /// freeze is deliberately revisited, each call site becomes a one-line change. These functions render the frozen
-    /// French unchanged today; a test holds them to it.
+    /// These functions render the frozen French unchanged when the app runs in French; a test holds them to it.
     static func key(sheet: AppSheet) -> String { "navigation.sheet.\(sheet.rawValue).title" }
 
     static func key(destination: AppDestination) -> String { "navigation.destination.\(destination.rawValue).title" }
