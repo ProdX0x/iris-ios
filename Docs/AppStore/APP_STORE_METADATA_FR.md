@@ -1,7 +1,9 @@
 # Iris — fiche App Store (fr-FR)
 
-Texte prêt à coller dans App Store Connect. La langue principale est le français ; l'anglais reste possible plus
-tard sans rien changer au code (voir `Docs/AppStore/APP_STORE_CONNECT_CHECKLIST.md`, § localisation).
+Texte prêt à coller dans App Store Connect. La langue principale reste le français, et **la fiche v1.0 sera
+localisée en français et en anglais** : l'anglais n'est plus une éventualité mais une décision (voir
+`Docs/AppStore/APP_STORE_CONNECT_CHECKLIST.md`, § 7). Ce document porte la copie **française** ; la copie anglaise
+n'est pas encore rédigée.
 
 Aucune de ces lignes ne promet un effet de santé ou de soin : Iris est présenté comme un jeu, et seulement
 comme un jeu. `CommerceBoundaryTests` (test H) relit ce dossier à chaque exécution des tests.

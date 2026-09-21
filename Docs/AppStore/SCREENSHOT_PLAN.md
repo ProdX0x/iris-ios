@@ -22,6 +22,13 @@ petit ; fournir la série 6,9" suffit donc pour tous les iPhone visés.
 Décision : **fournir la série 6,9"** (1290 × 2796), plus une série 6,5" (1284 × 2778) si le rendu redimensionné ne
 satisfait pas à la relecture humaine.
 
+**Deux séries, une par langue.** La fiche v1.0 est localisée en français et en anglais (checklist, § 7), et les
+captures sont un contenu par langue. Les huit captures françaises existent — produites en 1320 × 2868 le
+18 septembre 2026, manifeste et empreintes dans `Docs/ReleaseGate4/11_SCREENSHOTS.md`. Les huit captures anglaises
+restent à produire : mêmes états, mêmes arguments de lancement, l'app lancée avec l'anglais pour langue effective.
+Une localisation laissée sans captures propres hérite de celles de la langue principale, ce qui montrerait des
+captures françaises aux anglophones.
+
 Iris est aussi compilé pour iPad (`TARGETED_DEVICE_FAMILY = 1,2`). Si l'app est publiée pour iPad, Apple exige en
 plus la série iPad 13" ; sinon, restreindre la disponibilité aux iPhone dans App Store Connect. **Décision à
 prendre par une personne** — voir la checklist.

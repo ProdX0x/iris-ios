@@ -20,7 +20,7 @@ Identité verrouillée du projet (`project.yml`, contrôle C12 de `Tools/audit.p
 |---|---|---|
 | Apple Developer Program actif | inconnu | vérifier l'adhésion et sa date d'expiration |
 | Rôle du compte utilisé | inconnu | il faut au moins Admin ou Account Holder pour créer les produits et les contrats |
-| App record créé pour `net.steve-s.iris` | inconnu | créer l'app (plateforme iOS, langue principale français) |
+| App record créé pour `net.steve-s.iris` | inconnu | créer l'app (plateforme iOS, langue principale français), puis **ajouter la localisation anglaise** — voir § 7 |
 | **Paid Applications Agreement** signé | inconnu | **obligatoire** : sans lui aucun achat intégré n'est possible, même en bac à sable |
 | Informations fiscales | inconnu | obligatoire pour les contrats payants |
 | Coordonnées bancaires | inconnu | obligatoire pour les contrats payants |
@@ -88,7 +88,7 @@ facultative pour un code personnalisé et de 6 mois maximum si elle est fixée.
 |---|---|
 | Nom, sous-titre, texte promotionnel, description, mots-clés | `APP_STORE_METADATA_FR.md` |
 | Catégories, classification par âge, copyright | `APP_STORE_METADATA_FR.md` |
-| Captures d'écran | `SCREENSHOT_PLAN.md` — **à produire**, aucune n'existe encore |
+| Captures d'écran | `SCREENSHOT_PLAN.md` — **français : 8/8 produites** le 18 septembre 2026 (manifeste et empreintes dans `Docs/ReleaseGate4/11_SCREENSHOTS.md`) ; **anglais : 8 à produire**, voir § 7 |
 | Notes pour la relecture | `APP_REVIEW_NOTES_FR.md` |
 | Réponses « App Privacy » | `PRIVACY_RELEASE_NOTES.md` § 4 |
 | **URL d'assistance** | `https://www.steve-s.net/iris/` — en ligne, vérifiée le 18 septembre 2026 |
@@ -123,3 +123,37 @@ même version marketing), puis régénérer avec `xcodegen generate`.
 - [ ] Questionnaire « App Privacy » rempli selon `PRIVACY_RELEASE_NOTES.md` § 4
 - [ ] **Validation physique des performances sur iPhone** (voir le rapport de mission : régression non résolue)
 - [ ] **Validation de stabilité mémoire / backboardd** (voir le rapport de mission : incident Jetsam non attribué)
+- [ ] **Copie anglaise de la fiche** rédigée et collée dans la localisation `en` — voir § 7
+- [ ] **Captures anglaises** produites selon `SCREENSHOT_PLAN.md` — 8 attendues, voir § 7
+
+## 7. Localisation de la fiche
+
+**Décision du 21 septembre 2026 : la v1.0 est livrée en français et en anglais — l'app *et* sa fiche App Store.**
+Cette section est celle à laquelle renvoie `APP_STORE_METADATA_FR.md` ; le renvoi existait avant elle.
+
+### Ce qui est acquis, côté app
+
+| Élément | État |
+|---|---|
+| Interface et corpus | 690 clés en français et en anglais, dans `Resources/Localizable.xcstrings` et `Resources/Gameplay.xcstrings` |
+| Chaînes système du bundle | `Resources/InfoPlist.xcstrings` — `NSCameraUsageDescription` en français et en anglais |
+| Dialogue système caméra | **constaté sur iPhone 14 Pro physique**, en français et en anglais, le 21 septembre 2026 |
+| Protection automatique | `InfoPlistLocalizationTests` échoue si une langue livrée par l'app n'est pas suivie par les purpose strings |
+
+La bascule anglaise a été obtenue par la **langue par application** (Réglages → Apps → Iris → Langue), sans
+modifier la langue système de l'iPhone.
+
+### Ce qui reste à faire, côté fiche
+
+| Élément | État |
+|---|---|
+| Nom | inchangé — `Iris` dans les deux langues |
+| Sous-titre, texte promotionnel, description, nouveautés | **à rédiger en anglais** (le français est dans `APP_STORE_METADATA_FR.md`) |
+| Mots-clés | **à recomposer en anglais** — ce champ se compose pour un marché, il ne se traduit pas |
+| Noms et descriptions des deux achats intégrés | **à rédiger en anglais** ; la copie française canonique est dans `APP_STORE_METADATA_FR.md`, reprise par `STOREKIT_PRODUCTS.md` |
+| Captures | français 8/8 produites ; **anglais 8 à produire**, mêmes états, série 6,9″ |
+| URL d'assistance et de confidentialité | les deux pages en ligne sont **en français**. App Store Connect accepte une URL par langue : décider si une page anglaise est publiée ou si la page française sert aux deux |
+| Notes pour la relecture | champ unique, non localisable — `APP_REVIEW_NOTES_FR.md` reste la source |
+
+Une localisation sans captures propres **hérite de celles de la langue principale** : ajouter l'anglais sans ses
+huit captures reste soumissible, mais les anglophones verraient des captures françaises.

@@ -27,7 +27,21 @@ fichier réécrit cette valeur.
 | Prix cible France | 2,99 € |
 | Family Sharing | Non |
 | Nom affiché (fr-FR) | Iris — jeu complet |
-| Description (fr-FR) | Débloque les douze chapitres d'Iris et tous les niveaux à venir. Achat unique, sans abonnement. |
+| Description (fr-FR) | Ouvre tous les chapitres. Achat unique. |
+
+**La source canonique de ces deux textes est `APP_STORE_METADATA_FR.md`**, § « Achats intégrés — textes localisés
+(fr-FR) ». Les valeurs ci-dessus en sont la reprise exacte ; en cas d'écart, c'est ce document-ci qui a tort.
+
+Ce fichier a porté jusqu'au 21 septembre 2026 une description plus longue (« Débloque les douze chapitres… », 94
+caractères) qui contredisait la copie canonique et dépassait la limite retenue. Elle est supprimée, sans qu'aucune
+troisième formulation ne soit introduite.
+
+**Longueur du champ « Description » d'un achat intégré — à revalider.** La documentation d'Apple n'est pas
+univoque : App Store Connect Help et la page dédiée aux achats intégrés annoncent **45 caractères**, tandis qu'une
+autre page générale mentionne encore **55**. La copie canonique en fait **39**, donc conforme dans les deux cas.
+La contrainte opérationnelle retenue pour cette phase est la plus prudente, **45 caractères** ; la limite réellement
+appliquée sera constatée dans l'interface d'App Store Connect lors de la configuration des produits, et non
+supposée ici.
 
 **Le prix n'est jamais écrit dans Iris.** L'interface affiche `Product.displayPrice`, c'est-à-dire la chaîne que
 l'App Store formate pour la boutique du joueur. `CommerceBoundaryTests` (test G) échoue si une source de production

@@ -1,0 +1,24 @@
+{
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "comment" : "System permission alert shown by iOS before the first camera access. Must say what the camera is used for and what is not done with the images.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris uses the front TrueDepth camera to detect the direction of your gaze: your gaze is what pushes the game's spheres away. Images stay on the device and are never recorded or sent."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iris utilise la caméra frontale TrueDepth pour détecter la direction de votre regard : c'est ce regard qui repousse les sphères du jeu. Les images restent sur l'appareil, ne sont jamais enregistrées ni envoyées."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
