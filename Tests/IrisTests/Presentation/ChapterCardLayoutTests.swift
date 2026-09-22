@@ -20,7 +20,7 @@ struct ChapterCardLayoutTests {
         }
         return ChapterCard(chapter: chapter, isUnlocked: unlocked, isAccessible: accessible, completed: chapter.levels.count - 1,
                            nodes: nodes, lockedHint: "Terminez le chapitre précédent", fullAccessPrice: nil,
-                           onSelect: { _ in }, onUnlock: {})
+                           allowsNewAcquisitions: true, onSelect: { _ in }, onUnlock: {})
     }
 
     private func fittingSize(_ view: some View, width: CGFloat) -> CGSize {

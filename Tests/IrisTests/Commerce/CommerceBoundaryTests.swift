@@ -203,7 +203,8 @@ struct CommerceBoundaryTests {
         }
         let release = String(storeBlock.output.release)
         #expect(String(storeBlock.output.debug).contains("StaticEntitlementService(entitlement:"))
-        #expect(release.contains("StoreKitEntitlementService()"))
+        // The Release store is the real one, and it is built knowing whether this device may buy (see M).
+        #expect(release.contains("StoreKitEntitlementService(allowsNewAcquisitions: capabilities.supportsFaceTracking)"))
         #expect(!release.contains("StaticEntitlementService"), "a Release build could stand a fixed right in for the store")
         #expect(!release.contains("launchOptions"), "a Release build reads no launch argument to build the store")
         // Launch arguments themselves are parsed in DEBUG only.
@@ -218,5 +219,80 @@ struct CommerceBoundaryTests {
         }
         #expect(double.contains("self.entitlement = .free"), "the Release branch must fall back to free")
         #expect(double.components(separatedBy: "#if DEBUG").count == 4, "every grant is behind DEBUG")
+    }
+
+    /// A source without its comments: the rule is about what the code does, not about what it says about itself.
+    private func code(_ text: String) -> String {
+        text.split(separator: "\n", omittingEmptySubsequences: false)
+            .map { line in line.range(of: "//").map { String(line[..<$0.lowerBound]) } ?? String(line) }
+            .joined(separator: "\n")
+    }
+
+    @Test("M: no acquisition can start on a device that cannot play Iris, whichever part of the interface asks")
+    func noAcquisitionOnADeviceThatCannotPlay() throws {
+        let sources = try productionSources()
+
+        // One place opens a transaction, and it asks the device before anything reaches the store.
+        let purchasers = sources.filter { code($0.text).contains("product.purchase(") }.map(\.path)
+        #expect(purchasers == ["Commerce/Services/StoreKitEntitlementService.swift"], "a transaction is opened in \(purchasers)")
+        let service = code(try source("Commerce/Services/StoreKitEntitlementService.swift"))
+        #expect(service.components(separatedBy: "product.purchase(").count == 2, "exactly one purchase call")
+        let body = try #require(service.range(of: "func purchaseFullGame() async {"))
+        let gate = try #require(service.range(of: "guard allowsNewAcquisitions else", range: body.upperBound..<service.endIndex))
+        let purchase = try #require(service.range(of: "product.purchase(", range: body.upperBound..<service.endIndex))
+        #expect(gate.lowerBound < purchase.lowerBound, "the device must be asked before the store")
+        #expect(service.contains("allowsNewAcquisitions ? products[StoreProductID.fullGameUnlock]?.displayPrice : nil"),
+                "a device that cannot play must never be given a price to show")
+        #expect(service.contains("init(allowsNewAcquisitions: Bool)"), "the real store must be told, with no default, whether this device may buy")
+
+        // No other door to the store exists: no StoreKit view that sells, no purchase action from the environment, no
+        // purchase with options or a confirmation scene, no other redemption sheet, no StoreKit 1 queue, and no purchase
+        // intent taken over from the App Store. A new door would have to be added here, next to the device gate.
+        let doors = [".purchase()", "purchase(options", "purchase(confirmIn", "\\.purchase)", "PurchaseAction", "ProductView(",
+                     "StoreView(", "SubscriptionStoreView(", "presentOfferCodeRedeemSheet", "presentCodeRedemptionSheet",
+                     "SKPaymentQueue", "PurchaseIntent"]
+        for (path, text) in sources where path != "Commerce/Services/StoreKitEntitlementService.swift" {
+            for door in doors {
+                #expect(!code(text).contains(door), "\(path) reaches the store through \(door)")
+            }
+        }
+        #expect(service.components(separatedBy: ".purchase()").count == 2, "the store opens exactly one transaction")
+        for door in doors.dropFirst() {
+            #expect(!service.contains(door), "the store opens a second door: \(door)")
+        }
+
+        // The interface asks for a purchase in one place only: the offer of the full access screen.
+        let buyers = sources.filter { code($0.text).contains(".purchaseFullGame()") }.map(\.path)
+        #expect(buyers == ["Features/Paywall/PaywallView.swift"], "a purchase is asked for in \(buyers)")
+
+        // Redeeming a code is an acquisition too. Apple's sheet is attached in one place, only when the store allows
+        // it, and a request made on a device that cannot play is withdrawn instead of being ignored.
+        let redeemers = sources.filter { code($0.text).contains(".offerCodeRedemption(") }.map(\.path)
+        #expect(redeemers == [Self.redemptionFile], "the redemption sheet is reached from \(redeemers)")
+        let redemption = code(try source(Self.redemptionFile))
+        #expect(redemption.contains("store.allowsNewAcquisitions"))
+        #expect(redemption.contains("if Self.mayPresent(for: store) {"))
+        #expect(redemption.contains("if requested { isPresented = false }"))
+        for (path, text) in sources where path != Self.redemptionFile && code(text).contains("dsOfferCodeRedemption(") {
+            #expect(code(text).contains(", through: "), "\(path) opens the redemption sheet without the store deciding")
+        }
+
+        // The composition reads the device once and gives the answer to every store it builds, previews included.
+        let container = code(try source("App/DI/AppContainer.swift"))
+        #expect(container.components(separatedBy: "allowsNewAcquisitions: capabilities.supportsFaceTracking").count == 4,
+                "the DEBUG fixed right, the DEBUG store and the Release store must all be told")
+        #expect(container.contains("store ?? StaticEntitlementService(allowsNewAcquisitions: supportsFaceTracking)"))
+        #expect(try source("Features/Chapters/ChaptersView.swift").contains("allowsNewAcquisitions: coordinator.store.allowsNewAcquisitions"))
+
+        // The device test stays the system's own: no catalogue of models, no rule on Face ID, TrueDepth or a name.
+        for path in ["Commerce/Services/StorePurchasing.swift", "Commerce/Services/StoreKitEntitlementService.swift",
+                     "Commerce/Services/StaticEntitlementService.swift", "App/DI/AppContainer.swift", Self.redemptionFile,
+                     "Features/Paywall/PaywallView.swift", "Features/Chapters/ChapterLockNotice.swift",
+                     "Features/Chapters/ChapterCard.swift"] {
+            let text = code(try source(path))
+            for word in ["TrueDepth", "Face ID", "FaceID", "utsname", "modelIdentifier", "hw.machine", "iPhone1", "iPhone SE"] {
+                #expect(!text.contains(word), "\(path) decides on \(word)")
+            }
+        }
     }
 }

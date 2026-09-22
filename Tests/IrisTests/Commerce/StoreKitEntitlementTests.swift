@@ -76,7 +76,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         _ = session
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
 
         let price = try #require(service.fullGameDisplayPrice)
@@ -97,7 +97,7 @@ struct StoreKitEntitlementTests {
         #expect(pass.type == .autoRenewable)
         #expect(pass.subscription != nil)
         // Iris reads a price for the full game only: the pass has no price to show anywhere.
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.fullGameDisplayPrice != nil)
     }
@@ -107,7 +107,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         try await session.setSimulatedError(.generic(.networkError(URLError(.notConnectedToInternet))), forAPI: .loadProducts)
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
 
         #expect(service.fullGameDisplayPrice == nil)
@@ -123,7 +123,7 @@ struct StoreKitEntitlementTests {
     func purchaseVerified() async throws {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.entitlement == .free)
 
@@ -141,7 +141,7 @@ struct StoreKitEntitlementTests {
     func purchaseUnverified() async throws {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         let transaction = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
         session.clearTransactions()
 
@@ -156,7 +156,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         _ = session
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.apply(.pending)
 
         #expect(service.lastOutcome == .pending)
@@ -168,7 +168,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         _ = session
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.apply(.userCancelled)
         #expect(service.lastOutcome == .cancelled)
         #expect(service.lastOutcome?.notice == nil, "a cancellation is not an error to show")
@@ -184,7 +184,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         _ = session
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         service.apply(StoreKitError.networkError(URLError(.timedOut)))
         #expect(service.lastOutcome == .failed)
         #expect(service.lastOutcome?.isFailure == true)
@@ -196,7 +196,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         try await session.setSimulatedError(.generic(.networkError(URLError(.notConnectedToInternet))), forAPI: .loadProducts)
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.purchaseFullGame()
 
         #expect(service.lastOutcome == .unavailable)
@@ -211,7 +211,7 @@ struct StoreKitEntitlementTests {
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
 
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.entitlement == .fullAccess)
     }
@@ -223,14 +223,14 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         try await session.setSimulatedError(.generic(.networkError(URLError(.timedOut))), forAPI: .appStoreSync)
-        let empty = StoreKitEntitlementService()
+        let empty = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await empty.refresh()
         await empty.restorePurchases()
         #expect(empty.lastOutcome == .nothingToRestore)
         #expect(empty.entitlement == .free)
 
         _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         #expect(await waitForEntitlement(.fullAccess, on: service), "the store never published the purchase")
         await service.restorePurchases()
         #expect(service.lastOutcome == .restored)
@@ -242,7 +242,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         try await session.setSimulatedError(.generic(.networkError(URLError(.timedOut))), forAPI: .appStoreSync)
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         await service.restorePurchases()
 
@@ -256,7 +256,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.entitlement == .fullAccess)
 
@@ -273,7 +273,7 @@ struct StoreKitEntitlementTests {
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
                                          options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
 
         #expect(service.entitlement == .promotionalAccess)
@@ -286,7 +286,7 @@ struct StoreKitEntitlementTests {
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
                                          options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.entitlement == .promotionalAccess)
 
@@ -303,7 +303,7 @@ struct StoreKitEntitlementTests {
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
                                          options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
         _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.entitlement == .fullAccess)
 
@@ -319,12 +319,57 @@ struct StoreKitEntitlementTests {
     func transactionUpdates() async throws {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
-        let service = StoreKitEntitlementService()
+        let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         service.start()
         #expect(await wait { service.fullGameDisplayPrice != nil })
         #expect(service.entitlement == .free)
 
         _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
         #expect(await wait { service.entitlement == .fullAccess }, "the listener never reported the purchase")
+    }
+
+    // MARK: A device that cannot play Iris
+
+    @Test("H: on a device that cannot play Iris no transaction is ever opened and no price is named")
+    func deviceGateOpensNoTransaction() async throws {
+        let session = try makeSession()
+        guard await storeKitTestingIsAvailable() else { return }
+        // The same store, on a device that can play: the price is there, so what follows is the gate and nothing else.
+        let able = StoreKitEntitlementService(allowsNewAcquisitions: true)
+        await able.refresh()
+        #expect(able.fullGameDisplayPrice != nil)
+
+        let unable = StoreKitEntitlementService(allowsNewAcquisitions: false)
+        await unable.refresh()
+        #expect(unable.fullGameDisplayPrice == nil, "a device that cannot play must not be shown a price")
+        await unable.purchaseFullGame()
+        #expect(unable.lastOutcome == .deviceUnsupported)
+        #expect(unable.entitlement == .free)
+        #expect(session.allTransactions().isEmpty, "a purchase reached the store on a device that cannot play")
+    }
+
+    @Test("H: a right bought on another device stays recognised, and restorable, on a device that cannot play")
+    func deviceGateKeepsTheRightsHeld() async throws {
+        let session = try makeSession()
+        guard await storeKitTestingIsAvailable() else { return }
+        try await session.setSimulatedError(.generic(.networkError(URLError(.timedOut))), forAPI: .appStoreSync)
+        _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
+
+        let unable = StoreKitEntitlementService(allowsNewAcquisitions: false)
+        #expect(await waitForEntitlement(.fullAccess, on: unable), "the gate must never hide a right already held")
+        await unable.restorePurchases()
+        #expect(unable.lastOutcome == .restored)
+        #expect(unable.entitlement == .fullAccess)
+    }
+
+    @Test("H: a promotional access already redeemed stays recognised on a device that cannot play")
+    func deviceGateKeepsThePromotionalRight() async throws {
+        let session = try makeSession()
+        guard await storeKitTestingIsAvailable() else { return }
+        _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
+                                         options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
+        let unable = StoreKitEntitlementService(allowsNewAcquisitions: false)
+        await unable.refresh()
+        #expect(unable.entitlement == .promotionalAccess)
     }
 }

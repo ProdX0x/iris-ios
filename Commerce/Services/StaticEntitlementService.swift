@@ -22,18 +22,21 @@ final class StaticEntitlementService: StorePurchasing {
     private(set) var restoreCount = 0
     private(set) var purchaseCount = 0
     private(set) var refreshCount = 0
+    let allowsNewAcquisitions: Bool
 
     /// What a purchase leads to; `.purchased` also grants the full access.
     var outcomeOfPurchase: StorePurchaseOutcome = .purchased
 
-    init(entitlement: AccessEntitlement = .free, displayPrice: String? = nil) {
+    /// Same contract as the real store: a device that may not buy names no price and refuses every purchase.
+    init(entitlement: AccessEntitlement = .free, displayPrice: String? = nil, allowsNewAcquisitions: Bool = true) {
         #if DEBUG
         self.entitlement = entitlement
         #else
         // A Release build never holds a right that did not come from the store.
         self.entitlement = .free
         #endif
-        self.fullGameDisplayPrice = displayPrice
+        self.allowsNewAcquisitions = allowsNewAcquisitions
+        self.fullGameDisplayPrice = allowsNewAcquisitions ? displayPrice : nil
     }
 
     func start() {
@@ -41,6 +44,11 @@ final class StaticEntitlementService: StorePurchasing {
     }
 
     func purchaseFullGame() async {
+        // Refused before it is counted: `purchaseCount` is the number of purchases that really started.
+        guard allowsNewAcquisitions else {
+            lastOutcome = .deviceUnsupported
+            return
+        }
         purchaseCount += 1
         #if DEBUG
         if outcomeOfPurchase == .purchased {

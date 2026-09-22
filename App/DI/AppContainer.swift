@@ -61,22 +61,30 @@ final class AppContainer {
         let progressStore: any ProgressStore = launchOptions.seededProgress.map {
             InMemoryProgressStore(progress: LaunchOptions.progress(for: $0))
         } ?? UserDefaultsProgressStore()
+        // The device's capability is read first, because the store depends on it: a device that cannot read the gaze
+        // must never be offered a game it cannot play. `ARFaceTrackingConfiguration.isSupported` stays the only test.
+        #if targetEnvironment(simulator)
+        let capabilities: any DeviceCapabilities = StaticDeviceCapabilities(supportsFaceTracking: true)
+        #else
+        let capabilities: any DeviceCapabilities = ARKitDeviceCapabilities()
+        #endif
         // The store is the real one in every build. In DEBUG a launch argument may stand a fixed right in its place,
         // to reach a commercial state deterministically; Release parses no launch argument at all, so this cannot
         // exist there (CommerceBoundaryTests holds the guarantee).
         #if DEBUG
         let store: any StorePurchasing = launchOptions.entitlement
-            .map { StaticEntitlementService(entitlement: $0) } ?? StoreKitEntitlementService()
+            .map { StaticEntitlementService(entitlement: $0, allowsNewAcquisitions: capabilities.supportsFaceTracking) }
+            ?? StoreKitEntitlementService(allowsNewAcquisitions: capabilities.supportsFaceTracking)
         let onboarding = launchOptions.forcesOnboarding
             ? OnboardingStore(defaults: UserDefaults(suiteName: "iris.onboarding.debug.\(UUID().uuidString)") ?? .standard)
             : OnboardingStore()
         #else
-        let store: any StorePurchasing = StoreKitEntitlementService()
+        let store: any StorePurchasing = StoreKitEntitlementService(allowsNewAcquisitions: capabilities.supportsFaceTracking)
         let onboarding = OnboardingStore()
         #endif
         #if targetEnvironment(simulator)
         return AppContainer(environment: .simulator,
-                            capabilities: StaticDeviceCapabilities(supportsFaceTracking: true),
+                            capabilities: capabilities,
                             cameraAuthorization: StubCameraAuthorizationService(status: .authorized),
                             settings: GameSettingsStore(),
                             store: store,
@@ -88,7 +96,7 @@ final class AppContainer {
                             launchOptions: launchOptions)
         #else
         return AppContainer(environment: .live,
-                            capabilities: ARKitDeviceCapabilities(),
+                            capabilities: capabilities,
                             cameraAuthorization: AVCaptureCameraAuthorizationService(),
                             settings: GameSettingsStore(),
                             store: store,
@@ -105,7 +113,7 @@ final class AppContainer {
                         cameraStatus: CameraAuthorizationStatus = .authorized,
                         calibrationStore: any CalibrationStore = InMemoryCalibrationStore(),
                         progressStore: any ProgressStore = InMemoryProgressStore(),
-                        store: any StorePurchasing = StaticEntitlementService(),
+                        store: (any StorePurchasing)? = nil,
                         hasCompletedOnboarding: Bool = true,
                         hasSeenGazeIntroduction: Bool = true,
                         launchOptions: LaunchOptions = .none) -> AppContainer {
@@ -118,7 +126,8 @@ final class AppContainer {
                      capabilities: StaticDeviceCapabilities(supportsFaceTracking: supportsFaceTracking),
                      cameraAuthorization: StubCameraAuthorizationService(status: cameraStatus),
                      settings: GameSettingsStore(defaults: defaults),
-                     store: store,
+                     // Without a store of its own, a preview gets one that follows the device it pretends to be.
+                     store: store ?? StaticEntitlementService(allowsNewAcquisitions: supportsFaceTracking),
                      onboarding: onboarding,
                      calibrationStore: calibrationStore,
                      progressStore: progressStore,

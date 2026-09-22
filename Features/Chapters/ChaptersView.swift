@@ -26,6 +26,7 @@ struct ChaptersView: View {
                             nodes: chapter.levels.map { level in (level, state(of: level), coordinator.record(for: level).eclats) },
                             lockedHint: lockedHint(for: chapter),
                             fullAccessPrice: coordinator.store.fullGameDisplayPrice,
+                            allowsNewAcquisitions: coordinator.store.allowsNewAcquisitions,
                             onSelect: { coordinator.play($0) },
                             onUnlock: { coordinator.presentPaywall(for: chapter) })
             }

@@ -1,9 +1,27 @@
 // PaywallView.swift
 // Layer: Presentation
 // Purpose: What the full access is, what it costs according to the store, and the three ways in: buy once, restore,
-// or redeem a code. No subscription is ever offered here, and no price is ever written by Iris
+// or redeem a code. No subscription is ever offered here, and no price is ever written by Iris. On a device that cannot
+// play Iris it offers nothing at all: no price, no purchase, no code — only the way to restore a right bought elsewhere
 
 import SwiftUI
+
+/// Which of its three faces the full access screen shows. Decided from the right held and from whether this device may
+/// start an acquisition, never from the view's own state, so a test can hold every combination.
+enum PaywallMode: Hashable, Sendable {
+    /// The whole campaign is already open: there is nothing to sell. Holds on any device, even one that cannot play.
+    case granted
+    /// The offer: what is bought, the store's price, buying, restoring, redeeming a code.
+    case offer
+    /// This device cannot play Iris: nothing is offered and no price is named. Restoring stays, so a right bought on
+    /// another device is still recognised here.
+    case deviceUnsupported
+
+    static func resolve(opensWholeCampaign: Bool, allowsNewAcquisitions: Bool) -> PaywallMode {
+        if opensWholeCampaign { return .granted }
+        return allowsNewAcquisitions ? .offer : .deviceUnsupported
+    }
+}
 
 struct PaywallView: View {
     @Environment(AppCoordinator.self) private var coordinator
@@ -14,11 +32,16 @@ struct PaywallView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: DSSpacing.l) {
-                    if coordinator.entitlement.opensWholeCampaign {
+                    switch PaywallMode.resolve(opensWholeCampaign: coordinator.entitlement.opensWholeCampaign,
+                                               allowsNewAcquisitions: store.allowsNewAcquisitions) {
+                    case .granted:
                         granted
-                    } else {
+                    case .offer:
                         offer(price: store.fullGameDisplayPrice)
                         actions(store: store)
+                    case .deviceUnsupported:
+                        deviceUnsupported
+                        restoreOnly(store: store)
                     }
                     if let notice = store.lastOutcome?.notice {
                         Text(notice)
@@ -46,7 +69,7 @@ struct PaywallView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .dsOfferCodeRedemption(isPresented: $redeemsCode) { _ in
+        .dsOfferCodeRedemption(isPresented: $redeemsCode, through: store) { _ in
             Task { await coordinator.store.refresh() }
         }
         .onDisappear { coordinator.store.acknowledgeOutcome() }
@@ -89,20 +112,53 @@ struct PaywallView: View {
                 Task { await store.purchaseFullGame() }
             }
             .disabled(store.isWorking || store.fullGameDisplayPrice == nil)
-            HStack(spacing: DSSpacing.m) {
-                DSButton(PaywallCopy.restore, variant: .secondary) {
-                    Task { await store.restorePurchases() }
-                }
-                .disabled(store.isWorking)
-                Spacer(minLength: 0)
-            }
+            restoreButton(store: store)
             DSButton(PaywallCopy.redeemCode, systemImage: "ticket", variant: .ghost) { redeemsCode = true }
                 .disabled(store.isWorking)
-            if store.isWorking {
-                ProgressView()
-                    .tint(DSColor.Identity.accent)
-                    .accessibilityLabel(IrisText.interface("paywall.storeWorking", french: "Communication avec l'App Store"))
+            working(store: store)
+        }
+    }
+
+    /// The one action a device that cannot play Iris keeps: finding a right bought elsewhere. Nothing is sold here.
+    private func restoreOnly(store: any StorePurchasing) -> some View {
+        VStack(alignment: .leading, spacing: DSSpacing.m) {
+            restoreButton(store: store)
+            working(store: store)
+        }
+    }
+
+    private func restoreButton(store: any StorePurchasing) -> some View {
+        HStack(spacing: DSSpacing.m) {
+            DSButton(PaywallCopy.restore, variant: .secondary) {
+                Task { await store.restorePurchases() }
             }
+            .disabled(store.isWorking)
+            Spacer(minLength: 0)
+        }
+    }
+
+    @ViewBuilder
+    private func working(store: any StorePurchasing) -> some View {
+        if store.isWorking {
+            ProgressView()
+                .tint(DSColor.Identity.accent)
+                .accessibilityLabel(IrisText.interface("paywall.storeWorking", french: "Communication avec l'App Store"))
+        }
+    }
+
+    /// Why nothing is offered, in the same generic words the unavailability screen uses. It names no hardware: which
+    /// devices can read the gaze is the system's answer, not a claim this screen makes.
+    private var deviceUnsupported: some View {
+        DSGlassPanel {
+            Text(IrisText.interface("unavailable.eyebrow", french: "appareil")).dsEyebrowStyle(tint: DSColor.State.danger)
+            Text(IrisText.interface("gaze.unavailable.title", french: "regard indisponible"))
+                .font(DSFont.title2)
+                .foregroundStyle(DSColor.Identity.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+            DSStatusRow(systemImage: "eye.slash",
+                        title: IrisText.interface("unavailable.faceTracking.label", french: "Suivi facial ARKit"),
+                        detail: IrisText.interface("unavailable.faceTracking.detail", french: "Non pris en charge sur cet appareil"),
+                        state: .error)
         }
     }
 
@@ -127,4 +183,9 @@ struct PaywallView: View {
 #Preview("Already unlocked") {
     PaywallView()
         .environment(AppContainer.preview(store: StaticEntitlementService(entitlement: .fullAccess)).makeAppCoordinator())
+}
+
+#Preview("Device that cannot play") {
+    PaywallView()
+        .environment(AppContainer.preview(supportsFaceTracking: false).makeAppCoordinator())
 }

@@ -14,6 +14,11 @@ protocol StorePurchasing: EntitlementProviding {
     var isWorking: Bool { get }
     /// How the last call ended; nil once the interface has shown it.
     var lastOutcome: StorePurchaseOutcome? { get }
+    /// False on a device that cannot play Iris, as the composition root reads it from the device once. There, no new
+    /// acquisition may start: no purchase of the full game, no code redemption, and no price is named. Reading the
+    /// rights already held, and restoring them, never depend on it. It has no default on purpose: whoever builds a
+    /// store must say whether this device may buy.
+    var allowsNewAcquisitions: Bool { get }
 
     /// Starts listening to the store and reads the rights already held. Called once, after the first frame.
     func start()

@@ -16,6 +16,8 @@ enum StorePurchaseOutcome: Hashable, Sendable {
     case restored
     case nothingToRestore
     case failed
+    /// This device cannot play Iris, so nothing was bought: no transaction was opened and the store was not asked.
+    case deviceUnsupported
 
     /// What the player is told. Nothing here names a price: the price always comes from the store itself.
     var notice: String? {
@@ -28,12 +30,13 @@ enum StorePurchaseOutcome: Hashable, Sendable {
         case .restored: IrisText.interface("purchase.restored", french: "Vos achats ont été restaurés.")
         case .nothingToRestore: IrisText.interface("purchase.nothingToRestore", french: "Aucun achat à restaurer sur ce compte Apple.")
         case .failed: IrisText.interface("purchase.failed", french: "L'achat n'a pas abouti.")
+        case .deviceUnsupported: IrisText.interface("unavailable.faceTracking.detail", french: "Non pris en charge sur cet appareil")
         }
     }
 
     var isFailure: Bool {
         switch self {
-        case .unverified, .unavailable, .failed, .nothingToRestore: true
+        case .unverified, .unavailable, .failed, .nothingToRestore, .deviceUnsupported: true
         case .purchased, .pending, .cancelled, .restored: false
         }
     }

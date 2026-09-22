@@ -60,7 +60,7 @@ struct VisualCaptureTests {
                 let open = offset < Campaign.chapters.count - 1
                 ChapterCard(chapter: chapter, isUnlocked: open, isAccessible: true, completed: open ? 2 : 0,
                             nodes: nodes(chapter, open: open), lockedHint: "Terminez le chapitre précédent",
-                            fullAccessPrice: nil, onSelect: { _ in }, onUnlock: {})
+                            fullAccessPrice: nil, allowsNewAcquisitions: true, onSelect: { _ in }, onUnlock: {})
             }
         }
         .padding(.horizontal, 24)

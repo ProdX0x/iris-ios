@@ -15,6 +15,8 @@ struct ChapterCard: View {
     let lockedHint: String
     /// The full game's price as the store formats it; nil when the store could not be reached.
     let fullAccessPrice: String?
+    /// False on a device that cannot play Iris: the lock notice then offers nothing and names no price.
+    let allowsNewAcquisitions: Bool
     let onSelect: (LevelDefinition) -> Void
     let onUnlock: () -> Void
 
@@ -29,7 +31,9 @@ struct ChapterCard: View {
                                          french: "Chapitre %lld, %@, %lld niveaux sur %lld atteints, accès complet requis",
                                          chapter.number, CampaignText.name(of: chapter), completed, chapter.levels.count))
             if !isAccessible {
-                ChapterLockNotice(chapter: chapter, price: fullAccessPrice, action: onUnlock)
+                ChapterLockNotice(chapter: chapter,
+                                  offer: .init(allowsNewAcquisitions: allowsNewAcquisitions, price: fullAccessPrice),
+                                  action: onUnlock)
             } else if isUnlocked {
                 AdaptiveLevelRow {
                     ForEach(nodes, id: \.level.id) { node in

@@ -16,6 +16,7 @@ final class StoreKitEntitlementService: StorePurchasing {
     private(set) var fullGameDisplayPrice: String?
     private(set) var isWorking = false
     private(set) var lastOutcome: StorePurchaseOutcome?
+    let allowsNewAcquisitions: Bool
 
     @ObservationIgnored private var products: [String: Product] = [:]
     @ObservationIgnored private var updates: Task<Void, Never>?
@@ -26,7 +27,11 @@ final class StoreKitEntitlementService: StorePurchasing {
     @ObservationIgnored private var lastLoadFailure: (any Error)?
     #endif
 
-    init() {}
+    /// `allowsNewAcquisitions` is read from the device once, by the composition root. There is deliberately no default:
+    /// a store built without saying whether this device may buy does not compile.
+    init(allowsNewAcquisitions: Bool) {
+        self.allowsNewAcquisitions = allowsNewAcquisitions
+    }
 
     // MARK: Lifetime
 
@@ -99,7 +104,8 @@ final class StoreKitEntitlementService: StorePurchasing {
         do {
             let loaded = try await Product.products(for: StoreProductID.all)
             products = Dictionary(loaded.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-            fullGameDisplayPrice = products[StoreProductID.fullGameUnlock]?.displayPrice
+            // A device that cannot play Iris is never shown a price for it, whichever screen would display it.
+            fullGameDisplayPrice = allowsNewAcquisitions ? products[StoreProductID.fullGameUnlock]?.displayPrice : nil
             #if DEBUG
             lastLoadFailure = nil
             #endif
@@ -115,6 +121,12 @@ final class StoreKitEntitlementService: StorePurchasing {
     // MARK: Buying
 
     func purchaseFullGame() async {
+        // The one place in Iris a transaction can be opened, so the one place the device is asked. On a device that
+        // cannot play Iris nothing is loaded and nothing reaches the store, whichever part of the interface asked.
+        guard allowsNewAcquisitions else {
+            lastOutcome = .deviceUnsupported
+            return
+        }
         guard !isWorking else { return }
         isWorking = true
         defer { isWorking = false }
