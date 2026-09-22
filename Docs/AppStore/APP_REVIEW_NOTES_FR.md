@@ -25,7 +25,7 @@ Iris ne promet aucun effet de santé, aucun soin, aucun bénéfice médical. C'e
 - L'app est **gratuite** au téléchargement.
 - Les **chapitres I, II et III** (19 niveaux sur 82) sont jouables sans aucun achat, pour toujours.
 - Les chapitres **IV à XII** demandent l'accès complet.
-- L'accès complet est un **achat unique non consommable** : `net.steve-s.iris.unlock.fullgame`.
+- L'accès complet est un **achat unique non consommable** : `net.steve_s.iris.unlock.fullgame`.
   Ce n'est pas un abonnement, et l'interface le dit explicitement (« Achat unique. Aucun abonnement, aucun
   renouvellement. »).
 - **Le prix affiché vient de StoreKit** (`Product.displayPrice`). Aucun prix n'est écrit dans l'app.
@@ -33,7 +33,7 @@ Iris ne promet aucun effet de santé, aucun soin, aucun bénéfice médical. C'e
 
 ## Le second produit : accès promotionnel
 
-Un abonnement auto-renouvelable `net.steve-s.iris.access.promopass` existe **uniquement** comme véhicule Apple d'un
+Un abonnement auto-renouvelable `net.steve_s.iris.access.promopass` existe **uniquement** comme véhicule Apple d'un
 Offer Code gratuit de 7 jours, configuré sans reconduction.
 
 - Il n'est **jamais** proposé à la vente dans Iris : aucun bouton « S'abonner », aucune page d'abonnement, aucun

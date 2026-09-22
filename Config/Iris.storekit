@@ -15,7 +15,7 @@
           "locale" : "fr_FR"
         }
       ],
-      "productID" : "net.steve-s.iris.unlock.fullgame",
+      "productID" : "net.steve_s.iris.unlock.fullgame",
       "referenceName" : "Iris Full Game Unlock",
       "type" : "NonConsumable"
     }
@@ -53,7 +53,7 @@
               "locale" : "fr_FR"
             }
           ],
-          "productID" : "net.steve-s.iris.access.promopass",
+          "productID" : "net.steve_s.iris.access.promopass",
           "recurringSubscriptionPeriod" : "P1W",
           "referenceName" : "Iris Promotional Access Pass",
           "subscriptionGroupID" : "20000001",

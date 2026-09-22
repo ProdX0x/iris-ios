@@ -22,7 +22,7 @@ fichier réécrit cette valeur.
 | Champ | Valeur |
 |---|---|
 | Type | Non-Consumable In-App Purchase |
-| Product ID | `net.steve-s.iris.unlock.fullgame` |
+| Product ID | `net.steve_s.iris.unlock.fullgame` |
 | Reference Name | Iris Full Game Unlock |
 | Prix cible France | 2,99 € |
 | Family Sharing | Non |
@@ -43,6 +43,16 @@ La contrainte opérationnelle retenue pour cette phase est la plus prudente, **4
 appliquée sera constatée dans l'interface d'App Store Connect lors de la configuration des produits, et non
 supposée ici.
 
+**Caractères du Product ID — constatés dans App Store Connect, pas supposés.** Les deux identifiants s'écrivent
+`net.steve_s.iris…`, avec un **tiret bas**, alors que le Bundle ID reste `net.steve-s.iris`, avec un tiret. Le
+22 septembre 2026, un test de saisie dans le formulaire de création d'achat intégré, sans rien créer, a refusé la
+forme avec tiret (« Seuls les caractères alphanumériques, points et tirets bas sont autorisés ») et accepté la forme
+avec tiret bas. La documentation d'Apple n'est pas univoque : l'aide d'App Store Connect (« In-App Purchase
+information ») déclare les tirets autorisés, la Technical Q&A QA1329 ne les autorise pas ; c'est le formulaire qui
+fait foi. Un Product ID n'est pas un Bundle ID et ne doit pas être aligné sur lui. Par prudence, Iris s'en tient
+aux lettres, chiffres, points et tirets bas : `CommerceBoundaryTests` (test N) échoue si un identifiant sort de cet
+ensemble. C'est une contrainte locale fondée sur ce constat, pas la grammaire officielle d'Apple.
+
 **Le prix n'est jamais écrit dans Iris.** L'interface affiche `Product.displayPrice`, c'est-à-dire la chaîne que
 l'App Store formate pour la boutique du joueur. `CommerceBoundaryTests` (test G) échoue si une source de production
 contient « 2,99 », « 2.99 » ou un symbole monétaire.
@@ -55,7 +65,7 @@ chapitres ajoutés après le XII.
 | Champ | Valeur |
 |---|---|
 | Type | Auto-Renewable Subscription |
-| Product ID | `net.steve-s.iris.access.promopass` |
+| Product ID | `net.steve_s.iris.access.promopass` |
 | Reference Name | Iris Promotional Access Pass |
 | Groupe d'abonnement | Iris Access |
 | Durée de renouvellement | 1 semaine |
@@ -94,7 +104,7 @@ consultée le 16 septembre 2026. Citation exacte de l'étape 8 :
 Conséquences vérifiées :
 
 - les Offer Codes n'existent **que** pour les abonnements auto-renouvelables : c'est la raison pour laquelle
-  `net.steve-s.iris.access.promopass` existe ;
+  `net.steve_s.iris.access.promopass` existe ;
 - une offre **Free** d'une semaine est possible : la page « Set up introductory offers » liste les durées d'essai
   gratuit « 3 Days / 1 or 2 Weeks / 1, 2, 3, or 6 Months / 1 Year » ;
 - en cochant la case ci-dessus, **le droit expire sans reconduction et sans facturation** ;
@@ -108,8 +118,8 @@ configuration locale ni cette documentation.
 
 | Droit | Condition |
 |---|---|
-| `fullAccess` | une transaction **vérifiée**, non révoquée, non remplacée, sans date d'expiration dépassée, sur `net.steve-s.iris.unlock.fullgame` |
-| `promotionalAccess` | la même chose sur `net.steve-s.iris.access.promopass`, et encore active |
+| `fullAccess` | une transaction **vérifiée**, non révoquée, non remplacée, sans date d'expiration dépassée, sur `net.steve_s.iris.unlock.fullgame` |
+| `promotionalAccess` | la même chose sur `net.steve_s.iris.access.promopass`, et encore active |
 | `free` | aucun droit actif |
 
 Priorité stricte : `fullAccess` > `promotionalAccess` > `free`.
@@ -136,9 +146,13 @@ Deux limites mesurées, pas supposées :
    sur un runtime iOS 18.x. Sur un runtime qui refuse, chaque test enregistre un *known issue* nommant la limite
    plutôt que de prétendre avoir prouvé quelque chose.
 
+La limite 2 ne peut plus masquer une divergence d'identifiants : `CommerceBoundaryTests` (test N) lit ce fichier
+sans StoreKit et échoue franchement s'il ne déclare pas exactement `StoreProductID.all`, chacun avec son type, quel
+que soit le côté qui a bougé.
+
 ## 7. Scénarios couverts par les tests
 
-`Tests/IrisTests/Commerce/StoreKitEntitlementTests.swift` (17 tests, joués sur iOS 18.6) :
+`Tests/IrisTests/Commerce/StoreKitEntitlementTests.swift` (20 tests, joués sur iOS 18.6) :
 
 produit disponible · prix issu du store · produit indisponible · achat vérifié · achat non vérifié refusé ·
 achat en attente · achat annulé · erreur d'achat · droit retrouvé au lancement · restauration · restauration quand

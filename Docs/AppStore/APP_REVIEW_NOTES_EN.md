@@ -40,12 +40,12 @@ BUSINESS MODEL
 - The app is free to download.
 - Chapters I, II and III (19 levels out of 82) are playable without any purchase, forever.
 - Chapters IV to XII require full access.
-- Full access is a single non-consumable purchase: net.steve-s.iris.unlock.fullgame. It is not a subscription, and the interface says so.
+- Full access is a single non-consumable purchase: net.steve_s.iris.unlock.fullgame. It is not a subscription, and the interface says so.
 - The displayed price comes from StoreKit (Product.displayPrice); no price is written in the app.
 - "Restore purchases" is available on the full access screen and in the settings.
 
 THE SECOND PRODUCT: PROMOTIONAL ACCESS
-net.steve-s.iris.access.promopass is an auto-renewable subscription, used as the carrier for a promotional Offer Code. Its renewal settings live in App Store Connect and are not described here.
+net.steve_s.iris.access.promopass is an auto-renewable subscription, used as the carrier for a promotional Offer Code. Its renewal settings live in App Store Connect and are not described here.
 - It is never offered for sale in Iris: no "Subscribe" button, no subscription page, no price displayed for this product.
 - The user only sees "Use an access code", which presents Apple's official redemption sheet (offerCodeRedemption).
 - Iris recognises no code by itself: the binary contains no string comparison, no secret and no local date acting as a licence.

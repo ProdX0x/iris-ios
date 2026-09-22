@@ -730,7 +730,7 @@ dans les préférences : aucun drapeau local ne peut survivre à une expiration.
 
 ### Accès promotionnel de 7 jours — vérifié, pas supposé
 
-Un abonnement auto-renouvelable `net.steve-s.iris.access.promopass` sert **uniquement** de véhicule à un Offer Code
+Un abonnement auto-renouvelable `net.steve_s.iris.access.promopass` sert **uniquement** de véhicule à un Offer Code
 Apple gratuit d'une semaine. La règle décisive a été lue chez Apple, pas devinée (App Store Connect Help, « Set up
 subscription offer codes », étape 8) : cocher la case qui **empêche la reconduction** donne « a commitment-free
 trial subscription », et n'autorise alors que des offres gratuites. Le droit expire donc réellement, sans

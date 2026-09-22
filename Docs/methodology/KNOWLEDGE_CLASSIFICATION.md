@@ -16,7 +16,7 @@ Rien ici n'a de valeur hors du produit.
 | Physique | `TargetPhysics`, répulsion, attraction, `attentionZone`, `repulsionGain`, `maxSpeed`, friction |
 | Campagne | `LevelDefinitions`, positions, `par`, règles de progression, X-7, III-7 |
 | UX | Classique / Guidé / Visible ; l'apprentissage I-1 → I-3 ; le halo périphérique ; la phrase de calibration |
-| Commerce | `net.steve-s.iris.unlock.fullgame`, `net.steve-s.iris.access.promopass`, `freeChapterCount = 3`, 2,99 € |
+| Commerce | `net.steve_s.iris.unlock.fullgame`, `net.steve_s.iris.access.promopass`, `freeChapterCount = 3`, 2,99 € |
 | Identité | `net.steve-s.iris`, équipe `G4U9RG5GL7` |
 | Skill | `SKILL.md` — `iris-debug-observability`, entièrement lié au moteur de regard d'Iris |
 

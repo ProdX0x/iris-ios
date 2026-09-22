@@ -295,4 +295,35 @@ struct CommerceBoundaryTests {
             }
         }
     }
+
+    @Test("N: the local StoreKit configuration declares exactly the product identifiers the code asks for, each within Iris's conservative character set")
+    func storeKitConfigurationMatchesTheCode() throws {
+        // Deterministic, and independent of any simulator. StoreKitEntitlementTests turns a store that knows no product
+        // into a known issue, because the iOS 26.3 runtime refuses test sessions: a divergence between the code and the
+        // configuration would never fail there. It fails here, whichever side moved.
+        let data = try Data(contentsOf: Self.projectRoot.appendingPathComponent("Config/Iris.storekit"))
+        let root = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any], "Iris.storekit is not a JSON object")
+        let products = root["products"] as? [[String: Any]] ?? []
+        let nonRenewing = root["nonRenewingSubscriptions"] as? [[String: Any]] ?? []
+        let subscriptions = (root["subscriptionGroups"] as? [[String: Any]] ?? []).flatMap { $0["subscriptions"] as? [[String: Any]] ?? [] }
+        let declared = (products + nonRenewing + subscriptions).map { $0["productID"] as? String ?? "(no productID)" }
+
+        #expect(declared.count == Set(declared).count, "Iris.storekit declares an identifier twice: \(declared.sorted())")
+        #expect(Set(declared) == StoreProductID.all,
+                "Iris.storekit declares \(declared.sorted()), the code asks for \(StoreProductID.all.sorted())")
+
+        // Each identifier sits where its type says: the full game is bought once, the pass is the subscription.
+        let fullGame = products.filter { $0["productID"] as? String == StoreProductID.fullGameUnlock }.map { $0["type"] as? String ?? "(no type)" }
+        let pass = subscriptions.filter { $0["productID"] as? String == StoreProductID.promotionalAccessPass }.map { $0["type"] as? String ?? "(no type)" }
+        #expect(fullGame == ["NonConsumable"], "the full game must be the one non-consumable product: \(fullGame)")
+        #expect(pass == ["RecurringSubscription"], "the pass must be the one auto-renewable subscription: \(pass)")
+
+        // A local, conservative constraint of Iris, not Apple's grammar: letters, digits, periods and underscores. It rests
+        // on what our App Store Connect form did on 22 September 2026, when it refused the hyphenated identifier and
+        // accepted the underscore one, although Apple's help lists the hyphen as allowed. The bundle ID keeps its hyphen.
+        for identifier in StoreProductID.all {
+            #expect(identifier.wholeMatch(of: #/[A-Za-z0-9._]{1,100}/#) != nil,
+                    "\(identifier) leaves the conservative character set Iris keeps for product identifiers: letters, digits, periods, underscores")
+        }
+    }
 }

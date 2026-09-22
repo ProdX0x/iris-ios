@@ -32,12 +32,17 @@ d'achat est désactivé, un message le dit, et **les chapitres gratuits restent 
 
 ## 2. Produits à créer
 
+Les Product ID s'écrivent avec un **tiret bas** (`steve_s`) : le formulaire d'App Store Connect refuse le tiret
+(constaté le 22 septembre 2026, sans rien créer). Le Bundle ID, lui, reste `net.steve-s.iris`. Les saisir exactement
+comme ci-dessous : un Product ID n'est plus modifiable une fois enregistré, et ne peut pas être réutilisé dans la même
+app, même après suppression (App Store Connect Help, « In-App Purchase information »).
+
 ### 2.1 Jeu complet
 
 | Champ | Valeur |
 |---|---|
 | Type | Non-Consumable |
-| Product ID | `net.steve-s.iris.unlock.fullgame` |
+| Product ID | `net.steve_s.iris.unlock.fullgame` |
 | Reference Name | Iris Full Game Unlock |
 | Prix France | 2,99 € (choisir le palier correspondant) |
 | Nom affiché fr-FR | Iris — jeu complet |
@@ -51,7 +56,7 @@ d'achat est désactivé, un message le dit, et **les chapitres gratuits restent 
 |---|---|
 | Type | Auto-Renewable Subscription |
 | Groupe d'abonnement | `Iris Access` (à créer) |
-| Product ID | `net.steve-s.iris.access.promopass` |
+| Product ID | `net.steve_s.iris.access.promopass` |
 | Reference Name | Iris Promotional Access Pass |
 | Durée | 1 semaine |
 | Prix | un palier doit être choisi (Apple l'exige), **jamais facturé** : voir 2.3 |

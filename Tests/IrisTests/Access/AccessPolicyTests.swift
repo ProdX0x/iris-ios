@@ -100,7 +100,7 @@ struct AccessPolicyTests {
         #expect(StoreProductID.entitlement(for: StoreProductID.promotionalAccessPass) == .promotionalAccess)
         #expect(StoreProductID.entitlement(for: "net.steve-s.iris.unknown") == nil)
         #expect(StoreProductID.all == [StoreProductID.fullGameUnlock, StoreProductID.promotionalAccessPass])
-        #expect(StoreProductID.fullGameUnlock == "net.steve-s.iris.unlock.fullgame")
-        #expect(StoreProductID.promotionalAccessPass == "net.steve-s.iris.access.promopass")
+        #expect(StoreProductID.fullGameUnlock == "net.steve_s.iris.unlock.fullgame")
+        #expect(StoreProductID.promotionalAccessPass == "net.steve_s.iris.access.promopass")
     }
 }
