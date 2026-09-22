@@ -43,7 +43,7 @@ app, même après suppression (App Store Connect Help, « In-App Purchase inform
 |---|---|
 | Type | Non-Consumable |
 | Product ID | `net.steve_s.iris.unlock.fullgame` |
-| Reference Name | Iris Full Game Unlock |
+| Reference Name | Iris Full Game |
 | Prix France | 2,99 € (choisir le palier correspondant) |
 | Nom affiché fr-FR | Iris — jeu complet |
 | Description fr-FR | Ouvre tous les chapitres. Achat unique. |
@@ -55,22 +55,25 @@ app, même après suppression (App Store Connect Help, « In-App Purchase inform
 | Champ | Valeur |
 |---|---|
 | Type | Auto-Renewable Subscription |
-| Groupe d'abonnement | `Iris Access` (à créer) |
+| Groupe d'abonnement | `Iris Access` |
 | Product ID | `net.steve_s.iris.access.promopass` |
-| Reference Name | Iris Promotional Access Pass |
-| Durée | 1 semaine |
-| Prix | un palier doit être choisi (Apple l'exige), **jamais facturé** : voir 2.3 |
+| Reference Name | Iris Promotional Access |
+| Durée de l'abonnement | 1 semaine |
+| Prix normal | 0,99 € / semaine — **jamais facturé** dans le montage prévu : voir 2.3 |
 
 ### 2.3 Offer Code — le point décisif
 
 | Champ | Valeur |
 |---|---|
+| Nom de référence de l'offre | Iris 3-Day Promotional Access |
 | Type | Custom code |
-| Code | `IRIS7D` |
+| Code | `IRIS3D` — prévu, **pas encore créé** : App Store Connect refuse de le créer tant que l'abonnement n'est pas approuvé par App Review et que l'app n'est pas prête à être distribuée |
 | Type d'offre | **Free** |
-| Durée | 1 semaine |
-| Éligibilité | New subscribers (ajouter Expired subscribers si souhaité) |
-| **« Automatically renew to standard price at the end of the offer »** | **décoché / case de prévention cochée** |
+| Durée de l'offre | **3 jours** (l'abonnement, lui, reste d'une semaine) |
+| Éligibilité | nouveaux, actuels et anciens abonnés |
+| **« Ne pas renouveler automatiquement l'abonnement à la fin de cette offre »** | **activé** |
+| Offres d'introduction | « Non, uniquement ce code d'offre » |
+| Disponibilité | 175 pays ou régions |
 
 Formulation exacte d'Apple (App Store Connect Help, « Set up subscription offer codes », étape 8, consultée le
 16 septembre 2026) :
@@ -118,10 +121,12 @@ même version marketing), puis régénérer avec `xcodegen generate`.
 ## 6. Avant de soumettre
 
 - [ ] Paid Applications Agreement actif
-- [ ] Les deux produits créés, avec leurs métadonnées et leur capture de relecture
-- [ ] Offer Code `IRIS7D` créé, gratuit, 1 semaine, **sans reconduction**
+- [x] Les deux produits créés dans App Store Connect, avec leur localisation English (UK)
+- [ ] Capture de relecture de chaque produit, et produits ajoutés « pour vérification »
+- [x] Offre « Iris 3-Day Promotional Access » configurée : gratuite, 3 jours, **sans renouvellement automatique**
+- [ ] Code personnalisé `IRIS3D` créé sur cette offre — possible seulement après l'approbation de l'abonnement
 - [ ] Achat réel testé en bac à sable sur un iPhone avec TrueDepth
-- [ ] Rédemption réelle de `IRIS7D` testée en bac à sable, puis expiration observée
+- [ ] Rédemption réelle d'un code de l'offre testée en bac à sable, puis expiration observée
 - [x] Captures produites selon `SCREENSHOT_PLAN.md` — 8/8 validées le 18 septembre 2026, manifeste et empreintes dans `Docs/ReleaseGate4/11_SCREENSHOTS.md`
 - [x] URL d'assistance et politique de confidentialité en ligne — vérifiées le 18 septembre 2026
 - [ ] **Statut « trader / non-trader » (UE, DSA) déclaré dans App Store Connect** — NON VÉRIFIÉ, hors du périmètre du Gate 4H ; à contrôler avant soumission dans l'UE

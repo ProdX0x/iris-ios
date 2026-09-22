@@ -33,8 +33,9 @@ Iris ne promet aucun effet de santé, aucun soin, aucun bénéfice médical. C'e
 
 ## Le second produit : accès promotionnel
 
-Un abonnement auto-renouvelable `net.steve_s.iris.access.promopass` existe **uniquement** comme véhicule Apple d'un
-Offer Code gratuit de 7 jours, configuré sans reconduction.
+Un abonnement auto-renouvelable d'une semaine (0,99 €), `net.steve_s.iris.access.promopass`, existe **uniquement**
+comme véhicule Apple d'un Offer Code : une offre gratuite de 3 jours, configurée dans App Store Connect pour ne pas se
+renouveler automatiquement à la fin de l'offre.
 
 - Il n'est **jamais** proposé à la vente dans Iris : aucun bouton « S'abonner », aucune page d'abonnement, aucun
   prix affiché pour ce produit.

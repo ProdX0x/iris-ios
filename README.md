@@ -728,16 +728,16 @@ de physique, de regard, de niveau ou d'équilibrage touché.
 transaction révoquée, une transaction remplacée (`isUpgraded`), une date d'expiration dépassée. Il n'écrit **rien**
 dans les préférences : aucun drapeau local ne peut survivre à une expiration.
 
-### Accès promotionnel de 7 jours — vérifié, pas supposé
+### Accès promotionnel de 3 jours — vérifié, pas supposé
 
-Un abonnement auto-renouvelable `net.steve_s.iris.access.promopass` sert **uniquement** de véhicule à un Offer Code
-Apple gratuit d'une semaine. La règle décisive a été lue chez Apple, pas devinée (App Store Connect Help, « Set up
-subscription offer codes », étape 8) : cocher la case qui **empêche la reconduction** donne « a commitment-free
-trial subscription », et n'autorise alors que des offres gratuites. Le droit expire donc réellement, sans
-facturation. Détails et citations : `Docs/AppStore/STOREKIT_PRODUCTS.md`.
+Un abonnement auto-renouvelable d'une semaine (0,99 €), `net.steve_s.iris.access.promopass`, sert **uniquement** de
+véhicule à une offre gratuite de 3 jours, échangée par Offer Code Apple. La règle décisive a été lue chez Apple, pas
+devinée (App Store Connect Help, « Set up subscription offer codes », étape 8) : cocher la case qui **empêche la
+reconduction** donne « a commitment-free trial subscription », et n'autorise alors que des offres gratuites. Le droit
+expire donc réellement, sans facturation. Détails et citations : `Docs/AppStore/STOREKIT_PRODUCTS.md`.
 
-Iris ne connaît pas le code `IRIS7D` : il n'apparaît dans aucune source, et `CommerceBoundaryTests` (test E) le
-vérifie.
+Iris ne connaît pas le code `IRIS3D`, ni l'ancien `IRIS7D` : aucun des deux n'apparaît dans une source ni dans un
+catalogue de textes, et `CommerceBoundaryTests` (test E) le vérifie.
 
 ### Onboarding
 

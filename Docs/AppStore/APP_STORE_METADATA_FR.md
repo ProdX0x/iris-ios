@@ -129,8 +129,8 @@ La ligne affichée dans l'app porte le symbole : `© 2026 Stéphane SAULNIER` (`
 | Nom affiché (30 max) | `Accès promotionnel Iris` |
 | Description (45 max) | `Accès temporaire à tout le jeu.` |
 
-Ce second produit n'est jamais proposé à la vente dans Iris : il n'existe que pour porter l'Offer Code gratuit de
-7 jours. Voir `STOREKIT_PRODUCTS.md`.
+Ce second produit — un abonnement d'une semaine à 0,99 € — n'est jamais proposé à la vente dans Iris : il n'existe
+que pour porter l'offre gratuite de 3 jours échangée par Offer Code. Voir `STOREKIT_PRODUCTS.md`.
 
 ## URLs
 

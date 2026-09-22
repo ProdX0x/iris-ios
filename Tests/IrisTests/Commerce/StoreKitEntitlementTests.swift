@@ -21,11 +21,17 @@ struct StoreKitEntitlementTests {
     /// The same local products the scheme runs with; it creates nothing in App Store Connect.
     private static var configuration: URL { projectRoot.appendingPathComponent("Config/Iris.storekit") }
 
+    /// A product that exists only in the copy of the configuration each session runs on: never in `Config/Iris.storekit`,
+    /// never in App Store Connect, never asked for by Iris. No store but the local test session can answer for it.
+    private static let localSessionMarker = "net.steve_s.iris.test.localsession"
+
+    private struct UnreadableConfiguration: Error {}
+
     private func makeSession() throws -> SKTestSession {
         // SKTestSession writes its settings back into the file it was given. The simulator's sandbox cannot write to
-        // the repository, so the session runs on a copy inside the sandbox; the products are the same.
+        // the repository, so the session runs on a copy inside the sandbox: the same products, plus the marker.
         let copy = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("Iris-\(UUID().uuidString).storekit")
-        try FileManager.default.copyItem(at: Self.configuration, to: copy)
+        try Self.configurationWithMarker().write(to: copy)
         let session = try SKTestSession(contentsOf: copy)
         session.disableDialogs = true
         session.askToBuyEnabled = false
@@ -34,15 +40,39 @@ struct StoreKitEntitlementTests {
         return session
     }
 
-    /// True when this simulator runtime lets a StoreKit test session take effect. The iOS 26.3 runtime installed on
-    /// this machine refuses it — storekitd answers SKInternalErrorDomain 3 and every store call comes back
-    /// `notEntitled` — while the iOS 18.x runtimes run these tests for real. Where it is refused the test records a
-    /// known issue naming the limitation rather than pretending to have proved anything.
+    /// `Config/Iris.storekit` with one more product, the local session marker: a consumable modelled on the full game's
+    /// own entry, so the session reads it exactly as it reads the real ones. Nothing else in the configuration changes.
+    private static func configurationWithMarker() throws -> Data {
+        guard var root = try JSONSerialization.jsonObject(with: Data(contentsOf: configuration)) as? [String: Any],
+              var products = root["products"] as? [[String: Any]], var marker = products.first else {
+            throw UnreadableConfiguration()
+        }
+        marker["productID"] = localSessionMarker
+        marker["referenceName"] = "Local StoreKit session marker"
+        marker["internalID"] = "5E551011"
+        marker["type"] = "Consumable"
+        marker["localizations"] = [["description": "Present only in a local StoreKit test session.",
+                                    "displayName": "Local session marker", "locale": "fr_FR"]]
+        products.append(marker)
+        root["products"] = products
+        return try JSONSerialization.data(withJSONObject: root, options: [.prettyPrinted, .sortedKeys])
+    }
+
+    /// True when the local StoreKit test session is the store answering. Finding the real products no longer proves
+    /// it: App Store Connect now serves them, and a runtime that refuses local sessions gets the sandbox's answer
+    /// instead. Only the marker proves it, since only this session's own configuration declares it. The iOS 26.3
+    /// runtime installed on this machine refuses local sessions (storekitd answers SKInternalErrorDomain 3): on an
+    /// iOS 26 runtime a missing session is that known limitation, recorded as a known issue. Anywhere else, iOS 18.x
+    /// among them, where these tests run for real, a missing session is a failure; the limitation hides nothing there.
     private func storeKitTestingIsAvailable() async -> Bool {
-        let products = (try? await Product.products(for: [StoreProductID.fullGameUnlock])) ?? []
-        guard products.isEmpty else { return true }
-        withKnownIssue("This simulator runtime refuses StoreKit test sessions; run this suite on an iOS 18.x runtime to assert it for real.") {
-            Issue.record("StoreKit testing is unavailable on this runtime")
+        let marker = (try? await Product.products(for: [Self.localSessionMarker])) ?? []
+        if !marker.isEmpty { return true }
+        if ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 {
+            withKnownIssue("This runtime refuses local StoreKit test sessions; run this suite on an iOS 18.x runtime to assert it for real.") {
+                Issue.record("the local StoreKit test session is not in effect on this runtime")
+            }
+        } else {
+            Issue.record("the local StoreKit test session did not take effect: its marker product is missing")
         }
         return false
     }
@@ -272,7 +302,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
-                                         options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
+                                         options: [.codeOffer(referenceName: "Iris 3-Day Promotional Access")])
         let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
 
@@ -285,7 +315,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
-                                         options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
+                                         options: [.codeOffer(referenceName: "Iris 3-Day Promotional Access")])
         let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
         #expect(service.entitlement == .promotionalAccess)
@@ -301,7 +331,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
-                                         options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
+                                         options: [.codeOffer(referenceName: "Iris 3-Day Promotional Access")])
         _ = try await session.buyProduct(identifier: StoreProductID.fullGameUnlock)
         let service = StoreKitEntitlementService(allowsNewAcquisitions: true)
         await service.refresh()
@@ -367,7 +397,7 @@ struct StoreKitEntitlementTests {
         let session = try makeSession()
         guard await storeKitTestingIsAvailable() else { return }
         _ = try await session.buyProduct(identifier: StoreProductID.promotionalAccessPass,
-                                         options: [.codeOffer(referenceName: "Iris 7-Day Promotional Access")])
+                                         options: [.codeOffer(referenceName: "Iris 3-Day Promotional Access")])
         let unable = StoreKitEntitlementService(allowsNewAcquisitions: false)
         await unable.refresh()
         #expect(unable.entitlement == .promotionalAccess)

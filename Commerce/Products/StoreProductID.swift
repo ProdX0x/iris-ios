@@ -12,8 +12,8 @@ enum StoreProductID {
     /// Non-consumable. Unlocks the whole campaign, for good. App Store Connect reference name: Iris Full Game Unlock.
     static let fullGameUnlock = "net.steve_s.iris.unlock.fullgame"
 
-    /// Auto-renewable subscription used ONLY as Apple's vehicle for a promotional offer code (a free 1-week offer
-    /// configured not to renew). It is never sold, never presented as a subscription, and never purchased from Iris.
+    /// Auto-renewable subscription (1 week) used ONLY as Apple's vehicle for a promotional offer code: a free 3-day
+    /// offer, set not to renew at its end. Never sold, never presented as a subscription, never purchased from Iris.
     /// App Store Connect reference name: Iris Promotional Access Pass.
     static let promotionalAccessPass = "net.steve_s.iris.access.promopass"
 

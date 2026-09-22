@@ -12,10 +12,11 @@ Chaque affirmation est reprise de `APP_REVIEW_NOTES_FR.md`, `STOREKIT_PRODUCTS.m
 Rien n'est inventé. Une seule phrase n'a pas d'équivalent français : celle qui signale au relecteur que l'app est
 bilingue et comment changer sa langue — elle est vraie, vérifiée sur appareil, et utile à qui doit tester.
 
-**Le document ne décrit pas la politique de renouvellement du produit promotionnel.** Aucune source locale ne peut
-la prouver : `Config/Iris.storekit` déclare un abonnement hebdomadaire ordinaire, sans offre, et App Store Connect
-n'a jamais été ouvert. Ce qui est affirmé ici se limite donc à ce que fait Iris — accorder l'accès tant que
-StoreKit rapporte un droit vérifié et actif, le retirer sinon.
+**L'offre décrite est celle saisie dans App Store Connect**, telle que le pilote l'a rapportée le 22 septembre 2026 :
+un abonnement d'une semaine à 0,99 €, porteur d'une offre gratuite de 3 jours (« Iris 3-Day Promotional Access »)
+réglée pour ne pas se renouveler automatiquement à la fin de l'offre. Le dépôt ne peut pas l'observer —
+`Config/Iris.storekit` ne déclare que l'abonnement, sans offre — et Iris n'en dépend pas : il accorde l'accès tant
+que StoreKit rapporte un droit vérifié et actif, et le retire sinon.
 
 ---
 
@@ -45,9 +46,9 @@ BUSINESS MODEL
 - "Restore purchases" is available on the full access screen and in the settings.
 
 THE SECOND PRODUCT: PROMOTIONAL ACCESS
-net.steve_s.iris.access.promopass is an auto-renewable subscription, used as the carrier for a promotional Offer Code. Its renewal settings live in App Store Connect and are not described here.
+net.steve_s.iris.access.promopass is an auto-renewable subscription (1 week, €0.99), used only as the carrier for a promotional Offer Code: a free 3-day offer, configured in App Store Connect not to renew automatically when it ends.
 - It is never offered for sale in Iris: no "Subscribe" button, no subscription page, no price displayed for this product.
-- The user only sees "Use an access code", which presents Apple's official redemption sheet (offerCodeRedemption).
+- The user only sees "Redeem an Access Code", which presents Apple's official redemption sheet (offerCodeRedemption).
 - Iris recognises no code by itself: the binary contains no string comparison, no secret and no local date acting as a licence.
 - Iris grants this access only while StoreKit reports a verified, active entitlement, and keeps no local flag that could outlive one.
 - When that entitlement is no longer active, the paid chapters lock again; the player keeps their progress.

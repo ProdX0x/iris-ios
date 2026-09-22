@@ -23,7 +23,7 @@ fichier réécrit cette valeur.
 |---|---|
 | Type | Non-Consumable In-App Purchase |
 | Product ID | `net.steve_s.iris.unlock.fullgame` |
-| Reference Name | Iris Full Game Unlock |
+| Reference Name | Iris Full Game |
 | Prix cible France | 2,99 € |
 | Family Sharing | Non |
 | Nom affiché (fr-FR) | Iris — jeu complet |
@@ -60,15 +60,16 @@ contient « 2,99 », « 2.99 » ou un symbole monétaire.
 Le produit n'est jamais lié au périmètre « chapitres IV à XII » : il ouvre *l'accès complet*, donc aussi les
 chapitres ajoutés après le XII.
 
-## 3. Produit promotionnel — accès temporaire de 7 jours
+## 3. Produit promotionnel — abonnement d'une semaine, porteur d'une offre gratuite de 3 jours
 
 | Champ | Valeur |
 |---|---|
 | Type | Auto-Renewable Subscription |
 | Product ID | `net.steve_s.iris.access.promopass` |
-| Reference Name | Iris Promotional Access Pass |
+| Reference Name | Iris Promotional Access |
 | Groupe d'abonnement | Iris Access |
 | Durée de renouvellement | 1 semaine |
+| Prix normal | 0,99 € / semaine |
 | Usage | Véhicule Apple d'un Offer Code promotionnel, **uniquement** |
 
 Ce produit **n'est jamais vendu dans Iris** : aucun bouton « S'abonner », aucune page d'abonnement, aucun prix
@@ -80,14 +81,17 @@ produit.
 
 | Champ | Valeur |
 |---|---|
+| Nom de référence de l'offre | Iris 3-Day Promotional Access |
 | Type de code | Custom code |
-| Code | `IRIS7D` |
+| Code | `IRIS3D` — prévu, pas encore créé : App Store Connect le refuse tant que l'abonnement n'est pas approuvé et que l'app n'est pas prête à être distribuée |
 | Type d'offre | Free |
-| Durée | 1 semaine |
-| Éligibilité | New subscribers (et Expired subscribers si souhaité) |
-| Renouvellement automatique à la fin de l'offre | **Désactivé** (case à cocher, voir §4) |
+| Durée de l'offre | **3 jours** — la période de l'abonnement reste d'une semaine |
+| Éligibilité | nouveaux, actuels et anciens abonnés |
+| Renouvellement automatique à la fin de l'offre | **Désactivé** : « Ne pas renouveler automatiquement l'abonnement à la fin de cette offre » (voir §4) |
+| Offres d'introduction | « Non, uniquement ce code d'offre » |
 
-Iris ne connaît pas la chaîne `IRIS7D` : `CommerceBoundaryTests` (test E) échoue si elle apparaît dans une source.
+Iris ne connaît ni `IRIS3D` ni l'ancien `IRIS7D` : `CommerceBoundaryTests` (test E) échoue si l'un d'eux apparaît
+dans une source ou dans un catalogue de textes livré avec l'app.
 Le seul chemin de rédemption est la feuille officielle Apple (`offerCodeRedemption`, iOS 16+), présentée par
 `Features/Paywall/OfferCodeRedemption.swift` — le seul fichier de l'interface qui importe StoreKit.
 
@@ -105,10 +109,10 @@ Conséquences vérifiées :
 
 - les Offer Codes n'existent **que** pour les abonnements auto-renouvelables : c'est la raison pour laquelle
   `net.steve_s.iris.access.promopass` existe ;
-- une offre **Free** d'une semaine est possible : la page « Set up introductory offers » liste les durées d'essai
+- une offre **Free** de 3 jours est possible : la page « Set up introductory offers » liste les durées d'essai
   gratuit « 3 Days / 1 or 2 Weeks / 1, 2, 3, or 6 Months / 1 Year » ;
 - en cochant la case ci-dessus, **le droit expire sans reconduction et sans facturation** ;
-- les custom codes acceptent jusqu'à 64 caractères sans caractère spécial : `IRIS7D` convient ;
+- les custom codes acceptent jusqu'à 64 caractères sans caractère spécial : `IRIS3D` convient ;
 - un client ne peut utiliser qu'un seul code par offre.
 
 Le montage demandé est donc réalisable tel quel. **Aucune offre de deux mois n'existe** dans le code, les tests, la
@@ -142,9 +146,13 @@ Deux limites mesurées, pas supposées :
    `SKTestSession.buyProduct(identifier:options:)` accepte `.codeOffer(referenceName:)` sans que l'offre soit
    déclarée, et c'est ainsi que le test de l'accès promotionnel est joué.
 2. **Le runtime iOS 26.3 installé sur cette machine refuse les sessions de test StoreKit** : `storekitd` répond
-   `SKInternalErrorDomain 3` et tout appel boutique revient en `notEntitled`. Les mêmes tests s'exécutent réellement
-   sur un runtime iOS 18.x. Sur un runtime qui refuse, chaque test enregistre un *known issue* nommant la limite
-   plutôt que de prétendre avoir prouvé quelque chose.
+   `SKInternalErrorDomain 3`. Depuis que les produits existent dans App Store Connect, `Product.products(for:)` y
+   reçoit alors la réponse du **sandbox** — les vrais produits, vitrine et prix américains — au lieu de la session
+   locale. La présence des produits ne prouve donc plus rien : chaque session tourne sur une copie de ce fichier
+   augmentée d'un produit témoin (`net.steve_s.iris.test.localsession`) qu'aucun App Store ne connaît, et c'est lui
+   que la garde des tests cherche. Absent sur un runtime iOS 26, il signale cette limite connue, et chaque test
+   enregistre un *known issue* qui la nomme ; absent partout ailleurs — iOS 18.x compris, où les tests s'exécutent
+   réellement —, il fait échouer le test.
 
 La limite 2 ne peut plus masquer une divergence d'identifiants : `CommerceBoundaryTests` (test N) lit ce fichier
 sans StoreKit et échoue franchement s'il ne déclare pas exactement `StoreProductID.all`, chacun avec son type, quel

@@ -95,8 +95,17 @@ struct CommerceBoundaryTests {
 
     @Test("E: no offer code is recognised locally: the right always comes from the store")
     func noLocalCodeValidation() throws {
-        for (path, text) in try productionSources() {
-            #expect(!text.contains("IRIS7D"), "\(path) knows a promotional code")
+        // The live custom code and the retired one belong to App Store Connect alone: neither may reach the app, in its
+        // code or in the text it ships, whatever the case it is written in.
+        var shipped = try productionSources()
+        for resource in ["Resources/Localizable.xcstrings", "Resources/Gameplay.xcstrings", "Resources/InfoPlist.xcstrings",
+                         "Config/Info.plist"] {
+            shipped.append((path: resource, text: try source(resource)))
+        }
+        for (path, text) in shipped {
+            for code in ["IRIS3D", "IRIS7D"] {
+                #expect(!text.localizedCaseInsensitiveContains(code), "\(path) knows the promotional code \(code)")
+            }
         }
         // The only redemption path is Apple's own sheet.
         let redemption = try source(Self.redemptionFile)
