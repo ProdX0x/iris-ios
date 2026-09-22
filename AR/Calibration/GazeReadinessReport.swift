@@ -25,7 +25,7 @@ enum ReadinessCheckKind: String, CaseIterable, Hashable, Sendable {
 
     var title: String {
         switch self {
-        case .faceTracking: "Caméra TrueDepth"
+        case .faceTracking: "Suivi facial"
         case .cameraAccess: "Accès caméra"
         case .session: "Session AR"
         case .faceDetected: "Visage détecté"

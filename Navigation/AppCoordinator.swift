@@ -208,6 +208,10 @@ final class AppCoordinator {
     /// Recalibration from the settings sheet; comes back to the current route.
     func recalibrate() {
         sheet = nil
+        guard container.capabilities.supportsFaceTracking else {
+            route = .unavailable(.faceTrackingUnsupported)
+            return
+        }
         routeBeforeSetup = route
         openGazeSetup(intent: .recalibrate)
     }

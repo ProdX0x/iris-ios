@@ -22,7 +22,7 @@ enum GameFailure: Hashable, Sendable {
     var message: String {
         switch self {
         case .faceTrackingUnsupported:
-            IrisText.interface("camera.unsupported.message", french: "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard.")
+            IrisText.interface("camera.unsupported.message", french: "Cet appareil ne prend pas en charge le suivi facial ARKit nécessaire au contrôle par le regard.")
         case .cameraDenied:
             IrisText.interface("camera.denied.message", french: "Iris a besoin de la caméra frontale pour lire votre regard. Autorisez-la dans Réglages.")
         case .cameraRestricted:

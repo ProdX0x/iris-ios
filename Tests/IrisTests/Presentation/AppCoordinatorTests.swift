@@ -46,6 +46,17 @@ struct AppCoordinatorTests {
         #expect(sut.route == .unavailable(.faceTrackingUnsupported))
     }
 
+    @Test("an unsupported device recalibrating from the settings goes to the unavailability screen, not to the gaze setup")
+    func unsupportedRecalibration() {
+        let sut = makeSUT(supportsFaceTracking: false)
+        sut.openChapters()
+        sut.showSettings()
+        sut.recalibrate()
+        #expect(sut.sheet == nil)
+        #expect(sut.route == .unavailable(.faceTrackingUnsupported))
+        #expect(sut.gazeSetupViewModel == nil)
+    }
+
     @Test("first launch: gaze setup first, then the pending level")
     func firstRun() {
         let sut = makeSUT()

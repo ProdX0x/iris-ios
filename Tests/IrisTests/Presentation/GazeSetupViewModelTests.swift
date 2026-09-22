@@ -26,6 +26,19 @@ struct GazeSetupViewModelTests {
         return sut
     }
 
+    /// A device Iris can be installed on but that cannot track a face, with the real ARKit tracker: it answers
+    /// `.unavailable` at once, runs no session, and announces a state only when that state changes.
+    private func makeUnsupportedDeviceSUT() -> GazeSetupViewModel {
+        let capabilities = StaticDeviceCapabilities(supportsFaceTracking: false)
+        let tracker = ARKitGazeTrackingService(capabilities: capabilities, orientationProvider: FixedOrientationProvider())
+        let settings = GameSettingsStore(defaults: UserDefaults(suiteName: "iris.tests.setup.\(UUID().uuidString)") ?? .standard)
+        let sut = GazeSetupViewModel(intent: .recalibrate, gaze: tracker, calibrationStore: store, capabilities: capabilities,
+                                     cameraAuthorization: StubCameraAuthorizationService(status: .authorized),
+                                     orientation: FixedOrientationProvider(), settings: settings, isPad: false, navigator: navigator)
+        sut.prepare(width: viewport.width, height: viewport.height, displayScale: 3)
+        return sut
+    }
+
     /// Drives the simulated gaze at 60 Hz. `gazeFor` returns where the "user" looks for the current phase
     /// (nil means no sample at all).
     private func drive(_ sut: GazeSetupViewModel, seconds: Double, from start: Double,
@@ -236,6 +249,32 @@ struct GazeSetupViewModelTests {
         let denied = makeSUT(cameraStatus: .denied)
         _ = drive(denied, seconds: 0.5, from: 0, gazeFor: perfectGaze())
         #expect(denied.phase == .failed(.cameraDenied))
+    }
+
+    @Test("a device without face tracking fails at the first entry, with no session and no sample")
+    func unsupportedDeviceFirstEntry() {
+        let sut = makeUnsupportedDeviceSUT()
+        #expect(sut.phase == .failed(.faceTrackingUnsupported))
+    }
+
+    @Test("a device without face tracking fails again on Réessayer instead of waiting forever in starting")
+    func unsupportedDeviceRetryNeverHangs() {
+        let sut = makeUnsupportedDeviceSUT()
+        for _ in 0..<3 {
+            sut.recalibrate()
+            #expect(sut.phase == .failed(.faceTrackingUnsupported))
+        }
+    }
+
+    @Test("a device without face tracking fails again after the background instead of waiting forever in starting")
+    func unsupportedDeviceWakeNeverHangs() {
+        let sut = makeUnsupportedDeviceSUT()
+        sut.suspend()
+        #expect(sut.phase == .suspended)
+        sut.wake()
+        #expect(sut.phase == .failed(.faceTrackingUnsupported))
+        sut.recalibrate()
+        #expect(sut.phase == .failed(.faceTrackingUnsupported))
     }
 
     @Test("blinks during calibration are ignored and do not spoil the fit")

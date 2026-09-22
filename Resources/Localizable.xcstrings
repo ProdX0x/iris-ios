@@ -674,13 +674,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TrueDepth camera"
+            "value" : "Front camera"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caméra TrueDepth"
+            "value" : "Caméra frontale"
           }
         }
       }
@@ -692,13 +692,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This device does not have the TrueDepth face tracking needed to detect your gaze."
+            "value" : "This device does not support the ARKit face tracking required for gaze control."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cet appareil ne dispose pas du suivi facial TrueDepth nécessaire pour détecter le regard."
+            "value" : "Cet appareil ne prend pas en charge le suivi facial ARKit nécessaire au contrôle par le regard."
           }
         }
       }
@@ -2038,13 +2038,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TrueDepth camera"
+            "value" : "Face tracking"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caméra TrueDepth"
+            "value" : "Suivi facial"
           }
         }
       }
@@ -4882,13 +4882,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iris is played with your gaze alone, read by the TrueDepth camera. This device does not have the face tracking it needs."
+            "value" : "Iris is played with your gaze alone, estimated with ARKit face tracking and the front camera. This device does not support this feature."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iris se joue uniquement avec le regard, lu par la caméra TrueDepth. Cet appareil ne dispose pas du suivi facial nécessaire."
+            "value" : "Iris se joue uniquement avec le regard, estimé à l'aide du suivi facial ARKit et de la caméra frontale. Cet appareil ne prend pas en charge cette fonction."
           }
         }
       }
@@ -4900,13 +4900,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhone and iPad with Face ID (TrueDepth camera)"
+            "value" : "Checked on this device by ARKit"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhone et iPad équipés de Face ID (caméra TrueDepth)"
+            "value" : "Vérifiée sur cet appareil par ARKit"
           }
         }
       }
@@ -4918,13 +4918,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supported devices"
+            "value" : "Compatibility"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Appareils compatibles"
+            "value" : "Compatibilité"
           }
         }
       }

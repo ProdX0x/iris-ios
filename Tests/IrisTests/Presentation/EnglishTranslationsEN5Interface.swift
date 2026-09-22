@@ -44,8 +44,8 @@ enum EnglishTranslationsEN5Interface {
         "camera.restricted.message": "Camera access is restricted on this device (Screen Time or a profile).",
         "camera.restricted.title": "camera restricted",
         "camera.trueDepth.detail": "Estimates the direction of your gaze, about sixty times a second.",
-        "camera.trueDepth.title": "TrueDepth camera",
-        "camera.unsupported.message": "This device does not have the TrueDepth face tracking needed to detect your gaze.",
+        "camera.trueDepth.title": "Front camera",
+        "camera.unsupported.message": "This device does not support the ARKit face tracking required for gaze control.",
 
         // MARK: Places and things of Iris
         "carnet.title": "journal",
@@ -110,7 +110,7 @@ enum EnglishTranslationsEN5Interface {
         "gazeReadiness.check.cameraAccess.title": "Camera access",
         "gazeReadiness.check.eyeTracking.title": "Eye tracking",
         "gazeReadiness.check.faceDetected.title": "Face detected",
-        "gazeReadiness.check.faceTracking.title": "TrueDepth camera",
+        "gazeReadiness.check.faceTracking.title": "Face tracking",
         "gazeReadiness.check.gazeDirection.title": "Gaze direction",
         "gazeReadiness.check.headStable.title": "Head steady",
         "gazeReadiness.check.session.title": "AR session",
@@ -194,9 +194,9 @@ enum EnglishTranslationsEN5Interface {
         "settings.understand.eyebrow": "understanding iris",
 
         // MARK: Unsupported device
-        "unavailable.detail": "Iris is played with your gaze alone, read by the TrueDepth camera. This device does not have the face tracking it needs.",
-        "unavailable.devices.detail": "iPhone and iPad with Face ID (TrueDepth camera)",
-        "unavailable.devices.label": "Supported devices",
+        "unavailable.detail": "Iris is played with your gaze alone, estimated with ARKit face tracking and the front camera. This device does not support this feature.",
+        "unavailable.devices.detail": "Checked on this device by ARKit",
+        "unavailable.devices.label": "Compatibility",
         "unavailable.eyebrow": "device",
         "unavailable.faceTracking.detail": "Not supported on this device",
         "unavailable.faceTracking.label": "ARKit face tracking",

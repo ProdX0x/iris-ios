@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Iris utilise la caméra frontale TrueDepth pour détecter la direction de votre regard : c'est ce regard qui repousse les sphères du jeu. Les images restent sur l'appareil, ne sont jamais enregistrées ni envoyées.</string>
+	<string>Iris utilise la caméra frontale et le suivi facial ARKit pour estimer où vous regardez : c'est votre regard qui repousse les sphères du jeu. Les images restent sur l'appareil, ne sont jamais enregistrées ni envoyées.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

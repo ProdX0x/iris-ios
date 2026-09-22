@@ -19,7 +19,7 @@ struct CameraAccessView: View {
                 .accessibilityAddTraits(.isHeader)
 
             DSGlassPanel {
-                DSStatusRow(systemImage: "faceid", title: IrisText.interface("camera.trueDepth.title", french: "Caméra TrueDepth"),
+                DSStatusRow(systemImage: "faceid", title: IrisText.interface("camera.trueDepth.title", french: "Caméra frontale"),
                             detail: IrisText.interface("camera.trueDepth.detail", french: "Estime la direction du regard, environ soixante fois par seconde."), state: rowState)
                 DSStatusRow(systemImage: "lock.shield", title: IrisText.interface("camera.localProcessing.title", french: "Traitement local"),
                             detail: IrisText.interface("camera.localProcessing.detail", french: "Aucune image n'est enregistrée ni envoyée. Rien ne quitte l'appareil."), state: .ok)

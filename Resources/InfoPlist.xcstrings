@@ -8,13 +8,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iris uses the front TrueDepth camera to detect the direction of your gaze: your gaze is what pushes the game's spheres away. Images stay on the device and are never recorded or sent."
+            "value" : "Iris uses the front camera with ARKit face tracking to estimate where you are looking: your gaze is what pushes the game's spheres away. Images stay on the device and are never recorded or sent."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iris utilise la caméra frontale TrueDepth pour détecter la direction de votre regard : c'est ce regard qui repousse les sphères du jeu. Les images restent sur l'appareil, ne sont jamais enregistrées ni envoyées."
+            "value" : "Iris utilise la caméra frontale et le suivi facial ARKit pour estimer où vous regardez : c'est votre regard qui repousse les sphères du jeu. Les images restent sur l'appareil, ne sont jamais enregistrées ni envoyées."
           }
         }
       }

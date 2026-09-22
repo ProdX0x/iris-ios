@@ -151,6 +151,14 @@ final class GazeSetupViewModel {
         gaze.onSample = { [weak self] sample in self?.handleSample(sample) }
         gazeState = gaze.state
         gaze.start(viewport: GazeViewport(bounds: bounds, nominal: nominal))
+        // The tracker announces a state only when it changes. A tracker that cannot start gives the same final answer
+        // at every start, so a second start would leave this screen waiting: read that answer here.
+        switch gaze.state {
+        case .unavailable, .failed:
+            if phase == .starting { handleGazeState(gaze.state) }
+        case .idle, .starting, .tracking, .interrupted:
+            break
+        }
         simulateFixation(at: SIMD2(0.5, 0.5))
     }
 

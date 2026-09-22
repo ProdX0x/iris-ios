@@ -49,7 +49,7 @@ struct GameContentFreezeTests {
         "Domain/Progress/LevelRecord.swift": "32bc9e28fc7f96fbe0d9169bd2259454e678edc0bec1791a26e11d26c1064cf2",
         "Domain/Progress/ProgressStore.swift": "6319eb8305307d18d3562b89a9fc359e242f74728bd1ababd19a051bf07c231a",
         "Features/Game/ViewModels/GameViewModel.swift": "a3825b26b9850e801765094ec203130cbf0d75b53f6ac959398d8517ffa9334b",
-        "Features/GazeSetup/ViewModels/GazeSetupViewModel.swift": "c5553e12e40a239008770a1fc16115e978b25cf981d370031167c45d5f6038db",
+        "Features/GazeSetup/ViewModels/GazeSetupViewModel.swift": "50e9cafdb9c0bd76b79bd56961623454589fdcfa703d7cc113e256a24c9d1d53",
         "App/Platform/DisplayLinkGameClock.swift": "7d2aa0eff275c972af2db3db34567fde506cf29ce13fe323af4844fbe501ee8e",
     ]
 

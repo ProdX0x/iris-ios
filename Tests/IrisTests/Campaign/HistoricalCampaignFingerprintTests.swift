@@ -35,7 +35,7 @@ struct HistoricalCampaignFingerprintTests {
         "AR/Calibration/FixationSequence.swift": "8aa0a84b2ef3289de5ca8526c26e9abaf8c037b7e5c2bd135e7436bb8a29bc7e",
         "AR/Calibration/GazeMapper.swift": "d0b01b54094e84d08b8896d590b91422ce0b95522a924994da67b1b2fcece89a",
         "AR/Calibration/GazeReadinessEvaluator.swift": "a0b6829b186bb344c6c14d17d0a23d5e4a3866fdb5da9aded5c978d30717680a",
-        "AR/Calibration/GazeReadinessReport.swift": "bae4252722685054e13d4bdde591721fdd1d62a902988d2201c72b9d087c853d",
+        "AR/Calibration/GazeReadinessReport.swift": "e1272403f9eca91d2fb9b5b9bc0d0d4242bab16ce6a2dec51c85b3ff1a4b3f8e",
         "AR/Calibration/NominalDisplayGeometry.swift": "12010e81c1ad9818265b3e90992adc41a5c34a3bee9b20421b6f052d4f7dbd1b",
         "AR/Calibration/NormalizedCoordinates.swift": "23d95ae7c14de0e91142e69e330a82c90006a4aca0cd4c9784d37abadfb444d9",
         "AR/Calibration/RobustAggregator.swift": "a7b66f5ed18601dd18845acfae0ec4c27cc1938d79f2c6248a3fb78983e3e7df",

@@ -19,7 +19,7 @@ struct DSGlassTests {
     /// a fourth sheet, and the root view presents it. They change again only with a deliberate navigation decision
     /// and this table.
     static let navigationSources: [String: String] = [
-        "Navigation/AppCoordinator.swift": "15550e59be78db1139228fd976b375cc3ff1a61e8694a6ff2aa7ed8bb3aab412",
+        "Navigation/AppCoordinator.swift": "0e68125ceada1b1920a56f3577b012803af89f48e10df50850b3cef6c314c4de",
         "Navigation/AppDestination.swift": "57ee608cdd0b66bd907ac0f7d9368004510b28e40e77e2009484c391f1d5828f",
         "Navigation/AppRoute.swift": "8d05c60e7f49851d4c37fbc045e9c7c6aa6361b15681a5fb13ddf930d77fb73e",
         "Navigation/AppSheet.swift": "e33ba41e0c2b61f0340cac7085f6b4a579a2ec62866255df60a4235afbe1e0ae",
